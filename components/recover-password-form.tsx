@@ -34,10 +34,11 @@ export function RecoverPasswordForm({
                     id="email"
                     type="email"
                     placeholder="m@example.com"
+                    className="default-height"
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full cursor-pointer">
+                <Button type="submit" size="sm" className="w-full cursor-pointer">
                   Recover
                 </Button>
               </div>

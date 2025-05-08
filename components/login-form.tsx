@@ -35,6 +35,7 @@ export function LoginForm({
                     id="email"
                     type="email"
                     placeholder="m@example.com"
+                    className="default-height"
                     required
                   />
                 </div>
@@ -42,7 +43,7 @@ export function LoginForm({
                     <Label htmlFor="password">Password</Label>
                     <PasswordInput className="default-height" placeholder="Digit a password" required/>
                 </div>
-                <Button type="submit" className="w-full cursor-pointer">
+                <Button type="submit" size="sm" className="w-full cursor-pointer">
                   Login
                 </Button>
               </div>

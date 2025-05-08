@@ -1,5 +1,5 @@
 "use client";
-import { EllipsisVertical, LogOut } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar
 } from "@/components/ui/sidebar";
-import Link from "next/link";
+import { SignOut } from "./sign-out";
 
 export function NavUser({
   user,
@@ -75,10 +75,7 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="#" className="flex items-center gap-2">
-                <LogOut />
-                Log out
-              </Link>
+              <SignOut />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

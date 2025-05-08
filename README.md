@@ -101,7 +101,7 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
     ```
 
 ## :white_check_mark: Tecnologias utilizadas
-* `JS`
+* `TS`
 * `Node.js - `
 * `React.js - `
 * `Tailwind CSS - `

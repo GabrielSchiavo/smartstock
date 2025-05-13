@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { Inter } from "next/font/google";
+import "@/app/globals.css";
+import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ActiveThemeProvider } from "@/components/active-theme";
-import { cookies } from "next/headers";
 import { cn } from "@/lib/utils";
+import { cookies } from "next/headers";
 
-// const META_THEME_COLORS = {
-//   light: "#ffffff",
-//   dark: "#09090b",
-// }
+const font = Inter({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,35 +20,37 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const session = await auth();
+  
   const cookieStore = await cookies();
   const activeThemeValue = cookieStore.get("active_theme")?.value;
   const isScaled = activeThemeValue?.endsWith("-scaled");
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "bg-background overscroll-none font-sans antialiased",
+    <SessionProvider session={session}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(
+          `bg-background overscroll-none font-sans antialiased ${font.className}`,
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : ""
-        )}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          enableColorScheme
-        >
-          <ActiveThemeProvider initialTheme={activeThemeValue}>
-            {children}
-          </ActiveThemeProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+        )}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            enableColorScheme
+          >
+            <ActiveThemeProvider initialTheme={activeThemeValue}>
+              <Toaster />
+              {children}
+            </ActiveThemeProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

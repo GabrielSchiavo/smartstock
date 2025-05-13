@@ -4,7 +4,6 @@ import * as React from "react";
 import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
 import {
   FileChartLine,
-  Users,
   HelpCircleIcon,
   Apple,
   SettingsIcon,
@@ -12,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { NavTop } from "@/components/nav-top";
-import { NavUser } from "@/components/nav-user";
+import { UserButton } from "@/components/auth/user-button";
 import {
   Sidebar,
   SidebarContent,
@@ -48,11 +47,6 @@ const data = {
       label: "Reports",
       href: "/reports",
       icon: FileChartLine,
-    },
-    {
-      label: "User Registration",
-      href: "/users",
-      icon: Users,
     },
   ],
   navBottom: [
@@ -101,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavBottom items={data.navBottom} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <UserButton />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

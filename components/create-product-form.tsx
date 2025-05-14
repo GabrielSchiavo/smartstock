@@ -29,41 +29,16 @@ import {
 } from "./ui/select";
 import { DatePickerMonthYear } from "./date-picker-month-year-selectors";
 import { ProductType, UnitMeasurement } from "@prisma/client";
-
-
-const selectDonor = [
-  {
-    label: "Anonymous",
-    value: "Anonymous",
-  },
-  {
-    label: "Empresa X",
-    value: "Empresa X",
-  },
-];
-const selectReceiver = [
-  {
-    label: "Usuário X",
-    value: "Usuário X",
-  },
-];
-const selectGroup = [
-  {
-    label: "Grupo 1",
-    value: "Grupo 1",
-  },
-];
-const selectSubgroup = [
-  {
-    label: "Subgrupo 1",
-    value: "Subgrupo 1",
-  },
-];
+import { DynamicComboboxGroups } from "./dynamic-combobox-group";
+import { DynamicComboboxSubgroups } from "./dynamic-combobox-subgroup";
+import { DynamicComboboxDonors } from "./dynamic-combobox-donor";
+import { DynamicComboboxReceivers } from "./dynamic-combobox-receiver";
 
 export const CreateProductForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  // const [selectedTagId, setSelectedTagId] = useState("");
 
   const form = useForm<z.infer<typeof CreateProductSchema>>({
     resolver: zodResolver(CreateProductSchema),
@@ -82,18 +57,19 @@ export const CreateProductForm = () => {
     },
   });
 
-    const selectedType = form.watch("productType");
-    const detailsValue = form.watch("donor");
-  
-    // Determina se o input deve estar desabilitado
-    const isDetailsDisabled = !selectedType || selectedType === ProductType.PURCHASED;
-  
-    // Efeito para limpar o valor quando o campo é desabilitado
-    useEffect(() => {
-      if (isDetailsDisabled && detailsValue) {
-        form.setValue("donor", undefined, { shouldValidate: true });
-      }
-    }, [isDetailsDisabled, detailsValue, form]);
+  const selectedType = form.watch("productType");
+  const detailsValue = form.watch("donor");
+
+  // Determina se o input deve estar desabilitado
+  const isDetailsDisabled =
+    !selectedType || selectedType === ProductType.PURCHASED;
+
+  // Efeito para limpar o valor quando o campo é desabilitado
+  useEffect(() => {
+    if (isDetailsDisabled && detailsValue) {
+      form.setValue("donor", undefined, { shouldValidate: true });
+    }
+  }, [isDetailsDisabled, detailsValue, form]);
 
   const onSubmit = (values: z.infer<typeof CreateProductSchema>) => {
     setError("");
@@ -167,21 +143,11 @@ export const CreateProductForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={UnitMeasurement.KG}>
-                            KG
-                        </SelectItem>
-                        <SelectItem value={UnitMeasurement.G}>
-                            G
-                        </SelectItem>
-                        <SelectItem value={UnitMeasurement.L}>
-                            L
-                        </SelectItem>
-                        <SelectItem value={UnitMeasurement.UN}>
-                            UN.
-                        </SelectItem>
-                        <SelectItem value={UnitMeasurement.CX}>
-                            CX.
-                        </SelectItem>
+                        <SelectItem value={UnitMeasurement.KG}>KG</SelectItem>
+                        <SelectItem value={UnitMeasurement.G}>G</SelectItem>
+                        <SelectItem value={UnitMeasurement.L}>L</SelectItem>
+                        <SelectItem value={UnitMeasurement.UN}>UN.</SelectItem>
+                        <SelectItem value={UnitMeasurement.CX}>CX.</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -231,24 +197,14 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Receiver</FormLabel>
                   <div className="select-container">
-                    <Select
+                     <DynamicComboboxReceivers
+                      value={field.value}
+                      onChange={field.onChange}
                       disabled={isPending}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a receiver" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {selectReceiver.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      allowCreate={true}
+                      allowDelete={true}
+                      placeholder="Select a receiver..."
+                    />
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -276,24 +232,14 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Group</FormLabel>
                   <div className="select-container">
-                    <Select
+                    <DynamicComboboxGroups
+                      value={field.value}
+                      onChange={field.onChange}
                       disabled={isPending}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a group" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {selectGroup.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      allowCreate={true}
+                      allowDelete={true}
+                      placeholder="Select a group..."
+                    />
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -306,24 +252,14 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Subgroup (Optional)</FormLabel>
                   <div className="select-container">
-                    <Select
+                    <DynamicComboboxSubgroups
+                      value={field.value!}
+                      onChange={field.onChange}
                       disabled={isPending}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a subgroup" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {selectSubgroup.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      allowCreate={true}
+                      allowDelete={true}
+                      placeholder="Select a subgroup..."
+                    />
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -369,30 +305,18 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Donor</FormLabel>
                   <div className="select-container">
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                    <DynamicComboboxDonors
+                      value={field.value!}
+                      onChange={field.onChange}
                       disabled={isDetailsDisabled}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            placeholder={
+                      allowCreate={true}
+                      allowDelete={true}
+                      placeholder={
                               isDetailsDisabled
                                 ? "Select 'Donated' to enable"
                                 : "Enter the donor"
                             }
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {selectDonor.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    />
                   </div>
                   <FormMessage />
                 </FormItem>

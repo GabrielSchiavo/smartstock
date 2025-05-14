@@ -45,7 +45,7 @@ export default async function RootLayout({
             enableColorScheme
           >
             <ActiveThemeProvider initialTheme={activeThemeValue}>
-              <Toaster />
+              <Toaster position="top-center" richColors />
               {children}
             </ActiveThemeProvider>
           </ThemeProvider>

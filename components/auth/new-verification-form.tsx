@@ -48,7 +48,7 @@ export const NewVerificationForm = () => {
         >
             <div className="flex items-center w-full justify-center">
                 {!success && !error && (
-                    <BeatLoader color="#ffffff" />
+                    <BeatLoader color='#71717b' />
                 )}
                 <FormSuccess message={success}/>
                 {!success && (

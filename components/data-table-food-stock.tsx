@@ -53,7 +53,7 @@ export type StockFood = {
   validityDate: string;
   status: "valid" | "defeated";
   receiptDate: string;
-  taker: string;
+  receiver: string;
   group: string,
   subgroup?: string,
   productType: "donated" | "purchased",
@@ -70,7 +70,7 @@ const data: StockFood[] = [
     validityDate: "25/09/2025",
     status: "valid",
     receiptDate: "03/05/2025",
-    taker: "Pessoa X",
+    receiver: "Pessoa X",
     group: "Arroz",
     subgroup: "Branco",
     productType: "donated",
@@ -85,7 +85,7 @@ const data: StockFood[] = [
     validityDate: "25/09/2025",
     status: "valid",
     receiptDate: "03/05/2025",
-    taker: "Pessoa X",
+    receiver: "Pessoa X",
     group: "Feijão",
     productType: "donated",
     donor: "Empresa X",
@@ -99,7 +99,7 @@ const data: StockFood[] = [
     validityDate: "25/09/2025",
     status: "valid",
     receiptDate: "03/05/2025",
-    taker: "Pessoa X",
+    receiver: "Pessoa X",
     group: "Massa",
     productType: "donated",
     donor: "Empresa X",
@@ -113,7 +113,7 @@ const data: StockFood[] = [
     validityDate: "25/09/2025",
     status: "valid",
     receiptDate: "03/05/2025",
-    taker: "Pessoa X",
+    receiver: "Pessoa X",
     group: "Lentilha",
     productType: "donated",
     donor: "Empresa X",
@@ -127,7 +127,7 @@ const data: StockFood[] = [
     validityDate: "25/09/2025",
     status: "valid",
     receiptDate: "03/05/2025",
-    taker: "Pessoa X",
+    receiver: "Pessoa X",
     group: "Leite",
     productType: "donated",
     donor: "Empresa X",
@@ -141,7 +141,7 @@ const multiColumnFilterFn: FilterFn<StockFood> = (
   filterValue
 ) => {
   // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.quantity} ${row.original.unit} ${row.original.lot} ${row.original.validityDate} ${row.original.status} ${row.original.receiptDate} ${row.original.taker} ${row.original.donor} ${row.original.productType}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.quantity} ${row.original.unit} ${row.original.lot} ${row.original.validityDate} ${row.original.status} ${row.original.receiptDate} ${row.original.receiver} ${row.original.donor} ${row.original.productType}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -315,7 +315,7 @@ export const columns: ColumnDef<StockFood>[] = [
     filterFn: multiColumnFilterFn,
   },
   {
-    accessorKey: "taker",
+    accessorKey: "receiver",
     header: ({ column }) => {
       return (
         <div className="flex justify-center items-center">
@@ -329,7 +329,7 @@ export const columns: ColumnDef<StockFood>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("taker")}</div>,
+    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("receiver")}</div>,
     filterFn: multiColumnFilterFn,
   },
   {

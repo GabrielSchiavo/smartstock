@@ -100,6 +100,11 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
     npm run dev
     ```
 
+<!-- TODO: Organizar comandos abaixo para rodar projeto -->
+npm run dev, npx prisma init, npx prisma generate, npx prisma db push, npx auth secret
+
+crate account in resend for add API Key of resend for sending email
+
 ## :white_check_mark: Tecnologias utilizadas
 * `TS`
 * `Node.js - `

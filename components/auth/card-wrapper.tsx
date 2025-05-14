@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Header } from "@/components/auth/header";
+import { HeaderAuth } from "@/components/auth/header-auth";
 import { BackButton } from "@/components/auth/back-button";
 
 interface CardWrapperProps {
@@ -20,7 +20,7 @@ export const CardWrapper = ({
     return (
         <Card className="w-[400px] shadow-md">
             <CardHeader>
-                <Header label={headerLabel} />
+                <HeaderAuth label={headerLabel} />
             </CardHeader>
             <CardContent>
                 {children}

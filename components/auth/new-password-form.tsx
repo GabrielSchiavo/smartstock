@@ -13,13 +13,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { newPassword } from "@/actions/new-password";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
+import { PasswordInput } from "@/components/auth/input-password";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -65,12 +65,7 @@ export const NewPasswordForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="********"
-                      type="password"
-                    />
+                    <PasswordInput disabled={isPending} className="default-height" placeholder="********" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

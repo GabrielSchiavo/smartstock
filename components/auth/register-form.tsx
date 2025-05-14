@@ -19,7 +19,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
 import { useState, useTransition } from "react";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { PasswordInput } from "./input-password";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -32,7 +32,6 @@ export const RegisterForm = () => {
       email: "",
       password: "",
       name: "",
-      userType: undefined,
     },
   });
 
@@ -99,54 +98,7 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="********"
-                      type="password"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="userType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>User input type:</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col"
-                    >
-                      <FormItem className="flex items-center">
-                        <FormControl>
-                          <RadioGroupItem value="ADMIN" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Admin</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center">
-                        <FormControl>
-                          <RadioGroupItem value="USER" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Default</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center">
-                        <FormControl>
-                          <RadioGroupItem value="CADASTRE" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Cadastre</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center">
-                        <FormControl>
-                          <RadioGroupItem value="REPORTS" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Reports</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
+                    <PasswordInput disabled={isPending} className="default-height" placeholder="********" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

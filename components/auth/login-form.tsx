@@ -21,6 +21,7 @@ import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { PasswordInput } from "./input-password";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -87,12 +88,7 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="********"
-                      type="password"
-                    />
+                    <PasswordInput disabled={isPending} className="default-height" placeholder="********" {...field} />
                   </FormControl>
                   <FormMessage />
                   <Button

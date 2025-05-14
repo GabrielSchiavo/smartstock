@@ -52,7 +52,7 @@ const data = {
   navBottom: [
     {
       label: "Settings",
-      href: "#",
+      href: "/settings",
       icon: SettingsIcon,
     },
     {

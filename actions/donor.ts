@@ -42,6 +42,16 @@ export async function getAllDonors(): Promise<DonorResponse> {
   }
 }
 
+export async function getDonorsCount() {
+  try {
+    const donorsCount = await db.donor.count();
+    return donorsCount;
+  } catch (error) {
+    console.error("Error fetching donors:", error);
+    throw error;
+  }
+}
+
 export async function searchDonors(query: string): Promise<DonorResponse> {
   if (!query) return { success: true, data: [] }
 

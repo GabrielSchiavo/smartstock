@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { register } from "@/actions/user";
+import { registerUser } from "@/actions/user";
 import { useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
@@ -44,7 +44,7 @@ export const AddUserForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      register(values).then((data) => {
+      registerUser(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -158,9 +158,9 @@ export const AddUserForm = () => {
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.REPORTS} />
+                        <RadioGroupItem value={UserRole.REPORT} />
                       </FormControl>
-                      <FormLabel className="font-normal">Reports <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">Report <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>

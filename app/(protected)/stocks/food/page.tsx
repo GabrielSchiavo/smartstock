@@ -1,6 +1,6 @@
 import { getProducts } from "@/actions/product";
-import { DatatableProducts } from "@/components/datatables/datatable-products";
-import { columns } from "@/components/datatables/_interfaces/columns-products";
+import { DataTableProducts } from "@/components/data-table/data-table-products";
+import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,9 +14,11 @@ export default async function StockFoodPage() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 ">
           <h1 className="text-base font-medium px-4 lg:px-6">Estoque de Alimentos</h1>
-          <DatatableProducts data={products} columns={columns} />
+          <div className="px-4 md:px-6 ">
+            <DataTableProducts addButton={true} data={products} columns={columnsTableProducts} />
+          </div>
         </div>
       </div>
     </div>

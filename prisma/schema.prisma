@@ -19,7 +19,7 @@ enum UserRole {
   ADMIN
   DEFAULT
   CADASTRE
-  REPORTS
+  REPORT
 }
 
 enum UnitMeasurement {

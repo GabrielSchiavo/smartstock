@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "@/app/globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
@@ -9,8 +9,10 @@ import { ActiveThemeProvider } from "@/components/active-theme";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 
-const font = Inter({
+const font = Geist({
   subsets: ["latin"],
+  display: "swap",
+  
 });
 
 export const metadata: Metadata = {

@@ -1,3 +1,4 @@
+import { ProductType, UnitMeasurement, UserRole } from "@prisma/client";
 import * as z from "zod";
 
 export const NewPasswordSchema = z.object({
@@ -41,7 +42,7 @@ export const CreateUserSchema = z
     name: z.string().min(1, {
       message: "Name is required",
     }),
-    userType: z.enum(["ADMIN", "DEFAULT", "CADASTRE", "REPORTS"], {
+    userType: z.enum([UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT], {
       required_error: "You need to select a user input type.",
     }),
 
@@ -74,7 +75,7 @@ export const CreateProductSchema = z
   .object({
     name: z.string().min(2).max(150),
     quantity: z.string().min(1).max(10).refine(v => { const n = Number(v); return !isNaN(n) && v?.length > 0}, {message: "Invalid number"}),
-    unit: z.enum(["KG", "G", "L", "UN", "CX"], {
+    unit: z.enum([UnitMeasurement.KG, UnitMeasurement.G, UnitMeasurement.L, UnitMeasurement.UN, UnitMeasurement.CX], {
       required_error: "You need to select a unit of measurement.",
     }),
     lot: z.string().min(2).max(50),
@@ -83,10 +84,10 @@ export const CreateProductSchema = z
       .date({
         required_error: "Please select a date",
         invalid_type_error: "This is not a date!",
-      })
-      .refine((date) => date > new Date(), {
-        message: "The date entered must be greater than today's date",
       }),
+      // .refine((date) => date > new Date(), {
+      //   message: "The date entered must be greater than today's date",
+      // }),
 
     receiptDate: z.coerce.date({
       required_error: "Please select a date",
@@ -97,7 +98,7 @@ export const CreateProductSchema = z
     group: z.string().min(2).max(50),
     subgroup: z.string().min(2).max(50).optional(),
 
-    productType: z.enum(["DONATED", "PURCHASED"], {
+    productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       required_error: "You need to select a product input type.",
     }),
 
@@ -106,7 +107,7 @@ export const CreateProductSchema = z
   .refine(
     (data) => {
       // Validação condicional sem usar parent
-      if (data.productType === "DONATED" && !data.donor) {
+      if (data.productType === ProductType.DONATED && !data.donor) {
         return false;
       }
       return true;
@@ -135,11 +136,11 @@ export const CreateProductSchema = z
   
     userType: z.enum(
       [
-        "quantityReport",
-        "expirationDateReport",
-        "defeatedReport",
-        "QuantityDonorReport",
-        "totalReceivedReport",
+        "QUANTITY",
+        "EXPIRYDATE",
+        "EXPIRED",
+        "QUANTITYDONATED",
+        "TOTALRECEIVED",
       ],
       {
         required_error: "You need to select a report input type.",

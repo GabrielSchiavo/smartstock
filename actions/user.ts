@@ -10,7 +10,9 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export const register = async (values: z.infer<typeof CreateUserSchema>) => {
+export const registerUser = async (
+  values: z.infer<typeof CreateUserSchema>
+) => {
   const validateFields = CreateUserSchema.safeParse(values);
 
   if (!validateFields.success) {
@@ -43,7 +45,11 @@ export const register = async (values: z.infer<typeof CreateUserSchema>) => {
 
 export async function getUsers(): Promise<User[]> {
   try {
-    const users = await db.user.findMany();
+    const users = await db.user.findMany({
+      orderBy: {
+        role: "asc",
+      },
+    });
     return users;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -95,7 +101,7 @@ export const editUser = async (
     where: {
       email,
       NOT: {
-        id
+        id,
       },
     },
   });

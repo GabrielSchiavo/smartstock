@@ -217,9 +217,9 @@ export const EditUserForm = ({ user }: EditFormProps) => {
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.REPORTS} />
+                        <RadioGroupItem value={UserRole.REPORT} />
                       </FormControl>
-                      <FormLabel className="font-normal">Reports <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">Report <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>

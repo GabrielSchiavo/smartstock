@@ -33,6 +33,7 @@ import { DynamicComboboxGroup } from "@/components/dynamic-combobox-group";
 import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup";
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
+import { toast } from "sonner";
 
 interface EditFormProps {
   product: {
@@ -136,6 +137,11 @@ export const EditProductForm = ({ product }: EditFormProps) => {
       editProduct(product.id, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        if (data.success) {
+          toast.success(data.success);
+        } else {
+          toast.error(data.error);
+        }
       });
     });
   };

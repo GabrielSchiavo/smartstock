@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -10,9 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreVertical } from "lucide-react";
 import DeleteUserDialog from "@/components/user-components/delete-user-dialog";
 import { EditUserDialog } from "@/components/user-components/edit-user-dialog";
+import { DataTableColumnHeader } from "../_components/data-table-column-header";
+import { MoreVertical } from "lucide-react";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
@@ -23,7 +24,7 @@ const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columnsTableUsers: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -48,94 +49,56 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            ID
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
+    ),
     filterFn: multiColumnFilterFn,
   },
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Nome
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
+        header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nome" />
+    ),
     filterFn: multiColumnFilterFn,
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
+        header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email" />
+    ),
     filterFn: multiColumnFilterFn,
   },
   {
     accessorKey: "emailVerified",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email Verificado
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
+        header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email verificado" />
+    ),
     cell: ({ row }) => {
       const verified = row.getValue("emailVerified");
       if (verified === null) {
-        return <span className="bg-red-500/15 px-3 py-1 rounded text-sm text-red-500">Não</span>;
+        return <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">Não</span>;
       } else {
-        return <span className="bg-emerald-500/15 px-3 py-1 rounded text-sm text-emerald-500">Sim</span>
+        return <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">Sim</span>
       }
     },
     filterFn: multiColumnFilterFn,
   },
   {
     accessorKey: "role",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Nível de Acesso
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
+        header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nível de acesso" />
+    ),
+      cell: ({ row }) => {
+      const role = row.getValue("role") as string;
+      if (role === UserRole.DEFAULT) {
+        return <span className="uppercase">Padrão</span>;
+      } else if (role === UserRole.CADASTRE) {
+        return <span className="uppercase">Cadastro</span>
+      } else if(role === UserRole.REPORT) {
+        return <span className="uppercase">Relatório</span>
+      } else {
+        return <span className="bg-muted px-3 py-1 rounded-sm uppercase">{ role }</span> 
+      }
     },
     filterFn: multiColumnFilterFn,
   },

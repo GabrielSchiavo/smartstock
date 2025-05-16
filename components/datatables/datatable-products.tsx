@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  FilterFn,
   SortingState,
   VisibilityState,
   flexRender,
@@ -15,22 +14,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  ArrowUpDown,
   ChevronDown,
-  Eye,
-  MoreVertical,
   Search,
-  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -42,199 +34,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ButtonDialogAddReport } from "./button-dialog-add-report";
+import { AddProductDialog } from "@/components/product-components/add-product-dialog";
 
-export type StockFood = {
-  id: number;
-  name: string;
-  type: "quantityReport" | "expirationDateReport" | "defeatedReport" | "QuantityDonorReport" | "totalReceivedReport";
-  font: "estoque de alimentos";
-  date: string;
-};
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+}
 
-const data: StockFood[] = [
-  {
-    id: 1,
-    name: "Relatório 1.pdf",
-    type: "quantityReport",
-    font: "estoque de alimentos",
-    date: "03/05/2025",
-  },
-  {
-    id: 2,
-    name: "Relatório 2.pdf",
-    type: "defeatedReport",
-    font: "estoque de alimentos",
-    date: "03/05/2025",
-  },
-];
-
-// Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<StockFood> = (
-  row,
-  columnId,
-  filterValue
-) => {
-  // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.type} ${row.original.font} ${row.original.date}`;
-
-  // Perform a case-insensitive comparison
-  return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
-};
-
-export const columns: ColumnDef<StockFood>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Id
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("id")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("name")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Type
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("type")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "font",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Data Font
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("font")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "date",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Date
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("date")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  
-  
-  
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Eye></Eye>
-              View
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
-              <Trash2></Trash2>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export function DataTableReports() {
+export function DatatableProducts<TData, TValue>({
+    columns,
+    data,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0, // Página inicial
+    pageSize: 15, // Número de linhas por página (altere este valor)
+  });
 
   const table = useReactTable({
     data,
@@ -247,11 +65,13 @@ export function DataTableReports() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
   });
 
@@ -299,14 +119,14 @@ export function DataTableReports() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <ButtonDialogAddReport/>
+        <AddProductDialog />
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="text-center">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -328,6 +148,7 @@ export function DataTableReports() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="text-center"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

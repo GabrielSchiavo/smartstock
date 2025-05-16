@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { PasswordInput } from "./auth/input-password"
+import { PasswordInput } from "@/components/auth/input-password"
 
 export function LoginForm({
   className,

@@ -16,14 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { register } from "@/actions/register";
+import { register } from "@/actions/user";
 import { useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { PasswordInput } from "./auth/input-password";
-import { DialogFooter } from "./ui/dialog";
+import { PasswordInput } from "@/components/auth/input-password";
+import { DialogFooter } from "@/components/ui/dialog";
 import { UserRole } from "@prisma/client";
 
-export const CreateUserForm = () => {
+export const AddUserForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -142,25 +142,25 @@ export const CreateUserForm = () => {
                       <FormControl>
                         <RadioGroupItem value={UserRole.ADMIN} />
                       </FormControl>
-                      <FormLabel className="font-normal">Admin</FormLabel>
+                      <FormLabel className="font-normal">Admin <span className="text-muted-foreground">- acesso total ao sistema</span></FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.DEFAULT} />
                       </FormControl>
-                      <FormLabel className="font-normal">Default</FormLabel>
+                      <FormLabel className="font-normal">Default <span className="text-muted-foreground">- acesso somente a produtos e relatórios</span></FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.CADASTRE} />
                       </FormControl>
-                      <FormLabel className="font-normal">Cadastre</FormLabel>
+                      <FormLabel className="font-normal">Cadastre <span className="text-muted-foreground">- acesso somente aos produtos</span></FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.REPORTS} />
                       </FormControl>
-                      <FormLabel className="font-normal">Reports</FormLabel>
+                      <FormLabel className="font-normal">Reports <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>

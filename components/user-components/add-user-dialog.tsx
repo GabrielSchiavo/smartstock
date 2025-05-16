@@ -10,26 +10,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import React from "react";
-import { CreateProductForm } from "./create-product-form";
+import { AddUserForm } from "@/components/user-components/add-user-form";
 
-export function ButtonDialogAddProduct({}) {
+export function AddUserDialog({}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Plus />
-          <span className="hidden lg:inline">Add Product</span>
+          <span className="hidden lg:inline">Create User</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
+          <DialogTitle>Create User</DialogTitle>
           <DialogDescription>
-            Add new products here. Click Save when done.
+            Create new users here. Click Create User when done.
           </DialogDescription>
         </DialogHeader>
-        <CreateProductForm />
+        <AddUserForm />
       </DialogContent>
     </Dialog>
   );

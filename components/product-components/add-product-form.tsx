@@ -16,25 +16,25 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { registerProduct } from "@/actions/register-product";
+import { registerProduct } from "@/actions/product";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { DialogFooter } from "./ui/dialog";
+import { DialogFooter } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { DatePickerMonthYear } from "./date-picker-month-year-selectors";
+} from "@/components/ui/select";
+import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
 import { ProductType, UnitMeasurement } from "@prisma/client";
-import { DynamicComboboxGroups } from "./dynamic-combobox-group";
-import { DynamicComboboxSubgroups } from "./dynamic-combobox-subgroup";
-import { DynamicComboboxDonors } from "./dynamic-combobox-donor";
-import { DynamicComboboxReceivers } from "./dynamic-combobox-receiver";
+import { DynamicComboboxGroup } from "@/components/dynamic-combobox-group";
+import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup";
+import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
+import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 
-export const CreateProductForm = () => {
+export const AddProductForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -197,7 +197,7 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Receiver</FormLabel>
                   <div className="select-container">
-                     <DynamicComboboxReceivers
+                     <DynamicComboboxReceiver
                       value={field.value}
                       onChange={field.onChange}
                       disabled={isPending}
@@ -232,7 +232,7 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Group</FormLabel>
                   <div className="select-container">
-                    <DynamicComboboxGroups
+                    <DynamicComboboxGroup
                       value={field.value}
                       onChange={field.onChange}
                       disabled={isPending}
@@ -252,7 +252,7 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Subgroup (Optional)</FormLabel>
                   <div className="select-container">
-                    <DynamicComboboxSubgroups
+                    <DynamicComboboxSubgroup
                       value={field.value!}
                       onChange={field.onChange}
                       disabled={isPending}
@@ -305,7 +305,7 @@ export const CreateProductForm = () => {
                 <FormItem>
                   <FormLabel>Donor</FormLabel>
                   <div className="select-container">
-                    <DynamicComboboxDonors
+                    <DynamicComboboxDonor
                       value={field.value!}
                       onChange={field.onChange}
                       disabled={isDetailsDisabled}
@@ -328,7 +328,7 @@ export const CreateProductForm = () => {
         <FormSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Save
+            Create Product
           </Button>
         </DialogFooter>
       </form>

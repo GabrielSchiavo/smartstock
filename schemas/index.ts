@@ -116,3 +116,36 @@ export const CreateProductSchema = z
       path: ["donor"], // Especifica que o erro deve ser associado ao campo donor
     }
   );
+
+  export const CreateReportSchema = z
+  .object({
+    initialDate: z.coerce
+    .date({
+      required_error: "Please select a date",
+      invalid_type_error: "This is not a date!",
+    }),
+  
+    finalDate: z.coerce
+    .date({
+      required_error: "Please select a date",
+      invalid_type_error: "This is not a date!",
+    }),
+  
+    name: z.string().min(2).max(150),
+  
+    userType: z.enum(
+      [
+        "quantityReport",
+        "expirationDateReport",
+        "defeatedReport",
+        "QuantityDonorReport",
+        "totalReceivedReport",
+      ],
+      {
+        required_error: "You need to select a report input type.",
+      }
+    ),
+  }).refine((data) => data.finalDate > data.initialDate, {
+    message: "The end date cannot be less than the start date",
+    path: ["finalDate"], // path of error
+  });

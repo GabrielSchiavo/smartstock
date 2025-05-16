@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from '@/components/ui/button'
 import { Check, ChevronsUpDown, Plus, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { searchReceivers, createReceiver, getAllReceivers, deleteReceiver, checkReceiverInProducts } from '@/actions/receiver-list'
+import { searchReceivers, createReceiver, getAllReceivers, deleteReceiver, checkReceiverInProducts } from '@/actions/receiver'
 import { toast } from "sonner";
 import { BeatLoader } from 'react-spinners'
 
@@ -24,7 +24,7 @@ interface DynamicComboboxProps {
   disabled: boolean
 }
 
-export function DynamicComboboxReceivers({
+export function DynamicComboboxReceiver({
   value,
   onChange,
   placeholder = 'Search...',
@@ -206,7 +206,7 @@ const displayValue = value
                       key={option.id}
                       value={option.name}
                       onSelect={() => handleSelect(option)}
-                      className="group flex justify-between items-center"
+                      className="group flex justify-between items-center py-1"
                     >
                       <div className="flex items-center">
                         <Check
@@ -225,7 +225,7 @@ const displayValue = value
                             e.stopPropagation()
                             handleDelete(option.id, option.name)
                           }}
-                          className="p-1! h-fit  opacity-0 group-hover:opacity-100 hover:bg-accent"
+                          className="p-1.5! h-fit  opacity-0 group-hover:opacity-100 hover:bg-destructive/10!"
                           disabled={isPending}
                           title="Delete this option"
                         >

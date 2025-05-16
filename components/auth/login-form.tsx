@@ -21,7 +21,7 @@ import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { PasswordInput } from "./input-password";
+import { PasswordInput } from "@/components/auth/input-password";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -57,8 +57,8 @@ export const LoginForm = () => {
   return (
     <CardWrapper
       headerLabel="Welcome back"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
+      backButtonLabel=""
+      backButtonHref=""
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

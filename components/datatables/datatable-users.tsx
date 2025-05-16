@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  FilterFn,
   SortingState,
   VisibilityState,
   flexRender,
@@ -15,22 +14,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
-  ArrowUpDown,
   ChevronDown,
-  MoreVertical,
-  Pencil,
   Search,
-  Trash2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -42,177 +34,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ButtonDialogAddUser } from "@/components/button-dialog-add-user";
+import { AddUserDialog } from "@/components/user-components/add-user-dialog";
 
-export type StockFood = {
-  id: number;
-  name: string;
-  email: string;
-  permission: "admin" | "default" | "cadastre" | "reports";
-};
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+}
 
-const data: StockFood[] = [
-  {
-    id: 1,
-    name: "Usuário 1",
-    email: "teste@teste.com",
-    permission: "admin",
-  },
-  {
-    id: 2,
-    name: "Usuário 2",
-    email: "teste2@teste2.com",
-    permission: "default",
-  },
-];
-
-// Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<StockFood> = (
-  row,
-  columnId,
-  filterValue
-) => {
-  // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.email} ${row.original.permission}`;
-
-  // Perform a case-insensitive comparison
-  return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
-};
-
-export const columns: ColumnDef<StockFood>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Id
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("id")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("name")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("email")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  {
-    accessorKey: "permission",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center items-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Permission
-            <ArrowUpDown />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => <div className="capitalize text-center">{row.getValue("permission")}</div>,
-    filterFn: multiColumnFilterFn,
-  },
-  
-  
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Pencil></Pencil>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">
-              <Trash2></Trash2>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export function DataTableUsers() {
+export function DatatableUsers<TData, TValue>({
+    columns,
+    data,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0, // Página inicial
+    pageSize: 15, // Número de linhas por página (altere este valor)
+  });
 
   const table = useReactTable({
     data,
@@ -225,11 +65,13 @@ export function DataTableUsers() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
   });
 
@@ -277,14 +119,14 @@ export function DataTableUsers() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <ButtonDialogAddUser/>
+        <AddUserDialog />
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="text-center">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -306,6 +148,7 @@ export function DataTableUsers() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="text-center"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

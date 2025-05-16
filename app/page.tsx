@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "SmartStock",
+  description: "SmartStock",
+};
 
 export default function Home() {
   return (

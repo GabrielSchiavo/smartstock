@@ -80,6 +80,7 @@ Você pode [acessar o código-fonte do projeto](https://github.com/GabrielSchiav
 Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
 * Node.js >=22.15.0
+* PostgreSQL >=17.4
 
 `Configurando o projeto:`
 

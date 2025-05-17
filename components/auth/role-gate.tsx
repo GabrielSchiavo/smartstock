@@ -6,21 +6,27 @@ import { UserRole } from "@prisma/client";
 
 interface RoleGateProps {
     children: React.ReactNode;
-    allowedRole: UserRole;
+    allowedRoles: UserRole[];
+    isPage: boolean;
 }
 
 export const RoleGate = ({
     children,
-    allowedRole
+    allowedRoles,
+    isPage
 }: RoleGateProps) => {
     const role = useCurrentRole();
 
-    if (role !== allowedRole) {
-        return (
-            <div className="px-4 pt-4">
-                <FormError message="You do not have permission to view this content!" />
-            </div>
-        )
+    if (!role || !allowedRoles.includes(role)) {
+        if (isPage === true) {
+            return (
+                <div className="px-4 pt-4">
+                    <FormError message="You do not have permission to view this content!" />
+                </div>
+            )
+        } else {
+            return null
+        }
     }
 
     return (

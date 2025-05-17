@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "@/app/globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
@@ -8,12 +7,6 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ActiveThemeProvider } from "@/components/active-theme";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
-
-const font = Geist({
-  subsets: ["latin"],
-  display: "swap",
-  
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,7 +28,7 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="en" suppressHydrationWarning>
         <body className={cn(
-          `bg-background overscroll-none font-sans antialiased ${font.className}`,
+          `bg-background overscroll-none font-sans antialiased`,
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : ""
         )}>

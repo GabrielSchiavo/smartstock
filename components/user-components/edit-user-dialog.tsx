@@ -11,16 +11,19 @@ import {
 } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
 import { EditUserForm } from "@/components/user-components/edit-user-form";
+import { useState } from "react";
 
 interface EditDialogProps {
-  user: {
+  userId: {
     id: string;
   };
 }
 
-export function EditUserDialog({ user }: EditDialogProps) {
+export function EditUserDialog({ userId }: EditDialogProps) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -42,7 +45,7 @@ export function EditUserDialog({ user }: EditDialogProps) {
             Update users here. Click Update User when done.
           </DialogDescription>
         </DialogHeader>
-        <EditUserForm user={user} />
+        <EditUserForm userId={userId} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

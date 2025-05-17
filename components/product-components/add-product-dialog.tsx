@@ -10,12 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { AddProductForm } from "@/components/product-components/add-product-form";
 
 export function AddProductDialog({}) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Plus />
@@ -29,7 +31,7 @@ export function AddProductDialog({}) {
             Create new products here. Click Create Product when done.
           </DialogDescription>
         </DialogHeader>
-        <AddProductForm />
+        <AddProductForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

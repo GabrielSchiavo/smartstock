@@ -23,12 +23,11 @@ import {
 } from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/data-table/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/data-table/_components/data-table-pagination";
-import { AddUserDialog } from "../user-components/add-user-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  addButton: boolean
+  addButton: boolean,
 }
 
 export function DataTableUsers<TData, TValue>({
@@ -66,8 +65,7 @@ export function DataTableUsers<TData, TValue>({
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex gap-6 items-center justify-between">
-        <DataTableToolbar table={table} />
-        {addButton ? <AddUserDialog /> : <></>}
+        <DataTableToolbar toolTip={false} addButton={addButton} addButtonType={"USER"} table={table} />
       </div>
 
       <div className="rounded-md border">

@@ -13,19 +13,19 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center bg-radial from-sky-400 to-blue-800">
-      <Card className="p-10 shadow-md">
-        <div className="space-y-6 text-center">
-          <div className="flex flex-row items-center gap-6">
+      <Card className="px-16 py-10 shadow-md">
+        <div className="grid gap-6 text-center">
+          <div className="flex flex-row items-center gap-4">
             <Image
               className="size-16"
               src={LogoSmartstock}
               alt="Logo SmartStock"
             />
-            <h1 className={"text-5xl font-semibold"}>
-              SmartStock
-            </h1>
+            <span className="text-5xl fontAlbertSans font-extralight">
+              <span className="font-semibold">Smart</span>stock
+            </span>
           </div>
-          <p className="text-lg">A best stock management service</p>
+          <p className="text-lg font-light">A best stock management service</p>
           <div>
             <LoginButton>
               <Button variant={"default"} size={"lg"}>

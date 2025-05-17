@@ -22,51 +22,49 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { UserRole } from "@prisma/client";
+import { toast } from "sonner";
+import { ToolTipHelpUser } from "./tool-tip-help-user";
 
 interface EditFormProps {
-  user: {
+  userId: {
     id: string;
   };
+  onSuccess?: (shouldInvalidate: boolean) => void;
 }
 
-export const EditUserForm = ({ user }: EditFormProps) => {
+export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [initialValues, setInitialValues] = useState<z.infer<typeof CreateUserSchema> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [initialValues, setInitialValues] = useState<z.infer<
+    typeof CreateUserSchema
+  > | null>(null);
 
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const productData = await getUserById(userId.id);
+        if (productData) {
+          setInitialValues({
+            name: productData.name || "",
+            email: productData.email || "",
+            password: "",
+            confirmPassword: "",
+            userType: productData.role || undefined,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading product:", error);
+        setError("Failed to load product data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-
-    useEffect(() => {
-        const loadProduct = async () => {
-          try {
-            const productData = await getUserById(user.id);
-            if (productData) {
-              setInitialValues({
-                name: productData.name || "",
-                email: productData.email ||  "",
-                password: "",
-                confirmPassword: "",
-                userType: productData.role || undefined,
-
-              });
-            }
-          } catch (error) {
-            console.error("Error loading product:", error);
-            setError("Failed to load product data");
-          } finally {
-            setIsLoading(false);
-          }
-        };
-    
-        loadProduct();
-      }, [user.id]);
-
-
-
-
+    loadProduct();
+  }, [userId.id]);
 
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
@@ -79,30 +77,37 @@ export const EditUserForm = ({ user }: EditFormProps) => {
     },
   });
 
-
-
-
-    useEffect(() => {
+  useEffect(() => {
     if (initialValues) {
       form.reset(initialValues);
     }
   }, [initialValues, form]);
-
-
 
   const onSubmit = (values: z.infer<typeof CreateUserSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      editUser(user.id, values).then((data) => {
+      editUser(userId.id, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+
+        if (data.success) {
+          toast.success(data.success);
+        } else {
+          toast.error(data.error);
+        }
+
+        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+        if (data.success && !data.error && onSuccess) {
+          form.reset(); // Limpa o formulário
+          onSuccess(true); // Fecha o diálogo
+        }
       });
     });
   };
 
-      if (isLoading) {
+  if (isLoading) {
     return <div>Loading user data...</div>;
   }
 
@@ -190,7 +195,10 @@ export const EditUserForm = ({ user }: EditFormProps) => {
             name="userType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>User input type:</FormLabel>
+                <FormLabel className="flex">
+                  User input type:
+                  <ToolTipHelpUser />
+                  </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -199,27 +207,35 @@ export const EditUserForm = ({ user }: EditFormProps) => {
                   >
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.ADMIN} />
+                        <RadioGroupItem value={UserRole.ADMIN} checked={field.value === UserRole.ADMIN}/>
                       </FormControl>
-                      <FormLabel className="font-normal">Admin <span className="text-muted-foreground">- acesso total ao sistema</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Admin
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.DEFAULT} />
+                        <RadioGroupItem value={UserRole.DEFAULT} checked={field.value === UserRole.DEFAULT}/>
                       </FormControl>
-                      <FormLabel className="font-normal">Default <span className="text-muted-foreground">- acesso somente a produtos e relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Padrão
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.CADASTRE} />
+                        <RadioGroupItem value={UserRole.CADASTRE} checked={field.value === UserRole.CADASTRE}/>
                       </FormControl>
-                      <FormLabel className="font-normal">Cadastre <span className="text-muted-foreground">- acesso somente aos produtos</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Cadastro
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.REPORT} />
+                        <RadioGroupItem value={UserRole.REPORT} checked={field.value === UserRole.REPORT}/>
                       </FormControl>
-                      <FormLabel className="font-normal">Report <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Relatório
+                      </FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
@@ -231,7 +247,7 @@ export const EditUserForm = ({ user }: EditFormProps) => {
         <FormError message={error} />
         <FormSuccess message={success} />
         <DialogFooter>
-          <Button disabled={isPending} type="submit"  size="sm">
+          <Button disabled={isPending} type="submit" size="sm">
             Update User
           </Button>
         </DialogFooter>

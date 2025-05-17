@@ -87,23 +87,47 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
    
     - Pacotes JS:
       - Instala e atualiza pacotes para versão mais recente:
+  
           ```bash
           npm update
           ```
 
       - Instala pacotes respeitaremos a versão fornecida:
+  
           ```bash
           npm install
           ```
-2. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
+
+2. `Atualizar .env:` abra o arquivo `.env.example`, localizado na raiz do projeto e altere as configurações de DATABASE_URL para as configurações do seu Banco de Dados. Após, renomeie o arquivo para `.env`.
+
+3. `Gerar AUTH_SECRET:` abra um terminal na raiz do projeto e execute o comando a seguir para configurar o Auth.js:
+   
+   - Gera um arquivo `.env.local` com a variável `AUTH_SECRET`, copie toda a variavel e susbtitua `AUTH_SECRET` no arquivo `.env`, após exclua o arquivo `.env.local`:
+  
+        ```bash
+        npx auth secret
+        ```
+
+4. `Configura o Prisma Client e DB:` na raiz do projeto e execute os comandos a seguir. Sempre que alterar o arquivo `schema.prisma` execute novamente estes comandos:
+
+   - Analisa o arquivo `schema.prisma` e gera o Prisma Client:
+  
+        ```bash
+        npx prisma generate
+        ```
+
+   - Sincroniza o `schema.prisma` com o banco de dados:
+  
+        ```bash
+        npx prisma db push
+        ```
+
+5. `Configurar geração de email:` para enviar os email dentro do sistema é necessário criar uma conta no Resend para obter uma `API Key`, após edite a variável `API KEY` no arquivo `.env` para adicionar a chave da api do Resend.
+
+6. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
     ```bash
     npm run dev
     ```
-
-<!-- TODO: Organizar comandos abaixo para rodar projeto -->
-npm run dev, npx prisma init, npx prisma generate, npx prisma db push, npx auth secret
-
-crate account in resend for add API Key of resend for sending email
 
 ## :white_check_mark: Tecnologias utilizadas
 * `TS`

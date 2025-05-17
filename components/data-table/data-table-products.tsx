@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/data-table/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/data-table/_components/data-table-pagination";
-import { AddProductDialog } from "../product-components/add-product-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -64,9 +63,7 @@ export function DataTableProducts<TData, TValue>({
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex gap-6 items-center justify-between">
-        <DataTableToolbar table={table} />
-
-        {addButton ? <AddProductDialog /> : <></>}
+        <DataTableToolbar toolTip={true} addButton={addButton} addButtonType={"PRODUCT"} table={table} />
       </div>
 
       <div className="rounded-md border">

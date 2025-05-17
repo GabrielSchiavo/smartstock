@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 
-const DashboardPage = async () => {
+const DashboardPage = () => {
   return (
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">

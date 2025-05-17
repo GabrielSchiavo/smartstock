@@ -17,18 +17,18 @@ import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface DeleteDialogProps {
-  product: {
+  productId: {
     id: number;
   };
 }
 
-export default function DeleteProductDialog({ product }: DeleteDialogProps) {
+export default function DeleteProductDialog({ productId }: DeleteDialogProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteProduct(product.id);
+      await deleteProduct(productId.id);
 
-      toast.success(`Product ID ${product.id} deleted successfully`);
+      toast.success(`Product ID ${productId.id} deleted successfully`);
     } catch (error) {
       console.error("Error deleting product:", error);
       toast.error("Failed to delete product");

@@ -3,9 +3,7 @@
 import * as React from "react";
 import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
 import {
-  FileChartLine,
   HelpCircleIcon,
-  Apple,
   SettingsIcon,
   LayoutDashboard,
 } from "lucide-react";
@@ -36,18 +34,10 @@ const data = {
     },
   ],
   navMain: [
-    {
-      label: "Food Stock",
-      href: "/stocks/food",
-      icon: Apple,
-    },
+
   ],
   navMainSecondary: [
-    {
-      label: "Reports",
-      href: "/reports",
-      icon: FileChartLine,
-    },
+
   ],
   navBottom: [
     {
@@ -78,12 +68,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         >
           <Link href="/dashboard">
             <Image
-              className="!size-5"
+              className="size-5"
               src={LogoSmartstock}
               alt="Logo SmartStock"
             />
-            <span className="text-base font-normal">
-              <span className="font-bold">Smart</span>Stock
+            <span className="text-base fontAlbertSans font-extralight">
+              <span className="font-semibold">Smart</span>stock
             </span>
           </Link>
         </SidebarMenuButton>

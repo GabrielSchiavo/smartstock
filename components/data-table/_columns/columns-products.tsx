@@ -215,9 +215,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <EditProductDialog product={{ id: row.original.id }} />
+            <EditProductDialog productId={{ id: row.original.id }} />
             <DropdownMenuSeparator />
-            <DeleteProductDialog product={{ id: row.original.id }} />
+            <DeleteProductDialog productId={{ id: row.original.id }} />
           </DropdownMenuContent>
         </DropdownMenu>
       );

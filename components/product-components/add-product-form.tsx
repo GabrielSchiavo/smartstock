@@ -33,12 +33,16 @@ import { DynamicComboboxGroup } from "@/components/dynamic-combobox-group";
 import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup";
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
+import { toast } from "sonner";
 
-export const AddProductForm = () => {
+interface AddFormProps {
+  onSuccess?: (shouldInvalidate: boolean) => void;
+}
+
+export const AddProductForm = ({ onSuccess }: AddFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  // const [selectedTagId, setSelectedTagId] = useState("");
 
   const form = useForm<z.infer<typeof CreateProductSchema>>({
     resolver: zodResolver(CreateProductSchema),
@@ -79,6 +83,18 @@ export const AddProductForm = () => {
       registerProduct(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        if (data.success) {
+          toast.success(data.success);
+        } else {
+          toast.error(data.error);
+        }
+
+        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+        if (data.success && !data.error && onSuccess) {
+          form.reset(); // Limpa o formulário
+          onSuccess(true); // Fecha o diálogo
+          // window.location.reload(); // Recarrega a página
+        }
       });
     });
   };
@@ -197,7 +213,7 @@ export const AddProductForm = () => {
                 <FormItem>
                   <FormLabel>Receiver</FormLabel>
                   <div className="select-container">
-                     <DynamicComboboxReceiver
+                    <DynamicComboboxReceiver
                       value={field.value}
                       onChange={field.onChange}
                       disabled={isPending}
@@ -312,10 +328,10 @@ export const AddProductForm = () => {
                       allowCreate={true}
                       allowDelete={true}
                       placeholder={
-                              isDetailsDisabled
-                                ? "Select 'Donated' to enable"
-                                : "Enter the donor"
-                            }
+                        isDetailsDisabled
+                          ? "Select 'Donated' to enable"
+                          : "Enter the donor"
+                      }
                     />
                   </div>
                   <FormMessage />

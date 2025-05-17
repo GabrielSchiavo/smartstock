@@ -17,18 +17,18 @@ import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface DeleteDialogProps {
-  user: {
+  userId: {
     id: string;
   };
 }
 
-export default function DeleteUserDialog({ user }: DeleteDialogProps) {
+export default function DeleteUserDialog({ userId }: DeleteDialogProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteUser(user.id);
+      await deleteUser(userId.id);
 
-      toast.success(`User ID ${user.id} deleted successfully`);
+      toast.success(`User ID ${userId.id} deleted successfully`);
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Failed to delete user");

@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { AddUserForm } from "@/components/user-components/add-user-form";
+import { useState } from "react";
 
 export function AddUserDialog({}) {
+    const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Plus />
@@ -28,7 +31,7 @@ export function AddUserDialog({}) {
             Create new users here. Click Create User when done.
           </DialogDescription>
         </DialogHeader>
-        <AddUserForm />
+        <AddUserForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

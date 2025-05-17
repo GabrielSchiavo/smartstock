@@ -26,10 +26,7 @@ export const CardWrapper = ({
                 {children}
             </CardContent>
             <CardFooter>
-                <BackButton 
-                    label={backButtonLabel}
-                    href={backButtonHref}
-                />
+                {backButtonLabel === "" ? <></> : <BackButton label={backButtonLabel} href={backButtonHref}/>}
             </CardFooter>
         </Card>
     );

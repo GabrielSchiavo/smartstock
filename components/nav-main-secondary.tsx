@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, type LucideIcon } from "lucide-react";
+import { FileChartLine, Users, type LucideIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserRole } from "@prisma/client";
-import { RoleGateHideComponent } from "@/components/auth/role-gate-hide-component";
+import { RoleGate } from "@/components/auth/role-gate";
 
 export function NavMainSecondary({
   items,
@@ -45,7 +45,20 @@ export function NavMainSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <RoleGateHideComponent allowedRole={UserRole.ADMIN}>
+          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.REPORT]}>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                className={`${pathname === "/reports" ? "min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={"/reports"}>
+                  <FileChartLine />
+                  <span>Reports</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </RoleGate>
+          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN]}>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -57,7 +70,7 @@ export function NavMainSecondary({
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          </RoleGateHideComponent>
+          </RoleGate>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

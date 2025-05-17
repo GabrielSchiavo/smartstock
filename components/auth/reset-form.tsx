@@ -52,8 +52,8 @@ export const ResetForm = () => {
       backButtonHref="/auth/login"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
+          <div className="grid gap-6">
             <FormField
               control={form.control}
               name="email"

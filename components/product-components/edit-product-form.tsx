@@ -36,12 +36,13 @@ import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver"
 import { toast } from "sonner";
 
 interface EditFormProps {
-  product: {
+  productId: {
     id: number;
   };
+  onSuccess?: (shouldInvalidate: boolean) => void;
 }
 
-export const EditProductForm = ({ product }: EditFormProps) => {
+export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -52,7 +53,7 @@ export const EditProductForm = ({ product }: EditFormProps) => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const productData = await getProductById(product.id);
+        const productData = await getProductById(productId.id);
         if (productData) {
           setInitialValues({
             name: productData.name || "",
@@ -77,7 +78,7 @@ export const EditProductForm = ({ product }: EditFormProps) => {
     };
 
     loadProduct();
-  }, [product.id]);
+  }, [productId.id]);
 
 
 
@@ -103,17 +104,12 @@ export const EditProductForm = ({ product }: EditFormProps) => {
     },
   });
 
-
-
-    // Preenche o formulário quando os dados iniciais são carregados
+  // Preenche o formulário quando os dados iniciais são carregados
   useEffect(() => {
     if (initialValues) {
       form.reset(initialValues);
     }
   }, [initialValues, form]);
-
-
-
 
   const selectedType = form.watch("productType");
   const detailsValue = form.watch("donor");
@@ -134,13 +130,18 @@ export const EditProductForm = ({ product }: EditFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      editProduct(product.id, values).then((data) => {
+      editProduct(productId.id, values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
         if (data.success) {
           toast.success(data.success);
         } else {
           toast.error(data.error);
+        }
+
+        if (data.success && !data.error && onSuccess) {
+          form.reset(); // Limpa o formulário
+          onSuccess(true); // Fecha o diálogo
         }
       });
     });

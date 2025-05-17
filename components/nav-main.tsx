@@ -1,6 +1,6 @@
 "use client"
 
-import { type LucideIcon } from "lucide-react"
+import { Apple, type LucideIcon } from "lucide-react"
 
 import {
   SidebarGroup,
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { RoleGate } from "./auth/role-gate"
+import { UserRole } from "@prisma/client"
 
 export function NavMain({
   items,
@@ -39,6 +41,19 @@ export function NavMain({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE]}>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                className={`${pathname === "/stocks/food" ? "min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={"/stocks/food"}>
+                  <Apple />
+                  <span>Food Stock</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </RoleGate>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

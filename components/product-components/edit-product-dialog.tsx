@@ -10,18 +10,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { EditProductForm } from "@/components/product-components/edit-product-form";
 
 interface EditDialogProps {
-  product: {
+  productId: {
     id: number;
   };
 }
 
-export function EditProductDialog({ product }: EditDialogProps) {
+export function EditProductDialog({ productId }: EditDialogProps) {
+    const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -43,7 +45,7 @@ export function EditProductDialog({ product }: EditDialogProps) {
             Edit new products here. Click Update Product when done.
           </DialogDescription>
         </DialogHeader>
-        <EditProductForm product={product} />
+        <EditProductForm productId={productId} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

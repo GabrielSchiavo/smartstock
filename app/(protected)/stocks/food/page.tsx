@@ -2,6 +2,8 @@ import { getProducts } from "@/actions/product";
 import { DataTableProducts } from "@/components/data-table/data-table-products";
 import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { Metadata } from "next";
+import { RoleGate } from "@/components/auth/role-gate";
+import { UserRole } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Estoque de Alimentos - SmartStock",
@@ -9,18 +11,26 @@ export const metadata: Metadata = {
 };
 
 export default async function StockFoodPage() {
-    const products = await getProducts()
+  const products = await getProducts();
 
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 ">
-          <h1 className="text-base font-medium px-4 lg:px-6">Estoque de Alimentos</h1>
-          <div className="px-4 md:px-6 ">
-            <DataTableProducts addButton={true} data={products} columns={columnsTableProducts} />
+    <RoleGate isPage={true} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE]}>
+      <div className="flex flex-1 flex-col">
+        <div className="@container/main flex flex-1 flex-col gap-2">
+          <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 ">
+            <h1 className="text-base font-medium px-4 lg:px-6">
+              Estoque de Alimentos
+            </h1>
+            <div className="px-4 md:px-6 ">
+              <DataTableProducts
+                addButton={true}
+                data={products}
+                columns={columnsTableProducts}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </RoleGate>
   );
 }

@@ -116,9 +116,9 @@ export const columnsTableUsers: ColumnDef<User>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-              <EditUserDialog user={{ id: row.original.id }} />
+              <EditUserDialog userId={{ id: row.original.id }} />
             <DropdownMenuSeparator />
-            <DeleteUserDialog user={{ id: row.original.id }} />
+            <DeleteUserDialog userId={{ id: row.original.id }} />
           </DropdownMenuContent>
         </DropdownMenu>
       );

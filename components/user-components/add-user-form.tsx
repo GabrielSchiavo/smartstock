@@ -22,8 +22,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { UserRole } from "@prisma/client";
+import { toast } from "sonner";
+import { ToolTipHelpUser } from "./tool-tip-help-user";
 
-export const AddUserForm = () => {
+interface AddFormProps {
+  onSuccess?: (shouldInvalidate: boolean) => void;
+}
+
+export const AddUserForm = ({ onSuccess }: AddFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -47,6 +53,18 @@ export const AddUserForm = () => {
       registerUser(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+        if (data.success) {
+          toast.success(data.success);
+        } else {
+          toast.error(data.error);
+        }
+
+        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+        if (data.success && !data.error && onSuccess) {
+          form.reset(); // Limpa o formulário
+          onSuccess(true); // Fecha o diálogo
+          // window.location.reload(); // Recarrega a página
+        }
       });
     });
   };
@@ -131,7 +149,10 @@ export const AddUserForm = () => {
             name="userType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>User input type:</FormLabel>
+                <FormLabel className="flex">
+                  User input type:
+                  <ToolTipHelpUser />
+                </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -142,25 +163,33 @@ export const AddUserForm = () => {
                       <FormControl>
                         <RadioGroupItem value={UserRole.ADMIN} />
                       </FormControl>
-                      <FormLabel className="font-normal">Admin <span className="text-muted-foreground">- acesso total ao sistema</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Admin 
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.DEFAULT} />
                       </FormControl>
-                      <FormLabel className="font-normal">Default <span className="text-muted-foreground">- acesso somente a produtos e relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Padrão
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.CADASTRE} />
                       </FormControl>
-                      <FormLabel className="font-normal">Cadastre <span className="text-muted-foreground">- acesso somente aos produtos</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Cadastro
+                      </FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.REPORT} />
                       </FormControl>
-                      <FormLabel className="font-normal">Report <span className="text-muted-foreground">- acesso somente aos relatórios</span></FormLabel>
+                      <FormLabel className="font-normal">
+                        Relatório
+                      </FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
@@ -172,7 +201,7 @@ export const AddUserForm = () => {
         <FormError message={error} />
         <FormSuccess message={success} />
         <DialogFooter>
-          <Button disabled={isPending} type="submit"  size="sm">
+          <Button disabled={isPending} type="submit" size="sm">
             Create user
           </Button>
         </DialogFooter>

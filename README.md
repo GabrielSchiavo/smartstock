@@ -43,7 +43,7 @@
   
   - `Exclusão:` exclusão de usuários antigos.
   
-- **Geração de Relatórios**
+<!-- - **Geração de Relatórios**
   - `Visualização:` os relatórios ssão gerados dentro do sistema, onde é posível visualizar relatórios já emitidos ou gerar novos.
   
   - `Impressão:` todos os relatórios gerados podem ser exportados como PDF para impressão.
@@ -55,7 +55,7 @@
     - Total de produtos recebidos.
 
 - **Alertas**
-  - `Notificações e pop-ups:` alertas de produtos prestes a vencer e produtos com estoque baixo.
+  - `Notificações e pop-ups:` alertas de produtos prestes a vencer e produtos com estoque baixo. -->
 
 - **Organização**
    - `Dashboard:` tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.

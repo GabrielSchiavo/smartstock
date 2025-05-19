@@ -26,6 +26,7 @@ export default async function StockFoodPage() {
                 addButton={true}
                 data={products}
                 columns={columnsTableProducts}
+                groupBy="group"
               />
             </div>
           </div>

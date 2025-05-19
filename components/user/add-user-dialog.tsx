@@ -10,28 +10,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import React, { useState } from "react";
-import { AddProductForm } from "@/components/product-components/add-product-form";
+import { AddUserForm } from "@/components/user/add-user-form";
+import { useState } from "react";
 
-export function AddProductDialog({}) {
-  const [open, setOpen] = useState(false);
+export function AddUserDialog({}) {
+    const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Plus />
-          <span className="hidden lg:inline">Create Product</span>
+          <span className="hidden lg:inline">Create User</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Create Product</DialogTitle>
+          <DialogTitle>Create User</DialogTitle>
           <DialogDescription>
-            Create new products here. Click Create Product when done.
+            Create new users here. Click Create User when done.
           </DialogDescription>
         </DialogHeader>
-        <AddProductForm onSuccess={() => setOpen(false)} />
+        <AddUserForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

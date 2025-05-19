@@ -10,8 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import DeleteUserDialog from "@/components/user-components/delete-user-dialog";
-import { EditUserDialog } from "@/components/user-components/edit-user-dialog";
+import DeleteUserDialog from "@/components/user/delete-user-dialog";
+import { EditUserDialog } from "@/components/user/edit-user-dialog";
 import { DataTableColumnHeader } from "../_components/data-table-column-header";
 import { MoreVertical } from "lucide-react";
 

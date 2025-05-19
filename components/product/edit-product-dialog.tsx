@@ -10,17 +10,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Pencil } from "lucide-react";
-import { EditUserForm } from "@/components/user-components/edit-user-form";
-import { useState } from "react";
+import React, { useState } from "react";
+import { EditProductForm } from "@/components/product/edit-product-form";
 
 interface EditDialogProps {
-  userId: {
-    id: string;
+  productId: {
+    id: number;
   };
 }
 
-export function EditUserDialog({ userId }: EditDialogProps) {
-  const [open, setOpen] = useState(false);
+export function EditProductDialog({ productId }: EditDialogProps) {
+    const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -40,12 +40,12 @@ export function EditUserDialog({ userId }: EditDialogProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Edit Product</DialogTitle>
           <DialogDescription>
-            Update users here. Click Update User when done.
+            Edit new products here. Click Update Product when done.
           </DialogDescription>
         </DialogHeader>
-        <EditUserForm userId={userId} onSuccess={() => setOpen(false)} />
+        <EditProductForm productId={productId} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

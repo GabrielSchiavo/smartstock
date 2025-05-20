@@ -1,31 +1,27 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export const sendPasswordResetEmail = async (
-    email: string,
-    token: string,
-) => {
-    const resetLink = `http://localhost:3000/auth/new-password?token=${token}`;
-
-    await resend.emails.send({
-        from: "Project Next Auth <onboarding@resend.dev>",
-        to: email,
-        subject: "Reset your password",
-        html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`
+function createTransport() {
+  if (process.env.NODE_ENV === "production") {
+    // Real emails
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_SMTP_USER,
+        pass: process.env.GMAIL_SMTP_PASS,
+      },
     });
-};
+  }
 
-export const sendVerificationEmail = async (
-    email: string,
-    token: string,
-) => {
-    const confirmLink = `http://localhost:3000/auth/new-verification?token=${token}`;
+  // Captured by Ethereal
+  return nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.ETHEREAL_USERNAME,
+      pass: process.env.ETHEREAL_PASSWORD,
+    },
+  });
+}
 
-    await resend.emails.send({
-        from: "Project Next Auth <onboarding@resend.dev>",
-        to: email,
-        subject: "Confirm your email",
-        html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`
-    });
-};
+export const transporter = createTransport();

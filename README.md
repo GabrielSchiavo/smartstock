@@ -123,7 +123,15 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
         npx prisma db push
         ```
 
-5. `Configurar geração de email:` para enviar os email dentro do sistema é necessário criar uma conta no Resend para obter uma `API Key`, após edite a variável `API KEY` no arquivo `.env` para adicionar a chave da api do Resend.
+5. `Configurar geração e envio de email:` para o envio de email é necessário configurar:
+   
+   - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`
+  
+   - Para `PRODUÇÃO`: 
+  
+     - Usando `GMAIL`: acesse o arquivo `.env` e altere `GMAIL_SMTP_USER` e `GMAIL_SMTP_PASS` para as credenciais da sua conta do Google (é necessário criar uma 'Senha de App').
+  
+     - Usando `OUTRO PROVEDOR`: para usar outro provedor SMTP consulte a documentação do `NODEMAILER` e altere as configurações do mesmo em `lib/mail.ts`.
 
 6. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
     ```bash

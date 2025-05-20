@@ -6,9 +6,9 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
 import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { sendVerificationEmail } from "@/lib/send-mail";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
@@ -28,19 +28,33 @@ export const registerUser = async (
     return { error: "Email already in use!" };
   }
 
-  await db.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role: userType,
-    },
-  });
-
-  const verificationToken = await generateVerificationToken(email);
-  await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-  return { success: "Confirmation email sent!" };
+  try {
+    await db.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: userType,
+      },
+    });
+    
+    const verificationToken = await generateVerificationToken(email);
+  
+    try {
+      await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+        name
+      );
+  
+      return { success: "User successfully registered and confirmation email sent!" };
+    } catch {
+      return { error: "User registered successfully but error while sending confirmation email!" };
+    };
+    
+  } catch {
+    return { error: "Error registering user!" };
+  }
 };
 
 export async function getUsers(): Promise<User[]> {

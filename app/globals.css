@@ -12,14 +12,16 @@
   font-display: swap;
   font-family: "Geist";
   font-weight: 1 999;
-  src: url("../public/assets/fonts/geist-variable.ttf") format("truetype-variations");
+  src: url("../public/assets/fonts/geist-variable.ttf")
+    format("truetype-variations");
   font-optical-sizing: auto;
 }
 @font-face {
   font-display: swap;
   font-family: "Albert Sans";
   font-weight: 1 999;
-  src: url("../public/assets/fonts/albert-sans-variable.ttf") format("truetype-variations");
+  src: url("../public/assets/fonts/albert-sans-variable.ttf")
+    format("truetype-variations");
   font-optical-sizing: auto;
 }
 
@@ -260,9 +262,8 @@ body {
 }
 
 .sidebar {
-  --sidebar-width: SIDEBAR_WIDTH,
-  --sidebar-width-icon: SIDEBAR_WIDTH_ICON,
-  ...style,
+  --sidebar-width:
+    SIDEBAR_WIDTH, --sidebar-width-icon: SIDEBAR_WIDTH_ICON, ...style;
 }
 
 .default-height {
@@ -288,3 +289,31 @@ button {
   font-family: var(--albert-sans-font);
 }
 
+
+/* Style for print reports */
+.showForPrint {
+  display: none;
+}
+@media print {
+  .showForPrint {
+    display: block;
+  }
+  .styleForPrint {
+    border: none !important;
+  }
+}
+@page {
+  size: A4 landscape;
+  margin: 10mm;
+
+  @top-center {
+    content: "Smartstock";
+    font-size: 14px;
+    padding-top: 5mm;
+  }
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+    font-size: 14px;
+    padding-bottom: 5mm;
+  }
+}

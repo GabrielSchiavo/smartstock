@@ -1,0 +1,30 @@
+import * as React from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import { HelpCircle } from "lucide-react";
+
+export function ToolTipHelpReport() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button size={"sm"} variant="ghost" className="flex items-center gap-1.5">
+            <HelpCircle />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" align="center">
+          <div className="grid gap-2">
+            <div className="flex items-center gap-2">
+                <p className="text-sm"><span className="font-semibold">Ordenação</span> - Use a opção <span className="font-semibold italic">Imprimir</span> para salvar o relatório com a ordenação de registros personalizada.</p>
+            </div>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}

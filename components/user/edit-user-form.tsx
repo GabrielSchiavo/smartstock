@@ -23,7 +23,7 @@ import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { UserRole } from "@prisma/client";
 import { toast } from "sonner";
-import { ToolTipHelpUser } from "./tool-tip-help-user";
+import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 
 interface EditFormProps {
   userId: {

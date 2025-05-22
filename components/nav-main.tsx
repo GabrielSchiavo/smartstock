@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { RoleGate } from "./auth/role-gate"
+import { RoleGate } from "@/components/auth/role-gate"
 import { UserRole } from "@prisma/client"
 
 export function NavMain({

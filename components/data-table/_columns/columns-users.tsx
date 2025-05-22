@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import DeleteUserDialog from "@/components/user/delete-user-dialog";
 import { EditUserDialog } from "@/components/user/edit-user-dialog";
-import { DataTableColumnHeader } from "../_components/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
 import { MoreVertical } from "lucide-react";
 
 // Custom filter function for multi-column searching

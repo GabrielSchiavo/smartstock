@@ -1,0 +1,237 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { FormError } from "@/components/form-error";
+import { useState, useTransition } from "react";
+import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
+import { toast } from "sonner";
+import {
+  DonationsReport,
+  generateDonationsReport,
+  generatePurchasedReport,
+  generateValidityReport,
+  PurchasedReport,
+  ValidityReport,
+} from "@/actions/report";
+import { DataTableReport } from "@/components/data-table/data-table-reports";
+import {
+  columnsTableReportPurchased,
+  columnsTableReportValidity,
+} from "@/components/data-table/_columns/columns-reports";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CreateReportSchema } from "@/schemas";
+import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
+
+export const ReportsFormAndResultView = () => {
+  const [error, setError] = useState<string | undefined>("");
+  const [validityReportData, setValidityReportData] = useState<
+    ValidityReport[]
+  >([]);
+  const [donationsReportData, setDonationsReportData] = useState<
+    DonationsReport[]
+  >([]);
+  const [purchasedReportData, setPurchasedReportData] = useState<
+    PurchasedReport[]
+  >([]);
+  const [isPending, startTransition] = useTransition();
+  const [dates, setDates] = useState<{ initialDate: Date; finalDate: Date }>();
+
+  const form = useForm<z.infer<typeof CreateReportSchema>>({
+    resolver: zodResolver(CreateReportSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof CreateReportSchema>) => {
+    setError("");
+    setDates(values);
+
+    startTransition(() => {
+      if (values.reportType === "VALIDITY") {
+        generateValidityReport(values.initialDate, values.finalDate).then(
+          (data) => {
+            if (data.error) {
+              setError(data.error);
+              toast.error("Erro ao gerar relatório!");
+            } else if (data.data) {
+              setValidityReportData(data.data);
+              toast.success("Relatório gerado com sucesso!");
+            }
+          }
+        );
+      } else if (values.reportType === "DONATIONS") {
+        generateDonationsReport(values.initialDate, values.finalDate).then(
+          (data) => {
+            if (data.error) {
+              setError(data.error);
+              toast.error("Erro ao gerar relatório!");
+            } else if (data.data) {
+              setDonationsReportData(data.data);
+              toast.success("Relatório gerado com sucesso!");
+            }
+          }
+        );
+      } else if (values.reportType === "PURCHASED") {
+        generatePurchasedReport(values.initialDate, values.finalDate).then(
+          (data) => {
+            if (data.error) {
+              setError(data.error);
+              toast.error("Erro ao gerar relatório!");
+            } else if (data.data) {
+              setPurchasedReportData(data.data);
+              toast.success("Relatório gerado com sucesso!");
+            }
+          }
+        );
+      }
+    });
+  };
+
+  return (
+    <div className="grid gap-12">
+      <div className="flex justify-center">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid gap-6 border rounded-md p-10 w-full md:max-w-[650px]"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+              <div className="grid gap-6 grid-cols-1">
+                <FormField
+                  control={form.control}
+                  name="initialDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Inicial</FormLabel>
+                      <FormControl>
+                        <DatePickerMonthYear field={field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="finalDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Data Final</FormLabel>
+                      <FormControl>
+                        <DatePickerMonthYear field={field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid gap-6">
+                <FormField
+                  control={form.control}
+                  name="reportType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tipo de Relatório</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col"
+                        >
+                          <FormItem className="flex items-center">
+                            <FormControl>
+                              <RadioGroupItem value="VALIDITY" id="r1" />
+                            </FormControl>
+                            <FormLabel className="font-normal" htmlFor="r1">
+                              Validade de Produtos
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center">
+                            <FormControl>
+                              <RadioGroupItem value="DONATIONS" id="r2" />
+                            </FormControl>
+                            <FormLabel className="font-normal" htmlFor="r2">
+                              Produtos Doados
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center">
+                            <FormControl>
+                              <RadioGroupItem value="PURCHASED" id="r3" />
+                            </FormControl>
+                            <FormLabel className="font-normal" htmlFor="r3">
+                              Produtos Comprados
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <FormError message={error} />
+            <div className="flex justify-end">
+              <Button disabled={isPending} type="submit" size="sm">
+                {isPending ? "Gerando..." : "Gerar Relatório"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+      <div>
+        {validityReportData.length === 0 && donationsReportData.length === 0 && purchasedReportData.length === 0 && dates && (
+          <div className="p-6 border rounded-md">
+            <p className="text-base text-center italic text-muted-foreground">
+              Nenhum registro encontrado para o período selecionado.
+            </p>
+          </div>
+        )}
+
+        {form.watch("reportType") === "VALIDITY" &&
+          validityReportData.length > 0 &&
+          dates && (
+            <DataTableReport<ValidityReport>
+              columns={columnsTableReportValidity}
+              data={validityReportData}
+              initialDate={dates.initialDate}
+              finalDate={dates.finalDate}
+              reportType="VALIDITY"
+            />
+          )}
+
+        {form.watch("reportType") === "DONATIONS" &&
+          donationsReportData.length > 0 &&
+          dates && (
+            <DataTableReport<DonationsReport>
+              columns={columnsTableReportDonations}
+              data={donationsReportData}
+              initialDate={dates.initialDate}
+              finalDate={dates.finalDate}
+              reportType="DONATIONS"
+            />
+          )}
+
+        {form.watch("reportType") === "PURCHASED" &&
+          purchasedReportData.length > 0 &&
+          dates && (
+            <DataTableReport<PurchasedReport>
+              columns={columnsTableReportPurchased}
+              data={purchasedReportData}
+              initialDate={dates.initialDate}
+              finalDate={dates.finalDate}
+              reportType="PURCHASED"
+            />
+          )}
+      </div>
+    </div>
+  );
+};

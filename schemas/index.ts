@@ -73,12 +73,12 @@ export const CreateUserSchema = z
 
 export const CreateProductSchema = z
   .object({
-    name: z.string().min(2).max(150),
+    name: z.string().min(2).max(60),
     quantity: z.string().min(1).max(10).refine(v => { const n = Number(v); return !isNaN(n) && v?.length > 0}, {message: "Invalid number"}),
     unit: z.enum([UnitMeasurement.KG, UnitMeasurement.G, UnitMeasurement.L, UnitMeasurement.UN, UnitMeasurement.CX], {
       required_error: "You need to select a unit of measurement.",
     }),
-    lot: z.string().min(2).max(50),
+    lot: z.string().min(2).max(30),
 
     validityDate: z.coerce
       .date({
@@ -102,7 +102,7 @@ export const CreateProductSchema = z
       required_error: "You need to select a product input type.",
     }),
 
-    donor: z.string().min(2).max(150).optional(),
+    donor: z.string().min(2).max(30).optional(),
   })
   .refine(
     (data) => {
@@ -118,34 +118,28 @@ export const CreateProductSchema = z
     }
   );
 
-  export const CreateReportSchema = z
-  .object({
-    initialDate: z.coerce
-    .date({
-      required_error: "Please select a date",
-      invalid_type_error: "This is not a date!",
-    }),
-  
-    finalDate: z.coerce
-    .date({
-      required_error: "Please select a date",
-      invalid_type_error: "This is not a date!",
-    }),
-  
-    name: z.string().min(2).max(150),
-  
-    userType: z.enum(
-      [
-        "QUANTITY",
-        "EXPIRYDATE",
-        "EXPIRED",
-        "QUANTITYDONATED",
-        "TOTALRECEIVED",
-      ],
-      {
-        required_error: "You need to select a report input type.",
-      }
-    ),
+export const CreateReportSchema = z.object({
+  initialDate: z.coerce.date({
+    required_error: "Por favor selecione uma data inicial",
+    invalid_type_error: "Data inválida",
+  }),
+  finalDate: z.coerce.date({
+    required_error: "Por favor selecione uma data final",
+    invalid_type_error: "Data inválida",
+  }),
+    reportType: z.enum(["VALIDITY", "DONATIONS", "PURCHASED"], {
+    required_error: "Selecione o tipo de relatório",
+  }),
+    // reportType: z.enum(
+    //   [
+    //     "QUANTITY",
+    //     "EXPIRED",
+    //     "TOTALRECEIVED",
+    //   ],
+    //   {
+    //     required_error: "You need to select a report input type.",
+    //   }
+    // ),
   }).refine((data) => data.finalDate > data.initialDate, {
     message: "The end date cannot be less than the start date",
     path: ["finalDate"], // path of error

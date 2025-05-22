@@ -1,6 +1,6 @@
 import { getExpiredProducts, getProductsToExpire } from "@/actions/product";
-import { columnsTableProducts } from "../data-table/_columns/columns-products";
-import { DataTableProducts } from "../data-table/data-table-products";
+import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
+import { DataTableProducts } from "@/components/data-table/data-table-products";
 
 export async function SectionDataTables() {
   const productsToExpire = await getProductsToExpire();

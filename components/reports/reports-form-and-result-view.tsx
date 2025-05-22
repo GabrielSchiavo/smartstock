@@ -13,19 +13,22 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
 import { toast } from "sonner";
 import {
   DonationsReport,
   generateDonationsReport,
+  generateInventoryReport,
   generatePurchasedReport,
   generateValidityReport,
+  InventoryReport,
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
 import { DataTableReport } from "@/components/data-table/data-table-reports";
 import {
+  columnsTableReportInventory,
   columnsTableReportPurchased,
   columnsTableReportValidity,
 } from "@/components/data-table/_columns/columns-reports";
@@ -44,12 +47,31 @@ export const ReportsFormAndResultView = () => {
   const [purchasedReportData, setPurchasedReportData] = useState<
     PurchasedReport[]
   >([]);
+  const [inventoryReportData, setInventoryReportData] = useState<
+    InventoryReport[]
+  >([]);
   const [isPending, startTransition] = useTransition();
-  const [dates, setDates] = useState<{ initialDate: Date; finalDate: Date }>();
+  const [dates, setDates] = useState<{ initialDate?: Date; finalDate?: Date }>();
 
   const form = useForm<z.infer<typeof CreateReportSchema>>({
     resolver: zodResolver(CreateReportSchema),
   });
+
+  const selectedType = form.watch("reportType");
+  const initialDateValue = form.watch("initialDate");
+  const finalDateValue = form.watch("finalDate");
+  
+    // Determina se o input deve estar desabilitado
+    const isDetailsDisabled =
+      selectedType === "INVENTORY";
+  
+    // Efeito para limpar o valor quando o campo é desabilitado
+    useEffect(() => {
+      if (isDetailsDisabled && initialDateValue && finalDateValue) {
+        form.setValue("initialDate", undefined, { shouldValidate: true });
+        form.setValue("finalDate", undefined, { shouldValidate: true });
+      }
+    }, [isDetailsDisabled, initialDateValue, finalDateValue, form]);
 
   const onSubmit = (values: z.infer<typeof CreateReportSchema>) => {
     setError("");
@@ -57,7 +79,7 @@ export const ReportsFormAndResultView = () => {
 
     startTransition(() => {
       if (values.reportType === "VALIDITY") {
-        generateValidityReport(values.initialDate, values.finalDate).then(
+        generateValidityReport(values.initialDate!, values.finalDate!).then(
           (data) => {
             if (data.error) {
               setError(data.error);
@@ -69,7 +91,7 @@ export const ReportsFormAndResultView = () => {
           }
         );
       } else if (values.reportType === "DONATIONS") {
-        generateDonationsReport(values.initialDate, values.finalDate).then(
+        generateDonationsReport(values.initialDate!, values.finalDate!).then(
           (data) => {
             if (data.error) {
               setError(data.error);
@@ -81,7 +103,7 @@ export const ReportsFormAndResultView = () => {
           }
         );
       } else if (values.reportType === "PURCHASED") {
-        generatePurchasedReport(values.initialDate, values.finalDate).then(
+        generatePurchasedReport(values.initialDate!, values.finalDate!).then(
           (data) => {
             if (data.error) {
               setError(data.error);
@@ -92,6 +114,16 @@ export const ReportsFormAndResultView = () => {
             }
           }
         );
+      } else if (values.reportType === "INVENTORY") {
+        generateInventoryReport().then((data) => {
+          if (data.error) {
+            setError(data.error);
+            toast.error("Erro ao gerar relatório!");
+          } else if (data.data) {
+            setInventoryReportData(data.data);
+            toast.success("Relatório gerado com sucesso!");
+          }
+        });
       }
     });
   };
@@ -113,7 +145,7 @@ export const ReportsFormAndResultView = () => {
                     <FormItem>
                       <FormLabel>Data Inicial</FormLabel>
                       <FormControl>
-                        <DatePickerMonthYear field={field} />
+                        <DatePickerMonthYear disabled={isDetailsDisabled} field={field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -126,7 +158,7 @@ export const ReportsFormAndResultView = () => {
                     <FormItem>
                       <FormLabel>Data Final</FormLabel>
                       <FormControl>
-                        <DatePickerMonthYear field={field} />
+                        <DatePickerMonthYear disabled={isDetailsDisabled} field={field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -170,6 +202,14 @@ export const ReportsFormAndResultView = () => {
                               Produtos Comprados
                             </FormLabel>
                           </FormItem>
+                          <FormItem className="flex items-center">
+                            <FormControl>
+                              <RadioGroupItem value="INVENTORY" id="r4" />
+                            </FormControl>
+                            <FormLabel className="font-normal" htmlFor="r4">
+                              Inventário Completo
+                            </FormLabel>
+                          </FormItem>
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />
@@ -188,13 +228,17 @@ export const ReportsFormAndResultView = () => {
         </Form>
       </div>
       <div>
-        {validityReportData.length === 0 && donationsReportData.length === 0 && purchasedReportData.length === 0 && dates && (
-          <div className="p-6 border rounded-md">
-            <p className="text-base text-center italic text-muted-foreground">
-              Nenhum registro encontrado para o período selecionado.
-            </p>
-          </div>
-        )}
+        {validityReportData.length === 0 &&
+          donationsReportData.length === 0 &&
+          purchasedReportData.length === 0 &&
+          inventoryReportData.length === 0 &&
+          dates && (
+            <div className="p-6 border rounded-md">
+              <p className="text-base text-center italic text-muted-foreground">
+                Nenhum registro encontrado para o período selecionado.
+              </p>
+            </div>
+          )}
 
         {form.watch("reportType") === "VALIDITY" &&
           validityReportData.length > 0 &&
@@ -229,6 +273,14 @@ export const ReportsFormAndResultView = () => {
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
               reportType="PURCHASED"
+            />
+          )}
+        {form.watch("reportType") === "INVENTORY" &&
+          inventoryReportData.length > 0 && (
+            <DataTableReport<InventoryReport>
+              columns={columnsTableReportInventory}
+              data={inventoryReportData}
+              reportType="INVENTORY"
             />
           )}
       </div>

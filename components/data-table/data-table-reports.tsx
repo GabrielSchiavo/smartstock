@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Printer } from "lucide-react";
 import {
   DonationsReport,
+  InventoryReport,
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
@@ -28,6 +29,7 @@ import {
 } from "@/components/ui/table";
 import {
   generateDonationsPdf,
+  generateInventoryPdf,
   generatePurchasedPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
@@ -38,9 +40,9 @@ import { ToolTipHelpReport } from "@/components/reports/tool-tip-help-report";
 interface DataTableReportProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
-  initialDate: Date;
-  finalDate: Date;
-  reportType: "VALIDITY" | "DONATIONS" | "PURCHASED";
+  initialDate?: Date;
+  finalDate?: Date;
+  reportType: "VALIDITY" | "DONATIONS" | "PURCHASED" | "INVENTORY";
 }
 
 export function DataTableReport<T>({
@@ -71,23 +73,26 @@ export function DataTableReport<T>({
         case "VALIDITY":
           pdf = await generateValidityPdf(
             data as ValidityReport[],
-            initialDate.toISOString(),
-            finalDate.toISOString()
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
           );
           break;
         case "DONATIONS":
           pdf = await generateDonationsPdf(
             data as DonationsReport[],
-            initialDate.toISOString(),
-            finalDate.toISOString()
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
           );
           break;
         case "PURCHASED":
           pdf = await generatePurchasedPdf(
             data as PurchasedReport[],
-            initialDate.toISOString(),
-            finalDate.toISOString()
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
           );
+          break;
+        case "INVENTORY":
+          pdf = await generateInventoryPdf(data as InventoryReport[]);
           break;
         default:
           throw new Error("Tipo de relatório inválido");
@@ -101,7 +106,17 @@ export function DataTableReport<T>({
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `relatorio-${reportType === "VALIDITY" ? "validade" : reportType === "DONATIONS" ? "doacoes" : reportType === "PURCHASED" ? "comprados" : ""}-${new Date().toISOString()}.pdf`;
+      a.download = `relatorio-${
+        reportType === "VALIDITY"
+          ? "validade"
+          : reportType === "DONATIONS"
+            ? "doacoes"
+            : reportType === "PURCHASED"
+              ? "comprados"
+              : reportType === "INVENTORY"
+                ? "inventario"
+                : "semnome"
+      }-${new Date().toISOString()}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -155,8 +170,8 @@ export function DataTableReport<T>({
                   : ""}
           </h1>
           <p className="text-md">
-            Período: {new Date(initialDate).toLocaleDateString()} a{" "}
-            {new Date(finalDate).toLocaleDateString()}
+            Período: {new Date(initialDate!).toLocaleDateString()} a{" "}
+            {new Date(finalDate!).toLocaleDateString()}
           </p>
         </div>
         <Table className="overflow-hidden!">

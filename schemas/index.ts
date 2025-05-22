@@ -42,9 +42,12 @@ export const CreateUserSchema = z
     name: z.string().min(1, {
       message: "Name is required",
     }),
-    userType: z.enum([UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT], {
-      required_error: "You need to select a user input type.",
-    }),
+    userType: z.enum(
+      [UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT],
+      {
+        required_error: "You need to select a user input type.",
+      }
+    ),
 
     password: z
       .string()
@@ -74,20 +77,38 @@ export const CreateUserSchema = z
 export const CreateProductSchema = z
   .object({
     name: z.string().min(2).max(60),
-    quantity: z.string().min(1).max(10).refine(v => { const n = Number(v); return !isNaN(n) && v?.length > 0}, {message: "Invalid number"}),
-    unit: z.enum([UnitMeasurement.KG, UnitMeasurement.G, UnitMeasurement.L, UnitMeasurement.UN, UnitMeasurement.CX], {
-      required_error: "You need to select a unit of measurement.",
-    }),
+    quantity: z
+      .string()
+      .min(1)
+      .max(10)
+      .refine(
+        (v) => {
+          const n = Number(v);
+          return !isNaN(n) && v?.length > 0;
+        },
+        { message: "Invalid number" }
+      ),
+    unit: z.enum(
+      [
+        UnitMeasurement.KG,
+        UnitMeasurement.G,
+        UnitMeasurement.L,
+        UnitMeasurement.UN,
+        UnitMeasurement.CX,
+      ],
+      {
+        required_error: "You need to select a unit of measurement.",
+      }
+    ),
     lot: z.string().min(2).max(30),
 
-    validityDate: z.coerce
-      .date({
-        required_error: "Please select a date",
-        invalid_type_error: "This is not a date!",
-      }),
-      // .refine((date) => date > new Date(), {
-      //   message: "The date entered must be greater than today's date",
-      // }),
+    validityDate: z.coerce.date({
+      required_error: "Please select a date",
+      invalid_type_error: "This is not a date!",
+    }),
+    // .refine((date) => date > new Date(), {
+    //   message: "The date entered must be greater than today's date",
+    // }),
 
     receiptDate: z.coerce.date({
       required_error: "Please select a date",
@@ -118,29 +139,60 @@ export const CreateProductSchema = z
     }
   );
 
-export const CreateReportSchema = z.object({
-  initialDate: z.coerce.date({
-    required_error: "Por favor selecione uma data inicial",
-    invalid_type_error: "Data inválida",
-  }),
-  finalDate: z.coerce.date({
-    required_error: "Por favor selecione uma data final",
-    invalid_type_error: "Data inválida",
-  }),
-    reportType: z.enum(["VALIDITY", "DONATIONS", "PURCHASED"], {
-    required_error: "Selecione o tipo de relatório",
-  }),
-    // reportType: z.enum(
-    //   [
-    //     "QUANTITY",
-    //     "EXPIRED",
-    //     "TOTALRECEIVED",
-    //   ],
-    //   {
-    //     required_error: "You need to select a report input type.",
-    //   }
-    // ),
-  }).refine((data) => data.finalDate > data.initialDate, {
-    message: "The end date cannot be less than the start date",
-    path: ["finalDate"], // path of error
-  });
+export const CreateReportSchema = z
+  .object({
+    initialDate: z.coerce
+      .date({
+        required_error: "Por favor selecione uma data inicial",
+        invalid_type_error: "Data inválida",
+      })
+      .optional(),
+    finalDate: z.coerce
+      .date({
+        required_error: "Por favor selecione uma data final",
+        invalid_type_error: "Data inválida",
+      })
+      .optional(),
+    reportType: z.enum(["VALIDITY", "DONATIONS", "PURCHASED", "INVENTORY"], {
+      required_error: "Selecione o tipo de relatório",
+    }),
+  })
+  .refine(
+    (data) => {
+      if (
+        data.reportType !== "INVENTORY" &&
+        data.finalDate! < data.initialDate!
+      ) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "A data final não pode ser menor que a data inicial.",
+      path: ["finalDate"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.reportType !== "INVENTORY" && !data.initialDate) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Data Inicial é obrigatório.",
+      path: ["initialDate"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.reportType !== "INVENTORY" && !data.finalDate) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "Data Final é obrigatório.",
+      path: ["finalDate"],
+    }
+  );

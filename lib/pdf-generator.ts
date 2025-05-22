@@ -2,36 +2,10 @@
 import { BasePdfGenerator } from "@/lib/base-pdf-generator";
 import {
   DonationsReport,
+  InventoryReport,
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
-
-export const generateValidityPdf = async (
-  data: ValidityReport[],
-  initialDate: string,
-  finalDate: string
-): Promise<Uint8Array> => {
-  const generator = new ValidityPdfGenerator(data, initialDate, finalDate);
-  return generator.generate();
-};
-
-export const generateDonationsPdf = async (
-  data: DonationsReport[],
-  initialDate: string,
-  finalDate: string
-): Promise<Uint8Array> => {
-  const generator = new DonationsPdfGenerator(data, initialDate, finalDate);
-  return generator.generate();
-};
-
-export const generatePurchasedPdf = async (
-  data: PurchasedReport[],
-  initialDate: string,
-  finalDate: string
-): Promise<Uint8Array> => {
-  const generator = new PurchasedPdfGenerator(data, initialDate, finalDate);
-  return generator.generate();
-};
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
@@ -93,6 +67,15 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
   }
 }
 
+export const generateValidityPdf = async (
+  data: ValidityReport[],
+  initialDate: string,
+  finalDate: string
+): Promise<Uint8Array> => {
+  const generator = new ValidityPdfGenerator(data, initialDate, finalDate);
+  return generator.generate();
+};
+
 export class DonationsPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: DonationsReport[],
@@ -138,6 +121,15 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
   }
 }
 
+export const generateDonationsPdf = async (
+  data: DonationsReport[],
+  initialDate: string,
+  finalDate: string
+): Promise<Uint8Array> => {
+  const generator = new DonationsPdfGenerator(data, initialDate, finalDate);
+  return generator.generate();
+};
+
 export class PurchasedPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: PurchasedReport[],
@@ -174,3 +166,72 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
     return this.doc.output("arraybuffer");
   }
 }
+
+export const generatePurchasedPdf = async (
+  data: PurchasedReport[],
+  initialDate: string,
+  finalDate: string
+): Promise<Uint8Array> => {
+  const generator = new PurchasedPdfGenerator(data, initialDate, finalDate);
+  return generator.generate();
+};
+
+export class InventoryPdfGenerator extends BasePdfGenerator {
+  constructor(private data: InventoryReport[]) {
+    super({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+    });
+  }
+
+  public async generate(): Promise<Uint8Array> {
+    this.addTitle("Relatório de Inventário de Produtos");
+    this.addSubtitle(`Data de geração: ${new Date().toLocaleDateString("pt-BR")}`);
+
+    const headers = [
+      "ID",
+      "Produto",
+      "Quantidade",
+      "Lote",
+      "Validade",
+      "Tipo",
+      "Dias p/ Vencer",
+      "Status",
+    ];
+    const columnWidths = [10, 100, 20, 40, 30, 20, 30, 20];
+
+    const rows = this.data.map((item) => [
+      item.id.toString(),
+      item.name,
+      `${item.quantity} ${item.unit}`,
+      item.lot,
+      new Date(item.validityDate).toLocaleDateString("pt-BR"),
+      item.productType === "PURCHASED" ? "Comprado" : "Doado",
+      item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
+      this.getStatusText(item.status),
+    ]);
+
+    this.addTable(headers, columnWidths, rows);
+    this.addFooter();
+    return this.doc.output("arraybuffer");
+  }
+
+  private getStatusText(status: string): string {
+    switch (status) {
+      case "expired":
+        return "Vencido";
+      case "about_to_expire":
+        return "Próximo";
+      default:
+        return "Válido";
+    }
+  }
+}
+
+export const generateInventoryPdf = async (
+  data: InventoryReport[]
+): Promise<Uint8Array> => {
+  const generator = new InventoryPdfGenerator(data);
+  return generator.generate();
+};

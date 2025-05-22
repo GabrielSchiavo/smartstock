@@ -43,18 +43,17 @@
   
   - `Exclusão:` exclusão de usuários antigos.
   
-<!-- - **Geração de Relatórios**
-  - `Visualização:` os relatórios ssão gerados dentro do sistema, onde é posível visualizar relatórios já emitidos ou gerar novos.
+- **Geração de Relatórios**
+  - `Visualização:` os relatórios ssão gerados dentro do sistema, onde é posível visualizar ou gerar novos.
   
-  - `Impressão:` todos os relatórios gerados podem ser exportados como PDF para impressão.
+  - `Impressão:` todos os relatórios gerados podem ser exportados como PDF ou impressos.
   
   - `Tipos:` estre os principais tipos de relatórios estão:
-    - Produtos que vão vencer daqui a 1 mês;
     - Produtos por data de validade;
-    - Quantidade por doador;
-    - Total de produtos recebidos.
+    - Produtos doados ou comprados;
+    - Inventário de todos os produtos cadastrados;
 
-- **Alertas**
+<!-- - **Alertas**
   - `Notificações e pop-ups:` alertas de produtos prestes a vencer e produtos com estoque baixo. -->
 
 - **Organização**

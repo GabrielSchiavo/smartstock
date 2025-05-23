@@ -70,8 +70,8 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
           });
         }
       } catch (error) {
-        console.error("Error loading product:", error);
-        setError("Failed to load product data");
+        console.error("Erro ao carregar o produto:", error);
+        setError("Falha ao carregar dados do produto");
       } finally {
         setIsLoading(false);
       }
@@ -79,13 +79,6 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
 
     loadProduct();
   }, [productId.id]);
-
-
-
-
-
-
-
 
   const form = useForm<z.infer<typeof CreateProductSchema>>({
     resolver: zodResolver(CreateProductSchema),
@@ -148,11 +141,11 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
   };
 
     if (isLoading) {
-    return <div>Loading product data...</div>;
+    return <div>Carregando dados do produto...</div>;
   }
 
   if (!initialValues) {
-    return <div>Product not found or failed to load</div>;
+    return <div>Produto não encontrado ou não foi carregado</div>;
   }
 
   return (
@@ -164,12 +157,12 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isPending}
                     className="default-height"
-                    placeholder="Digit a name"
+                    placeholder="Digite um nome"
                     {...field}
                   />
                 </FormControl>
@@ -183,13 +176,13 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="quantity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>Quantidade</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
                       type="number"
                       className="default-height"
-                      placeholder="Digit a quantity"
+                      placeholder="Digite a quantidade"
                       {...field}
                     />
                   </FormControl>
@@ -202,7 +195,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="unit"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Unit</FormLabel>
+                  <FormLabel>Unidade</FormLabel>
                   <div className="select-container">
                     <Select
                       disabled={isPending}
@@ -212,7 +205,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a unit" />
+                          <SelectValue placeholder="Selecione a unidade" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -220,7 +213,6 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                         <SelectItem value={UnitMeasurement.G}>G</SelectItem>
                         <SelectItem value={UnitMeasurement.L}>L</SelectItem>
                         <SelectItem value={UnitMeasurement.UN}>UN.</SelectItem>
-                        <SelectItem value={UnitMeasurement.CX}>CX.</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -253,7 +245,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="validityDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of validity</FormLabel>
+                  <FormLabel>Data de Validade</FormLabel>
                   <FormControl>
                     <DatePickerMonthYear field={field} />
                   </FormControl>
@@ -268,7 +260,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="receiver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Receiver</FormLabel>
+                  <FormLabel>Recebedor</FormLabel>
                   <div className="select-container">
                      <DynamicComboboxReceiver
                       value={field.value}
@@ -276,7 +268,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a receiver..."
+                      placeholder="Selecione um recebedor..."
                     />
                   </div>
                   <FormMessage />
@@ -288,7 +280,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="receiptDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Receipt</FormLabel>
+                  <FormLabel>Data de Recebimento</FormLabel>
                   <FormControl>
                     <DatePickerMonthYear field={field} />
                   </FormControl>
@@ -303,7 +295,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="group"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Group</FormLabel>
+                  <FormLabel>Grupo</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxGroup
                       value={field.value}
@@ -311,7 +303,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a group..."
+                      placeholder="Selecione um grupo..."
                     />
                   </div>
                   <FormMessage />
@@ -323,7 +315,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="subgroup"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subgroup (Optional)</FormLabel>
+                  <FormLabel>Subgrupo (Opcional)</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxSubgroup
                       value={field.value!}
@@ -331,7 +323,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a subgroup..."
+                      placeholder="Selecione um subgrupo..."
                     />
                   </div>
                   <FormMessage />
@@ -345,7 +337,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="productType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product input type:</FormLabel>
+                  <FormLabel>Tipo de Produto:</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -356,13 +348,13 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                         <FormControl>
                           <RadioGroupItem value={ProductType.DONATED} checked={field.value === ProductType.DONATED} />
                         </FormControl>
-                        <FormLabel className="font-normal">Donated</FormLabel>
+                        <FormLabel className="font-normal">Doado</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center">
                         <FormControl>
                           <RadioGroupItem value={ProductType.PURCHASED} checked={field.value === ProductType.PURCHASED} />
                         </FormControl>
-                        <FormLabel className="font-normal">Purchased</FormLabel>
+                        <FormLabel className="font-normal">Comprado</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -376,7 +368,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               name="donor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Donor</FormLabel>
+                  <FormLabel>Doador</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxDonor
                       value={field.value!}
@@ -386,8 +378,8 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                       allowDelete={true}
                       placeholder={
                               isDetailsDisabled
-                                ? "Select 'Donated' to enable"
-                                : "Enter the donor"
+                                ? "Selecione 'Doado' para habilitar"
+                                : "Digite o Doador"
                             }
                     />
                   </div>

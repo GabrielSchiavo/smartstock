@@ -33,7 +33,7 @@ export async function getAllGroups(): Promise<GroupResponse> {
     })
     return { success: true, data: groups }
   } catch (error) {
-    console.error('Error fetching grupos:', error)
+    console.error('Erro ao buscar grupos:', error)
     return {
       success: false,
       message: 'Falha ao carregar grupos',
@@ -57,7 +57,7 @@ export async function searchGroups(query: string): Promise<GroupResponse> {
     })
     return { success: true, data: groups }
   } catch (error) {
-    console.error('Error searching grupos:', error)
+    console.error('Erro ao pesquisar grupos:', error)
     return {
       success: false,
       message: 'Falha na busca',
@@ -82,7 +82,7 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
     revalidatePath('/')
     return { success: true, data: newGroup }
   } catch (error) {
-    console.error('Error creating grupo:', error)
+    console.error('Erro ao criar grupo:', error)
     return {
       success: false,
       message: 'Falha ao criar',
@@ -107,7 +107,7 @@ export async function deleteGroup(id: string): Promise<Omit<GroupResponse, 'data
 
     return { success: true, message: 'Grupo excluído com sucesso' }
   } catch (error) {
-    console.error('Error deleting group:', error)
+    console.error('Erro ao excluir grupo:', error)
     return {
       success: false,
       message: 'Falha ao excluir grupo',
@@ -132,7 +132,7 @@ export async function checkGroupInProducts(groupName: string): Promise<CheckGrou
         : null
     }
   } catch (error) {
-    console.error('Error checking grupo in products:', error)
+    console.error('Erro ao verificar os produtos associados:', error)
     return {
       isUsed: true,
       message: 'Não foi possível verificar os produtos associados'

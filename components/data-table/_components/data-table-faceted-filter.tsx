@@ -13,7 +13,7 @@ export function DataTableFacetedFilter<TData>({
   return (
     <div className="relative">
       <Input
-        placeholder="Search in table..."
+        placeholder="Pesquisar na tabela...."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
           table.getColumn("name")?.setFilterValue(event.target.value)

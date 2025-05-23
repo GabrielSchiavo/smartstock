@@ -41,12 +41,12 @@ const data = {
   ],
   navBottom: [
     {
-      label: "Settings",
+      label: "Configurações",
       href: "/settings",
       icon: SettingsIcon,
     },
     {
-      label: "Get Help",
+      label: "Obter Ajuda",
       href: "#",
       icon: HelpCircleIcon,
     },

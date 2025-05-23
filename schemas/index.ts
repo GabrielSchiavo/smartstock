@@ -3,49 +3,49 @@ import * as z from "zod";
 
 export const NewPasswordSchema = z.object({
   password: z.string().min(8, {
-    message: "Minimum 8 characters required",
+    message: "É necessários um mínimo de 8 caracteres",
   }),
 });
 
 export const ResetSchema = z.object({
   email: z.string().email({
-    message: "Email is required",
+    message: "Email é obrigatório",
   }),
 });
 
 export const LoginSchema = z.object({
   email: z.string().email({
-    message: "Email is required",
+    message: "Email é obrigatório",
   }),
   password: z.string().min(1, {
-    message: "Passwor is required",
+    message: "Senha é obrigatório",
   }),
 });
 
 export const RegisterSchema = z.object({
   email: z.string().email({
-    message: "Email is required",
+    message: "Email é obrigatório",
   }),
   password: z.string().min(8, {
-    message: "Minimum 8 characters required",
+    message: "É necessários um mínimo de 8 caracteres",
   }),
   name: z.string().min(1, {
-    message: "Name is required",
+    message: "Nome é obrigatório",
   }),
 });
 
 export const CreateUserSchema = z
   .object({
     email: z.string().email({
-      message: "Email is required",
+      message: "Email é obrigatório",
     }),
     name: z.string().min(1, {
-      message: "Name is required",
+      message: "Nome é obrigatório",
     }),
     userType: z.enum(
       [UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT],
       {
-        required_error: "You need to select a user input type.",
+        required_error: "Você precisa selecionar um tipo de usuário.",
       }
     ),
 
@@ -86,7 +86,7 @@ export const CreateProductSchema = z
           const n = Number(v);
           return !isNaN(n) && v?.length > 0;
         },
-        { message: "Invalid number" }
+        { message: "Número inválido" }
       ),
     unit: z.enum(
       [
@@ -94,25 +94,24 @@ export const CreateProductSchema = z
         UnitMeasurement.G,
         UnitMeasurement.L,
         UnitMeasurement.UN,
-        UnitMeasurement.CX,
       ],
       {
-        required_error: "You need to select a unit of measurement.",
+        required_error: "Você precisa selecionar uma unidade de medida.",
       }
     ),
     lot: z.string().min(2).max(30),
 
     validityDate: z.coerce.date({
-      required_error: "Please select a date",
-      invalid_type_error: "This is not a date!",
+      required_error: "Selecione uma data",
+      invalid_type_error: "Isto não é uma data válida!",
     }),
     // .refine((date) => date > new Date(), {
     //   message: "The date entered must be greater than today's date",
     // }),
 
     receiptDate: z.coerce.date({
-      required_error: "Please select a date",
-      invalid_type_error: "This is not a date!",
+      required_error: "Selecione uma data",
+      invalid_type_error: "Isto não é uma data válida!",
     }),
 
     receiver: z.string().min(2).max(150),
@@ -120,7 +119,7 @@ export const CreateProductSchema = z
     subgroup: z.string().min(2).max(50).optional(),
 
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
-      required_error: "You need to select a product input type.",
+      required_error: "Selecione um tipo de produto.",
     }),
 
     donor: z.string().min(2).max(30).optional(),
@@ -134,7 +133,7 @@ export const CreateProductSchema = z
       return true;
     },
     {
-      message: "Detalhes são obrigatórios para itens doados",
+      message: "Detalhes são obrigatórios para itens doados.",
       path: ["donor"], // Especifica que o erro deve ser associado ao campo donor
     }
   );
@@ -143,18 +142,18 @@ export const CreateReportSchema = z
   .object({
     initialDate: z.coerce
       .date({
-        required_error: "Por favor selecione uma data inicial",
+        required_error: "Por favor selecione uma data inicial.",
         invalid_type_error: "Data inválida",
       })
       .optional(),
     finalDate: z.coerce
       .date({
-        required_error: "Por favor selecione uma data final",
+        required_error: "Por favor selecione uma data final.",
         invalid_type_error: "Data inválida",
       })
       .optional(),
     reportType: z.enum(["VALIDITY", "DONATIONS", "PURCHASED", "INVENTORY"], {
-      required_error: "Selecione o tipo de relatório",
+      required_error: "Selecione o tipo de relatório.",
     }),
   })
   .refine(

@@ -27,7 +27,7 @@ interface DynamicComboboxProps {
 export function DynamicComboboxDonor({
   value,
   onChange,
-  placeholder = 'Search...',
+  placeholder = 'Pesquisar...',
   disabled,
   allowCreate = true,
   allowDelete = true,
@@ -50,14 +50,14 @@ useEffect(() => {
         if (results.success) {
           setOptions(results.data || []); // Fallback to empty array if undefined
         } else {
-          toast.error(results.message || 'Operation failed', {
-            description: results.error || 'An unknown error occurred'
+          toast.error(results.message || 'A operação falhou', {
+            description: results.error || 'Ocorreu um erro desconhecido'
           });
           setOptions([]); // Reset to empty array on error
         }
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-        toast.error('Failed to load donors', {
+        const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido';
+        toast.error('Falha ao carregar doadores', {
           description: errorMessage
         });
         setOptions([]);
@@ -74,7 +74,7 @@ const handleCreateNew = async () => {
       const result = await createDonor(inputValue);
       
       if (result.success && result.data) {
-        toast.success('Donor created successfully');
+        toast.success('Doador criado com sucesso');
         onChange(result.data.name);
         setInputValue(result.data.name);
         setOpen(false);
@@ -83,18 +83,18 @@ const handleCreateNew = async () => {
         if (updatedResults.success) {
           setOptions(updatedResults.data || []);
         } else {
-          toast.error(updatedResults.message || 'Failed to refresh donors', {
-            description: updatedResults.error || 'Could not load updated donor list'
+          toast.error(updatedResults.message || 'Falha ao atualizar doadores', {
+            description: updatedResults.error || 'Não foi possível carregar a lista de doadores atualizada'
           });
         }
       } else {
-        toast.error(result.message || 'Failed to create donor', {
-          description: result.error || 'Please try again'
+        toast.error(result.message || 'Falha ao criar doador', {
+          description: result.error || 'Por favor, tente novamente'
         });
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred while creating the donor';
-      toast.error('Unexpected error', {
+      const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro ao criar o doador';
+      toast.error('Erro inesperado', {
         description: errorMessage
       });
     }
@@ -113,8 +113,8 @@ const handleDelete = async (optionId: string, optionName: string) => {
       const { isUsed, message } = await checkDonorInProducts(optionName);
       
       if (isUsed) {
-        toast.warning('Cannot delete', {
-          description: message || 'This donor is associated with products'
+        toast.warning('Não é possível excluir', {
+          description: message || 'Este doador está associado a produtos'
         });
         return;
       }
@@ -122,7 +122,7 @@ const handleDelete = async (optionId: string, optionName: string) => {
       const result = await deleteDonor(optionId);
       
       if (result.success) {
-        toast.success(result.message || 'Donor deleted successfully');
+        toast.success(result.message || 'Doador excluído com sucesso');
         if (value === optionName) {
           onChange('');
           setInputValue('');
@@ -132,13 +132,13 @@ const handleDelete = async (optionId: string, optionName: string) => {
           setOptions(updatedResults.data || []);
         }
       } else {
-        toast.error(result.message || 'Deletion failed', {
-          description: result.error || 'Could not delete the donor'
+        toast.error(result.message || 'Falha na exclusão', {
+          description: result.error || 'Não foi possível excluir o doador'
         });
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred while processing your request';
-      toast.error('Unexpected error', {
+      const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro ao processar sua solicitação';
+      toast.error('Erro inesperado', {
         description: errorMessage
       });
     }
@@ -189,12 +189,12 @@ const displayValue = value
                         disabled={isPending}
                       >
                         <Plus className="h-4 w-4" />
-                        Create <span className='text-foreground'>{inputValue}</span>
+                        Criar <span className='text-foreground'>{inputValue}</span>
                       </Button>
                     ) : (
                       <div className='text-center p-1.5'>
                         <span className='text-sm text-muted-foreground'>
-                          No results found...
+                          Nenhum resultado encontrado...
                         </span>
                       </div>
                     )}

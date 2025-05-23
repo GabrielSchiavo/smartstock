@@ -33,7 +33,7 @@ export async function getAllReceivers(): Promise<ReceiverResponse> {
     })
     return { success: true, data: receivers }
   } catch (error) {
-    console.error('Error fetching recebedores:', error)
+    console.error('Erro ao buscar recebedores:', error)
     return {
       success: false,
       message: 'Falha ao carregar recebedores',
@@ -57,7 +57,7 @@ export async function searchReceivers(query: string): Promise<ReceiverResponse> 
     })
     return { success: true, data: receivers }
   } catch (error) {
-    console.error('Error searching recebedores:', error)
+    console.error('Erro ao pesquisar recebedores:', error)
     return {
       success: false,
       message: 'Falha na busca',
@@ -82,7 +82,7 @@ export async function createReceiver(name: string): Promise<SingleReceiverRespon
     revalidatePath('/')
     return { success: true, data: newReceiver }
   } catch (error) {
-    console.error('Error creating recebedor:', error)
+    console.error('Erro ao criar recebedor:', error)
     return {
       success: false,
       message: 'Falha ao criar',
@@ -98,16 +98,16 @@ export async function deleteReceiver(id: string): Promise<Omit<ReceiverResponse,
     })
 
     if (!existingReceiver) {
-      return { success: false, message: 'Subgrupo não encontrado' }
+      return { success: false, message: 'Recebedor não encontrado' }
     }
 
     await db.receiver.delete({
       where: { id }
     })
 
-    return { success: true, message: 'Subgrupo excluído com sucesso' }
+    return { success: true, message: 'Recebedor excluído com sucesso' }
   } catch (error) {
-    console.error('Error deleting receiver:', error)
+    console.error('Erro ao excluir o recebedor:', error)
     return {
       success: false,
       message: 'Falha ao excluir recebedor',
@@ -132,7 +132,7 @@ export async function checkReceiverInProducts(receiverName: string): Promise<Che
         : null
     }
   } catch (error) {
-    console.error('Error checking grupo in products:', error)
+    console.error('Erro verificar se há produtos associados:', error)
     return {
       isUsed: true,
       message: 'Não foi possível verificar se há produtos associados'

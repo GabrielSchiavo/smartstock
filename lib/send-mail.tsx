@@ -42,8 +42,8 @@ export const sendVerificationEmail = async (
     priority: "high",
     subject: "Confirme sua conta",
     headers: {
-      "x-priority": "1", // For Outlook and other clients
-      "x-msmail-priority": "High", // For Outlook
+      "x-priority": "1",
+      "x-msmail-priority": "High",
     },
     html: emailTemplate,
   });

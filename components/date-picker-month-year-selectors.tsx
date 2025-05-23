@@ -77,7 +77,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
           {field.value ? (
             format(field.value as Date, "dd/MM/yyyy", { locale: ptBR })
           ) : (
-            <span>Pick a date</span>
+            <span>Selecione uma data</span>
           )}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>

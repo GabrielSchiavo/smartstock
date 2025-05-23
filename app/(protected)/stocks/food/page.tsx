@@ -6,7 +6,7 @@ import { RoleGate } from "@/components/auth/role-gate";
 import { UserRole } from "@prisma/client";
 
 export const metadata: Metadata = {
-  title: "Estoque de Alimentos - SmartStock",
+  title: "Estoque de Produtos - SmartStock",
   description: "Vizualize e cadastre produtos alimentícios",
 };
 
@@ -19,7 +19,7 @@ export default async function StockFoodPage() {
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 ">
             <h1 className="text-base font-medium px-4 lg:px-6">
-              Estoque de Alimentos
+              Estoque de Produtos
             </h1>
             <div className="px-4 md:px-6 ">
               <DataTableProducts

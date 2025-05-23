@@ -21,14 +21,14 @@ export function AddUserDialog({}) {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
           <Plus />
-          <span className="hidden lg:inline">Create User</span>
+          <span className="hidden lg:inline">Criar Usuário</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Create User</DialogTitle>
+          <DialogTitle>Criar Usuário</DialogTitle>
           <DialogDescription>
-            Create new users here. Click Create User when done.
+            Crie novos usuários aqui. Clique em Criar Usuário quando terminar.
           </DialogDescription>
         </DialogHeader>
         <AddUserForm onSuccess={() => setOpen(false)} />

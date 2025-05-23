@@ -12,13 +12,13 @@ export const newPassword = async (
     token?: string | null,
 ) => {
     if (!token) {
-        return { error: "Missing token!" }
+        return { error: "Token ausente!" }
     }
 
     const validatedFields = NewPasswordSchema.safeParse(values);
 
     if (!validatedFields.success) {
-        return { error: "Invalid fields!" };
+        return { error: "Campos inválidos!" };
     }
 
     const { password } = validatedFields.data;
@@ -26,19 +26,19 @@ export const newPassword = async (
     const existingToken = await getPasswordResetTokenByToken(token);
 
     if (!existingToken) {
-        return { error: "Invalid token!" };
+        return { error: "Token inválido!" };
     }
 
     const hasExpired = new Date(existingToken.expires) < new Date();
 
     if (hasExpired) {
-        return { error: "Token has expired!" };
+        return { error: "O token expirou!" };
     }
 
     const existingUser = await getUserByEmail(existingToken.email);
 
     if(!existingUser) {
-        return { error: "Email does not exist!" }
+        return { error: "O email não existe!" }
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
@@ -52,5 +52,5 @@ export const newPassword = async (
         where: { id: existingToken.id }
     });
 
-    return { success: "Password updated!" };
+    return { success: "Senha atualizada!" };
 };

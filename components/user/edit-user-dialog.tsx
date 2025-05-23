@@ -34,15 +34,15 @@ export function EditUserDialog({ userId }: EditDialogProps) {
         >
           <div>
             <Pencil className="w-4 h-4" />
-            Edit
+            Editar
           </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Editar Usuário</DialogTitle>
           <DialogDescription>
-            Update users here. Click Update User when done.
+            Atualize os usuários aqui. Clique em Atualizar Usuário quando terminar.
           </DialogDescription>
         </DialogHeader>
         <EditUserForm userId={userId} onSuccess={() => setOpen(false)} />

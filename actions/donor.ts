@@ -33,7 +33,7 @@ export async function getAllDonors(): Promise<DonorResponse> {
     })
     return { success: true, data: donors }
   } catch (error) {
-    console.error('Error fetching doadores:', error)
+    console.error('Erro ao buscar doadores:', error)
     return {
       success: false,
       message: 'Falha ao carregar doadores',
@@ -47,7 +47,7 @@ export async function getDonorsCount() {
     const donorsCount = await db.donor.count();
     return donorsCount;
   } catch (error) {
-    console.error("Error fetching donors:", error);
+    console.error("Erro ao buscar doadores:", error);
     throw error;
   }
 }
@@ -58,12 +58,12 @@ export async function searchDonors(query: string): Promise<DonorResponse> {
   try {
     // Verificação universal (executa em qualquer busca)
     const testRecord = await db.donor.findFirst({
-      where: { name: 'Anonymous' }
+      where: { name: 'Anônimo' }
     });
 
     if (!testRecord) {
       await db.donor.create({
-        data: { name: 'Anonymous' }
+        data: { name: 'Anônimo' }
       });
       revalidatePath('/');
     }
@@ -83,7 +83,7 @@ export async function searchDonors(query: string): Promise<DonorResponse> {
 
     
   } catch (error) {
-    console.error('Error searching doadores:', error)
+    console.error('Erro ao buscar doadores:', error)
     return {
       success: false,
       message: 'Falha na busca',
@@ -108,7 +108,7 @@ export async function createDonor(name: string): Promise<SingleDonorResponse> {
     revalidatePath('/')
     return { success: true, data: newDonor }
   } catch (error) {
-    console.error('Error creating doador:', error)
+    console.error('Erro ao criar doador:', error)
     return {
       success: false,
       message: 'Falha ao criar',
@@ -133,7 +133,7 @@ export async function deleteDonor(id: string): Promise<Omit<DonorResponse, 'data
 
     return { success: true, message: 'Subgrupo excluído com sucesso' }
   } catch (error) {
-    console.error('Error deleting donor:', error)
+    console.error('Erro ao excluir doador:', error)
     return {
       success: false,
       message: 'Falha ao excluir doador',
@@ -158,7 +158,7 @@ export async function checkDonorInProducts(donorName: string): Promise<CheckDono
         : null
     }
   } catch (error) {
-    console.error('Error checking grupo in products:', error)
+    console.error('Erro ao verificar os produtos associados', error)
     return {
       isUsed: true,
       message: 'Não foi possível verificar se há produtos associados'

@@ -139,10 +139,10 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
 ## :white_check_mark: Tecnologias utilizadas
 * `TS`
-* `Node.js - `
-* `React.js - `
-* `Tailwind CSS - `
+* `Node.js - 22.15.0`
+* `React.js - 19`
+* `Tailwind CSS - 4.0`
 * `shadcn/ui`
-* `Next.js - `
-* `PostgreSQL - `
-* `Prisma -`
+* `Next.js - 15.3.2`
+* `PostgreSQL - 17.5`
+* `Prisma - 6.7.0`

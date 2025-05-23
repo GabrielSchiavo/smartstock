@@ -47,8 +47,8 @@ export const ResetForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Forgot your password?"
-      backButtonLabel="Back to login?"
+      headerLabel="Esqueceu sua senha?"
+      backButtonLabel="Voltar ao login?"
       backButtonHref="/auth/login"
     >
       <Form {...form}>
@@ -76,7 +76,7 @@ export const ResetForm = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
-            Send reset email
+            Enviar email de redefinição
           </Button>
         </form>
       </Form>

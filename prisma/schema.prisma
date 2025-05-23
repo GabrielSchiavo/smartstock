@@ -27,7 +27,6 @@ enum UnitMeasurement {
   G
   L
   UN 
-  CX
 }
 
 enum ProductType {

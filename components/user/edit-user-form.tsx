@@ -56,8 +56,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
           });
         }
       } catch (error) {
-        console.error("Error loading product:", error);
-        setError("Failed to load product data");
+        console.error("Erro ao carregar usuários:", error);
+        setError("Falha ao carregar dados de usuários");
       } finally {
         setIsLoading(false);
       }
@@ -108,11 +108,11 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
   };
 
   if (isLoading) {
-    return <div>Loading user data...</div>;
+    return <div>Carregando dados do usuário...</div>;
   }
 
   if (!initialValues) {
-    return <div>User not found or failed to load</div>;
+    return <div>Usuário não encontrado ou falha ao carregar</div>;
   }
 
   return (
@@ -124,12 +124,12 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="Your name"
+                    placeholder="Nome do usuário"
                   />
                 </FormControl>
                 <FormMessage />
@@ -159,7 +159,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Senha</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isPending}
@@ -177,7 +177,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Confirme a senha</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isPending}
@@ -196,7 +196,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex">
-                  User input type:
+                  Tipo de usuário:
                   <ToolTipHelpUser />
                   </FormLabel>
                 <FormControl>
@@ -248,7 +248,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
         <FormSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Update User
+            Atualizar Usuário
           </Button>
         </DialogFooter>
       </form>

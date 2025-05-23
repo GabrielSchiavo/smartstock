@@ -1,4 +1,3 @@
-// import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { SectionCards } from "@/components/dashboard/section-cards"
 import { SectionDataTables } from "@/components/dashboard/section-data-tables";
 
@@ -18,10 +17,6 @@ const DashboardPage = () => {
             <h1 className="text-base font-medium px-4 lg:px-6">Dashboard</h1>
               <SectionCards />
               <SectionDataTables />
-              {/* <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-            */}
             </div>
           </div>
         </div>

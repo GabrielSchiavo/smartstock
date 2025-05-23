@@ -34,15 +34,15 @@ export function EditProductDialog({ productId }: EditDialogProps) {
         >
           <div>
             <Pencil className="w-4 h-4" />
-            Edit
+            Editar
           </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Edit Product</DialogTitle>
+          <DialogTitle>Editar Produto</DialogTitle>
           <DialogDescription>
-            Edit new products here. Click Update Product when done.
+            Edite novos produtos aqui. Clique em Atualizar Produto quando terminar.
           </DialogDescription>
         </DialogHeader>
         <EditProductForm productId={productId} onSuccess={() => setOpen(false)} />

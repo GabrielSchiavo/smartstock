@@ -25,11 +25,11 @@ export default function Home() {
               <span className="font-semibold">Smart</span>stock
             </span>
           </div>
-          <p className="text-lg font-light">A best stock management service</p>
+          <p className="text-lg font-light">O melhor serviço de gestão de estoque</p>
           <div>
             <LoginButton>
               <Button variant={"default"} size={"lg"}>
-                Sign in
+                Entrar
               </Button>
             </LoginButton>
           </div>

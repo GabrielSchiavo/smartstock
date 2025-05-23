@@ -29,7 +29,7 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-      <SidebarGroupLabel>Stocks</SidebarGroupLabel>
+      <SidebarGroupLabel>Estoques</SidebarGroupLabel>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.label}>
@@ -49,7 +49,7 @@ export function NavMain({
               >
                 <Link href={"/stocks/food"}>
                   <Apple />
-                  <span>Food Stock</span>
+                  <span>Estoque de Alimentos</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

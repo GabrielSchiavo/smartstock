@@ -213,7 +213,7 @@ export const generateInventoryReport = async (): Promise<{
     revalidatePath("/reports");
     return { data: reportData };
   } catch (error) {
-    console.error("Error generating inventory report:", error);
+    console.error("Erro ao gerar relatório de inventário:", error);
     return { error: "Erro ao gerar relatório de inventário" };
   }
 };

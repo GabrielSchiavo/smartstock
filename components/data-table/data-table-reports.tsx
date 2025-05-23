@@ -217,7 +217,7 @@ export function DataTableReport<T>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Nenhum resultado encontrado.
+                  Nenhum resultado.
                 </TableCell>
               </TableRow>
             )}

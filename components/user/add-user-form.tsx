@@ -78,12 +78,12 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="Your name"
+                    placeholder="Nome do usuário"
                   />
                 </FormControl>
                 <FormMessage />
@@ -113,7 +113,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Senha</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isPending}
@@ -131,7 +131,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Confirmar Senha</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isPending}
@@ -150,7 +150,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex">
-                  User input type:
+                  Tipo de usuário:
                   <ToolTipHelpUser />
                 </FormLabel>
                 <FormControl>
@@ -202,7 +202,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
         <FormSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Create user
+            Criar Usuário
           </Button>
         </DialogFooter>
       </form>

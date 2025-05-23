@@ -16,7 +16,7 @@ export const registerUser = async (
   const validateFields = CreateUserSchema.safeParse(values);
 
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Campos inválidos!" };
   }
 
   const { email, password, name, userType } = validateFields.data;
@@ -25,7 +25,7 @@ export const registerUser = async (
   const existingUser = await getUserByEmail(email);
 
   if (existingUser) {
-    return { error: "Email already in use!" };
+    return { error: "Email já em uso!" };
   }
 
   try {
@@ -47,13 +47,13 @@ export const registerUser = async (
         name
       );
   
-      return { success: "User successfully registered and confirmation email sent!" };
+      return { success: "Usuário registrado com sucesso e email de confirmação enviado!" };
     } catch {
-      return { error: "User registered successfully but error while sending confirmation email!" };
+      return { error: "Usuário registrado com sucesso, mas erro ao enviar email de confirmação!" };
     };
     
   } catch {
-    return { error: "Error registering user!" };
+    return { error: "Erro ao registrar usuário!" };
   }
 };
 
@@ -66,7 +66,7 @@ export async function getUsers(): Promise<User[]> {
     });
     return users;
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error("Erro ao buscar usuários:", error);
     throw error;
   }
 }
@@ -81,7 +81,7 @@ export async function deleteUser(
     revalidatePath("/");
     return deletedUser;
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error("Erro ao excluir usuário:", error);
     throw error;
   }
 }
@@ -93,8 +93,8 @@ export const getUserById = async (id: string) => {
     });
     return user;
   } catch (error) {
-    console.error("Error fetching user:", error);
-    throw new Error("Failed to fetch user");
+    console.error("Erro ao buscar usuário:", error);
+    throw new Error("Falha ao buscar o usuário");
   }
 };
 
@@ -105,7 +105,7 @@ export const editUser = async (
   const validateFields = CreateUserSchema.safeParse(values);
 
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Campos inválidos!" };
   }
 
   const { email, password, name, userType } = validateFields.data;
@@ -121,7 +121,7 @@ export const editUser = async (
   });
 
   if (existingUserEmail) {
-    return { error: "Email already in use!" };
+    return { error: "Email já em uso!" };
   }
 
   try {
@@ -131,7 +131,7 @@ export const editUser = async (
     });
 
     if (!existingUser) {
-      return { error: "User not found!" };
+      return { error: "Usuário não encontrado!" };
     }
 
     // Atualiza o usuário
@@ -149,11 +149,11 @@ export const editUser = async (
     revalidatePath("/");
 
     return {
-      success: "User updated successfully!",
+      success: "Usuário atualizado com sucesso!",
       product: updatedUser,
     };
   } catch (error) {
-    console.error("Error editing product:", error);
-    return { error: "Failed to update product" };
+    console.error("Erro ao editar o produto:", error);
+    return { error: "Falha ao atualizar o produto" };
   }
 };

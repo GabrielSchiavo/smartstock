@@ -108,12 +108,12 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isPending}
                     className="default-height"
-                    placeholder="Digit a name"
+                    placeholder="Digite um nome"
                     {...field}
                   />
                 </FormControl>
@@ -127,13 +127,13 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="quantity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantity</FormLabel>
+                  <FormLabel>Quantidade</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
                       type="number"
                       className="default-height"
-                      placeholder="Digit a quantity"
+                      placeholder="Digite a quantidade"
                       {...field}
                     />
                   </FormControl>
@@ -146,7 +146,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="unit"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Unit</FormLabel>
+                  <FormLabel>Unidade</FormLabel>
                   <div className="select-container">
                     <Select
                       disabled={isPending}
@@ -155,7 +155,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a unit" />
+                          <SelectValue placeholder="Selecione a unidade" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -163,7 +163,6 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                         <SelectItem value={UnitMeasurement.G}>G</SelectItem>
                         <SelectItem value={UnitMeasurement.L}>L</SelectItem>
                         <SelectItem value={UnitMeasurement.UN}>UN.</SelectItem>
-                        <SelectItem value={UnitMeasurement.CX}>CX.</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -178,12 +177,12 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="lot"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Lot</FormLabel>
+                  <FormLabel>Lote</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
                       className="default-height"
-                      placeholder="Digit a lot"
+                      placeholder="Digite o lote"
                       {...field}
                     />
                   </FormControl>
@@ -196,7 +195,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="validityDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of validity</FormLabel>
+                  <FormLabel>Data de Validade</FormLabel>
                   <FormControl>
                     <DatePickerMonthYear field={field} />
                   </FormControl>
@@ -211,7 +210,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="receiver"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Receiver</FormLabel>
+                  <FormLabel>Recebedor</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxReceiver
                       value={field.value}
@@ -219,7 +218,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a receiver..."
+                      placeholder="Selecione um recebedor..."
                     />
                   </div>
                   <FormMessage />
@@ -231,7 +230,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="receiptDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Receipt</FormLabel>
+                  <FormLabel>Data de Recebimento</FormLabel>
                   <FormControl>
                     <DatePickerMonthYear field={field} />
                   </FormControl>
@@ -246,7 +245,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="group"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Group</FormLabel>
+                  <FormLabel>Grupo</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxGroup
                       value={field.value}
@@ -254,7 +253,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a group..."
+                      placeholder="Selecione um grupo..."
                     />
                   </div>
                   <FormMessage />
@@ -266,7 +265,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="subgroup"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subgroup (Optional)</FormLabel>
+                  <FormLabel>Subgrupo (Opcional)</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxSubgroup
                       value={field.value!}
@@ -274,7 +273,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                       disabled={isPending}
                       allowCreate={true}
                       allowDelete={true}
-                      placeholder="Select a subgroup..."
+                      placeholder="Selecione um subgrupo..."
                     />
                   </div>
                   <FormMessage />
@@ -288,7 +287,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="productType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product input type:</FormLabel>
+                  <FormLabel>Tipo de Produto:</FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -299,13 +298,13 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                         <FormControl>
                           <RadioGroupItem value={ProductType.DONATED} />
                         </FormControl>
-                        <FormLabel className="font-normal">Donated</FormLabel>
+                        <FormLabel className="font-normal">Doado</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center">
                         <FormControl>
                           <RadioGroupItem value={ProductType.PURCHASED} />
                         </FormControl>
-                        <FormLabel className="font-normal">Purchased</FormLabel>
+                        <FormLabel className="font-normal">Comprado</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -319,7 +318,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               name="donor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Donor</FormLabel>
+                  <FormLabel>Doador</FormLabel>
                   <div className="select-container">
                     <DynamicComboboxDonor
                       value={field.value!}
@@ -329,8 +328,8 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
                       allowDelete={true}
                       placeholder={
                         isDetailsDisabled
-                          ? "Select 'Donated' to enable"
-                          : "Enter the donor"
+                          ? "Selecione 'Doado' para habilitar"
+                          : "Digite o Doador"
                       }
                     />
                   </div>
@@ -344,7 +343,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
         <FormSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Create Product
+            Criar Produto
           </Button>
         </DialogFooter>
       </form>

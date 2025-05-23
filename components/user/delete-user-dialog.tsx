@@ -28,10 +28,10 @@ export default function DeleteUserDialog({ userId }: DeleteDialogProps) {
     try {
       await deleteUser(userId.id);
 
-      toast.success(`User ID ${userId.id} deleted successfully`);
+      toast.success(`Usuário com ID ${userId.id} excluído com sucesso`);
     } catch (error) {
-      console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
+      console.error("Erro ao excluir usuário:", error);
+      toast.error("Falha ao excluir usuário");
     }
   };
 
@@ -47,22 +47,21 @@ export default function DeleteUserDialog({ userId }: DeleteDialogProps) {
         >
           <div>
             <Trash2 className="w-4 h-4" />
-            Delete
+            Excluir
           </div>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            This action cannot be undone. This will permanently delete the plant
-            from our servers.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o registro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
-            <AlertDialogCancel title="Cancel">Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirm Delete" type="submit">Confirm Delete</AlertDialogAction>
+            <AlertDialogCancel title="Cancel">Cancelar</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirm Delete" type="submit">Excluir</AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

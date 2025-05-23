@@ -12,7 +12,7 @@ export const registerProduct = async (
   const validateFields = CreateProductSchema.safeParse(values);
 
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Campos inválidos!" };
   }
 
   const {
@@ -47,7 +47,7 @@ export const registerProduct = async (
     },
   });
 
-  return { success: "Registration completed successfully!" };
+  return { success: "Cadastro concluído com sucesso!" };
 };
 
 export async function getProducts(): Promise<Product[]> {
@@ -59,7 +59,7 @@ export async function getProducts(): Promise<Product[]> {
     });
     return products;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Erro ao buscar produtos:", error);
     throw error;
   }
 }
@@ -68,7 +68,7 @@ export async function getProductsCount() {
     const productsCount = await db.product.count();
     return productsCount;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Erro ao buscar produtos:", error);
     throw error;
   }
 }
@@ -88,7 +88,7 @@ export async function getExpiredProducts(): Promise<Product[]> {
     });
     return productsExpired;
   } catch (error) {
-    console.error("Error fetching expired products:", error);
+    console.error("Erro ao buscar produtos expirados:", error);
     throw error;
   }
 }
@@ -104,7 +104,7 @@ export async function getExpiredProductsCount() {
     });
     return productsExpiredCount;
   } catch (error) {
-    console.error("Error fetching expired products:", error);
+    console.error("Erro ao buscar produtos expirados:", error);
     throw error;
   }
 }
@@ -127,7 +127,7 @@ export async function getProductsToExpire(): Promise<Product[]> {
 
     return productsToExpire;
   } catch (error) {
-    console.error("Error fetching products to expire:", error);
+    console.error("Erro ao buscar produtos prestes a expirar:", error);
     throw error;
   }
 }
@@ -147,7 +147,7 @@ export async function getProductsToExpireCount() {
 
     return productsToExpireCount;
   } catch (error) {
-    console.error("Error fetching products to expire:", error);
+    console.error("Erro ao buscar produtos prestes a expirar:", error);
     throw error;
   }
 }
@@ -163,7 +163,7 @@ export async function deleteProduct(
     revalidatePath("/");
     return deletedProduct;
   } catch (error) {
-    console.error("Error deleting plant:", error);
+    console.error("Erro ao excluir produto:", error);
     throw error;
   }
 }
@@ -175,8 +175,8 @@ export const getProductById = async (id: number) => {
     });
     return product;
   } catch (error) {
-    console.error("Error fetching product:", error);
-    throw new Error("Failed to fetch product");
+    console.error("Erro ao buscar produto:", error);
+    throw new Error("Falha ao buscar produto");
   }
 };
 
@@ -188,7 +188,7 @@ export const editProduct = async (
   const validateFields = CreateProductSchema.safeParse(values);
 
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Campos inválidos!" };
   }
 
   const {
@@ -212,7 +212,7 @@ export const editProduct = async (
     });
 
     if (!existingProduct) {
-      return { error: "Product not found!" };
+      return { error: "Produto não encontrado!" };
     }
 
     // Atualiza o produto
@@ -238,11 +238,11 @@ export const editProduct = async (
     revalidatePath("/");
 
     return {
-      success: "Product updated successfully!",
+      success: "Produto atualizado com sucesso!",
       product: updatedProduct,
     };
   } catch (error) {
-    console.error("Error editing product:", error);
-    return { error: "Failed to update product" };
+    console.error("Erro ao editar o produto:", error);
+    return { error: "Falha ao atualizar o produto" };
   }
 };

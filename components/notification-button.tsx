@@ -24,9 +24,9 @@ export function NotificationButton() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Alerts</SheetTitle>
+          <SheetTitle>Alertas</SheetTitle>
           <SheetDescription>
-            View all alerts here.
+            Veja todos os alertas aqui.
           </SheetDescription>
         </SheetHeader>
         

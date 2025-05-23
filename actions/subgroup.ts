@@ -33,7 +33,7 @@ export async function getAllSubgroups(): Promise<SubgroupResponse> {
     })
     return { success: true, data: subgroups }
   } catch (error) {
-    console.error('Error fetching subgrupos:', error)
+    console.error('Erro ao buscar subgrupos:', error)
     return {
       success: false,
       message: 'Falha ao carregar subgrupos',
@@ -57,7 +57,7 @@ export async function searchSubgroups(query: string): Promise<SubgroupResponse> 
     })
     return { success: true, data: subgroups }
   } catch (error) {
-    console.error('Error searching subgrupos:', error)
+    console.error('Erro ao buscar subgrupos:', error)
     return {
       success: false,
       message: 'Falha na busca',
@@ -82,7 +82,7 @@ export async function createSubgroup(name: string): Promise<SingleSubgroupRespon
     revalidatePath('/')
     return { success: true, data: newSubgroup }
   } catch (error) {
-    console.error('Error creating subgrupo:', error)
+    console.error('Erro ao criar subgrupo:', error)
     return {
       success: false,
       message: 'Falha ao criar',
@@ -107,7 +107,7 @@ export async function deleteSubgroup(id: string): Promise<Omit<SubgroupResponse,
 
     return { success: true, message: 'Subgrupo excluído com sucesso' }
   } catch (error) {
-    console.error('Error deleting subgroup:', error)
+    console.error('Erro ao excluir subgrupo:', error)
     return {
       success: false,
       message: 'Falha ao excluir subgrupo',
@@ -132,7 +132,7 @@ export async function checkSubgroupInProducts(subgroupName: string): Promise<Che
         : null
     }
   } catch (error) {
-    console.error('Error checking grupo in products:', error)
+    console.error('Erro ao verificar se há produtos associados:', error)
     return {
       isUsed: true,
       message: 'Não foi possível verificar se há produtos associados'

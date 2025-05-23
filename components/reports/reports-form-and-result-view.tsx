@@ -171,7 +171,7 @@ export const ReportsFormAndResultView = () => {
                   name="reportType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tipo de Relatório</FormLabel>
+                      <FormLabel>Tipo de Relatório:</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}

@@ -77,7 +77,7 @@ export function UserButton() {
               <DropdownMenuItem className="cursor-pointer">
                 <div className="flex gap-2 items-center">
                   <LogOut />
-                  Logout
+                  Sair
                 </div>
               </DropdownMenuItem>
             </LogoutButton>

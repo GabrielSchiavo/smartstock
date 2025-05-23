@@ -29,7 +29,7 @@ export function NavMainSecondary({
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarGroupLabel>Utilities</SidebarGroupLabel>
+        <SidebarGroupLabel>Utilitários</SidebarGroupLabel>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.label}>
@@ -53,7 +53,7 @@ export function NavMainSecondary({
               >
                 <Link href={"/reports"}>
                   <FileChartLine />
-                  <span>Reports</span>
+                  <span>Relatórios</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -66,7 +66,7 @@ export function NavMainSecondary({
               >
                 <Link href={"/users"}>
                   <Users />
-                  <span>User Registration</span>
+                  <span>Registro de Usuário</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

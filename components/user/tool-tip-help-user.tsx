@@ -17,19 +17,19 @@ export function ToolTipHelpUser() {
             <HelpCircleIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="right" align="center">
+        <TooltipContent side="bottom" align="center" className="max-w-[300px]">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Admin</span> - acesso total ao sistema e gerenciamento de usuários.</p>
             </div>
             <div className="flex items-center gap-2">
-                <p className="text-sm"><span className="font-semibold">Padrão</span> - acesso somente a gerenciamento de produtos e relatórios</p>
+                <p className="text-sm"><span className="font-semibold">Padrão</span> - acesso somente a gerenciamento de produtos e relatórios.</p>
             </div>
             <div className="flex items-center gap-2">
-                <p className="text-sm"><span className="font-semibold">Cadastro</span> - acesso somente a gerenciamento de produtos</p>
+                <p className="text-sm"><span className="font-semibold">Cadastro</span> - acesso somente a gerenciamento de produtos.</p>
             </div>
             <div className="flex items-center gap-2">
-                <p className="text-sm"><span className="font-semibold">Relatório</span> - acesso somente a gerenciamento de relatórios</p>
+                <p className="text-sm"><span className="font-semibold">Relatório</span> - acesso somente a gerenciamento de relatórios.</p>
             </div>
           </div>
         </TooltipContent>

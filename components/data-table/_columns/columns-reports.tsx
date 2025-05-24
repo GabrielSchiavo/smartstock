@@ -6,6 +6,7 @@ import {
   ValidityReport,
 } from "@/actions/report";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
+import { ProductType } from "@prisma/client";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReport>[] = [
   {
@@ -229,7 +230,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReport>[] = [
       const type = row.original.productType;
       return (
         <span className="capitalize">
-          {type === "PURCHASED" ? "Comprado" : "Doado"}
+          {type === ProductType.PURCHASED ? "Comprado" : "Doado"}
         </span>
       );
     },

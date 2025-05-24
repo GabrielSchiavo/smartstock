@@ -1,7 +1,7 @@
 import { RoleGate } from "@/components/auth/role-gate";
-import { UserRole } from "@prisma/client";
 import { Metadata } from "next";
 import { ReportsFormAndResultView } from "@/components/report/reports-form-and-result-view";
+import { UserType } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Relatórios - SmartStock",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ReportsPage() {
   return (
-    <RoleGate isPage={true} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.REPORT]}>
+    <RoleGate isPage={true} allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.REPORT]}>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">

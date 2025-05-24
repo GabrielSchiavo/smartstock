@@ -28,12 +28,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
-import { ProductType, UnitMeasurement } from "@prisma/client";
 import { DynamicComboboxGroup } from "@/components/dynamic-combobox-group";
 import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup";
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 import { toast } from "sonner";
+import { ProductType, UnitType } from "@prisma/client";
 
 interface EditFormProps {
   productId: {
@@ -216,10 +216,10 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={UnitMeasurement.KG}>KG</SelectItem>
-                        <SelectItem value={UnitMeasurement.G}>G</SelectItem>
-                        <SelectItem value={UnitMeasurement.L}>L</SelectItem>
-                        <SelectItem value={UnitMeasurement.UN}>UN.</SelectItem>
+                        <SelectItem value={UnitType.KG}>KG</SelectItem>
+                        <SelectItem value={UnitType.G}>G</SelectItem>
+                        <SelectItem value={UnitType.L}>L</SelectItem>
+                        <SelectItem value={UnitType.UN}>UN.</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

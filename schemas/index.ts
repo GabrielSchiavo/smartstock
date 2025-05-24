@@ -1,4 +1,5 @@
-import { ProductType, UnitMeasurement, UserRole } from "@prisma/client";
+import { ReportType } from "@/types";
+import { ProductType, UnitType, UserType } from "@prisma/client";
 import * as z from "zod";
 
 export const SettingsSchema = z
@@ -112,7 +113,7 @@ export const CreateUserSchema = z
       message: "Nome é obrigatório",
     }),
     userType: z.enum(
-      [UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT],
+      [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
       {
         required_error: "Você precisa selecionar um tipo de usuário.",
       }
@@ -154,7 +155,7 @@ export const EditUserSchema = z
       message: "Nome é obrigatório",
     }),
     userType: z.enum(
-      [UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT],
+      [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
       {
         required_error: "Você precisa selecionar um tipo de usuário.",
       }
@@ -208,10 +209,10 @@ export const CreateProductSchema = z
       ),
     unit: z.enum(
       [
-        UnitMeasurement.KG,
-        UnitMeasurement.G,
-        UnitMeasurement.L,
-        UnitMeasurement.UN,
+        UnitType.KG,
+        UnitType.G,
+        UnitType.L,
+        UnitType.UN,
       ],
       {
         required_error: "Você precisa selecionar uma unidade de medida.",
@@ -270,14 +271,14 @@ export const CreateReportSchema = z
         invalid_type_error: "Data inválida",
       })
       .optional(),
-    reportType: z.enum(["VALIDITY", "DONATIONS", "PURCHASED", "INVENTORY"], {
+    reportType: z.enum([ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.INVENTORY], {
       required_error: "Selecione o tipo de relatório.",
     }),
   })
   .refine(
     (data) => {
       if (
-        data.reportType !== "INVENTORY" &&
+        data.reportType !== ReportType.INVENTORY &&
         data.finalDate! < data.initialDate!
       ) {
         return false;
@@ -291,7 +292,7 @@ export const CreateReportSchema = z
   )
   .refine(
     (data) => {
-      if (data.reportType !== "INVENTORY" && !data.initialDate) {
+      if (data.reportType !== ReportType.INVENTORY && !data.initialDate) {
         return false;
       }
       return true;
@@ -303,7 +304,7 @@ export const CreateReportSchema = z
   )
   .refine(
     (data) => {
-      if (data.reportType !== "INVENTORY" && !data.finalDate) {
+      if (data.reportType !== ReportType.INVENTORY && !data.finalDate) {
         return false;
       }
       return true;

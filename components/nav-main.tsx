@@ -13,7 +13,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { RoleGate } from "@/components/auth/role-gate"
-import { UserRole } from "@prisma/client"
+import { UserType } from "@prisma/client"
 
 export function NavMain({
   items,
@@ -41,7 +41,7 @@ export function NavMain({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE]}>
+          <RoleGate isPage={false} allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE]}>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild

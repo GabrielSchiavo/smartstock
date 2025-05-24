@@ -3,7 +3,7 @@ import { DataTableProducts } from "@/components/data-table/data-table-products";
 import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { Metadata } from "next";
 import { RoleGate } from "@/components/auth/role-gate";
-import { UserRole } from "@prisma/client";
+import { UserType } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Estoque de Produtos - SmartStock",
@@ -14,7 +14,7 @@ export default async function StockFoodPage() {
   const products = await getProducts();
 
   return (
-    <RoleGate isPage={true} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE]}>
+    <RoleGate isPage={true} allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE]}>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 ">

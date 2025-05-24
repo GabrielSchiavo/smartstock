@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import { DataTableUsers } from "@/components/data-table/data-table-users";
 import { FormSuccess } from "@/components/form-success";
 import { RoleGate } from "@/components/auth/role-gate";
-import { UserRole } from "@prisma/client";
 import { getUsers } from "@/actions/user";
 import { columnsTableUsers } from "@/components/data-table/_columns/columns-users";
+import { UserType } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Cadastro de Usuários - SmartStock",
@@ -15,12 +15,12 @@ export default async function UserRegistrationPage() {
   const users = await getUsers();
 
   return (
-    <RoleGate isPage={true} allowedRoles={[UserRole.ADMIN]}>
+    <RoleGate isPage={true} allowedRoles={[UserType.ADMIN]}>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <div className="px-4 pt-4">
-              <FormSuccess message="You are allowed to see this content!" />
+              <FormSuccess message="Você tem permissão para ver este conteúdo!" />
             </div>
             <h1 className="text-base font-medium px-4 lg:px-6">
               Cadastro de Usuários

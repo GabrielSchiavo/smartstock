@@ -21,9 +21,9 @@ import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
-import { UserRole } from "@prisma/client";
 import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
+import { UserType } from "@prisma/client";
 
 interface EditFormProps {
   userId: {
@@ -213,8 +213,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem
-                          value={UserRole.ADMIN}
-                          checked={field.value === UserRole.ADMIN}
+                          value={UserType.ADMIN}
+                          checked={field.value === UserType.ADMIN}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">Admin</FormLabel>
@@ -222,8 +222,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem
-                          value={UserRole.DEFAULT}
-                          checked={field.value === UserRole.DEFAULT}
+                          value={UserType.DEFAULT}
+                          checked={field.value === UserType.DEFAULT}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">Padrão</FormLabel>
@@ -231,8 +231,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem
-                          value={UserRole.CADASTRE}
-                          checked={field.value === UserRole.CADASTRE}
+                          value={UserType.CADASTRE}
+                          checked={field.value === UserType.CADASTRE}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">Cadastro</FormLabel>
@@ -240,8 +240,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem
-                          value={UserRole.REPORT}
-                          checked={field.value === UserRole.REPORT}
+                          value={UserType.REPORT}
+                          checked={field.value === UserType.REPORT}
                         />
                       </FormControl>
                       <FormLabel className="font-normal">Relatório</FormLabel>

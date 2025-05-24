@@ -6,9 +6,9 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
-import { User, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { sendVerificationEmail } from "@/lib/send-mail";
+import { User, UserType } from "@prisma/client";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
@@ -137,7 +137,7 @@ export const editUser = async (
     const updateData: {
       name: string;
       email: string;
-      role: UserRole;
+      role: UserType;
       password?: string;
     } = {
       name,

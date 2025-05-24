@@ -15,14 +15,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
+enum UserType {
   ADMIN
   DEFAULT
   CADASTRE
   REPORT
 }
 
-enum UnitMeasurement {
+enum UnitType {
   KG
   G
   L
@@ -41,7 +41,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserRole       @default(DEFAULT)
+  role          UserType       @default(DEFAULT)
  
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -70,7 +70,7 @@ model Product {
 
   name          String           @db.VarChar(150)
   quantity      Float            @db.Real
-  unit          UnitMeasurement 
+  unit          UnitType 
   lot           String           @db.VarChar(50)  
   validityDate  DateTime         @db.Date
   donor         String?          @db.VarChar(150)

@@ -21,9 +21,9 @@ import { useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
-import { UserRole } from "@prisma/client";
 import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
+import { UserType } from "@prisma/client";
 
 interface AddFormProps {
   onSuccess?: (shouldInvalidate: boolean) => void;
@@ -166,25 +166,25 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
                   >
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.ADMIN} />
+                        <RadioGroupItem value={UserType.ADMIN} />
                       </FormControl>
                       <FormLabel className="font-normal">Admin</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.DEFAULT} />
+                        <RadioGroupItem value={UserType.DEFAULT} />
                       </FormControl>
                       <FormLabel className="font-normal">Padrão</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.CADASTRE} />
+                        <RadioGroupItem value={UserType.CADASTRE} />
                       </FormControl>
                       <FormLabel className="font-normal">Cadastro</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.REPORT} />
+                        <RadioGroupItem value={UserType.REPORT} />
                       </FormControl>
                       <FormLabel className="font-normal">Relatório</FormLabel>
                     </FormItem>

@@ -17,7 +17,7 @@ export function ToolTipHelpSetting() {
             <HelpCircleIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="right" align="center">
+        <TooltipContent side="bottom" align="center" className="max-w-[300px]">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Alterar Senha</span> - Para alterar sua senha informe a senha atual e a nova senha que deseja usar.</p>

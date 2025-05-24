@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserRole } from "@prisma/client";
 import { RoleGate } from "@/components/auth/role-gate";
+import { UserType } from "@prisma/client";
 
 export function NavMainSecondary({
   items,
@@ -45,7 +45,7 @@ export function NavMainSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN, UserRole.DEFAULT, UserRole.REPORT]}>
+          <RoleGate isPage={false} allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.REPORT]}>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
@@ -58,7 +58,7 @@ export function NavMainSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           </RoleGate>
-          <RoleGate isPage={false} allowedRoles={[UserRole.ADMIN]}>
+          <RoleGate isPage={false} allowedRoles={[UserType.ADMIN]}>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild

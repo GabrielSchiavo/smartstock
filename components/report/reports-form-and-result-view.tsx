@@ -36,6 +36,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
+import { ReportType } from "@/types";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -66,7 +67,7 @@ export const ReportsFormAndResultView = () => {
   const finalDateValue = form.watch("finalDate");
 
   // Determina se o input deve estar desabilitado
-  const isDetailsDisabled = selectedType === "INVENTORY";
+  const isDetailsDisabled = selectedType === ReportType.INVENTORY;
 
   // Efeito para limpar o valor quando o campo é desabilitado
   useEffect(() => {
@@ -81,7 +82,7 @@ export const ReportsFormAndResultView = () => {
     setDates(values);
 
     startTransition(() => {
-      if (values.reportType === "VALIDITY") {
+      if (values.reportType === ReportType.VALIDITY) {
         generateValidityReport(values.initialDate!, values.finalDate!)
           .then((data) => {
             if (data.error) {
@@ -96,7 +97,7 @@ export const ReportsFormAndResultView = () => {
             setError("Algo deu errado!");
             toast.error("Algo deu errado!");
           });
-      } else if (values.reportType === "DONATIONS") {
+      } else if (values.reportType === ReportType.DONATIONS) {
         generateDonationsReport(values.initialDate!, values.finalDate!)
           .then((data) => {
             if (data.error) {
@@ -111,7 +112,7 @@ export const ReportsFormAndResultView = () => {
             setError("Algo deu errado!");
             toast.error("Algo deu errado!");
           });
-      } else if (values.reportType === "PURCHASED") {
+      } else if (values.reportType === ReportType.PURCHASED) {
         generatePurchasedReport(values.initialDate!, values.finalDate!)
           .then((data) => {
             if (data.error) {
@@ -126,7 +127,7 @@ export const ReportsFormAndResultView = () => {
             setError("Algo deu errado!");
             toast.error("Algo deu errado!");
           });
-      } else if (values.reportType === "INVENTORY") {
+      } else if (values.reportType === ReportType.INVENTORY) {
         generateInventoryReport()
           .then((data) => {
             if (data.error) {
@@ -206,7 +207,7 @@ export const ReportsFormAndResultView = () => {
                         >
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value="VALIDITY" id="r1" />
+                              <RadioGroupItem value={ReportType.VALIDITY} id="r1" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r1">
                               Validades
@@ -214,7 +215,7 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value="DONATIONS" id="r2" />
+                              <RadioGroupItem value={ReportType.DONATIONS} id="r2" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r2">
                               Doados
@@ -222,7 +223,7 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value="PURCHASED" id="r3" />
+                              <RadioGroupItem value={ReportType.PURCHASED} id="r3" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r3">
                               Comprados
@@ -230,7 +231,7 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value="INVENTORY" id="r4" />
+                              <RadioGroupItem value={ReportType.INVENTORY} id="r4" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r4">
                               Inventário
@@ -266,7 +267,7 @@ export const ReportsFormAndResultView = () => {
             </div>
           )}
 
-        {form.watch("reportType") === "VALIDITY" &&
+        {form.watch("reportType") === ReportType.VALIDITY &&
           validityReportData.length > 0 &&
           dates && (
             <DataTableReport<ValidityReport>
@@ -274,11 +275,11 @@ export const ReportsFormAndResultView = () => {
               data={validityReportData}
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
-              reportType="VALIDITY"
+              reportType={ReportType.VALIDITY}
             />
           )}
 
-        {form.watch("reportType") === "DONATIONS" &&
+        {form.watch("reportType") === ReportType.DONATIONS &&
           donationsReportData.length > 0 &&
           dates && (
             <DataTableReport<DonationsReport>
@@ -286,11 +287,11 @@ export const ReportsFormAndResultView = () => {
               data={donationsReportData}
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
-              reportType="DONATIONS"
+              reportType={ReportType.DONATIONS}
             />
           )}
 
-        {form.watch("reportType") === "PURCHASED" &&
+        {form.watch("reportType") === ReportType.PURCHASED &&
           purchasedReportData.length > 0 &&
           dates && (
             <DataTableReport<PurchasedReport>
@@ -298,15 +299,15 @@ export const ReportsFormAndResultView = () => {
               data={purchasedReportData}
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
-              reportType="PURCHASED"
+              reportType={ReportType.PURCHASED}
             />
           )}
-        {form.watch("reportType") === "INVENTORY" &&
+        {form.watch("reportType") === ReportType.INVENTORY &&
           inventoryReportData.length > 0 && (
             <DataTableReport<InventoryReport>
               columns={columnsTableReportInventory}
               data={inventoryReportData}
-              reportType="INVENTORY"
+              reportType={ReportType.INVENTORY}
             />
           )}
       </div>

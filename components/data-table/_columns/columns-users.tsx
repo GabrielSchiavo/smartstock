@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { User, UserRole } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -14,6 +13,7 @@ import DeleteUserDialog from "@/components/user/delete-user-dialog";
 import { EditUserDialog } from "@/components/user/edit-user-dialog";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
 import { MoreVerticalIcon } from "lucide-react";
+import { User, UserType } from "@prisma/client";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
@@ -90,11 +90,11 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     ),
       cell: ({ row }) => {
       const role = row.getValue("role") as string;
-      if (role === UserRole.DEFAULT) {
+      if (role === UserType.DEFAULT) {
         return <span className="uppercase">Padrão</span>;
-      } else if (role === UserRole.CADASTRE) {
+      } else if (role === UserType.CADASTRE) {
         return <span className="uppercase">Cadastro</span>
-      } else if(role === UserRole.REPORT) {
+      } else if(role === UserType.REPORT) {
         return <span className="uppercase">Relatório</span>
       } else {
         return <span className="bg-muted px-3 py-1 rounded-sm uppercase">{ role }</span> 

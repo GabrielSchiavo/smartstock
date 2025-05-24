@@ -36,13 +36,14 @@ import {
 import { toast } from "sonner";
 import React, { useRef } from "react";
 import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
+import { ReportType } from "@/types";
 
 interface DataTableReportProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
   initialDate?: Date;
   finalDate?: Date;
-  reportType: "VALIDITY" | "DONATIONS" | "PURCHASED" | "INVENTORY";
+  reportType: ReportType.VALIDITY | ReportType.DONATIONS | ReportType.PURCHASED | ReportType.INVENTORY;
 }
 
 export function DataTableReport<T>({
@@ -70,28 +71,28 @@ export function DataTableReport<T>({
       let pdf: Uint8Array;
 
       switch (reportType) {
-        case "VALIDITY":
+        case ReportType.VALIDITY:
           pdf = await generateValidityPdf(
             data as ValidityReport[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
-        case "DONATIONS":
+        case ReportType.DONATIONS:
           pdf = await generateDonationsPdf(
             data as DonationsReport[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
-        case "PURCHASED":
+        case ReportType.PURCHASED:
           pdf = await generatePurchasedPdf(
             data as PurchasedReport[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
-        case "INVENTORY":
+        case ReportType.INVENTORY:
           pdf = await generateInventoryPdf(data as InventoryReport[]);
           break;
         default:
@@ -107,13 +108,13 @@ export function DataTableReport<T>({
       const a = document.createElement("a");
       a.href = url;
       a.download = `relatorio-${
-        reportType === "VALIDITY"
+        reportType === ReportType.VALIDITY
           ? "validade"
-          : reportType === "DONATIONS"
+          : reportType === ReportType.DONATIONS
             ? "doacoes"
-            : reportType === "PURCHASED"
+            : reportType === ReportType.PURCHASED
               ? "comprados"
-              : reportType === "INVENTORY"
+              : reportType === ReportType.INVENTORY
                 ? "inventario"
                 : "semnome"
       }-${new Date().toISOString()}.pdf`;
@@ -161,11 +162,11 @@ export function DataTableReport<T>({
         <div className="showForPrint space-y-3 mb-6">
           <h1 className="text-2xl font-semibold">
             Relatório de{" "}
-            {reportType === "VALIDITY"
+            {reportType === ReportType.VALIDITY
               ? "Validade de Produtos"
-              : reportType === "DONATIONS"
+              : reportType === ReportType.DONATIONS
                 ? "Produtos Doados"
-                : reportType === "PURCHASED"
+                : reportType === ReportType.PURCHASED
                   ? "Produtos Comprados"
                   : ""}
           </h1>

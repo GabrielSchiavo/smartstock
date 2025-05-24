@@ -1,11 +1,13 @@
 "use client";
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { Product, ProductType } from "@prisma/client";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -14,6 +16,7 @@ import DeleteProductDialog from "@/components/product/delete-product-dialog";
 import { EditProductDialog } from "@/components/product/edit-product-dialog";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
 import { MoreVerticalIcon } from "lucide-react";
+import { Product, ProductType } from "@prisma/client";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
@@ -207,6 +210,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       return (
+        // <DataTableDropdown recordId={{ id: row.original.id }}/>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -215,9 +219,16 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <EditProductDialog productId={{ id: row.original.id }} />
+            <DropdownMenuLabel>Opções</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DeleteProductDialog productId={{ id: row.original.id }} />
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <EditProductDialog productId={{ id: row.original.id }} />
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <DeleteProductDialog productId={{ id: row.original.id }} />
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       );

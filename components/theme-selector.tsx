@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useThemeConfig } from "@/components/active-theme"
-import { Label } from "@/components/ui/label"
+import { useThemeConfig } from "@/components/active-theme";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,50 +11,58 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 const DEFAULT_THEMES = [
   {
-    name: "Default",
+    name: "Padrão",
     value: "default",
   },
   {
-    name: "Neutral",
+    name: "Neutro",
     value: "blue",
   },
   {
-    name: "Green",
+    name: "Verde",
     value: "green",
   },
   {
-    name: "Amber",
+    name: "Ambar",
     value: "amber",
   },
-]
+];
 
 const SCALED_THEMES = [
   {
-    name: "Default",
+    name: "Padrão",
     value: "default-scaled",
   },
   {
-    name: "Gray",
+    name: "Neutro",
     value: "blue-scaled",
   },
-]
+  {
+    name: "Verde",
+    value: "green-scaled",
+  },
+  {
+    name: "Ambar",
+    value: "amber-scaled",
+  },
+];
 
 const MONO_THEMES = [
   {
     name: "Mono",
     value: "mono-scaled",
   },
-]
+];
 
 export function ThemeSelector() {
-  const { activeTheme, setActiveTheme } = useThemeConfig()
+  const { activeTheme, setActiveTheme } = useThemeConfig();
 
   return (
-    <div className="flex items-center gap-2 group-data-[collapsible=icon]:opacity-0">
+    <div className="flex items-center gap-2 group-data-[collapsible=icon]:opacity-0 mb-4">
       <Label htmlFor="theme-selector" className="sr-only">
         Tema
       </Label>
@@ -64,11 +72,11 @@ export function ThemeSelector() {
           size="sm"
           className="justify-between *:data-[slot=select-value]:w-12 w-full"
         >
-          <span className="text-muted-foreground hidden sm:block">
-            Selecione um tema:
+          <span className="flex gap-2">
+            <span className="text-muted-foreground hidden sm:block">Tema:</span>
+            <span className="text-muted-foreground block sm:hidden">Tema</span>
+            <SelectValue placeholder="Selecione um tema" />
           </span>
-          <span className="text-muted-foreground block sm:hidden">Tema</span>
-          <SelectValue placeholder="Select a theme" />
         </SelectTrigger>
         <SelectContent align="end">
           <SelectGroup>
@@ -81,7 +89,7 @@ export function ThemeSelector() {
           </SelectGroup>
           <SelectSeparator />
           <SelectGroup>
-            <SelectLabel>Selecionado</SelectLabel>
+            <SelectLabel>Cor + Escala</SelectLabel>
             {SCALED_THEMES.map((theme) => (
               <SelectItem key={theme.name} value={theme.value}>
                 {theme.name}
@@ -89,7 +97,7 @@ export function ThemeSelector() {
             ))}
           </SelectGroup>
           <SelectGroup>
-            <SelectLabel>Monoespaçado</SelectLabel>
+            <SelectLabel>Escala + Monoespaçado</SelectLabel>
             {MONO_THEMES.map((theme) => (
               <SelectItem key={theme.name} value={theme.value}>
                 {theme.name}
@@ -99,5 +107,5 @@ export function ThemeSelector() {
         </SelectContent>
       </Select>
     </div>
-  )
+  );
 }

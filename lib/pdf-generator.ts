@@ -6,6 +6,7 @@ import {
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
+import { ProductType } from "@prisma/client";
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
@@ -207,7 +208,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
       `${item.quantity} ${item.unit}`,
       item.lot,
       new Date(item.validityDate).toLocaleDateString("pt-BR"),
-      item.productType === "PURCHASED" ? "Comprado" : "Doado",
+      item.productType === ProductType.PURCHASED ? "Comprado" : "Doado",
       item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
       this.getStatusText(item.status),
     ]);

@@ -19,7 +19,7 @@ export function NotificationButton() {
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="cursor-pointer" title="Alertas">
           <BellIcon />
-          <span className="sr-only">Alternar Alertas</span>
+          <span className="sr-only">Abrir/Fechar Alertas</span>
         </Button>
       </SheetTrigger>
       <SheetContent>

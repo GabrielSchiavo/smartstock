@@ -17,7 +17,7 @@ export function ToolTipHelpReport() {
             <HelpCircleIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="right" align="center">
+        <TooltipContent side="bottom" align="center" className="max-w-[300px]">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Ordenação</span> - Use a opção <span className="font-semibold italic">Imprimir</span> para salvar o relatório com a ordenação de registros personalizada.</p>

@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { ProductType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export type ValidityReport = {
@@ -86,7 +87,7 @@ export const generateDonationsReport = async (
     const products = await db.product.findMany({
       where: {
         AND: [
-          { productType: "DONATED" },
+          { productType: ProductType.DONATED },
           { receiptDate: { gte: initialDate, lte: finalDate } },
         ],
       },
@@ -131,7 +132,7 @@ export const generatePurchasedReport = async (
 
     const products = await db.product.findMany({
       where: {
-        productType: "PURCHASED",
+        productType: ProductType.PURCHASED,
         receiptDate: {
           gte: initialDate,
           lte: finalDate,
@@ -166,7 +167,7 @@ export type InventoryReport = {
   unit: string;
   lot: string;
   validityDate: Date;
-  productType: "PURCHASED" | "DONATED";
+  productType: ProductType;
   daysUntilExpiry: number;
   status: "valid" | "expired" | "about_to_expire";
 };

@@ -17,7 +17,7 @@ export function ToolTipHelpReportType() {
             <HelpCircleIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom" align="center">
+        <TooltipContent side="bottom" align="center" className="max-w-[300px]">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Validades</span> - Gera um relatório de um determinado período com todos os produtos com Validade, Lote, Quantidade, status e Dias para Vencer</p>

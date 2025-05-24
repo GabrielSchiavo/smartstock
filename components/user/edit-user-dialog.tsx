@@ -14,16 +14,22 @@ import { EditUserForm } from "@/components/user/edit-user-form";
 import { useState } from "react";
 
 interface EditDialogProps {
-  userId: {
-    id: string;
-  };
+  rowItemId: string;
+    onOpenChange?: (open: boolean) => void;
 }
 
-export function EditUserDialog({ userId }: EditDialogProps) {
+export function EditUserDialog({ rowItemId, onOpenChange }: EditDialogProps) {
   const [open, setOpen] = useState(false);
 
+    const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen && onOpenChange) {
+      onOpenChange(newOpen);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -45,7 +51,7 @@ export function EditUserDialog({ userId }: EditDialogProps) {
             Atualize os usuários aqui. Clique em Atualizar Usuário quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <EditUserForm userId={userId} onSuccess={() => setOpen(false)} />
+        <EditUserForm rowItemId={rowItemId} onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

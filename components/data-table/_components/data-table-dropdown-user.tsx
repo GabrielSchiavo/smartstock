@@ -10,18 +10,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreVerticalIcon } from "lucide-react";
-import { EditProductDialog } from "@/components/product/edit-product-dialog";
-import DeleteProductDialog from "@/components/product/delete-product-dialog";
+import { EditUserDialog } from "@/components/user/edit-user-dialog";
+import DeleteUserDialog from "@/components/user/delete-user-dialog";
 
 interface DataTableDropdownProps {
-  recordId: {
-    id: number;
-  };
+  rowItemId: string;
 }
 
-export function DataTableDropdown({ recordId }: DataTableDropdownProps) {
+export function DataTableDropdownUser({ rowItemId }: DataTableDropdownProps) {
+    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>
@@ -33,10 +33,10 @@ export function DataTableDropdown({ recordId }: DataTableDropdownProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <EditProductDialog productId={recordId} />
+            <EditUserDialog rowItemId={rowItemId} onOpenChange={() => setIsDropdownOpen(false)} />
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <DeleteProductDialog productId={recordId} />
+            <DeleteUserDialog rowItemId={rowItemId} onOpenChange={() => setIsDropdownOpen(false)} />
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

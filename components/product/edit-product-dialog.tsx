@@ -14,16 +14,25 @@ import React, { useState } from "react";
 import { EditProductForm } from "@/components/product/edit-product-form";
 
 interface EditDialogProps {
-  productId: {
-    id: number;
-  };
+  rowItemId: number;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function EditProductDialog({ productId }: EditDialogProps) {
-    const [open, setOpen] = useState(false);
+export function EditProductDialog({
+  rowItemId,
+  onOpenChange,
+}: EditDialogProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen && onOpenChange) {
+      onOpenChange(newOpen);
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -42,10 +51,14 @@ export function EditProductDialog({ productId }: EditDialogProps) {
         <DialogHeader>
           <DialogTitle>Editar Produto</DialogTitle>
           <DialogDescription>
-            Edite novos produtos aqui. Clique em Atualizar Produto quando terminar.
+            Edite novos produtos aqui. Clique em Atualizar Produto quando
+            terminar.
           </DialogDescription>
         </DialogHeader>
-        <EditProductForm productId={productId} onSuccess={() => setOpen(false)} />
+        <EditProductForm
+          rowItemId={rowItemId}
+          onSuccess={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );

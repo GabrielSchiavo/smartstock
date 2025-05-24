@@ -2,18 +2,9 @@
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import DeleteUserDialog from "@/components/user/delete-user-dialog";
-import { EditUserDialog } from "@/components/user/edit-user-dialog";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
-import { MoreVerticalIcon } from "lucide-react";
 import { User, UserType } from "@prisma/client";
+import { DataTableDropdownUser } from "../_components/data-table-dropdown-user";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
@@ -108,19 +99,7 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVerticalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-              <EditUserDialog userId={{ id: row.original.id }} />
-            <DropdownMenuSeparator />
-            <DeleteUserDialog userId={{ id: row.original.id }} />
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DataTableDropdownUser rowItemId={row.original.id}/>
       );
     },
   },

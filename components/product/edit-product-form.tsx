@@ -36,13 +36,11 @@ import { toast } from "sonner";
 import { ProductType, UnitType } from "@prisma/client";
 
 interface EditFormProps {
-  productId: {
-    id: number;
-  };
+  rowItemId: number;
   onSuccess?: (shouldInvalidate: boolean) => void;
 }
 
-export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
+export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -55,7 +53,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const productData = await getProductById(productId.id);
+        const productData = await getProductById(rowItemId);
         if (productData) {
           setInitialValues({
             name: productData.name || "",
@@ -80,7 +78,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
     };
 
     loadProduct();
-  }, [productId.id]);
+  }, [rowItemId]);
 
   const form = useForm<z.infer<typeof CreateProductSchema>>({
     resolver: zodResolver(CreateProductSchema),
@@ -125,7 +123,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      editProduct(productId.id, values)
+      editProduct(rowItemId, values)
         .then((data) => {
           setError(data.error);
           setSuccess(data.success);

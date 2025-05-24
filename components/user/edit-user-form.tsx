@@ -26,13 +26,11 @@ import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { UserType } from "@prisma/client";
 
 interface EditFormProps {
-  userId: {
-    id: string;
-  };
+  rowItemId: string;
   onSuccess?: (shouldInvalidate: boolean) => void;
 }
 
-export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
+export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -45,7 +43,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const productData = await getUserById(userId.id);
+        const productData = await getUserById(rowItemId);
         if (productData) {
           setInitialValues({
             name: productData.name || "",
@@ -64,7 +62,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
     };
 
     loadProduct();
-  }, [userId.id]);
+  }, [rowItemId]);
 
   const form = useForm<z.infer<typeof EditUserSchema>>({
     resolver: zodResolver(EditUserSchema),
@@ -88,7 +86,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      editUser(userId.id, values)
+      editUser(rowItemId, values)
         .then((data) => {
           setError(data.error);
           setSuccess(data.success);

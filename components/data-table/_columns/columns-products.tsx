@@ -2,21 +2,9 @@
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import DeleteProductDialog from "@/components/product/delete-product-dialog";
-import { EditProductDialog } from "@/components/product/edit-product-dialog";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
-import { MoreVerticalIcon } from "lucide-react";
 import { Product, ProductType } from "@prisma/client";
+import { DataTableDropdownProduct } from "../_components/data-table-dropdown-product";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
@@ -210,27 +198,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        // <DataTableDropdown recordId={{ id: row.original.id }}/>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreVerticalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Opções</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem asChild>
-                <EditProductDialog productId={{ id: row.original.id }} />
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <DeleteProductDialog productId={{ id: row.original.id }} />
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DataTableDropdownProduct rowItemId={row.original.id}/>
       );
     },
   },

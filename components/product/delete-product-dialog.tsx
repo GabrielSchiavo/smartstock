@@ -14,21 +14,32 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface DeleteDialogProps {
-  productId: {
-    id: number;
-  };
+  rowItemId: number;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export default function DeleteProductDialog({ productId }: DeleteDialogProps) {
+export default function DeleteProductDialog({ rowItemId, onOpenChange }: DeleteDialogProps) {
+    const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (!newOpen && onOpenChange) {
+      onOpenChange(newOpen);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteProduct(productId.id);
+      await deleteProduct(rowItemId);
 
-      toast.success(`Produto com ID ${productId.id} excluído com sucesso`);
+      toast.success(`Produto com ID ${rowItemId} excluído com sucesso`);
+      setOpen(false);
+      if (onOpenChange) onOpenChange(false);
     } catch (error) {
       console.error("Erro ao excluir produto:", error);
       toast.error("Falha ao excluir o produto.");
@@ -36,7 +47,7 @@ export default function DeleteProductDialog({ productId }: DeleteDialogProps) {
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"

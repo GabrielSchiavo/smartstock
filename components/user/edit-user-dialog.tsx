@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Pencil } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 import { EditUserForm } from "@/components/user/edit-user-form";
 import { useState } from "react";
 
@@ -33,7 +33,7 @@ export function EditUserDialog({ userId }: EditDialogProps) {
           title="Edit"
         >
           <div>
-            <Pencil className="w-4 h-4" />
+            <PencilIcon className="w-4 h-4" />
             Editar
           </div>
         </Button>

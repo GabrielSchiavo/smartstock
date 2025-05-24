@@ -6,7 +6,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { HelpCircle } from "lucide-react";
+import { HelpCircleIcon } from "lucide-react";
 
 export function DataTableToolTipHelp() {
   return (
@@ -14,7 +14,7 @@ export function DataTableToolTipHelp() {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button size={"sm"} variant="ghost" className="flex items-center gap-1.5">
-            <HelpCircle />
+            <HelpCircleIcon />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" align="center">

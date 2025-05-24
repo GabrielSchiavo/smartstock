@@ -11,14 +11,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 
-import { Bell } from "lucide-react";
+import { BellIcon } from "lucide-react";
 
 export function NotificationButton() {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="cursor-pointer" title="Alertas">
-          <Bell />
+          <BellIcon />
           <span className="sr-only">Alternar Alertas</span>
         </Button>
       </SheetTrigger>

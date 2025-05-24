@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import React, { useState } from "react";
 import { AddProductForm } from "@/components/product/add-product-form";
 
@@ -20,7 +20,7 @@ export function AddProductDialog({}) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
-          <Plus />
+          <PlusIcon />
           <span className="hidden lg:inline">Criar Produto</span>
         </Button>
       </DialogTrigger>

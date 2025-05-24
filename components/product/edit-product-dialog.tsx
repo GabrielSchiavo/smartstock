@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Pencil } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 import React, { useState } from "react";
 import { EditProductForm } from "@/components/product/edit-product-form";
 
@@ -33,7 +33,7 @@ export function EditProductDialog({ productId }: EditDialogProps) {
           title="Edit"
         >
           <div>
-            <Pencil className="w-4 h-4" />
+            <PencilIcon className="w-4 h-4" />
             Editar
           </div>
         </Button>

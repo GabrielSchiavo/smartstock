@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Boxes, CalendarClock, CalendarX2, HandHeart } from "lucide-react";
+import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, HandHeartIcon } from "lucide-react";
 
 export function SectionCards() {
   const productsCount = getProductsCount();
@@ -26,7 +26,7 @@ export function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Cadastrados
           </CardTitle>
-          <Boxes strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <BoxesIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -44,7 +44,7 @@ export function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos à vencer
           </CardTitle>
-          <CalendarClock strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <CalendarClockIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -62,7 +62,7 @@ export function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Vencidos
           </CardTitle>
-          <CalendarX2 strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <CalendarX2Icon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -78,7 +78,7 @@ export function SectionCards() {
       <Card className="bg-transparent!">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">Doadores</CardTitle>
-          <HandHeart strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <HandHeartIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">

@@ -43,10 +43,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.role = token.role as UserRole;
       }
 
-      //* For 2FA check
-      // if (session.user) {
-      //   session.user.role.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-      // }
+      if (session.user) {
+        session.user.name = token.name;
+        session.user.email = token.email as string;
+      }
 
       return session;
     },
@@ -58,10 +58,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (!existingUser) return token;
 
-      token.role = existingUser.role;
-      //* For 2FA check
-      // token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+      token.name = existingUser.name;
+      token.email = existingUser.email;
 
+      token.role = existingUser.role;
       return token;
     },
   },

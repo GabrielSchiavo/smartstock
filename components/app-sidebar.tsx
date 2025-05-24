@@ -5,7 +5,7 @@ import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
 import {
   HelpCircleIcon,
   SettingsIcon,
-  LayoutDashboard,
+  LayoutDashboardIcon,
 } from "lucide-react";
 
 import { NavTop } from "@/components/nav-top";
@@ -30,7 +30,7 @@ const data = {
     {
       label: "Dashboard",
       href: "/dashboard",
-      icon: LayoutDashboard,
+      icon: LayoutDashboardIcon,
     },
   ],
   navMain: [

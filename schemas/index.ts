@@ -1,10 +1,88 @@
 import { ProductType, UnitMeasurement, UserRole } from "@prisma/client";
 import * as z from "zod";
 
+export const SettingsSchema = z
+  .object({
+    name: z.optional(z.string()),
+    email: z.optional(z.string().email()),
+    
+    password: z.optional(
+      z.string().refine((val) => !/\s/.test(val), {
+        message: "A senha não pode conter espaços em branco",
+      })
+    ),
+
+    newPassword: z
+      .union([
+        z.string().length(0), // Aceita string vazia
+        z
+          .string()
+          .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+          .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
+          .regex(/[A-Z]/, {
+            message: "A senha deve conter pelo menos uma letra maiúscula",
+          })
+          .regex(/[a-z]/, {
+            message: "A senha deve conter pelo menos uma letra minúscula",
+          })
+          .regex(/[0-9]/, {
+            message: "A senha deve conter pelo menos um número",
+          })
+          .regex(/[^A-Za-z0-9]/, {
+            message: "A senha deve conter pelo menos um caractere especial",
+          })
+          .refine((val) => !/\s/.test(val), {
+            message: "A senha não pode conter espaços em branco",
+          }),
+      ])
+      .transform((e) => (e === "" ? undefined : e))
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.password && !data.newPassword) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "Nova Senha é obrigatório!",
+      path: ["newPassword"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.newPassword && !data.password) {
+        return false;
+      }
+
+      return true;
+    },
+    {
+      message: "Senha é obrigatório!",
+      path: ["password"],
+    }
+  );
+
 export const NewPasswordSchema = z.object({
-  password: z.string().min(8, {
-    message: "É necessários um mínimo de 8 caracteres",
-  }),
+  password: z
+    .string()
+    .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+    .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
+    .regex(/[A-Z]/, {
+      message: "A senha deve conter pelo menos uma letra maiúscula",
+    })
+    .regex(/[a-z]/, {
+      message: "A senha deve conter pelo menos uma letra minúscula",
+    })
+    .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
+    .regex(/[^A-Za-z0-9]/, {
+      message: "A senha deve conter pelo menos um caractere especial",
+    })
+    .refine((val) => !/\s/.test(val), {
+      message: "A senha não pode conter espaços em branco",
+    }),
 });
 
 export const ResetSchema = z.object({
@@ -17,21 +95,12 @@ export const LoginSchema = z.object({
   email: z.string().email({
     message: "Email é obrigatório",
   }),
-  password: z.string().min(1, {
-    message: "Senha é obrigatório",
-  }),
-});
-
-export const RegisterSchema = z.object({
-  email: z.string().email({
-    message: "Email é obrigatório",
-  }),
-  password: z.string().min(8, {
-    message: "É necessários um mínimo de 8 caracteres",
-  }),
-  name: z.string().min(1, {
-    message: "Nome é obrigatório",
-  }),
+  password: z
+    .string()
+    .min(1, { message: "Senha é obrigatório" })
+    .refine((val) => !/\s/.test(val), {
+      message: "A senha não pode conter espaços em branco",
+    }),
 });
 
 export const CreateUserSchema = z
@@ -67,7 +136,56 @@ export const CreateUserSchema = z
         message: "A senha não pode conter espaços em branco",
       }),
 
-    confirmPassword: z.string().min(8).max(32),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+      .max(32, { message: "A senha deve ter no máximo 32 caracteres" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"], // path of error
+  });
+export const EditUserSchema = z
+  .object({
+    email: z.string().email({
+      message: "Email é obrigatório",
+    }),
+    name: z.string().min(1, {
+      message: "Nome é obrigatório",
+    }),
+    userType: z.enum(
+      [UserRole.ADMIN, UserRole.DEFAULT, UserRole.CADASTRE, UserRole.REPORT],
+      {
+        required_error: "Você precisa selecionar um tipo de usuário.",
+      }
+    ),
+
+    password: z.optional(
+      z
+        .string()
+        // .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+        .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
+        .regex(/[A-Z]/, {
+          message: "A senha deve conter pelo menos uma letra maiúscula",
+        })
+        .regex(/[a-z]/, {
+          message: "A senha deve conter pelo menos uma letra minúscula",
+        })
+        .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
+        .regex(/[^A-Za-z0-9]/, {
+          message: "A senha deve conter pelo menos um caractere especial",
+        })
+        .refine((val) => !/\s/.test(val), {
+          message: "A senha não pode conter espaços em branco",
+        })
+    ),
+
+    confirmPassword: z.optional(
+      z
+        .string()
+        .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+        .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
+    ),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",

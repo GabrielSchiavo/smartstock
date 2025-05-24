@@ -1,6 +1,6 @@
 "use client";
 
-import { EllipsisVertical, LogOut, User } from "lucide-react";
+import { EllipsisVerticalIcon, LogOutIcon, UserIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -38,7 +38,7 @@ export function UserButton() {
               <Avatar className="h-8 w-8 rounded-lg grayscale">
                 <AvatarImage src={user?.image || ""} />
                 <AvatarFallback className="rounded-lg">
-                    <User className="text-foreground p-0.5" />
+                    <UserIcon className="text-foreground p-0.5" />
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -47,7 +47,7 @@ export function UserButton() {
                   {user?.role}
                 </span>
               </div>
-              <EllipsisVertical className="ml-auto size-4" />
+              <EllipsisVerticalIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -61,7 +61,7 @@ export function UserButton() {
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user?.image || ""} />
                   <AvatarFallback className="rounded-lg">
-                      <User className="text-foreground p-0.5" />
+                      <UserIcon className="text-foreground p-0.5" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -76,7 +76,7 @@ export function UserButton() {
             <LogoutButton>
               <DropdownMenuItem className="cursor-pointer">
                 <div className="flex gap-2 items-center">
-                  <LogOut />
+                  <LogOutIcon />
                   Sair
                 </div>
               </DropdownMenuItem>

@@ -80,22 +80,27 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      registerProduct(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-          toast.success(data.success);
-        } else {
-          toast.error(data.error);
-        }
+      registerProduct(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          if (data.success) {
+            toast.success(data.success);
+          } else {
+            toast.error(data.error);
+          }
 
-        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-        if (data.success && !data.error && onSuccess) {
-          form.reset(); // Limpa o formulário
-          onSuccess(true); // Fecha o diálogo
-          // window.location.reload(); // Recarrega a página
-        }
-      });
+          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+          if (data.success && !data.error && onSuccess) {
+            form.reset(); // Limpa o formulário
+            onSuccess(true); // Fecha o diálogo
+            // window.location.reload(); // Recarrega a página
+          }
+        })
+        .catch(() => {
+          setError("Algo deu errado!");
+          toast.error("Algo deu errado!");
+        });
     });
   };
 
@@ -211,7 +216,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Recebedor</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxReceiver
                       value={field.value}
                       onChange={field.onChange}
@@ -246,7 +251,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Grupo</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxGroup
                       value={field.value}
                       onChange={field.onChange}
@@ -266,7 +271,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subgrupo (Opcional)</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxSubgroup
                       value={field.value!}
                       onChange={field.onChange}
@@ -319,7 +324,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Doador</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxDonor
                       value={field.value!}
                       onChange={field.onChange}

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Eye, EyeOff } from 'lucide-react'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 // Use ComponentProps para extrair as props do componente Input
@@ -28,9 +28,9 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
         aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
       >
         {showPassword ? (
-          <EyeOff className="ml-auto h-4 w-4 opacity-50" />
+          <EyeOffIcon className="ml-auto h-4 w-4 opacity-50" />
         ) : (
-          <Eye className="ml-auto h-4 w-4 opacity-50" />
+          <EyeIcon className="ml-auto h-4 w-4 opacity-50" />
         )}
       </Button>
     </div>

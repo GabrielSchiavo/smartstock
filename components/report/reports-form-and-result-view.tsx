@@ -35,6 +35,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
+import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -51,7 +52,10 @@ export const ReportsFormAndResultView = () => {
     InventoryReport[]
   >([]);
   const [isPending, startTransition] = useTransition();
-  const [dates, setDates] = useState<{ initialDate?: Date; finalDate?: Date }>();
+  const [dates, setDates] = useState<{
+    initialDate?: Date;
+    finalDate?: Date;
+  }>();
 
   const form = useForm<z.infer<typeof CreateReportSchema>>({
     resolver: zodResolver(CreateReportSchema),
@@ -60,18 +64,17 @@ export const ReportsFormAndResultView = () => {
   const selectedType = form.watch("reportType");
   const initialDateValue = form.watch("initialDate");
   const finalDateValue = form.watch("finalDate");
-  
-    // Determina se o input deve estar desabilitado
-    const isDetailsDisabled =
-      selectedType === "INVENTORY";
-  
-    // Efeito para limpar o valor quando o campo é desabilitado
-    useEffect(() => {
-      if (isDetailsDisabled && initialDateValue && finalDateValue) {
-        form.setValue("initialDate", undefined, { shouldValidate: true });
-        form.setValue("finalDate", undefined, { shouldValidate: true });
-      }
-    }, [isDetailsDisabled, initialDateValue, finalDateValue, form]);
+
+  // Determina se o input deve estar desabilitado
+  const isDetailsDisabled = selectedType === "INVENTORY";
+
+  // Efeito para limpar o valor quando o campo é desabilitado
+  useEffect(() => {
+    if (isDetailsDisabled && initialDateValue && finalDateValue) {
+      form.setValue("initialDate", undefined, { shouldValidate: true });
+      form.setValue("finalDate", undefined, { shouldValidate: true });
+    }
+  }, [isDetailsDisabled, initialDateValue, finalDateValue, form]);
 
   const onSubmit = (values: z.infer<typeof CreateReportSchema>) => {
     setError("");
@@ -79,8 +82,8 @@ export const ReportsFormAndResultView = () => {
 
     startTransition(() => {
       if (values.reportType === "VALIDITY") {
-        generateValidityReport(values.initialDate!, values.finalDate!).then(
-          (data) => {
+        generateValidityReport(values.initialDate!, values.finalDate!)
+          .then((data) => {
             if (data.error) {
               setError(data.error);
               toast.error("Erro ao gerar relatório!");
@@ -88,11 +91,14 @@ export const ReportsFormAndResultView = () => {
               setValidityReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
             }
-          }
-        );
+          })
+          .catch(() => {
+            setError("Algo deu errado!");
+            toast.error("Algo deu errado!");
+          });
       } else if (values.reportType === "DONATIONS") {
-        generateDonationsReport(values.initialDate!, values.finalDate!).then(
-          (data) => {
+        generateDonationsReport(values.initialDate!, values.finalDate!)
+          .then((data) => {
             if (data.error) {
               setError(data.error);
               toast.error("Erro ao gerar relatório!");
@@ -100,11 +106,14 @@ export const ReportsFormAndResultView = () => {
               setDonationsReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
             }
-          }
-        );
+          })
+          .catch(() => {
+            setError("Algo deu errado!");
+            toast.error("Algo deu errado!");
+          });
       } else if (values.reportType === "PURCHASED") {
-        generatePurchasedReport(values.initialDate!, values.finalDate!).then(
-          (data) => {
+        generatePurchasedReport(values.initialDate!, values.finalDate!)
+          .then((data) => {
             if (data.error) {
               setError(data.error);
               toast.error("Erro ao gerar relatório!");
@@ -112,18 +121,26 @@ export const ReportsFormAndResultView = () => {
               setPurchasedReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
             }
-          }
-        );
+          })
+          .catch(() => {
+            setError("Algo deu errado!");
+            toast.error("Algo deu errado!");
+          });
       } else if (values.reportType === "INVENTORY") {
-        generateInventoryReport().then((data) => {
-          if (data.error) {
-            setError(data.error);
-            toast.error("Erro ao gerar relatório!");
-          } else if (data.data) {
-            setInventoryReportData(data.data);
-            toast.success("Relatório gerado com sucesso!");
-          }
-        });
+        generateInventoryReport()
+          .then((data) => {
+            if (data.error) {
+              setError(data.error);
+              toast.error("Erro ao gerar relatório!");
+            } else if (data.data) {
+              setInventoryReportData(data.data);
+              toast.success("Relatório gerado com sucesso!");
+            }
+          })
+          .catch(() => {
+            setError("Algo deu errado!");
+            toast.error("Algo deu errado!");
+          });
       }
     });
   };
@@ -145,7 +162,10 @@ export const ReportsFormAndResultView = () => {
                     <FormItem>
                       <FormLabel>Data Inicial</FormLabel>
                       <FormControl>
-                        <DatePickerMonthYear disabled={isDetailsDisabled} field={field} />
+                        <DatePickerMonthYear
+                          disabled={isDetailsDisabled}
+                          field={field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -158,7 +178,10 @@ export const ReportsFormAndResultView = () => {
                     <FormItem>
                       <FormLabel>Data Final</FormLabel>
                       <FormControl>
-                        <DatePickerMonthYear disabled={isDetailsDisabled} field={field} />
+                        <DatePickerMonthYear
+                          disabled={isDetailsDisabled}
+                          field={field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -171,7 +194,10 @@ export const ReportsFormAndResultView = () => {
                   name="reportType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tipo de Relatório:</FormLabel>
+                      <FormLabel className="flex items-center">
+                        Tipo de Relatório:
+                        <ToolTipHelpReportType />
+                      </FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -183,7 +209,7 @@ export const ReportsFormAndResultView = () => {
                               <RadioGroupItem value="VALIDITY" id="r1" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r1">
-                              Validade de Produtos
+                              Validades
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center">
@@ -191,7 +217,7 @@ export const ReportsFormAndResultView = () => {
                               <RadioGroupItem value="DONATIONS" id="r2" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r2">
-                              Produtos Doados
+                              Doados
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center">
@@ -199,7 +225,7 @@ export const ReportsFormAndResultView = () => {
                               <RadioGroupItem value="PURCHASED" id="r3" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r3">
-                              Produtos Comprados
+                              Comprados
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center">
@@ -207,7 +233,7 @@ export const ReportsFormAndResultView = () => {
                               <RadioGroupItem value="INVENTORY" id="r4" />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r4">
-                              Inventário Completo
+                              Inventário
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CreateUserSchema } from "@/schemas";
+import { EditUserSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -39,7 +39,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
-    typeof CreateUserSchema
+    typeof EditUserSchema
   > | null>(null);
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
           setInitialValues({
             name: productData.name || "",
             email: productData.email || "",
-            password: "",
-            confirmPassword: "",
+            password: undefined,
+            confirmPassword: undefined,
             userType: productData.role || undefined,
           });
         }
@@ -66,8 +66,8 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
     loadProduct();
   }, [userId.id]);
 
-  const form = useForm<z.infer<typeof CreateUserSchema>>({
-    resolver: zodResolver(CreateUserSchema),
+  const form = useForm<z.infer<typeof EditUserSchema>>({
+    resolver: zodResolver(EditUserSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -83,27 +83,32 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
     }
   }, [initialValues, form]);
 
-  const onSubmit = (values: z.infer<typeof CreateUserSchema>) => {
+  const onSubmit = (values: z.infer<typeof EditUserSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      editUser(userId.id, values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+      editUser(userId.id, values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
 
-        if (data.success) {
-          toast.success(data.success);
-        } else {
-          toast.error(data.error);
-        }
+          if (data.success) {
+            toast.success(data.success);
+          } else {
+            toast.error(data.error);
+          }
 
-        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-        if (data.success && !data.error && onSuccess) {
-          form.reset(); // Limpa o formulário
-          onSuccess(true); // Fecha o diálogo
-        }
-      });
+          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+          if (data.success && !data.error && onSuccess) {
+            form.reset(); // Limpa o formulário
+            onSuccess(true); // Fecha o diálogo
+          }
+        })
+        .catch(() => {
+          setError("Algo deu errado!");
+          toast.error("Algo deu errado!");
+        });
     });
   };
 
@@ -146,7 +151,7 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="example@example.com"
+                    placeholder="exemplo@exemplo.com"
                     type="email"
                   />
                 </FormControl>
@@ -195,10 +200,10 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
             name="userType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex">
+                <FormLabel className="flex items-center">
                   Tipo de usuário:
                   <ToolTipHelpUser />
-                  </FormLabel>
+                </FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
@@ -207,35 +212,39 @@ export const EditUserForm = ({ userId, onSuccess }: EditFormProps) => {
                   >
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.ADMIN} checked={field.value === UserRole.ADMIN}/>
+                        <RadioGroupItem
+                          value={UserRole.ADMIN}
+                          checked={field.value === UserRole.ADMIN}
+                        />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Admin
-                      </FormLabel>
+                      <FormLabel className="font-normal">Admin</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.DEFAULT} checked={field.value === UserRole.DEFAULT}/>
+                        <RadioGroupItem
+                          value={UserRole.DEFAULT}
+                          checked={field.value === UserRole.DEFAULT}
+                        />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Padrão
-                      </FormLabel>
+                      <FormLabel className="font-normal">Padrão</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.CADASTRE} checked={field.value === UserRole.CADASTRE}/>
+                        <RadioGroupItem
+                          value={UserRole.CADASTRE}
+                          checked={field.value === UserRole.CADASTRE}
+                        />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Cadastro
-                      </FormLabel>
+                      <FormLabel className="font-normal">Cadastro</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
-                        <RadioGroupItem value={UserRole.REPORT} checked={field.value === UserRole.REPORT}/>
+                        <RadioGroupItem
+                          value={UserRole.REPORT}
+                          checked={field.value === UserRole.REPORT}
+                        />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Relatório
-                      </FormLabel>
+                      <FormLabel className="font-normal">Relatório</FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>

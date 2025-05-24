@@ -1,12 +1,12 @@
 "use server";
 
 import bcryptjs from "bcryptjs";
-import { CreateUserSchema } from "@/schemas";
+import { CreateUserSchema, EditUserSchema } from "@/schemas";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { sendVerificationEmail } from "@/lib/send-mail";
 
@@ -100,16 +100,15 @@ export const getUserById = async (id: string) => {
 
 export const editUser = async (
   id: string,
-  values: z.infer<typeof CreateUserSchema>
+  values: z.infer<typeof EditUserSchema>
 ) => {
-  const validateFields = CreateUserSchema.safeParse(values);
+  const validateFields = EditUserSchema.safeParse(values);
 
   if (!validateFields.success) {
     return { error: "Campos inválidos!" };
   }
 
   const { email, password, name, userType } = validateFields.data;
-  const hashedPassword = await bcryptjs.hash(password, 10);
 
   const existingUserEmail = await db.user.findUnique({
     where: {
@@ -135,22 +134,35 @@ export const editUser = async (
     }
 
     // Atualiza o usuário
-    const updatedUser = await db.user.update({
-      where: { id },
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: userType,
-      },
-    });
+    const updateData: {
+      name: string;
+      email: string;
+      role: UserRole;
+      password?: string;
+    } = {
+      name,
+      email,
+      role: userType,
+    };
+
+      // const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Revalida os caminhos relevantes
+    // Apenas atualiza a senha se foi fornecida e não está vazia
+    if (password && password.trim().length > 0) {
+      updateData.password = await bcryptjs.hash(password, 10);
+    }
+
+    const updatedUser = await db.user.update({
+      where: { id },
+      data: updateData,
+    });
+
     revalidatePath("/");
 
     return {
       success: "Usuário atualizado com sucesso!",
-      product: updatedUser,
+      user: updatedUser,
     };
   } catch (error) {
     console.error("Erro ao editar o produto:", error);

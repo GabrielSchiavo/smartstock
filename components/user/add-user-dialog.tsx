@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { AddUserForm } from "@/components/user/add-user-form";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ export function AddUserDialog({}) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="cursor-pointer">
-          <Plus />
+          <PlusIcon />
           <span className="hidden lg:inline">Criar Usuário</span>
         </Button>
       </DialogTrigger>

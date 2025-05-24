@@ -1,7 +1,7 @@
 import { RoleGate } from "@/components/auth/role-gate";
 import { UserRole } from "@prisma/client";
 import { Metadata } from "next";
-import { ReportsFormAndResultView } from "@/components/reports/reports-form-and-result-view";
+import { ReportsFormAndResultView } from "@/components/report/reports-form-and-result-view";
 
 export const metadata: Metadata = {
   title: "Relatórios - SmartStock",

@@ -124,7 +124,7 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
 5. `Configurar geração e envio de email:` para o envio de email é necessário configurar:
    
-   - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`
+   - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para criar uma conta e gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`. Agora com estas credenciais é possivel acessar sua conta Ethereal.
   
    - Para `PRODUÇÃO`: 
   

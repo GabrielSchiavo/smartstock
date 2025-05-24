@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import DeleteProductDialog from "@/components/product/delete-product-dialog";
 import { EditProductDialog } from "@/components/product/edit-product-dialog";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
-import { MoreVertical } from "lucide-react";
+import { MoreVerticalIcon } from "lucide-react";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
@@ -211,7 +211,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreVertical />
+              <MoreVerticalIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

@@ -47,9 +47,11 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
-  const [initialValues, setInitialValues] = useState<z.infer<typeof CreateProductSchema> | null>(null);
+  const [initialValues, setInitialValues] = useState<z.infer<
+    typeof CreateProductSchema
+  > | null>(null);
 
-    // Carrega os dados do produto de forma assíncrona
+  // Carrega os dados do produto de forma assíncrona
   useEffect(() => {
     const loadProduct = async () => {
       try {
@@ -123,24 +125,29 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      editProduct(productId.id, values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-          toast.success(data.success);
-        } else {
-          toast.error(data.error);
-        }
+      editProduct(productId.id, values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          if (data.success) {
+            toast.success(data.success);
+          } else {
+            toast.error(data.error);
+          }
 
-        if (data.success && !data.error && onSuccess) {
-          form.reset(); // Limpa o formulário
-          onSuccess(true); // Fecha o diálogo
-        }
-      });
+          if (data.success && !data.error && onSuccess) {
+            form.reset(); // Limpa o formulário
+            onSuccess(true); // Fecha o diálogo
+          }
+        })
+        .catch(() => {
+          setError("Algo deu errado!");
+          toast.error("Algo deu errado!");
+        });
     });
   };
 
-    if (isLoading) {
+  if (isLoading) {
     return <div>Carregando dados do produto...</div>;
   }
 
@@ -261,8 +268,8 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Recebedor</FormLabel>
-                  <div className="select-container">
-                     <DynamicComboboxReceiver
+                  <div className="select-container relative w-full min-w-0">
+                    <DynamicComboboxReceiver
                       value={field.value}
                       onChange={field.onChange}
                       disabled={isPending}
@@ -296,7 +303,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Grupo</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxGroup
                       value={field.value}
                       onChange={field.onChange}
@@ -316,7 +323,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subgrupo (Opcional)</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxSubgroup
                       value={field.value!}
                       onChange={field.onChange}
@@ -346,13 +353,19 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                     >
                       <FormItem className="flex items-center">
                         <FormControl>
-                          <RadioGroupItem value={ProductType.DONATED} checked={field.value === ProductType.DONATED} />
+                          <RadioGroupItem
+                            value={ProductType.DONATED}
+                            checked={field.value === ProductType.DONATED}
+                          />
                         </FormControl>
                         <FormLabel className="font-normal">Doado</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center">
                         <FormControl>
-                          <RadioGroupItem value={ProductType.PURCHASED} checked={field.value === ProductType.PURCHASED} />
+                          <RadioGroupItem
+                            value={ProductType.PURCHASED}
+                            checked={field.value === ProductType.PURCHASED}
+                          />
                         </FormControl>
                         <FormLabel className="font-normal">Comprado</FormLabel>
                       </FormItem>
@@ -369,7 +382,7 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Doador</FormLabel>
-                  <div className="select-container">
+                  <div className="select-container relative w-full min-w-0">
                     <DynamicComboboxDonor
                       value={field.value!}
                       onChange={field.onChange}
@@ -377,10 +390,10 @@ export const EditProductForm = ({ productId, onSuccess }: EditFormProps) => {
                       allowCreate={true}
                       allowDelete={true}
                       placeholder={
-                              isDetailsDisabled
-                                ? "Selecione 'Doado' para habilitar"
-                                : "Digite o Doador"
-                            }
+                        isDetailsDisabled
+                          ? "Selecione 'Doado' para habilitar"
+                          : "Digite o Doador"
+                      }
                     />
                   </div>
                   <FormMessage />

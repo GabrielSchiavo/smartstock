@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/data-table/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/data-table/_components/data-table-pagination";
-import { ChevronDown, ChevronUp, Maximize2, Minimize2 } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon, Maximize2Icon, Minimize2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -138,9 +138,9 @@ export function DataTableUsers<TData, TValue>({
                   className="ml-auto"
                 >
                   {collapsedGroups.size === Object.keys(groupedData).length ? (
-                    <Maximize2 />
+                    <Maximize2Icon />
                   ) : (
-                    <Minimize2 />
+                    <Minimize2Icon />
                   )}
                 </Button>
               </TooltipTrigger>
@@ -199,9 +199,9 @@ export function DataTableUsers<TData, TValue>({
                         >
                           <div className="flex items-center gap-2">
                             {isCollapsed ? (
-                              <ChevronDown className="h-4 w-4" />
+                              <ChevronDownIcon className="h-4 w-4" />
                             ) : (
-                              <ChevronUp className="h-4 w-4" />
+                              <ChevronUpIcon className="h-4 w-4" />
                             )}
                             <span className="truncate max-w-[200px]">
                               {groupName}

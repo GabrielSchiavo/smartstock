@@ -13,7 +13,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 
 interface DeleteDialogProps {
@@ -46,7 +46,7 @@ export default function DeleteUserDialog({ userId }: DeleteDialogProps) {
           title="Delete"
         >
           <div>
-            <Trash2 className="w-4 h-4" />
+            <Trash2Icon className="w-4 h-4" />
             Excluir
           </div>
         </Button>

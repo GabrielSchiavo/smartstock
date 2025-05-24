@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FileText, Printer } from "lucide-react";
+import { FileTextIcon, PrinterIcon } from "lucide-react";
 import {
   DonationsReport,
   InventoryReport,
@@ -35,7 +35,7 @@ import {
 } from "@/lib/pdf-generator";
 import { toast } from "sonner";
 import React, { useRef } from "react";
-import { ToolTipHelpReport } from "@/components/reports/tool-tip-help-report";
+import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
 
 interface DataTableReportProps<T> {
   columns: ColumnDef<T>[];
@@ -132,7 +132,7 @@ export function DataTableReport<T>({
 
   return (
     <div className="grid gap-4 w-full">
-      <div className="flex justify-end gap-6 w-full">
+      <div className="flex items-center justify-end gap-6 w-full">
         <ToolTipHelpReport />
         <Button
           onClick={reactToPrintFn}
@@ -140,7 +140,7 @@ export function DataTableReport<T>({
           size="sm"
           className="cursor-pointer"
         >
-          <Printer />
+          <PrinterIcon />
           Imprimir
         </Button>
         <Button
@@ -149,7 +149,7 @@ export function DataTableReport<T>({
           size="sm"
           className="cursor-pointer"
         >
-          <FileText />
+          <FileTextIcon />
           Gerar PDF
         </Button>
       </div>

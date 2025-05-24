@@ -50,22 +50,27 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      registerUser(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        if (data.success) {
-          toast.success(data.success);
-        } else {
-          toast.error(data.error);
-        }
+      registerUser(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+          if (data.success) {
+            toast.success(data.success);
+          } else {
+            toast.error(data.error);
+          }
 
-        // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-        if (data.success && !data.error && onSuccess) {
-          form.reset(); // Limpa o formulário
-          onSuccess(true); // Fecha o diálogo
-          // window.location.reload(); // Recarrega a página
-        }
-      });
+          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
+          if (data.success && !data.error && onSuccess) {
+            form.reset(); // Limpa o formulário
+            onSuccess(true); // Fecha o diálogo
+            // window.location.reload(); // Recarrega a página
+          }
+        })
+        .catch(() => {
+          setError("Algo deu errado!");
+          toast.error("Algo deu errado!");
+        });
     });
   };
 
@@ -100,7 +105,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="example@example.com"
+                    placeholder="exemplo@exemplo.com"
                     type="email"
                   />
                 </FormControl>
@@ -149,7 +154,7 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             name="userType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex">
+                <FormLabel className="flex items-center">
                   Tipo de usuário:
                   <ToolTipHelpUser />
                 </FormLabel>
@@ -163,33 +168,25 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
                       <FormControl>
                         <RadioGroupItem value={UserRole.ADMIN} />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Admin 
-                      </FormLabel>
+                      <FormLabel className="font-normal">Admin</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.DEFAULT} />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Padrão
-                      </FormLabel>
+                      <FormLabel className="font-normal">Padrão</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.CADASTRE} />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Cadastro
-                      </FormLabel>
+                      <FormLabel className="font-normal">Cadastro</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center">
                       <FormControl>
                         <RadioGroupItem value={UserRole.REPORT} />
                       </FormControl>
-                      <FormLabel className="font-normal">
-                        Relatório
-                      </FormLabel>
+                      <FormLabel className="font-normal">Relatório</FormLabel>
                     </FormItem>
                   </RadioGroup>
                 </FormControl>

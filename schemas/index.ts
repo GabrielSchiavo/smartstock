@@ -6,7 +6,7 @@ export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
     email: z.optional(z.string().email()),
-    
+
     password: z.optional(
       z.string().refine((val) => !/\s/.test(val), {
         message: "A senha não pode conter espaços em branco",
@@ -195,11 +195,14 @@ export const EditUserSchema = z
 
 export const CreateProductSchema = z
   .object({
-    name: z.string().min(2).max(60),
+    name: z
+      .string()
+      .min(2, { message: "Nome é obrigatório" })
+      .max(60, { message: "Nome deve ter no máximo 60 caracteres" }),
     quantity: z
       .string()
-      .min(1)
-      .max(10)
+      .min(1, { message: "Quantidade é obrigatório" })
+      .max(10, { message: "Quantidade deve ter no máximo 10 caracteres" })
       .refine(
         (v) => {
           const n = Number(v);
@@ -207,22 +210,18 @@ export const CreateProductSchema = z
         },
         { message: "Número inválido" }
       ),
-    unit: z.enum(
-      [
-        UnitType.KG,
-        UnitType.G,
-        UnitType.L,
-        UnitType.UN,
-      ],
-      {
-        required_error: "Você precisa selecionar uma unidade de medida.",
-      }
-    ),
-    lot: z.string().min(2).max(30),
+    unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
+      required_error: "Você precisa selecionar uma unidade de medida.",
+    }),
+    lot: z
+      .string()
+      .min(2, { message: "Lote é obrigatório" })
+      .max(30, { message: "Lote deve ter no máximo 30 caracteres" }),
 
     validityDate: z.coerce.date({
       required_error: "Selecione uma data",
       invalid_type_error: "Isto não é uma data válida!",
+      message: "Selecione uma data.",
     }),
     // .refine((date) => date > new Date(), {
     //   message: "The date entered must be greater than today's date",
@@ -231,17 +230,32 @@ export const CreateProductSchema = z
     receiptDate: z.coerce.date({
       required_error: "Selecione uma data",
       invalid_type_error: "Isto não é uma data válida!",
+      message: "Selecione uma data.",
     }),
 
-    receiver: z.string().min(2).max(150),
-    group: z.string().min(2).max(50),
-    subgroup: z.string().min(2).max(50).optional(),
+    receiver: z
+      .string()
+      .min(2, { message: "Recebedor é obrigatório" })
+      .max(30, { message: "Recebedor deve ter no máximo 30 caracteres" }),
+    group: z
+      .string()
+      .min(2, { message: "Grupo é obrigatório" })
+      .max(50, { message: "Grupo deve ter no máximo 50 caracteres" }),
+    subgroup: z
+      .string()
+      .min(2)
+      .max(50, { message: "Subgrupo deve ter no máximo 50 caracteres" })
+      .optional(),
 
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       required_error: "Selecione um tipo de produto.",
     }),
 
-    donor: z.string().min(2).max(30).optional(),
+    donor: z
+      .string()
+      .min(2, { message: "Doador é obrigatório" })
+      .max(30, { message: "Doador deve ter no máximo 30 caracteres" })
+      .optional(),
   })
   .refine(
     (data) => {
@@ -263,17 +277,27 @@ export const CreateReportSchema = z
       .date({
         required_error: "Por favor selecione uma data inicial.",
         invalid_type_error: "Data inválida",
+        message: "Selecione uma data.",
       })
       .optional(),
     finalDate: z.coerce
       .date({
         required_error: "Por favor selecione uma data final.",
         invalid_type_error: "Data inválida",
+        message: "Selecione uma data.",
       })
       .optional(),
-    reportType: z.enum([ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.INVENTORY], {
-      required_error: "Selecione o tipo de relatório.",
-    }),
+    reportType: z.enum(
+      [
+        ReportType.VALIDITY,
+        ReportType.DONATIONS,
+        ReportType.PURCHASED,
+        ReportType.INVENTORY,
+      ],
+      {
+        required_error: "Selecione o tipo de relatório.",
+      }
+    ),
   })
   .refine(
     (data) => {

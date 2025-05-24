@@ -36,7 +36,7 @@ import {
 import { toast } from "sonner";
 import React, { useRef } from "react";
 import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
-import { ReportType } from "@/types";
+import { ReportType } from "@/types/index.enums";
 
 interface DataTableReportProps<T> {
   columns: ColumnDef<T>[];

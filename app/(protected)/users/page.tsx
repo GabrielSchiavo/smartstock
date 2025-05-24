@@ -4,7 +4,7 @@ import { FormSuccess } from "@/components/form-success";
 import { RoleGate } from "@/components/auth/role-gate";
 import { getUsers } from "@/actions/user";
 import { columnsTableUsers } from "@/components/data-table/_columns/columns-users";
-import { UserType } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 
 export const metadata: Metadata = {
   title: "Cadastro de Usuários - SmartStock",

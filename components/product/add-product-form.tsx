@@ -33,7 +33,7 @@ import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup"
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 import { toast } from "sonner";
-import { ProductType, UnitType } from "@prisma/client";
+import { ProductType, UnitType } from "@/types/index.enums";
 
 interface AddFormProps {
   onSuccess?: (shouldInvalidate: boolean) => void;

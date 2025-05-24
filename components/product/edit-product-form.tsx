@@ -33,7 +33,7 @@ import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup"
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 import { toast } from "sonner";
-import { ProductType, UnitType } from "@prisma/client";
+import { ProductType, UnitType } from "@/types/index.enums";
 
 interface EditFormProps {
   rowItemId: number;
@@ -58,7 +58,7 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
           setInitialValues({
             name: productData.name || "",
             quantity: productData.quantity?.toString() || "",
-            unit: productData.unit,
+            unit: productData.unit as UnitType,
             lot: productData.lot || "",
             validityDate: productData.validityDate || undefined,
             donor: productData.donor || undefined,
@@ -66,7 +66,7 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
             receiver: productData.receiver || "",
             group: productData.group || "",
             subgroup: productData.subgroup || undefined,
-            productType: productData.productType || undefined,
+            productType: productData.productType as ProductType || undefined,
           });
         }
       } catch (error) {

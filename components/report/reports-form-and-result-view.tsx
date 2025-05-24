@@ -36,7 +36,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
-import { ReportType } from "@/types";
+import { ReportType } from "@/types/index.enums";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");

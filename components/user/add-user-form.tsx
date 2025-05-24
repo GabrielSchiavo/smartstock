@@ -23,7 +23,7 @@ import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
-import { UserType } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 
 interface AddFormProps {
   onSuccess?: (shouldInvalidate: boolean) => void;

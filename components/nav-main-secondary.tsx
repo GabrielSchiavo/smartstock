@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RoleGate } from "@/components/auth/role-gate";
-import { UserType } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 
 export function NavMainSecondary({
   items,

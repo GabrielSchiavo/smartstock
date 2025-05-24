@@ -3,7 +3,8 @@
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
-import { User, UserType } from "@prisma/client";
+import { User } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 import { DataTableDropdownUser } from "../_components/data-table-dropdown-user";
 
 // Custom filter function for multi-column searching

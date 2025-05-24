@@ -1,6 +1,0 @@
-export enum ReportType {
-  VALIDITY = "VALIDITY",
-  DONATIONS = "DONATIONS",
-  PURCHASED = "PURCHASED",
-  INVENTORY = "INVENTORY",
-}

@@ -3,7 +3,7 @@ import { DataTableProducts } from "@/components/data-table/data-table-products";
 import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { Metadata } from "next";
 import { RoleGate } from "@/components/auth/role-gate";
-import { UserType } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 
 export const metadata: Metadata = {
   title: "Estoque de Produtos - SmartStock",

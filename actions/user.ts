@@ -8,7 +8,8 @@ import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { revalidatePath } from "next/cache";
 import { sendVerificationEmail } from "@/lib/send-mail";
-import { User, UserType } from "@prisma/client";
+import { User } from "@prisma/client";
+import { UserType } from "@/types/index.enums";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
@@ -142,7 +143,7 @@ export const editUser = async (
     } = {
       name,
       email,
-      role: userType,
+      role: userType as UserType,
     };
 
       // const hashedPassword = await bcryptjs.hash(password, 10);

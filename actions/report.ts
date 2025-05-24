@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { ProductType } from "@prisma/client";
+import { ProductType } from "@/types/index.enums";
 import { revalidatePath } from "next/cache";
 
 export type ValidityReport = {
@@ -205,7 +205,7 @@ export const generateInventoryReport = async (): Promise<{
         unit: product.unit,
         lot: product.lot,
         validityDate: product.validityDate,
-        productType: product.productType,
+        productType: product.productType as ProductType,
         daysUntilExpiry,
         status,
       };

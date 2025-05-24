@@ -6,7 +6,7 @@ import {
   ValidityReport,
 } from "@/actions/report";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
-import { ProductType } from "@prisma/client";
+import { ProductType } from "@/types/index.enums";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReport>[] = [
   {

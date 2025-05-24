@@ -1,5 +1,5 @@
-import { ReportType } from "@/types";
-import { ProductType, UnitType, UserType } from "@prisma/client";
+import { ReportType } from "@/types/index.enums";
+import { ProductType, UnitType, UserType } from "@/types/index.enums";
 import * as z from "zod";
 
 export const SettingsSchema = z

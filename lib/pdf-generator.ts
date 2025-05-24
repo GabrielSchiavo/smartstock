@@ -6,7 +6,7 @@ import {
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
-import { ProductType } from "@prisma/client";
+import { ProductType } from "@/types/index.enums";
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(

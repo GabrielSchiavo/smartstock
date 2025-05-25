@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/message-success";
 import { editUser, getUserById } from "@/actions/user";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -23,14 +23,10 @@ import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
+import { AddEditFormProps } from "@/types";
 
-interface EditFormProps {
-  rowItemId: string;
-  onSuccess?: (shouldInvalidate: boolean) => void;
-}
-
-export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
+export const EditUserForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -43,7 +39,7 @@ export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const productData = await getUserById(rowItemId);
+        const productData = await getUserById(rowItemId as string);
         if (productData) {
           setInitialValues({
             name: productData.name || "",
@@ -86,7 +82,7 @@ export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
     setSuccess("");
 
     startTransition(() => {
-      editUser(rowItemId, values)
+      editUser(rowItemId as string, values)
         .then((data) => {
           setError(data.error);
           setSuccess(data.success);
@@ -97,10 +93,10 @@ export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
             toast.error(data.error);
           }
 
-          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-          if (data.success && !data.error && onSuccess) {
+          // Fechar o diálogo se não houver erro e onShouldInvalidate foi fornecido
+          if (data.success && !data.error && onShouldInvalidate) {
             form.reset(); // Limpa o formulário
-            onSuccess(true); // Fecha o diálogo
+            onShouldInvalidate(true); // Fecha o diálogo
           }
         })
         .catch(() => {
@@ -251,8 +247,8 @@ export const EditUserForm = ({ rowItemId, onSuccess }: EditFormProps) => {
             )}
           />
         </div>
-        <FormError message={error} />
-        <FormSuccess message={success} />
+        <MessageError message={error} />
+        <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
             Atualizar Usuário

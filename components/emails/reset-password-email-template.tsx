@@ -1,3 +1,4 @@
+import { EmailTemplateProps } from "@/types";
 import {
   Body,
   Button,
@@ -15,16 +16,10 @@ import {
   Text,
 } from "@react-email/components";
 
-
-interface ResetPasswordEmailTemplateProps {
-  userName?: string;
-  url?: string;
-}
-
 export const ResetPasswordEmailTemplate = ({
   userName,
   url,
-}: ResetPasswordEmailTemplateProps) => {
+}: EmailTemplateProps) => {
   const urlImage = "https://react.email/static/logo-without-background.png";
   const currentYear = new Date().getFullYear();
   const previewText = `Recebemos uma solicitação para redefinir sua senha`;

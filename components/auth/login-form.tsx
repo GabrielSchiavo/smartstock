@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/message-success";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -105,8 +105,8 @@ export const LoginForm = () => {
               )}
             />
           </div>
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
+          <MessageError message={error || urlError} />
+          <MessageSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
             Entrar
           </Button>

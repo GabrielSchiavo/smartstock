@@ -6,7 +6,7 @@ import {
   PurchasedReport,
   ValidityReport,
 } from "@/actions/report";
-import { ProductType } from "@/types/index.enums";
+import { PdfUnitType, ProductType } from "@/types";
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
@@ -16,8 +16,8 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
   ) {
     super({
       orientation: "landscape",
-      unit: "mm",
-      format: "a4",
+      unit: PdfUnitType.MM,
+      format: PdfUnitType.A4,
     });
   }
 
@@ -85,8 +85,8 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
   ) {
     super({
       orientation: "landscape",
-      unit: "mm",
-      format: "a4",
+      unit: PdfUnitType.MM,
+      format: PdfUnitType.A4,
     });
   }
 
@@ -139,8 +139,8 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
   ) {
     super({
       orientation: "landscape",
-      unit: "mm",
-      format: "a4",
+      unit: PdfUnitType.MM,
+      format: PdfUnitType.A4,
     });
   }
 
@@ -181,8 +181,8 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
   constructor(private data: InventoryReport[]) {
     super({
       orientation: "landscape",
-      unit: "mm",
-      format: "a4",
+      unit: PdfUnitType.MM,
+      format: PdfUnitType.A4,
     });
   }
 

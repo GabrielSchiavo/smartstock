@@ -13,16 +13,12 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { AddEditFormProps } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface DeleteDialogProps {
-  rowItemId: string;
-    onOpenChange?: (open: boolean) => void;
-}
-
-export default function DeleteUserDialog({ rowItemId, onOpenChange }: DeleteDialogProps) {
+export default function DeleteUserDialog({ rowItemId, onOpenChange }: AddEditFormProps) {
       const [open, setOpen] = useState(false);
 
     const handleOpenChange = (newOpen: boolean) => {
@@ -35,7 +31,7 @@ export default function DeleteUserDialog({ rowItemId, onOpenChange }: DeleteDial
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteUser(rowItemId);
+      await deleteUser(rowItemId as string);
 
       toast.success(`Usuário com ID ${rowItemId} excluído com sucesso`);
             setOpen(false);

@@ -1,15 +1,15 @@
 "use server";
 
-import { CreateProductSchema } from "@/schemas";
+import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import type { Product } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const registerProduct = async (
-  values: z.infer<typeof CreateProductSchema>
+  values: z.infer<typeof CreateEditProductSchema>
 ) => {
-  const validateFields = CreateProductSchema.safeParse(values);
+  const validateFields = CreateEditProductSchema.safeParse(values);
 
   if (!validateFields.success) {
     return { error: "Campos inválidos!" };
@@ -182,10 +182,10 @@ export const getProductById = async (id: number) => {
 
 export const editProduct = async (
   id: number,
-  values: z.infer<typeof CreateProductSchema>
+  values: z.infer<typeof CreateEditProductSchema>
 ) => {
   // Validação dos campos
-  const validateFields = CreateProductSchema.safeParse(values);
+  const validateFields = CreateEditProductSchema.safeParse(values);
 
   if (!validateFields.success) {
     return { error: "Campos inválidos!" };

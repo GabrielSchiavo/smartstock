@@ -12,16 +12,12 @@ import {
 import { PencilIcon } from "lucide-react";
 import React, { useState } from "react";
 import { EditProductForm } from "@/components/product/edit-product-form";
-
-interface EditDialogProps {
-  rowItemId: number;
-  onOpenChange?: (open: boolean) => void;
-}
+import { AddEditFormProps } from "@/types";
 
 export function EditProductDialog({
   rowItemId,
   onOpenChange,
-}: EditDialogProps) {
+}: AddEditFormProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {

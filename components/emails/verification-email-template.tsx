@@ -1,3 +1,4 @@
+import { EmailTemplateProps } from "@/types";
 import {
   Body,
   Button,
@@ -15,16 +16,10 @@ import {
   Text,
 } from "@react-email/components";
 
-
-interface VerificationEmailTemplateProps {
-  userName?: string;
-  url?: string;
-}
-
 export const VerificationEmailTemplate = ({
   userName,
   url,
-}: VerificationEmailTemplateProps) => {
+}: EmailTemplateProps) => {
   const urlImage = "https://react.email/static/logo-without-background.png";
   const currentYear = new Date().getFullYear();
   const previewText = `Antes de começarmos, precisamos confirmar sua conta`;

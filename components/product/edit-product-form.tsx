@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CreateProductSchema } from "@/schemas";
+import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/message-success";
 import { editProduct, getProductById } from "@/actions/product";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -33,27 +33,23 @@ import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup"
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 import { toast } from "sonner";
-import { ProductType, UnitType } from "@/types/index.enums";
+import { ProductType, UnitType } from "@/types";
+import { AddEditFormProps } from "@/types";
 
-interface EditFormProps {
-  rowItemId: number;
-  onSuccess?: (shouldInvalidate: boolean) => void;
-}
-
-export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
+export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
-    typeof CreateProductSchema
+    typeof CreateEditProductSchema
   > | null>(null);
 
   // Carrega os dados do produto de forma assíncrona
   useEffect(() => {
     const loadProduct = async () => {
       try {
-        const productData = await getProductById(rowItemId);
+        const productData = await getProductById(rowItemId as number);
         if (productData) {
           setInitialValues({
             name: productData.name || "",
@@ -80,8 +76,8 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
     loadProduct();
   }, [rowItemId]);
 
-  const form = useForm<z.infer<typeof CreateProductSchema>>({
-    resolver: zodResolver(CreateProductSchema),
+  const form = useForm<z.infer<typeof CreateEditProductSchema>>({
+    resolver: zodResolver(CreateEditProductSchema),
     defaultValues: {
       name: "",
       quantity: "",
@@ -118,12 +114,12 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
     }
   }, [isDetailsDisabled, detailsValue, form]);
 
-  const onSubmit = (values: z.infer<typeof CreateProductSchema>) => {
+  const onSubmit = (values: z.infer<typeof CreateEditProductSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      editProduct(rowItemId, values)
+      editProduct(rowItemId as number, values)
         .then((data) => {
           setError(data.error);
           setSuccess(data.success);
@@ -133,9 +129,9 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
             toast.error(data.error);
           }
 
-          if (data.success && !data.error && onSuccess) {
+          if (data.success && !data.error && onShouldInvalidate) {
             form.reset(); // Limpa o formulário
-            onSuccess(true); // Fecha o diálogo
+            onShouldInvalidate(true); // Fecha o diálogo
           }
         })
         .catch(() => {
@@ -400,8 +396,8 @@ export const EditProductForm = ({ rowItemId, onSuccess }: EditFormProps) => {
             />
           </div>
         </div>
-        <FormError message={error} />
-        <FormSuccess message={success} />
+        <MessageError message={error} />
+        <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
             Update Product

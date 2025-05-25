@@ -13,16 +13,12 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { AddEditFormProps } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-interface DeleteDialogProps {
-  rowItemId: number;
-  onOpenChange?: (open: boolean) => void;
-}
-
-export default function DeleteProductDialog({ rowItemId, onOpenChange }: DeleteDialogProps) {
+export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEditFormProps) {
     const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {
@@ -35,7 +31,7 @@ export default function DeleteProductDialog({ rowItemId, onOpenChange }: DeleteD
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteProduct(rowItemId);
+      await deleteProduct(rowItemId as number);
 
       toast.success(`Produto com ID ${rowItemId} excluído com sucesso`);
       setOpen(false);

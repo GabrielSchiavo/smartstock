@@ -1,7 +1,7 @@
 "use server"
 
 import { currentRole } from "@/lib/auth"
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
 
 export const admin = async () => {
     const role = await currentRole();

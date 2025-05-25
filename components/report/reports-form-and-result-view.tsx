@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
+import { MessageError } from "@/components/message-error";
 import { useEffect, useState, useTransition } from "react";
 import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
 import { toast } from "sonner";
@@ -36,7 +36,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
-import { ReportType } from "@/types/index.enums";
+import { ReportType } from "@/types";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -245,7 +245,7 @@ export const ReportsFormAndResultView = () => {
                 />
               </div>
             </div>
-            <FormError message={error} />
+            <MessageError message={error} />
             <div className="flex justify-end">
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? "Gerando..." : "Gerar Relatório"}

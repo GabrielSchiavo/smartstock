@@ -9,7 +9,7 @@ import { generateVerificationToken } from "@/lib/tokens";
 import { revalidatePath } from "next/cache";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { User } from "@prisma/client";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>

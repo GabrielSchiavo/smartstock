@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { ProductType } from "@/types/index.enums";
+import { ProductType } from "@/types";
 import { revalidatePath } from "next/cache";
 
 export type ValidityReport = {

@@ -1,5 +1,5 @@
 import { currentRole } from "@/lib/auth";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
 import { NextResponse } from "next/server";
 
 export async function GET() {

@@ -3,13 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { HeaderAuth } from "@/components/auth/header-auth";
 import { BackButton } from "@/components/auth/back-button";
-
-interface CardWrapperProps {
-    children: React.ReactNode;
-    headerLabel: string;
-    backButtonLabel: string;
-    backButtonHref: string;
-}
+import { CardWrapperProps } from "@/types";
 
 export const CardWrapper = ({
     children,

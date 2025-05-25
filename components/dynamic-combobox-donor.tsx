@@ -26,21 +26,7 @@ import {
 } from "@/actions/donor";
 import { toast } from "sonner";
 import { BeatLoader } from "react-spinners";
-
-interface Option {
-  id: string;
-  name: string;
-}
-
-interface DynamicComboboxProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  allowCreate?: boolean;
-  allowDelete?: boolean;
-  disabled: boolean;
-  className?: string;
-}
+import { DynamicComboboxProps, Option } from "@/types";
 
 export function DynamicComboboxDonor({
   value,

@@ -1,7 +1,7 @@
 import { RoleGate } from "@/components/auth/role-gate";
 import { Metadata } from "next";
 import { ReportsFormAndResultView } from "@/components/report/reports-form-and-result-view";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
 
 export const metadata: Metadata = {
   title: "Relatórios - SmartStock",

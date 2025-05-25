@@ -5,8 +5,8 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/new-verification";
-import { FormSuccess } from "@/components/form-success";
-import { FormError } from "@/components/form-error";
+import { MessageSuccess } from "@/components/message-success";
+import { MessageError } from "@/components/message-error";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message
@@ -47,8 +47,8 @@ export const NewVerificationForm = () => {
     >
       <div className="flex items-center w-full justify-center">
         {!success && !error && <BeatLoader color="#71717b" />}
-        <FormSuccess message={success} />
-        {!success && <FormError message={error} />}
+        <MessageSuccess message={success} />
+        {!success && <MessageError message={error} />}
       </div>
     </CardWrapper>
   );

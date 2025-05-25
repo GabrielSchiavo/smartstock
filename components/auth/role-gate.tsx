@@ -1,14 +1,8 @@
 "use client";
 
 import { useCurrentRole } from "@/hooks/use-current-role";
-import { FormError } from "@/components/form-error";
-import { UserType } from "@/types/index.enums";
-
-interface RoleGateProps {
-    children: React.ReactNode;
-    allowedRoles: UserType[];
-    isPage: boolean;
-}
+import { MessageError } from "@/components/message-error";
+import { RoleGateProps } from "@/types";
 
 export const RoleGate = ({
     children,
@@ -21,7 +15,7 @@ export const RoleGate = ({
         if (isPage === true) {
             return (
                 <div className="px-4 pt-4">
-                    <FormError message="Você não tem permissão para visualizar este conteúdo!" />
+                    <MessageError message="Você não tem permissão para visualizar este conteúdo!" />
                 </div>
             )
         } else {

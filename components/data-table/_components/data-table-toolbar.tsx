@@ -1,19 +1,14 @@
 "use client";
 
-import { Table } from "@tanstack/react-table";
 import { DataTableViewOptions } from "@/components/data-table/_components/data-table-view-options";
 
 import { DataTableFacetedFilter } from "@/components/data-table/_components/data-table-faceted-filter";
 import { DataTableToolTipHelp } from "@/components/data-table/_components/data-table-tool-tip-help";
 import { AddUserDialog } from "@/components/user/add-user-dialog";
 import { AddProductDialog } from "@/components/product/add-product-dialog";
+import { DataTableToolbarProps } from "@/types";
 
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
-  toolTip: boolean;
-  addButton: boolean;
-  addButtonType?: string;
-}
+
 
 export function DataTableToolbar<TData>({
   table,

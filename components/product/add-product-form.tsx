@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { CreateProductSchema } from "@/schemas";
+import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/message-success";
 import { registerProduct } from "@/actions/product";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -33,19 +33,18 @@ import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup"
 import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
 import { toast } from "sonner";
-import { ProductType, UnitType } from "@/types/index.enums";
+import { ProductType, UnitType } from "@/types";
+import { AddEditFormProps } from "@/types";
 
-interface AddFormProps {
-  onSuccess?: (shouldInvalidate: boolean) => void;
-}
 
-export const AddProductForm = ({ onSuccess }: AddFormProps) => {
+
+export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof CreateProductSchema>>({
-    resolver: zodResolver(CreateProductSchema),
+  const form = useForm<z.infer<typeof CreateEditProductSchema>>({
+    resolver: zodResolver(CreateEditProductSchema),
     defaultValues: {
       name: "",
       quantity: "",
@@ -75,7 +74,7 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
     }
   }, [isDetailsDisabled, detailsValue, form]);
 
-  const onSubmit = (values: z.infer<typeof CreateProductSchema>) => {
+  const onSubmit = (values: z.infer<typeof CreateEditProductSchema>) => {
     setError("");
     setSuccess("");
 
@@ -90,10 +89,10 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
             toast.error(data.error);
           }
 
-          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-          if (data.success && !data.error && onSuccess) {
+          // Fechar o diálogo se não houver erro e onShouldInvalidate foi fornecido
+          if (data.success && !data.error && onShouldInvalidate) {
             form.reset(); // Limpa o formulário
-            onSuccess(true); // Fecha o diálogo
+            onShouldInvalidate(true); // Fecha o diálogo
             // window.location.reload(); // Recarrega a página
           }
         })
@@ -344,8 +343,8 @@ export const AddProductForm = ({ onSuccess }: AddFormProps) => {
             />
           </div>
         </div>
-        <FormError message={error} />
-        <FormSuccess message={success} />
+        <MessageError message={error} />
+        <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
             Criar Produto

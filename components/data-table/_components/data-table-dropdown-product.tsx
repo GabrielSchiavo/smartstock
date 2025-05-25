@@ -12,12 +12,9 @@ import {
 import { MoreVerticalIcon } from "lucide-react";
 import { EditProductDialog } from "@/components/product/edit-product-dialog";
 import DeleteProductDialog from "@/components/product/delete-product-dialog";
+import { AddEditFormProps  } from "@/types";
 
-interface DataTableDropdownProps {
-  rowItemId: number;
-}
-
-export function DataTableDropdownProduct({ rowItemId }: DataTableDropdownProps) {
+export function DataTableDropdownProduct({ rowItemId }: AddEditFormProps ) {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
   return (

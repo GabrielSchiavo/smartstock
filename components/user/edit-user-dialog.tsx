@@ -12,13 +12,9 @@ import {
 import { PencilIcon } from "lucide-react";
 import { EditUserForm } from "@/components/user/edit-user-form";
 import { useState } from "react";
+import { AddEditFormProps } from "@/types";
 
-interface EditDialogProps {
-  rowItemId: string;
-    onOpenChange?: (open: boolean) => void;
-}
-
-export function EditUserDialog({ rowItemId, onOpenChange }: EditDialogProps) {
+export function EditUserDialog({ rowItemId, onOpenChange }: AddEditFormProps) {
   const [open, setOpen] = useState(false);
 
     const handleOpenChange = (newOpen: boolean) => {
@@ -51,7 +47,7 @@ export function EditUserDialog({ rowItemId, onOpenChange }: EditDialogProps) {
             Atualize os usuários aqui. Clique em Atualizar Usuário quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <EditUserForm rowItemId={rowItemId} onSuccess={() => setOpen(false)} />
+        <EditUserForm rowItemId={rowItemId} onShouldInvalidate={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

@@ -2,11 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-
-interface BackButtonProps {
-    href: string,
-    label: string, 
-}
+import { BackButtonProps } from "@/types"
 
 export const BackButton = ({
     href,

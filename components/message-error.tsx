@@ -1,12 +1,9 @@
+import { MessageProps } from "@/types";
 import { TriangleAlertIcon } from "lucide-react";
 
-interface FormErrorProps {
-    message?: string;
-}
-
-export const FormError = ({
+export const MessageError = ({
     message,
-}: FormErrorProps) => {
+}: MessageProps) => {
     if (!message) return null;
 
     return (

@@ -1,15 +1,11 @@
 import * as React from "react";
-import { Table } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
-interface DataTableFacetedFilterProps<TData> {
-  table: Table<TData>;
-}
+import { DataTableFunctionsProps } from "@/types";
 
 export function DataTableFacetedFilter<TData>({
   table,
-}: DataTableFacetedFilterProps<TData>) {
+}: DataTableFunctionsProps<TData>) {
   return (
     <div className="relative">
       <Input

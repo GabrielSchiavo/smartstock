@@ -11,7 +11,6 @@ import {
 import { useReactToPrint } from "react-to-print";
 
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -36,15 +35,7 @@ import {
 import { toast } from "sonner";
 import React, { useRef } from "react";
 import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
-import { ReportType } from "@/types/index.enums";
-
-interface DataTableReportProps<T> {
-  columns: ColumnDef<T>[];
-  data: T[];
-  initialDate?: Date;
-  finalDate?: Date;
-  reportType: ReportType.VALIDITY | ReportType.DONATIONS | ReportType.PURCHASED | ReportType.INVENTORY;
-}
+import { DataTableReportProps, ReportType } from "@/types";
 
 export function DataTableReport<T>({
   columns,

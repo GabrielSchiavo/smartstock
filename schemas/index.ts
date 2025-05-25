@@ -1,104 +1,88 @@
-import { ReportType } from "@/types/index.enums";
-import { ProductType, UnitType, UserType } from "@/types/index.enums";
 import * as z from "zod";
+import { ProductType, UnitType, UserType, ReportType } from "@/types";
 
+// Schemas reutilizáveis
+const PasswordSchema = z
+  .string()
+  .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
+  .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
+  .regex(/[A-Z]/, {
+    message: "A senha deve conter pelo menos uma letra maiúscula",
+  })
+  .regex(/[a-z]/, {
+    message: "A senha deve conter pelo menos uma letra minúscula",
+  })
+  .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
+  .regex(/[^A-Za-z0-9]/, {
+    message: "A senha deve conter pelo menos um caractere especial",
+  })
+  .refine((val) => !/\s/.test(val), {
+    message: "A senha não pode conter espaços em branco",
+  });
+
+const OptionalPasswordSchema = PasswordSchema.optional();
+
+const EmailSchema = z.string().email({
+  message: "Email é obrigatório",
+});
+
+const NameSchema = z.string().min(1, {
+  message: "Nome é obrigatório",
+});
+
+const UserTypeSchema = z.enum(
+  [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
+  {
+    required_error: "Você precisa selecionar um tipo de usuário.",
+  }
+);
+
+// Schemas principais
 export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
-    email: z.optional(z.string().email()),
-
+    email: z.optional(EmailSchema),
     password: z.optional(
       z.string().refine((val) => !/\s/.test(val), {
         message: "A senha não pode conter espaços em branco",
       })
     ),
-
     newPassword: z
       .union([
-        z.string().length(0), // Aceita string vazia
-        z
-          .string()
-          .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-          .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
-          .regex(/[A-Z]/, {
-            message: "A senha deve conter pelo menos uma letra maiúscula",
-          })
-          .regex(/[a-z]/, {
-            message: "A senha deve conter pelo menos uma letra minúscula",
-          })
-          .regex(/[0-9]/, {
-            message: "A senha deve conter pelo menos um número",
-          })
-          .regex(/[^A-Za-z0-9]/, {
-            message: "A senha deve conter pelo menos um caractere especial",
-          })
-          .refine((val) => !/\s/.test(val), {
-            message: "A senha não pode conter espaços em branco",
-          }),
+        z.string().length(0),
+        PasswordSchema,
       ])
       .transform((e) => (e === "" ? undefined : e))
       .optional(),
   })
   .refine(
-    (data) => {
-      if (data.password && !data.newPassword) {
-        return false;
-      }
-
-      return true;
-    },
+    (data) => !(data.password && !data.newPassword),
     {
-      message: "Nova Senha é obrigatório!",
+      message: "Nova Senha é obrigatória!",
       path: ["newPassword"],
     }
   )
   .refine(
-    (data) => {
-      if (data.newPassword && !data.password) {
-        return false;
-      }
-
-      return true;
-    },
+    (data) => !(data.newPassword && !data.password),
     {
-      message: "Senha é obrigatório!",
+      message: "Senha é obrigatória!",
       path: ["password"],
     }
   );
 
 export const NewPasswordSchema = z.object({
-  password: z
-    .string()
-    .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-    .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
-    .regex(/[A-Z]/, {
-      message: "A senha deve conter pelo menos uma letra maiúscula",
-    })
-    .regex(/[a-z]/, {
-      message: "A senha deve conter pelo menos uma letra minúscula",
-    })
-    .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
-    .regex(/[^A-Za-z0-9]/, {
-      message: "A senha deve conter pelo menos um caractere especial",
-    })
-    .refine((val) => !/\s/.test(val), {
-      message: "A senha não pode conter espaços em branco",
-    }),
+  password: PasswordSchema,
 });
 
 export const ResetSchema = z.object({
-  email: z.string().email({
-    message: "Email é obrigatório",
-  }),
+  email: EmailSchema,
 });
 
 export const LoginSchema = z.object({
-  email: z.string().email({
-    message: "Email é obrigatório",
-  }),
+  email: EmailSchema,
   password: z
     .string()
-    .min(1, { message: "Senha é obrigatório" })
+    .min(1, { message: "Senha é obrigatória" })
     .refine((val) => !/\s/.test(val), {
       message: "A senha não pode conter espaços em branco",
     }),
@@ -106,94 +90,37 @@ export const LoginSchema = z.object({
 
 export const CreateUserSchema = z
   .object({
-    email: z.string().email({
-      message: "Email é obrigatório",
-    }),
-    name: z.string().min(1, {
-      message: "Nome é obrigatório",
-    }),
-    userType: z.enum(
-      [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
-      {
-        required_error: "Você precisa selecionar um tipo de usuário.",
-      }
-    ),
-
-    password: z
-      .string()
-      .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-      .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
-      .regex(/[A-Z]/, {
-        message: "A senha deve conter pelo menos uma letra maiúscula",
-      })
-      .regex(/[a-z]/, {
-        message: "A senha deve conter pelo menos uma letra minúscula",
-      })
-      .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
-      .regex(/[^A-Za-z0-9]/, {
-        message: "A senha deve conter pelo menos um caractere especial",
-      })
-      .refine((val) => !/\s/.test(val), {
-        message: "A senha não pode conter espaços em branco",
-      }),
-
-    confirmPassword: z
-      .string()
-      .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-      .max(32, { message: "A senha deve ter no máximo 32 caracteres" }),
+    email: EmailSchema,
+    name: NameSchema,
+    userType: UserTypeSchema,
+    password: PasswordSchema,
+    confirmPassword: PasswordSchema,
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem",
-    path: ["confirmPassword"], // path of error
-  });
+  .refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "As senhas não coincidem",
+      path: ["confirmPassword"],
+    }
+  );
+
 export const EditUserSchema = z
   .object({
-    email: z.string().email({
-      message: "Email é obrigatório",
-    }),
-    name: z.string().min(1, {
-      message: "Nome é obrigatório",
-    }),
-    userType: z.enum(
-      [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
-      {
-        required_error: "Você precisa selecionar um tipo de usuário.",
-      }
-    ),
-
-    password: z.optional(
-      z
-        .string()
-        // .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-        .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
-        .regex(/[A-Z]/, {
-          message: "A senha deve conter pelo menos uma letra maiúscula",
-        })
-        .regex(/[a-z]/, {
-          message: "A senha deve conter pelo menos uma letra minúscula",
-        })
-        .regex(/[0-9]/, { message: "A senha deve conter pelo menos um número" })
-        .regex(/[^A-Za-z0-9]/, {
-          message: "A senha deve conter pelo menos um caractere especial",
-        })
-        .refine((val) => !/\s/.test(val), {
-          message: "A senha não pode conter espaços em branco",
-        })
-    ),
-
-    confirmPassword: z.optional(
-      z
-        .string()
-        .min(8, { message: "A senha deve ter no mínimo 8 caracteres" })
-        .max(32, { message: "A senha deve ter no máximo 32 caracteres" })
-    ),
+    email: EmailSchema,
+    name: NameSchema,
+    userType: UserTypeSchema,
+    password: OptionalPasswordSchema,
+    confirmPassword: OptionalPasswordSchema,
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem",
-    path: ["confirmPassword"], // path of error
-  });
+  .refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "As senhas não coincidem",
+      path: ["confirmPassword"],
+    }
+  );
 
-export const CreateProductSchema = z
+export const CreateEditProductSchema = z
   .object({
     name: z
       .string()
@@ -201,13 +128,10 @@ export const CreateProductSchema = z
       .max(60, { message: "Nome deve ter no máximo 60 caracteres" }),
     quantity: z
       .string()
-      .min(1, { message: "Quantidade é obrigatório" })
+      .min(1, { message: "Quantidade é obrigatória" })
       .max(10, { message: "Quantidade deve ter no máximo 10 caracteres" })
       .refine(
-        (v) => {
-          const n = Number(v);
-          return !isNaN(n) && v?.length > 0;
-        },
+        (v) => !isNaN(Number(v)) && v?.length > 0,
         { message: "Número inválido" }
       ),
     unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
@@ -217,22 +141,16 @@ export const CreateProductSchema = z
       .string()
       .min(2, { message: "Lote é obrigatório" })
       .max(30, { message: "Lote deve ter no máximo 30 caracteres" }),
-
     validityDate: z.coerce.date({
       required_error: "Selecione uma data",
-      invalid_type_error: "Isto não é uma data válida!",
+      invalid_type_error: "Data inválida",
       message: "Selecione uma data.",
     }),
-    // .refine((date) => date > new Date(), {
-    //   message: "The date entered must be greater than today's date",
-    // }),
-
     receiptDate: z.coerce.date({
       required_error: "Selecione uma data",
-      invalid_type_error: "Isto não é uma data válida!",
+      invalid_type_error: "Data inválida",
       message: "Selecione uma data.",
     }),
-
     receiver: z
       .string()
       .min(2, { message: "Recebedor é obrigatório" })
@@ -246,11 +164,9 @@ export const CreateProductSchema = z
       .min(2)
       .max(50, { message: "Subgrupo deve ter no máximo 50 caracteres" })
       .optional(),
-
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       required_error: "Selecione um tipo de produto.",
     }),
-
     donor: z
       .string()
       .min(2, { message: "Doador é obrigatório" })
@@ -258,16 +174,10 @@ export const CreateProductSchema = z
       .optional(),
   })
   .refine(
-    (data) => {
-      // Validação condicional sem usar parent
-      if (data.productType === ProductType.DONATED && !data.donor) {
-        return false;
-      }
-      return true;
-    },
+    (data) => !(data.productType === ProductType.DONATED && !data.donor),
     {
       message: "Detalhes são obrigatórios para itens doados.",
-      path: ["donor"], // Especifica que o erro deve ser associado ao campo donor
+      path: ["donor"],
     }
   );
 
@@ -300,41 +210,28 @@ export const CreateReportSchema = z
     ),
   })
   .refine(
-    (data) => {
-      if (
-        data.reportType !== ReportType.INVENTORY &&
-        data.finalDate! < data.initialDate!
-      ) {
-        return false;
-      }
-      return true;
-    },
+    (data) => !(
+      data.reportType !== ReportType.INVENTORY && 
+      data.finalDate && 
+      data.initialDate && 
+      data.finalDate < data.initialDate
+    ),
     {
       message: "A data final não pode ser menor que a data inicial.",
       path: ["finalDate"],
     }
   )
   .refine(
-    (data) => {
-      if (data.reportType !== ReportType.INVENTORY && !data.initialDate) {
-        return false;
-      }
-      return true;
-    },
+    (data) => !(data.reportType !== ReportType.INVENTORY && !data.initialDate),
     {
-      message: "Data Inicial é obrigatório.",
+      message: "Data Inicial é obrigatória.",
       path: ["initialDate"],
     }
   )
   .refine(
-    (data) => {
-      if (data.reportType !== ReportType.INVENTORY && !data.finalDate) {
-        return false;
-      }
-      return true;
-    },
+    (data) => !(data.reportType !== ReportType.INVENTORY && !data.finalDate),
     {
-      message: "Data Final é obrigatório.",
+      message: "Data Final é obrigatória.",
       path: ["finalDate"],
     }
   );

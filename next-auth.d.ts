@@ -1,5 +1,5 @@
 import { type DefaultSession } from "next-auth";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
 
 export type ExtendedUser = DefaultSession["user"] & {
   role: UserType;

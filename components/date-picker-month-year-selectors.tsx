@@ -17,13 +17,9 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
-
-interface DatePickerFormProps<T extends FieldValues> {
-  field: ControllerRenderProps<T, Path<T>>;
-  disabled?: boolean;
-}
+import { DatePickerFormProps } from "@/types";
 
 export function DatePickerMonthYear<T extends FieldValues>({
   field,

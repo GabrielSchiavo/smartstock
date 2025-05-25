@@ -1,16 +1,5 @@
+import { PdfConfigProps, PdfUnitType } from "@/types";
 import jsPDF from "jspdf";
-
-export interface PdfConfig {
-  orientation?: "portrait" | "landscape";
-  unit?: "pt" | "mm" | "cm" | "in";
-  format?: string | number[];
-  margins?: {
-    top: number;
-    left: number;
-    right: number;
-    bottom: number;
-  };
-}
 
 export abstract class BasePdfGenerator {
   protected doc: jsPDF;
@@ -27,11 +16,11 @@ export abstract class BasePdfGenerator {
   protected headerYPosition: number | null = null;
   protected pageCount: number = 1;
 
-  constructor(config: PdfConfig = {}) {
+  constructor(config: PdfConfigProps = {}) {
     this.doc = new jsPDF({
       orientation: config.orientation || "portrait",
-      unit: config.unit || "mm",
-      format: config.format || "a4",
+      unit: config.unit || PdfUnitType.MM,
+      format: config.format || PdfUnitType.A4,
     });
 
     this.margins = config.margins || {
@@ -104,7 +93,7 @@ export abstract class BasePdfGenerator {
             this.doc.internal.pageSize.getWidth(),
             this.doc.internal.pageSize.getHeight(),
           ]
-        : "a4",
+        : PdfUnitType.A4,
       this.doc.internal.pageSize.getWidth() >
         this.doc.internal.pageSize.getHeight()
         ? "landscape"

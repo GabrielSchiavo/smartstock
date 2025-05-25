@@ -1,9 +1,6 @@
 import Image from "next/image";
 import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
-
-interface HeaderProps {
-  label: string;
-}
+import { HeaderProps } from "@/types";
 
 export const HeaderAuth = ({ label }: HeaderProps) => {
   return (

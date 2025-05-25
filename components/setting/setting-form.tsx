@@ -21,8 +21,8 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/auth/input-password";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-// import { FormError } from "@/components/form-error";
-// import { FormSuccess } from "@/components/form-success";
+// import { MessageError } from "@/components/form-error";
+// import { MessageSuccess } from "@/components/form-success";
 
 export const SettingForm = () => {
   const user = useCurrentUser();
@@ -186,8 +186,8 @@ export const SettingForm = () => {
               )}
             />
           </div>
-          {/* <FormError message={error} />
-          <FormSuccess message={success} /> */}
+          {/* <MessageError message={error} />
+          <MessageSuccess message={success} /> */}
           <div className="flex justify-end">
             <Button disabled={isPending} type="submit" size="sm">
               Salvar Alterações

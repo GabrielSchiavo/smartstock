@@ -1,13 +1,9 @@
+import { MessageProps } from "@/types";
 import { CircleCheckIcon } from "lucide-react";
 
-interface FormSuccessProps {
-    message?: string;
-    className?: string;
-}
-
-export const FormSuccess = ({
+export const MessageSuccess = ({
     message,
-}: FormSuccessProps) => {
+}: MessageProps) => {
     if (!message) return null;
 
     return (

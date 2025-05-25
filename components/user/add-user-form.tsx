@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/message-success";
 import { registerUser } from "@/actions/user";
 import { useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -23,13 +23,10 @@ import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
-import { UserType } from "@/types/index.enums";
+import { UserType } from "@/types";
+import { AddEditFormProps } from "@/types";
 
-interface AddFormProps {
-  onSuccess?: (shouldInvalidate: boolean) => void;
-}
-
-export const AddUserForm = ({ onSuccess }: AddFormProps) => {
+export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -60,10 +57,10 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             toast.error(data.error);
           }
 
-          // Fechar o diálogo se não houver erro e onSuccess foi fornecido
-          if (data.success && !data.error && onSuccess) {
+          // Fechar o diálogo se não houver erro e onShouldInvalidate foi fornecido
+          if (data.success && !data.error && onShouldInvalidate) {
             form.reset(); // Limpa o formulário
-            onSuccess(true); // Fecha o diálogo
+            onShouldInvalidate(true); // Fecha o diálogo
             // window.location.reload(); // Recarrega a página
           }
         })
@@ -195,8 +192,8 @@ export const AddUserForm = ({ onSuccess }: AddFormProps) => {
             )}
           />
         </div>
-        <FormError message={error} />
-        <FormSuccess message={success} />
+        <MessageError message={error} />
+        <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
             Criar Usuário

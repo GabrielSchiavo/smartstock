@@ -16,3 +16,7 @@ export interface EmailTemplateProps {
   userName?: string;
   url?: string;
 }
+
+export interface ColumnMetaProps {
+  title?: string;
+}

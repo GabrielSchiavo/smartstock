@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { DataTableFunctionsProps } from "@/types"
+import { ColumnMetaProps, DataTableFunctionsProps } from "@/types"
 
 export function DataTableViewOptions<TData>({
   table,
@@ -28,8 +28,8 @@ export function DataTableViewOptions<TData>({
           Visualizar
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
-        <DropdownMenuLabel>Alterar colunas</DropdownMenuLabel>
+      <DropdownMenuContent align="center" className="w-[180px]">
+        <DropdownMenuLabel>Exibir/Ocultar Colunas</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
@@ -41,11 +41,10 @@ export function DataTableViewOptions<TData>({
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className="capitalize"
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
-                {column.id}
+                {(column.columnDef.meta as ColumnMetaProps)?.title ?? column.id}
               </DropdownMenuCheckboxItem>
             )
           })}

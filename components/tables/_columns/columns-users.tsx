@@ -4,7 +4,7 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { User } from "@prisma/client";
-import { UserType } from "@/types";
+import { ColumnMetaProps, UserType } from "@/types";
 import { DataTableDropdownUser } from "@/components/tables/_components/data-table-dropdown-user";
 
 // Custom filter function for multi-column searching
@@ -45,63 +45,88 @@ export const columnsTableUsers: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="ID" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "ID",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "name",
-        header: ({ column }) => (
+    header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nome" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Nome",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "email",
-        header: ({ column }) => (
+    header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Email",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "emailVerified",
-        header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email verificado" />
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Email Verificado" />
     ),
     cell: ({ row }) => {
       const verified = row.getValue("emailVerified");
       if (verified === null) {
-        return <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">Não</span>;
+        return (
+          <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
+            Não
+          </span>
+        );
       } else {
-        return <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">Sim</span>
+        return (
+          <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">
+            Sim
+          </span>
+        );
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Email Verificado",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "role",
-        header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nível de acesso" />
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Nível de Acesso" />
     ),
-      cell: ({ row }) => {
+    cell: ({ row }) => {
       const role = row.getValue("role") as string;
       if (role === UserType.DEFAULT) {
         return <span className="uppercase">Padrão</span>;
       } else if (role === UserType.CADASTRE) {
-        return <span className="uppercase">Cadastro</span>
-      } else if(role === UserType.REPORT) {
-        return <span className="uppercase">Relatório</span>
+        return <span className="uppercase">Cadastro</span>;
+      } else if (role === UserType.REPORT) {
+        return <span className="uppercase">Relatório</span>;
       } else {
-        return <span className="bg-muted px-3 py-1 rounded-sm uppercase">{ role }</span> 
+        return (
+          <span className="bg-muted px-3 py-1 rounded-sm uppercase">
+            {role}
+          </span>
+        );
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Nível de Acesso",
+    } as ColumnMetaProps,
   },
 
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DataTableDropdownUser rowItemId={row.original.id}/>
-      );
+      return <DataTableDropdownUser rowItemId={row.original.id} />;
     },
   },
 ];

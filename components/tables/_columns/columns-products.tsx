@@ -4,7 +4,7 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { Product } from "@prisma/client";
-import { LocaleType, ProductType } from "@/types";
+import { ColumnMetaProps, LocaleType, ProductType } from "@/types";
 import { DataTableDropdownProduct } from "@/components/tables/_components/data-table-dropdown-product";
 
 // Custom filter function for multi-column searching
@@ -45,6 +45,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="ID" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "ID",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "name",
@@ -52,6 +55,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Nome" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Nome",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "quantity",
@@ -60,6 +66,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PT_BR),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Quantidade",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "unit",
@@ -67,6 +76,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Unidade" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Unidade",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "unitWeight",
@@ -82,6 +94,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Peso Unitário",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "unitOfUnitWeight",
@@ -97,6 +112,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Unidade Peso Unitário",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "lot",
@@ -104,6 +122,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Lote" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Lote",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "validityDate",
@@ -146,6 +167,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Data de Validade",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "receiptDate",
@@ -157,6 +181,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       return date.toLocaleDateString(LocaleType.PT_BR);
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Data de Recebimento",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "receiver",
@@ -164,6 +191,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Recebedor" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Recebedor",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "group",
@@ -171,6 +201,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Grupo" />
     ),
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Grupo",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "subgroup",
@@ -186,6 +219,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Subgrupo",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "productType",
@@ -209,6 +245,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Tipo de Produto",
+    } as ColumnMetaProps,
   },
   {
     accessorKey: "donor",
@@ -224,6 +263,9 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       }
     },
     filterFn: multiColumnFilterFn,
+    meta: {
+      title: "Doador",
+    } as ColumnMetaProps,
   },
   {
     id: "actions",

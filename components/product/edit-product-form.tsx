@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { editProduct, getProductById } from "@/actions/product";
+import { editProduct, getProductById } from "@/actions";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -205,7 +205,7 @@ export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormPr
                       value={field.value || ""}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger size="sm">
                           <SelectValue placeholder="Selecione a unidade" />
                         </SelectTrigger>
                       </FormControl>

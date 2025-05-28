@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EmailSchema, NameSchema, UserTypeSchema, OptionalPasswordSchema } from "../shared/base.schema";
+import { EmailSchema, NameSchema, UserTypeSchema, OptionalPasswordSchema } from "@/schemas/shared/base.schema";
 
 export const EditUserSchema = z
   .object({

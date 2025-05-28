@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { reset } from "@/actions/reset";
+import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
 
 export const ResetForm = () => {
@@ -35,13 +35,12 @@ export const ResetForm = () => {
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError("");
     setSuccess("");
-    
+
     startTransition(() => {
-      reset(values)
-        .then((data) => {
-            setError(data?.error);
-            setSuccess(data?.success);
-        })
+      resetPassword(values).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+      });
     });
   };
 
@@ -64,6 +63,7 @@ export const ResetForm = () => {
                     <Input
                       {...field}
                       disabled={isPending}
+                      className="default-height"
                       placeholder="exemplo@exemplo.com"
                       type="email"
                     />
@@ -75,7 +75,7 @@ export const ResetForm = () => {
           </div>
           <MessageError message={error} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
             Enviar email de redefinição
           </Button>
         </form>

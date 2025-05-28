@@ -31,7 +31,7 @@ export function AddProductDialog({}) {
             Crie novos produtos aqui. Clique em Criar Produto quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <AddProductForm onSuccess={() => setOpen(false)} />
+        <AddProductForm onShouldInvalidate={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

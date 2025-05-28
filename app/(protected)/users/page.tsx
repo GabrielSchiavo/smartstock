@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import { DataTableUsers } from "@/components/data-table/data-table-users";
 import { MessageSuccess } from "@/components/message-success";
 import { RoleGate } from "@/components/auth/role-gate";
-import { getUsers } from "@/actions/user";
 import { columnsTableUsers } from "@/components/data-table/_columns/columns-users";
 import { UserType } from "@/types";
+import { getUsers } from "@/actions";
 
 export const metadata: Metadata = {
   title: "Cadastro de Usuários - SmartStock",

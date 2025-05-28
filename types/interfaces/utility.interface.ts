@@ -1,4 +1,4 @@
-import { PdfUnitType } from "../enums";
+import { PdfUnitType } from "@/types/enums/enums";
 
 export interface PdfConfigProps {
   orientation?: "portrait" | "landscape";

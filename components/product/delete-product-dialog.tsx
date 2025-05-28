@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteProduct } from "@/actions/product";
+import { deleteProduct } from "@/actions";
 import {
   AlertDialog,
   AlertDialogTrigger,

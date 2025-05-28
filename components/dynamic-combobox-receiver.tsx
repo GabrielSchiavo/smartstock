@@ -15,18 +15,23 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   searchReceivers,
   createReceiver,
   getAllReceivers,
   deleteReceiver,
-  checkReceiverInProducts,
-} from "@/actions/receiver";
+  checkReceiverUsage,
+} from "@/actions";
 import { toast } from "sonner";
 import { BeatLoader } from "react-spinners";
-import { DynamicComboboxProps, Option } from "@/types";
+import { DynamicComboboxProps, OptionProps } from "@/types";
 
 export function DynamicComboboxReceiver({
   value,
@@ -39,7 +44,7 @@ export function DynamicComboboxReceiver({
 }: DynamicComboboxProps) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<OptionProps[]>([]);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -118,7 +123,7 @@ export function DynamicComboboxReceiver({
     });
   };
 
-  const handleSelect = (option: Option) => {
+  const handleSelect = (option: OptionProps) => {
     onChange(option.name);
     setInputValue(option.name);
     setOpen(false);
@@ -127,7 +132,7 @@ export function DynamicComboboxReceiver({
   const handleDelete = async (optionId: string, optionName: string) => {
     startTransition(async () => {
       try {
-        const { isUsed, message } = await checkReceiverInProducts(optionName);
+        const { isUsed, message } = await checkReceiverUsage(optionName);
 
         if (isUsed) {
           toast.warning("Não é possível excluir", {
@@ -178,6 +183,7 @@ export function DynamicComboboxReceiver({
           aria-expanded={open}
           className="w-full justify-between"
           disabled={disabled}
+          size={"sm"}
         >
           {displayValue}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50  absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />

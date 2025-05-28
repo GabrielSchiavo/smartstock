@@ -4,7 +4,7 @@ import { BeatLoader } from "react-spinners";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { newVerification } from "@/actions/new-verification";
+import { newVerification } from "@/actions";
 import { MessageSuccess } from "@/components/message-success";
 import { MessageError } from "@/components/message-error";
 

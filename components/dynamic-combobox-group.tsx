@@ -15,7 +15,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   searchGroups,
@@ -23,10 +28,10 @@ import {
   getAllGroups,
   deleteGroup,
   checkGroupInProducts,
-} from "@/actions/group";
+} from "@/actions";
 import { toast } from "sonner";
 import { BeatLoader } from "react-spinners";
-import { DynamicComboboxProps, Option } from "@/types";
+import { DynamicComboboxProps, OptionProps } from "@/types";
 
 export function DynamicComboboxGroup({
   value,
@@ -39,7 +44,7 @@ export function DynamicComboboxGroup({
 }: DynamicComboboxProps) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<OptionProps[]>([]);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -115,7 +120,7 @@ export function DynamicComboboxGroup({
     });
   };
 
-  const handleSelect = (option: Option) => {
+  const handleSelect = (option: OptionProps) => {
     onChange(option.name);
     setInputValue(option.name);
     setOpen(false);
@@ -175,6 +180,7 @@ export function DynamicComboboxGroup({
           aria-expanded={open}
           className="w-full justify-between"
           disabled={disabled}
+          size={"sm"}
         >
           {displayValue}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />

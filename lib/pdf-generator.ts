@@ -1,16 +1,16 @@
 // src/components/pdf/ValidityPdfGenerator.ts
 import { BasePdfGenerator } from "@/lib/base-pdf-generator";
 import {
-  DonationsReport,
-  InventoryReport,
-  PurchasedReport,
-  ValidityReport,
-} from "@/actions/report";
-import { PdfUnitType, ProductType } from "@/types";
+  DonationsReportResponse,
+  InventoryReportResponse,
+  PurchasedReportResponse,
+  ValidityReportResponse,
+} from "@/types";
+import { PdfUnitType, ProductType, validityStatusType } from "@/types";
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
-    private data: ValidityReport[],
+    private data: ValidityReportResponse[],
     private initialDate: string,
     private finalDate: string
   ) {
@@ -58,9 +58,9 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
 
   private getStatusText(status: string): string {
     switch (status) {
-      case "expired":
+      case validityStatusType.EXPIRED:
         return "Vencido";
-      case "about_to_expire":
+      case validityStatusType.ABOUT_TO_EXPIRE:
         return "Próximo";
       default:
         return "Válido";
@@ -69,7 +69,7 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
 }
 
 export const generateValidityPdf = async (
-  data: ValidityReport[],
+  data: ValidityReportResponse[],
   initialDate: string,
   finalDate: string
 ): Promise<Uint8Array> => {
@@ -79,7 +79,7 @@ export const generateValidityPdf = async (
 
 export class DonationsPdfGenerator extends BasePdfGenerator {
   constructor(
-    private data: DonationsReport[],
+    private data: DonationsReportResponse[],
     private initialDate: string,
     private finalDate: string
   ) {
@@ -123,7 +123,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
 }
 
 export const generateDonationsPdf = async (
-  data: DonationsReport[],
+  data: DonationsReportResponse[],
   initialDate: string,
   finalDate: string
 ): Promise<Uint8Array> => {
@@ -133,7 +133,7 @@ export const generateDonationsPdf = async (
 
 export class PurchasedPdfGenerator extends BasePdfGenerator {
   constructor(
-    private data: PurchasedReport[],
+    private data: PurchasedReportResponse[],
     private initialDate: string,
     private finalDate: string
   ) {
@@ -169,7 +169,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
 }
 
 export const generatePurchasedPdf = async (
-  data: PurchasedReport[],
+  data: PurchasedReportResponse[],
   initialDate: string,
   finalDate: string
 ): Promise<Uint8Array> => {
@@ -178,7 +178,7 @@ export const generatePurchasedPdf = async (
 };
 
 export class InventoryPdfGenerator extends BasePdfGenerator {
-  constructor(private data: InventoryReport[]) {
+  constructor(private data: InventoryReportResponse[]) {
     super({
       orientation: "landscape",
       unit: PdfUnitType.MM,
@@ -220,9 +220,9 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
   private getStatusText(status: string): string {
     switch (status) {
-      case "expired":
+      case validityStatusType.EXPIRED:
         return "Vencido";
-      case "about_to_expire":
+      case validityStatusType.ABOUT_TO_EXPIRE:
         return "Próximo";
       default:
         return "Válido";
@@ -231,7 +231,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 }
 
 export const generateInventoryPdf = async (
-  data: InventoryReport[]
+  data: InventoryReportResponse[]
 ): Promise<Uint8Array> => {
   const generator = new InventoryPdfGenerator(data);
   return generator.generate();

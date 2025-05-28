@@ -64,8 +64,8 @@
    - `Organização:` os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
   
 
-<!-- ## :film_strip: Galeria
-<p align="center">
+## :film_strip: Galeria
+<!-- <p align="center">
   <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Dashboard"/>
   <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Cadastro de Livros"/>
   <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Acervo"/>
@@ -92,7 +92,7 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
           npm update
           ```
 
-      - Instala pacotes respeitaremos a versão fornecida:
+      - Instala pacotes respeitando a versão fornecida:
   
           ```bash
           npm install
@@ -132,7 +132,13 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
   
      - Usando `OUTRO PROVEDOR`: para usar outro provedor SMTP consulte a documentação do `NODEMAILER` e altere as configurações do mesmo em `lib/mail.ts`.
 
-6. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
+7. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
+
+    ```bash
+    npm run type-check 
+    ```
+
+8. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
     ```bash
     npm run dev
     ```

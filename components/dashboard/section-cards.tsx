@@ -1,9 +1,8 @@
-import { getDonorsCount } from "@/actions/donor";
+import { getDonorsCount, getExpiredProductsCount } from "@/actions";
 import {
-  getExpiredProductsCount,
   getProductsCount,
   getProductsToExpireCount,
-} from "@/actions/product";
+} from "@/actions";
 import {
   Card,
   CardContent,
@@ -13,11 +12,16 @@ import {
 } from "@/components/ui/card";
 import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, HandHeartIcon } from "lucide-react";
 
-export function SectionCards() {
-  const productsCount = getProductsCount();
-  const productsToExpireCount = getProductsToExpireCount();
-  const expiredProductsCount = getExpiredProductsCount();
-  const donorsCount = getDonorsCount();
+export async function SectionCards() {
+  const productsResponse = await getProductsCount();
+  const productsToExpireResponse = await getProductsToExpireCount();
+  const productsExpiredResponse = await getExpiredProductsCount();
+  const donorsResponse = await getDonorsCount();
+
+  const productsCount = productsResponse.count;
+  const productsToExpireCount = productsToExpireResponse.count;
+  const productsExpiredCount = productsExpiredResponse.count;
+  const donorsCount = donorsResponse.count;
 
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card  grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -66,7 +70,7 @@ export function SectionCards() {
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {expiredProductsCount}
+            {productsExpiredCount}
           </CardTitle>
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-md  text-muted-foreground">

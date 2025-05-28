@@ -1,53 +1,37 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { db } from "@/lib/db";
-import { getVerificationTokenByEmail } from "@/data/verification-token"
-import { getPasswordResetTokenByEmail } from "@/data/password-reset-token"
+import { passwordResetTokenRepository, verificationTokenRepository } from "@/db";
 
 export const generatePasswordResetToken = async (email: string) => {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000); // One hour expires
 
-     const existingToken = await getPasswordResetTokenByEmail(email);
+     const existingToken = await passwordResetTokenRepository.findByEmail(email);
 
      if (existingToken) {
-        await db.passwordResetToken.delete({
-            where: { id: existingToken.id }
-        })
+        await passwordResetTokenRepository.delete(existingToken.id);
      }
 
-     const passwordResetToken = await db.passwordResetToken.create({
-        data: {
-            email,
-            token,
-            expires
-        }
-     });
-
-     return passwordResetToken;
+     return await passwordResetTokenRepository.create({
+        email,
+        token,
+        expires
+    });
 }
 
 export const generateVerificationToken = async (email: string) => {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000); // One hour expires
 
-    const existingToken = await getVerificationTokenByEmail(email); 
+    const existingToken = await verificationTokenRepository.findByEmail(email); 
 
     if (existingToken) {
-        await db.verificationToken.delete({
-            where: {
-                id: existingToken.id,
-            },
-        });
+        await verificationTokenRepository.delete(existingToken.id);
     }
 
-    const verificationToken = await db.verificationToken.create({
-        data: {
-            email,
-            token,
-            expires,
-        }
+   return await verificationTokenRepository.create({
+        email,
+        token,
+        expires
     });
-
-    return verificationToken;
 }

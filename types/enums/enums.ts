@@ -24,6 +24,12 @@ export enum ReportType {
   INVENTORY = "INVENTORY",
 }
 
+export enum validityStatusType {
+  VALID = "VALID",
+  EXPIRED = "EXPIRED",
+  ABOUT_TO_EXPIRE = "ABOUT_TO_EXPIRE",
+}
+
 export enum PdfUnitType {
   PT = "pt",
   MM = "mm",

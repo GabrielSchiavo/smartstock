@@ -53,7 +53,7 @@ export function EditProductDialog({
         </DialogHeader>
         <EditProductForm
           rowItemId={rowItemId}
-          onSuccess={() => setOpen(false)}
+          onShouldInvalidate={() => setOpen(false)}
         />
       </DialogContent>
     </Dialog>

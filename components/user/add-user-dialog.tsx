@@ -31,7 +31,7 @@ export function AddUserDialog({}) {
             Crie novos usuários aqui. Clique em Criar Usuário quando terminar.
           </DialogDescription>
         </DialogHeader>
-        <AddUserForm onSuccess={() => setOpen(false)} />
+        <AddUserForm onShouldInvalidate={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

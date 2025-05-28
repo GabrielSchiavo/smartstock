@@ -1,14 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  DonationsReport,
-  InventoryReport,
-  PurchasedReport,
-  ValidityReport,
-} from "@/actions/report";
+  DonationsReportResponse,
+  InventoryReportResponse,
+  PurchasedReportResponse,
+  ValidityReportResponse,
+  validityStatusType,
+} from "@/types";
 import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
 import { ProductType } from "@/types";
 
-export const columnsTableReportValidity: ColumnDef<ValidityReport>[] = [
+export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -80,13 +81,13 @@ export const columnsTableReportValidity: ColumnDef<ValidityReport>[] = [
     cell: ({ row }) => {
       const status = row.original.status;
 
-      if (status === "expired") {
+      if (status === validityStatusType.EXPIRED) {
         return (
           <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
             Vencido
           </span>
         );
-      } else if (status === "about_to_expire") {
+      } else if (status === validityStatusType.ABOUT_TO_EXPIRE) {
         return (
           <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
             Próximo do vencimento
@@ -103,7 +104,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReport>[] = [
   },
 ];
 
-export const columnsTableReportDonations: ColumnDef<DonationsReport>[] = [
+export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -145,7 +146,7 @@ export const columnsTableReportDonations: ColumnDef<DonationsReport>[] = [
   },
 ];
 
-export const columnsTableReportPurchased: ColumnDef<PurchasedReport>[] = [
+export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -181,7 +182,7 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReport>[] = [
   },
 ];
 
-export const columnsTableReportInventory: ColumnDef<InventoryReport>[] = [
+export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -263,13 +264,13 @@ export const columnsTableReportInventory: ColumnDef<InventoryReport>[] = [
     cell: ({ row }) => {
       const status = row.original.status;
 
-      if (status === "expired") {
+      if (status === validityStatusType.EXPIRED) {
         return (
           <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
             Vencido
           </span>
         );
-      } else if (status === "about_to_expire") {
+      } else if (status === validityStatusType.ABOUT_TO_EXPIRE) {
         return (
           <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
             Próximo do vencimento

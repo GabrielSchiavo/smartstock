@@ -26,14 +26,16 @@ export function DataTablePagination<TData>({
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto">
         <div className="flex items-center space-x-2 w-full sm:w-auto">
-          <p className="text-sm font-medium whitespace-nowrap">Linhas por página</p>
+          <p className="text-sm font-medium whitespace-nowrap">
+            Linhas por página
+          </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger size="sm" className="h-8 w-[70px]">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -53,6 +55,7 @@ export function DataTablePagination<TData>({
           <div className="flex items-center space-x-1">
             <Button
               variant="outline"
+              size={"sm"}
               className="h-8 w-8 p-0 hidden sm:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
@@ -62,6 +65,7 @@ export function DataTablePagination<TData>({
             </Button>
             <Button
               variant="outline"
+              size={"sm"}
               className="h-8 w-8 p-0"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
@@ -71,6 +75,7 @@ export function DataTablePagination<TData>({
             </Button>
             <Button
               variant="outline"
+              size={"sm"}
               className="h-8 w-8 p-0"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
@@ -80,6 +85,7 @@ export function DataTablePagination<TData>({
             </Button>
             <Button
               variant="outline"
+              size={"sm"}
               className="h-8 w-8 p-0 hidden sm:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}

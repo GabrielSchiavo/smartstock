@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { registerUser } from "@/actions/user";
+import { registerUser } from "@/actions";
 import { useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
@@ -85,6 +85,7 @@ export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
                   <Input
                     {...field}
                     disabled={isPending}
+                    className="default-height"
                     placeholder="Nome do usuário"
                   />
                 </FormControl>
@@ -102,6 +103,7 @@ export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
                   <Input
                     {...field}
                     disabled={isPending}
+                    className="default-height"
                     placeholder="exemplo@exemplo.com"
                     type="email"
                   />

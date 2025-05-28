@@ -1,9 +1,9 @@
-import { getProducts } from "@/actions/product";
 import { DataTableProducts } from "@/components/data-table/data-table-products";
 import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { Metadata } from "next";
-import { RoleGate } from "@/components/auth/role-gate";
 import { UserType } from "@/types";
+import { getProducts } from "@/actions";
+import { RoleGate } from "@/components/auth/role-gate";
 
 export const metadata: Metadata = {
   title: "Estoque de Produtos - SmartStock",

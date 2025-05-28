@@ -93,7 +93,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
             }}
             disabled={disabled}
           >
-            <SelectTrigger>
+            <SelectTrigger size="sm">
               <SelectValue placeholder="Mês" />
             </SelectTrigger>
             <SelectContent>
@@ -118,7 +118,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
             }}
             disabled={disabled}
           >
-            <SelectTrigger>
+            <SelectTrigger size="sm">
               <SelectValue placeholder="Ano" />
             </SelectTrigger>
             <SelectContent>

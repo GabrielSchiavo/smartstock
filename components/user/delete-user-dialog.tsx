@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteUser } from "@/actions/user";
+import { deleteUser } from "@/actions";
 import {
   AlertDialog,
   AlertDialogTrigger,

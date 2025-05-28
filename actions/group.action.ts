@@ -1,37 +1,22 @@
 'use server'
 
-import { db } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
-import type { Group } from '@prisma/client'
+import type {
+  GroupResponse,
+  SingleGroupResponse,
+  CheckGroupResponse,
+} from '@/types'
+import { groupRepository } from '@/db'
 
-// Tipos
-export type GroupResponse = {
-  success: boolean
-  data?: Group[]
-  message?: string
-  error?: string
-}
-
-export type SingleGroupResponse = {
-  success: boolean
-  data?: Group
-  message?: string
-  error?: string
-}
-
-export type CheckGroupResponse = {
-  isUsed: boolean
-  message: string | null
-}
-
-// Implementações individuais
+// Implementações
 export async function getAllGroups(): Promise<GroupResponse> {
   try {
-    const groups = await db.group.findMany({
-      orderBy: { name: 'asc' },
-      take: 100,
-    })
-    return { success: true, data: groups }
+    const groups = await groupRepository.findAll()
+    return { 
+      success: true, 
+      data: groups,
+      message: 'Grupos carregados com sucesso'
+    }
   } catch (error) {
     console.error('Erro ao buscar grupos:', error)
     return {
@@ -43,19 +28,15 @@ export async function getAllGroups(): Promise<GroupResponse> {
 }
 
 export async function searchGroups(query: string): Promise<GroupResponse> {
-  if (!query) return { success: true, data: [] }
+  if (!query.trim()) return { success: true, data: [] }
 
   try {
-    const groups = await db.group.findMany({
-      where: {
-        name: {
-          contains: query,
-          mode: 'insensitive',
-        },
-      },
-      take: 10,
-    })
-    return { success: true, data: groups }
+    const groups = await groupRepository.search(query)
+    return { 
+      success: true, 
+      data: groups,
+      message: 'Busca realizada com sucesso'
+    }
   } catch (error) {
     console.error('Erro ao pesquisar grupos:', error)
     return {
@@ -67,7 +48,9 @@ export async function searchGroups(query: string): Promise<GroupResponse> {
 }
 
 export async function createGroup(name: string): Promise<SingleGroupResponse> {
-  if (!name.trim()) {
+  const trimmedName = name.trim()
+  
+  if (!trimmedName) {
     return {
       success: false,
       message: 'Campo vazio',
@@ -76,36 +59,41 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
   }
 
   try {
-    const newGroup = await db.group.create({
-      data: { name },
-    })
+    const newGroup = await groupRepository.create(trimmedName)
     revalidatePath('/')
-    return { success: true, data: newGroup }
+    return { 
+      success: true, 
+      data: newGroup,
+      message: 'Grupo criado com sucesso'
+    }
   } catch (error) {
     console.error('Erro ao criar grupo:', error)
     return {
       success: false,
-      message: 'Falha ao criar',
+      message: 'Falha ao criar grupo',
       error: 'Grupo já existe ou falha na criação'
     }
   }
 }
 
-export async function deleteGroup(id: string): Promise<Omit<GroupResponse, 'data'>> {
+export async function deleteGroup(id: string): Promise<GroupResponse> {
   try {
-    const existingGroup = await db.group.findUnique({
-      where: { id }
-    })
+    const existingGroup = await groupRepository.findById(id)
 
     if (!existingGroup) {
-      return { success: false, message: 'Grupo não encontrado' }
+      return { 
+        success: false, 
+        message: 'Grupo não encontrado',
+        error: 'O grupo especificado não existe'
+      }
     }
 
-    await db.group.delete({
-      where: { id }
-    })
-
-    return { success: true, message: 'Grupo excluído com sucesso' }
+    await groupRepository.delete(id)
+    revalidatePath('/')
+    return { 
+      success: true, 
+      message: 'Grupo excluído com sucesso'
+    }
   } catch (error) {
     console.error('Erro ao excluir grupo:', error)
     return {
@@ -118,21 +106,16 @@ export async function deleteGroup(id: string): Promise<Omit<GroupResponse, 'data
 
 export async function checkGroupInProducts(groupName: string): Promise<CheckGroupResponse> {
   try {
-    const productWithGroup = await db.product.findFirst({
-      where: {
-        group: groupName
-      },
-      select: { id: true }
-    })
-
+    const productWithGroup = await groupRepository.checkInProducts(groupName)
+    
     return {
       isUsed: !!productWithGroup,
       message: productWithGroup
-        ? 'Este grupo está associada a um ou mais produtos'
+        ? 'Este grupo está associado a um ou mais produtos'
         : null
     }
   } catch (error) {
-    console.error('Erro ao verificar os produtos associados:', error)
+    console.error('Erro ao verificar produtos associados:', error)
     return {
       isUsed: true,
       message: 'Não foi possível verificar os produtos associados'

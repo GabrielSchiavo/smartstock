@@ -3,11 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, PrinterIcon } from "lucide-react";
 import {
-  DonationsReport,
-  InventoryReport,
-  PurchasedReport,
-  ValidityReport,
-} from "@/actions/report";
+  DonationsReportResponse,
+  InventoryReportResponse,
+  PurchasedReportResponse,
+  ValidityReportResponse,
+} from "@/types";
 import { useReactToPrint } from "react-to-print";
 
 import {
@@ -64,27 +64,27 @@ export function DataTableReport<T>({
       switch (reportType) {
         case ReportType.VALIDITY:
           pdf = await generateValidityPdf(
-            data as ValidityReport[],
+            data as ValidityReportResponse[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
         case ReportType.DONATIONS:
           pdf = await generateDonationsPdf(
-            data as DonationsReport[],
+            data as DonationsReportResponse[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
         case ReportType.PURCHASED:
           pdf = await generatePurchasedPdf(
-            data as PurchasedReport[],
+            data as PurchasedReportResponse[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
           break;
         case ReportType.INVENTORY:
-          pdf = await generateInventoryPdf(data as InventoryReport[]);
+          pdf = await generateInventoryPdf(data as InventoryReportResponse[]);
           break;
         default:
           throw new Error("Tipo de relatório inválido");

@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { newPassword } from "@/actions/new-password";
+import { newPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
@@ -74,7 +74,7 @@ export const NewPasswordForm = () => {
           </div>
           <MessageError message={error} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
             Redefinir senha
           </Button>
         </form>

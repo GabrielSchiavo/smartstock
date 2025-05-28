@@ -1,0 +1,28 @@
+"use server"
+
+import { currentRole } from "@/lib/auth"
+import { AuthorizationResponse, UserType } from "@/types"
+
+export const verifyAdminAccess = async (): Promise<AuthorizationResponse> => {
+  try {
+    const role = await currentRole()
+    
+    if (role === UserType.ADMIN) {
+      return { 
+        success: "Acesso autorizado para administrador",
+        isAuthorized: true
+      }
+    }
+
+    return { 
+      error: "Acesso restrito - Requer privilégios de administrador",
+      isAuthorized: false
+    }
+  } catch (error) {
+    console.error("Erro na verificação de permissões:", error)
+    return {
+      error: "Erro interno na verificação de autorização",
+      isAuthorized: false
+    }
+  }
+}

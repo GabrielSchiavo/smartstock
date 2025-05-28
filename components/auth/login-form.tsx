@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { login } from "@/actions/login";
+import { login } from "@/actions";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -56,7 +56,7 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Bem vindo de volta"
+      headerLabel="Bem-vindo de volta"
       backButtonLabel=""
       backButtonHref=""
     >
@@ -73,6 +73,7 @@ export const LoginForm = () => {
                     <Input
                       {...field}
                       disabled={isPending}
+                      className="default-height"
                       placeholder="exemplo@exemplo.com"
                       type="email"
                     />
@@ -107,7 +108,7 @@ export const LoginForm = () => {
           </div>
           <MessageError message={error || urlError} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
             Entrar
           </Button>
         </form>

@@ -17,15 +17,11 @@ import { useEffect, useState, useTransition } from "react";
 import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
 import { toast } from "sonner";
 import {
-  DonationsReport,
   generateDonationsReport,
   generateInventoryReport,
   generatePurchasedReport,
   generateValidityReport,
-  InventoryReport,
-  PurchasedReport,
-  ValidityReport,
-} from "@/actions/report";
+} from "@/actions";
 import { DataTableReport } from "@/components/data-table/data-table-reports";
 import {
   columnsTableReportInventory,
@@ -36,21 +32,21 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
-import { ReportType } from "@/types";
+import { DonationsReportResponse, InventoryReportResponse, PurchasedReportResponse, ReportType, ValidityReportResponse } from "@/types";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");
   const [validityReportData, setValidityReportData] = useState<
-    ValidityReport[]
+    ValidityReportResponse[]
   >([]);
   const [donationsReportData, setDonationsReportData] = useState<
-    DonationsReport[]
+    DonationsReportResponse[]
   >([]);
   const [purchasedReportData, setPurchasedReportData] = useState<
-    PurchasedReport[]
+    PurchasedReportResponse[]
   >([]);
   const [inventoryReportData, setInventoryReportData] = useState<
-    InventoryReport[]
+    InventoryReportResponse[]
   >([]);
   const [isPending, startTransition] = useTransition();
   const [dates, setDates] = useState<{
@@ -270,7 +266,7 @@ export const ReportsFormAndResultView = () => {
         {form.watch("reportType") === ReportType.VALIDITY &&
           validityReportData.length > 0 &&
           dates && (
-            <DataTableReport<ValidityReport>
+            <DataTableReport<ValidityReportResponse>
               columns={columnsTableReportValidity}
               data={validityReportData}
               initialDate={dates.initialDate}
@@ -282,7 +278,7 @@ export const ReportsFormAndResultView = () => {
         {form.watch("reportType") === ReportType.DONATIONS &&
           donationsReportData.length > 0 &&
           dates && (
-            <DataTableReport<DonationsReport>
+            <DataTableReport<DonationsReportResponse>
               columns={columnsTableReportDonations}
               data={donationsReportData}
               initialDate={dates.initialDate}
@@ -294,7 +290,7 @@ export const ReportsFormAndResultView = () => {
         {form.watch("reportType") === ReportType.PURCHASED &&
           purchasedReportData.length > 0 &&
           dates && (
-            <DataTableReport<PurchasedReport>
+            <DataTableReport<PurchasedReportResponse>
               columns={columnsTableReportPurchased}
               data={purchasedReportData}
               initialDate={dates.initialDate}
@@ -304,7 +300,7 @@ export const ReportsFormAndResultView = () => {
           )}
         {form.watch("reportType") === ReportType.INVENTORY &&
           inventoryReportData.length > 0 && (
-            <DataTableReport<InventoryReport>
+            <DataTableReport<InventoryReportResponse>
               columns={columnsTableReportInventory}
               data={inventoryReportData}
               reportType={ReportType.INVENTORY}

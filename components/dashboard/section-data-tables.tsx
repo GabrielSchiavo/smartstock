@@ -1,4 +1,4 @@
-import { getExpiredProducts, getProductsToExpire } from "@/actions/product";
+import { getExpiredProducts, getProductsToExpire } from "@/actions";
 import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
 import { DataTableProducts } from "@/components/data-table/data-table-products";
 

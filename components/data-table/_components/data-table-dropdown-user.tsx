@@ -20,7 +20,7 @@ export function DataTableDropdownUser({ rowItemId }: AddEditFormProps ) {
   return (
     <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
+        <Button size={"sm"} variant="ghost" className="h-8 w-8 p-0">
           <span className="sr-only">Open menu</span>
           <MoreVerticalIcon />
         </Button>

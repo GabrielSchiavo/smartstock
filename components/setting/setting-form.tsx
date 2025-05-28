@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { SettingsSchema } from "@/schemas";
-import { settings } from "@/actions/settings";
+import { updateUserSettings } from "@/actions";
 import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Input } from "@/components/ui/input";
@@ -50,7 +50,7 @@ export const SettingForm = () => {
       newPassword: values.newPassword || undefined,
     };
     startTransition(() => {
-      settings(cleanedValues)
+      updateUserSettings(cleanedValues)
         .then((data) => {
           if (data.error) {
             // setError(data.error);

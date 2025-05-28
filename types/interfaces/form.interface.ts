@@ -15,13 +15,13 @@ export interface DynamicComboboxProps {
   className?: string;
 }
 
-export interface Option {
+export interface OptionProps {
   id: string;
   name: string;
 }
 
 export interface AddEditFormProps {
-  rowItemId: string | number;
+  rowItemId?: string | number;
   onOpenChange?: (open: boolean) => void;
   onShouldInvalidate?: (shouldInvalidate: boolean) => void;
 }

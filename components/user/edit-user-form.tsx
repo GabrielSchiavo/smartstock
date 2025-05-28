@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/message-error";
 import { MessageSuccess } from "@/components/message-success";
-import { editUser, getUserById } from "@/actions/user";
+import { editUser, getUserById } from "@/actions";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
@@ -26,7 +26,10 @@ import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { UserType } from "@/types";
 import { AddEditFormProps } from "@/types";
 
-export const EditUserForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps) => {
+export const EditUserForm = ({
+  rowItemId,
+  onShouldInvalidate,
+}: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -46,7 +49,7 @@ export const EditUserForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps
             email: productData.email || "",
             password: undefined,
             confirmPassword: undefined,
-            userType: productData.role as UserType || undefined,
+            userType: (productData.role as UserType) || undefined,
           });
         }
       } catch (error) {
@@ -128,6 +131,7 @@ export const EditUserForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps
                   <Input
                     {...field}
                     disabled={isPending}
+                    className="default-height"
                     placeholder="Nome do usuário"
                   />
                 </FormControl>
@@ -145,6 +149,7 @@ export const EditUserForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps
                   <Input
                     {...field}
                     disabled={isPending}
+                    className="default-height"
                     placeholder="exemplo@exemplo.com"
                     type="email"
                   />

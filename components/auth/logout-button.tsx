@@ -1,6 +1,6 @@
 "use client";
 
-import { logout } from "@/actions/logout";
+import { logout } from "@/actions";
 import { LogoutButtonProps } from "@/types";
 
 export const LogoutButton = ({

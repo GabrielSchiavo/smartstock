@@ -31,7 +31,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.quantity.toLocaleString(LocaleType.PTBR)} {""}
+          {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
           <span className="font-medium">{row.original.unit}</span>
         </span>
       );
@@ -48,7 +48,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data de Validade" />
     ),
-    cell: ({ row }) => row.original.validityDate.toLocaleDateString(LocaleType.PTBR),
+    cell: ({ row }) => row.original.validityDate.toLocaleDateString(LocaleType.PT_BR),
   },
   {
     accessorKey: "daysUntilExpiry",
@@ -126,7 +126,7 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.quantity.toLocaleString(LocaleType.PTBR)} {""}
+          {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
           <span className="font-medium">{row.original.unit}</span>
         </span>
       );
@@ -143,7 +143,7 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data de Recebibento" />
     ),
-    cell: ({ row }) => row.original.receiptDate.toLocaleDateString(LocaleType.PTBR),
+    cell: ({ row }) => row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR),
   },
 ];
 
@@ -168,7 +168,7 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.quantity.toLocaleString(LocaleType.PTBR)} {""}
+          {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
           <span className="font-medium">{row.original.unit}</span>
         </span>
       );
@@ -179,7 +179,7 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data de Recebimento" />
     ),
-    cell: ({ row }) => row.original.receiptDate.toLocaleDateString(LocaleType.PTBR),
+    cell: ({ row }) => row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR),
   },
 ];
 
@@ -204,7 +204,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.quantity.toLocaleString(LocaleType.PTBR)} {""}
+          {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
           <span className="font-medium">{row.original.unit}</span>
         </span>
       );
@@ -221,7 +221,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data de Validade" />
     ),
-    cell: ({ row }) => row.original.validityDate.toLocaleDateString(LocaleType.PTBR),
+    cell: ({ row }) => row.original.validityDate.toLocaleDateString(LocaleType.PT_BR),
   },
   {
     accessorKey: "productType",

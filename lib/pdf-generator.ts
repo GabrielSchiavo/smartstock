@@ -25,9 +25,9 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
   public async generate(): Promise<Uint8Array> {
     this.addTitle("Relatório de Validade de Produtos");
     this.addSubtitle(
-      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PTBR)} a ${new Date(
+      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PT_BR)} a ${new Date(
         this.finalDate
-      ).toLocaleDateString(LocaleType.PTBR)}`
+      ).toLocaleDateString(LocaleType.PT_BR)}`
     );
 
     const headers = [
@@ -46,7 +46,7 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
       item.name,
       `${item.quantity} ${item.unit}`,
       item.lot,
-      new Date(item.validityDate).toLocaleDateString(LocaleType.PTBR),
+      new Date(item.validityDate).toLocaleDateString(LocaleType.PT_BR),
       item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
       this.getStatusText(item.status),
     ]);
@@ -94,9 +94,9 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
   public async generate(): Promise<Uint8Array> {
     this.addTitle("Relatório de Doações de Produtos");
     this.addSubtitle(
-      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PTBR)} a ${new Date(
+      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PT_BR)} a ${new Date(
         this.finalDate
-      ).toLocaleDateString(LocaleType.PTBR)}`
+      ).toLocaleDateString(LocaleType.PT_BR)}`
     );
 
     const headers = [
@@ -113,7 +113,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       item.name,
       `${item.quantity} ${item.unit}`,
       item.donor,
-      new Date(item.receiptDate).toLocaleDateString(LocaleType.PTBR),
+      new Date(item.receiptDate).toLocaleDateString(LocaleType.PT_BR),
     ]);
 
     this.addTable(headers, columnWidths, rows);
@@ -148,9 +148,9 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
   public async generate(): Promise<Uint8Array> {
     this.addTitle("Relatório de Produtos Comprados");
     this.addSubtitle(
-      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PTBR)} a ${new Date(
+      `Período: ${new Date(this.initialDate).toLocaleDateString(LocaleType.PT_BR)} a ${new Date(
         this.finalDate
-      ).toLocaleDateString(LocaleType.PTBR)}`
+      ).toLocaleDateString(LocaleType.PT_BR)}`
     );
 
     const headers = ["ID", "Produto", "Quantidade", "Data de Recebimento"];
@@ -159,7 +159,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
       item.id.toString(),
       item.name,
       `${item.quantity} ${item.unit}`,
-      new Date(item.receiptDate).toLocaleDateString(LocaleType.PTBR),
+      new Date(item.receiptDate).toLocaleDateString(LocaleType.PT_BR),
     ]);
 
     this.addTable(headers, columnWidths, rows);
@@ -189,7 +189,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
   public async generate(): Promise<Uint8Array> {
     this.addTitle("Relatório de Inventário de Produtos");
-    this.addSubtitle(`Data de geração: ${new Date().toLocaleDateString(LocaleType.PTBR)}`);
+    this.addSubtitle(`Data de geração: ${new Date().toLocaleDateString(LocaleType.PT_BR)}`);
 
     const headers = [
       "ID",
@@ -208,7 +208,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
       item.name,
       `${item.quantity} ${item.unit}`,
       item.lot,
-      new Date(item.validityDate).toLocaleDateString(LocaleType.PTBR),
+      new Date(item.validityDate).toLocaleDateString(LocaleType.PT_BR),
       item.productType === ProductType.PURCHASED ? "Comprado" : "Doado",
       item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
       this.getStatusText(item.status),

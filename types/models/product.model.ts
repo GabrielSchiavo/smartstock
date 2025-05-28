@@ -5,6 +5,8 @@ export type ProductResponse = {
   name: string;
   quantity: number;
   unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
   lot: string;
   validityDate: Date;
   donor?: string;

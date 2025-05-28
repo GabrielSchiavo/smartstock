@@ -16,12 +16,13 @@ export const registerProduct = async (
     return { error: "Campos inválidos!" };
   }
 
-  const { quantity, ...productData } = validatedFields.data;
+  const { quantity, unitWeight, ...productData } = validatedFields.data;
 
   try {
     await productRepository.create({
       ...productData,
       quantity: Number(quantity),
+      unitWeight: Number(unitWeight),
     });
     
     revalidatePath("/");
@@ -42,7 +43,7 @@ export const editProduct = async (
     return { error: "Campos inválidos!" };
   }
 
-  const { quantity, ...productData } = validatedFields.data;
+  const { quantity, unitWeight, ...productData } = validatedFields.data;
 
   try {
     const existingProduct = await productRepository.findById(id);
@@ -53,6 +54,7 @@ export const editProduct = async (
     const updatedProduct = await productRepository.update(id, {
       ...productData,
       quantity: Number(quantity),
+      unitWeight: Number(unitWeight),
       updatedAt: new Date(),
     });
 

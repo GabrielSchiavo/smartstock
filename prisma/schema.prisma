@@ -66,26 +66,28 @@ model PasswordResetToken {
 }
 
 model Product {
-  id            Int              @id @default(autoincrement())
+  id                   Int              @id @default(autoincrement())
 
-  name          String           @db.VarChar(150)
-  quantity      Float            @db.Real
-  unit          UnitType 
-  lot           String           @db.VarChar(50)  
-  validityDate  DateTime         @db.Date
-  donor         String?          @db.VarChar(150)
-  receiptDate   DateTime         @db.Date
-  receiver      String           @db.VarChar(150)
-  group         String           @db.VarChar(50)
-  subgroup      String?          @db.VarChar(50)
-  productType   ProductType      
+  name                 String           @db.VarChar(150)
+  quantity             Float            @db.Real
+  unit                 UnitType 
+  unitWeight           Float?           @db.Real
+  unitOfUnitWeight     UnitType? 
+  lot                  String           @db.VarChar(50)  
+  validityDate         DateTime         @db.Date
+  donor                String?          @db.VarChar(150)
+  receiptDate          DateTime         @db.Date
+  receiver             String           @db.VarChar(150)
+  group                String           @db.VarChar(50)
+  subgroup             String?          @db.VarChar(50)
+  productType          ProductType      
  
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
 }
 
 model Group {
-   id       String   @id @default(cuid())
+  id       String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

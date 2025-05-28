@@ -163,8 +163,8 @@ export function DataTableReport<T>({
                   : ""}
           </h1>
           <p className="text-md">
-            Período: {new Date(initialDate!).toLocaleDateString(LocaleType.PTBR)} a{" "}
-            {new Date(finalDate!).toLocaleDateString(LocaleType.PTBR)}
+            Período: {new Date(initialDate!).toLocaleDateString(LocaleType.PT_BR)} a{" "}
+            {new Date(finalDate!).toLocaleDateString(LocaleType.PT_BR)}
           </p>
         </div>
         <Table className="overflow-hidden!">

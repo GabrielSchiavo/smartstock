@@ -48,6 +48,8 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
       name: "",
       quantity: "",
       unit: undefined,
+      unitWeight: "",
+      unitOfUnitWeight: undefined,
       lot: "",
       validityDate: undefined,
       donor: undefined,
@@ -64,7 +66,7 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
 
   // Determina se o input deve estar desabilitado
   const isDetailsDisabled =
-    !selectedType || selectedType === ProductType.PURCHASED;
+    !selectedType || selectedType !== ProductType.DONATED;
 
   // Efeito para limpar o valor quando o campo é desabilitado
   useEffect(() => {
@@ -72,6 +74,21 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
       form.setValue("donor", undefined, { shouldValidate: true });
     }
   }, [isDetailsDisabled, detailsValue, form]);
+
+  const unitSelected = form.watch("unit");
+  const unitWeightValue = form.watch("unitWeight");
+  const unitOfUnitWeightValue = form.watch("unitOfUnitWeight");
+
+  // Determina se o input deve estar desabilitado
+  const isUnitWeightDisabled = !unitSelected || unitSelected !== UnitType.UN;
+
+  // Efeito para limpar o valor quando o campo é desabilitado
+  useEffect(() => {
+    if (isUnitWeightDisabled && [unitWeightValue, unitOfUnitWeightValue]) {
+      form.setValue("unitWeight", undefined, { shouldValidate: true });
+      form.setValue("unitOfUnitWeight", undefined, { shouldValidate: true });
+    }
+  }, [isUnitWeightDisabled, unitWeightValue, unitOfUnitWeightValue, form]);
 
   const onSubmit = (values: z.infer<typeof CreateEditProductSchema>) => {
     setError("");
@@ -166,6 +183,65 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
                         <SelectItem value={UnitType.G}>G</SelectItem>
                         <SelectItem value={UnitType.L}>L</SelectItem>
                         <SelectItem value={UnitType.UN}>UN.</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
+            <FormField
+              control={form.control}
+              name="unitWeight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Peso Unitário</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isUnitWeightDisabled || isPending}
+                      type="number"
+                      className="default-height"
+                      placeholder={
+                        isUnitWeightDisabled
+                          ? "Selecione a unidade 'UN.' para habilitar"
+                          : "Digite o peso unitário"
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="unitOfUnitWeight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Unidade Peso Unitário</FormLabel>
+                  <div className="select-container">
+                    <Select
+                      disabled={isUnitWeightDisabled || isPending}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger size="sm">
+                          <SelectValue
+                            placeholder={
+                              isUnitWeightDisabled
+                                ? "Selecione a unidade 'UN.' para habilitar"
+                                : "Digite a unidade do peso unitário"
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={UnitType.KG}>KG</SelectItem>
+                        <SelectItem value={UnitType.G}>G</SelectItem>
+                        <SelectItem value={UnitType.L}>L</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -326,7 +402,7 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
                     <DynamicComboboxDonor
                       value={field.value!}
                       onChange={field.onChange}
-                      disabled={isDetailsDisabled}
+                      disabled={isDetailsDisabled || isPending}
                       allowCreate={true}
                       allowDelete={true}
                       placeholder={

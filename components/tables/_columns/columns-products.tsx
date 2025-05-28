@@ -10,7 +10,7 @@ import { DataTableDropdownProduct } from "@/components/tables/_components/data-t
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.quantity} ${row.original.unit} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.donor} ${row.original.productType}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.quantity} ${row.original.unit} ${row.original.unitWeight} ${row.original.unitOfUnitWeight} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.donor} ${row.original.productType}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -58,7 +58,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Quantidade" />
     ),
-    cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PTBR),
+    cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PT_BR),
     filterFn: multiColumnFilterFn,
   },
   {
@@ -66,6 +66,36 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Unidade" />
     ),
+    filterFn: multiColumnFilterFn,
+  },
+  {
+    accessorKey: "unitWeight",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Peso Unitário" />
+    ),
+    cell: ({ row }) => {
+      const unitWeight = row.getValue("unitWeight");
+      if (unitWeight === null) {
+        return "-";
+      } else {
+        return row.original.unitWeight!.toLocaleString(LocaleType.PT_BR);
+      }
+    },
+    filterFn: multiColumnFilterFn,
+  },
+  {
+    accessorKey: "unitOfUnitWeight",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Unidade Peso Unitário" />
+    ),
+    cell: ({ row }) => {
+      const unitOfUnitWeight = row.getValue("unitOfUnitWeight");
+      if (unitOfUnitWeight === null) {
+        return "-";
+      } else {
+        return unitOfUnitWeight;
+      }
+    },
     filterFn: multiColumnFilterFn,
   },
   {
@@ -90,7 +120,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       const diffTime = validityDate.getTime() - currentDate.getTime();
       const diffDays = diffTime / (1000 * 60 * 60 * 24); // Converter para dias
 
-      const dateString = validityDate.toLocaleDateString(LocaleType.PTBR);
+      const dateString = validityDate.toLocaleDateString(LocaleType.PT_BR);
 
       if (diffDays < 0) {
         // Data passada
@@ -124,7 +154,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("receiptDate"));
-      return date.toLocaleDateString(LocaleType.PTBR);
+      return date.toLocaleDateString(LocaleType.PT_BR);
     },
     filterFn: multiColumnFilterFn,
   },
@@ -150,7 +180,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const subgroup = row.getValue("subgroup");
       if (subgroup === null) {
-        return "N/A";
+        return "-";
       } else {
         return subgroup;
       }
@@ -188,7 +218,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const donor = row.getValue("donor");
       if (donor === null) {
-        return "N/A";
+        return "-";
       } else {
         return donor;
       }
@@ -199,9 +229,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DataTableDropdownProduct rowItemId={row.original.id}/>
-      );
+      return <DataTableDropdownProduct rowItemId={row.original.id} />;
     },
   },
 ];

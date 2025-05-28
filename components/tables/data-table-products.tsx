@@ -23,7 +23,12 @@ import {
 } from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import { ChevronDownIcon, ChevronUpIcon, Maximize2Icon, Minimize2Icon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Maximize2Icon,
+  Minimize2Icon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -31,7 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps } from "@/types";
+import { DataTableProps, LocaleType, ProductResponse, UnitType } from "@/types";
 
 export function DataTableProducts<TData, TValue>({
   columns,
@@ -111,6 +116,43 @@ export function DataTableProducts<TData, TValue>({
     }
   };
 
+  const calculateTotalValues = (rows: Row<TData>[]) => {
+    return rows.reduce(
+      (total, row) => {
+        const original = row.original as ProductResponse; // Cast para acessar propriedades dinamicamente
+        const quantity = original.quantity || 0;
+        const unit = original.unit;
+        const unitWeight = original.unitWeight || 0;
+        const unitOfUnitWeight = original.unitOfUnitWeight || UnitType.KG;
+
+        let itemWeight = 0;
+        let itemVolume = 0;
+
+        if (unit === UnitType.KG) {
+          itemWeight = quantity; // Se a unidade for KG, o peso é igual à quantidade
+        } else if (unit === UnitType.G) {
+          itemWeight = quantity / 1000; // Converte G para KG
+        } else if (unit === UnitType.L) {
+          itemVolume = quantity; // Considerando que 1L de água pesa aproximadamente 1KG
+        } else if (unit === UnitType.UN) {
+          // Converte o peso unitário para KG se necessário
+          if (unitOfUnitWeight === UnitType.G) {
+            itemWeight = quantity * (unitWeight / 1000);
+          } else if (unitOfUnitWeight === UnitType.L) {
+            itemVolume = quantity * unitWeight; // Considerando que 1L de água pesa aproximadamente 1KG
+          } else {
+            itemWeight = quantity * unitWeight; // Se for KG ou outra unidade, multiplica diretamente
+          }
+        }
+        return {
+          weight: total.weight + itemWeight,
+          volume: total.volume + itemVolume,
+        };
+      },
+      { weight: 0, volume: 0 }
+    );
+  };
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex gap-2 items-center justify-between">
@@ -175,6 +217,49 @@ export function DataTableProducts<TData, TValue>({
                 // Render grouped rows with toggle functionality
                 Object.entries(groupedData).map(([groupName, groupRows]) => {
                   const isCollapsed = collapsedGroups.has(groupName);
+
+                  const getTotalValuesDisplay = (groupRows: Row<TData>[]) => {
+                    const totalValues = calculateTotalValues(groupRows);
+
+                    const hasUnit = (unitTypes: UnitType[]) =>
+                      groupRows.some((row) => {
+                        const product = row.original as ProductResponse;
+                        return (
+                          unitTypes.includes(product.unit) ||
+                          (product.unit === UnitType.UN &&
+                            unitTypes.includes(product.unitOfUnitWeight!))
+                        );
+                      });
+
+                    const format = (value: number, unit: string) =>
+                      Number(value.toFixed(3)).toLocaleString(
+                        LocaleType.PT_BR,
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 3,
+                        }
+                      ) + ` ${unit}`;
+
+                    const hasLiters = hasUnit([UnitType.L]);
+                    const hasKilos =
+                      hasUnit([UnitType.KG, UnitType.G]) ||
+                      (hasUnit([UnitType.UN]) && !hasUnit([UnitType.L]));
+
+                    return hasKilos && hasLiters ? (
+                      <span className="flex items-center gap-2">
+                        <span>{format(totalValues.weight, "KG")}</span>
+                        <span>{" & "}</span>
+                        <span>{format(totalValues.volume, "L")}</span>
+                      </span>
+                    ) : hasLiters ? (
+                      format(totalValues.volume, "L")
+                    ) : (
+                      format(totalValues.weight, "KG")
+                    );
+                  };
+
+                  const totalToShow = getTotalValuesDisplay(groupRows);
+
                   return (
                     <React.Fragment key={groupName}>
                       <TableRow
@@ -190,18 +275,28 @@ export function DataTableProducts<TData, TValue>({
                           colSpan={columns.length}
                           className="font-semibold"
                         >
-                          <div className="flex items-center gap-2">
-                            {isCollapsed ? (
-                              <ChevronDownIcon className="h-4 w-4" />
-                            ) : (
-                              <ChevronUpIcon className="h-4 w-4" />
-                            )}
-                            <span className="truncate max-w-[200px]">
-                              {groupName}
-                            </span>
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-2">
+                                {isCollapsed ? (
+                                  <ChevronDownIcon className="h-4 w-4" />
+                                ) : (
+                                  <ChevronUpIcon className="h-4 w-4" />
+                                )}
+                                <span className="truncate max-w-[200px]">
+                                  {groupName}
+                                </span>
+                              </div>
+                              <span className="flex items-center font-normal text-muted-foreground gap-2">
+                                Total:
+                                <span className="font-medium">
+                                  {totalToShow}
+                                </span>
+                              </span>
+                            </div>
                             <span className="font-normal text-muted-foreground italic">
-                              ({groupRows.length}{" "}
-                              {groupRows.length === 1 ? "item" : "itens"})
+                              {groupRows.length}{" "}
+                              {groupRows.length === 1 ? "item" : "itens"}
                             </span>
                           </div>
                         </TableCell>

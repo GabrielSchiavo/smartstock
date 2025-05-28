@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/message-error";
-import { MessageSuccess } from "@/components/message-success";
+import { MessageError } from "@/components/utils/message-error";
+import { MessageSuccess } from "@/components/utils/message-success";
 import { newPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";

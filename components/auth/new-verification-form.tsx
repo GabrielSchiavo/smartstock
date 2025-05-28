@@ -5,8 +5,8 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions";
-import { MessageSuccess } from "@/components/message-success";
-import { MessageError } from "@/components/message-error";
+import { MessageSuccess } from "@/components/utils/message-success";
+import { MessageError } from "@/components/utils/message-error";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message

@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/message-error";
-import { MessageSuccess } from "@/components/message-success";
+import { MessageError } from "@/components/utils/message-error";
+import { MessageSuccess } from "@/components/utils/message-success";
 import { login } from "@/actions";
 import { useState, useTransition } from "react";
 import Link from "next/link";

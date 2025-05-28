@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/message-error";
-import { MessageSuccess } from "@/components/message-success";
+import { MessageError } from "@/components/utils/message-error";
+import { MessageSuccess } from "@/components/utils/message-success";
 import { registerProduct } from "@/actions";
 import { useEffect, useState, useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -27,11 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
-import { DynamicComboboxGroup } from "@/components/dynamic-combobox-group";
-import { DynamicComboboxSubgroup } from "@/components/dynamic-combobox-subgroup";
-import { DynamicComboboxDonor } from "@/components/dynamic-combobox-donor";
-import { DynamicComboboxReceiver } from "@/components/dynamic-combobox-receiver";
+import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
+import { DynamicComboboxGroup } from "@/components/product/dynamic-combobox-group";
+import { DynamicComboboxSubgroup } from "@/components/product/dynamic-combobox-subgroup";
+import { DynamicComboboxDonor } from "@/components/product/dynamic-combobox-donor";
+import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-receiver";
 import { toast } from "sonner";
 import { ProductType, UnitType } from "@/types";
 import { AddEditFormProps } from "@/types";

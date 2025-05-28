@@ -21,8 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTableToolbar } from "@/components/data-table/_components/data-table-toolbar";
-import { DataTablePagination } from "@/components/data-table/_components/data-table-pagination";
+import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
+import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
 import { ChevronDownIcon, ChevronUpIcon, Maximize2Icon, Minimize2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DataTableProps } from "@/types";
 
-export function DataTableUsers<TData, TValue>({
+export function DataTableProducts<TData, TValue>({
   columns,
   data,
   addButton,
@@ -115,9 +115,9 @@ export function DataTableUsers<TData, TValue>({
     <div className="flex flex-col w-full gap-4">
       <div className="flex gap-2 items-center justify-between">
         <DataTableToolbar
-          toolTip={false}
+          toolTip={true}
           addButton={addButton}
-          addButtonType={"USER"}
+          addButtonType={"PRODUCT"}
           table={table}
         />
         {groupBy && groupedData && (

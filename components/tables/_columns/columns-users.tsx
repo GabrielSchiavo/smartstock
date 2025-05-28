@@ -2,7 +2,7 @@
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { User } from "@prisma/client";
 import { UserType } from "@/types";
 import { DataTableDropdownUser } from "../_components/data-table-dropdown-user";

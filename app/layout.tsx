@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { ActiveThemeProvider } from "@/components/active-theme";
+import { ActiveThemeProvider } from "@/components/providers/active-theme-provider";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 

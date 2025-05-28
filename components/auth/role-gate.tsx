@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrentRole } from "@/hooks/use-current-role";
-import { MessageError } from "@/components/message-error";
+import { MessageError } from "@/components/utils/message-error";
 import { RoleGateProps } from "@/types";
 
 export const RoleGate = ({

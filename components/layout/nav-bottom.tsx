@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ThemeSelector } from "@/components/theme-selector";
+import { ThemeSelector } from "@/components/shared/theme-selector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

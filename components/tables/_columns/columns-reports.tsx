@@ -6,7 +6,7 @@ import {
   ValidityReportResponse,
   validityStatusType,
 } from "@/types";
-import { DataTableColumnHeader } from "@/components/data-table/_components/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { ProductType } from "@/types";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [

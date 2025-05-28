@@ -8,7 +8,7 @@ import {
   LayoutDashboardIcon,
 } from "lucide-react";
 
-import { NavTop } from "@/components/nav-top";
+import { NavTop } from "@/components/layout/nav-top";
 import { UserButton } from "@/components/auth/user-button";
 import {
   Sidebar,
@@ -18,10 +18,10 @@ import {
   SidebarRail,
   SidebarMenuButton
 } from "@/components/ui/sidebar";
-import { NavBottom } from "@/components/nav-bottom";
+import { NavBottom } from "@/components/layout/nav-bottom";
 import Image from "next/image";
-import { NavMain } from "@/components/nav-main";
-import { NavMainSecondary } from "@/components/nav-main-secondary";
+import { NavMain } from "@/components/layout/nav-main";
+import { NavMainSecondary } from "@/components/layout/nav-main-secondary";
 import Link from "next/link";
 
 // This is sample data.

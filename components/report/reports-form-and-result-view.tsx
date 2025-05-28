@@ -12,9 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/message-error";
+import { MessageError } from "@/components/utils/message-error";
 import { useEffect, useState, useTransition } from "react";
-import { DatePickerMonthYear } from "@/components/date-picker-month-year-selectors";
+import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
 import { toast } from "sonner";
 import {
   generateDonationsReport,
@@ -22,15 +22,15 @@ import {
   generatePurchasedReport,
   generateValidityReport,
 } from "@/actions";
-import { DataTableReport } from "@/components/data-table/data-table-reports";
+import { DataTableReport } from "@/components/tables/data-table-reports";
 import {
   columnsTableReportInventory,
   columnsTableReportPurchased,
   columnsTableReportValidity,
-} from "@/components/data-table/_columns/columns-reports";
+} from "@/components/tables/_columns/columns-reports";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
-import { columnsTableReportDonations } from "@/components/data-table/_columns/columns-reports";
+import { columnsTableReportDonations } from "@/components/tables/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
 import { DonationsReportResponse, InventoryReportResponse, PurchasedReportResponse, ReportType, ValidityReportResponse } from "@/types";
 

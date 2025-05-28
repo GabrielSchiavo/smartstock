@@ -1,5 +1,5 @@
-import { DataTableProducts } from "@/components/data-table/data-table-products";
-import { columnsTableProducts } from "@/components/data-table/_columns/columns-products";
+import { DataTableProducts } from "@/components/tables/data-table-products";
+import { columnsTableProducts } from "@/components/tables/_columns/columns-products";
 import { Metadata } from "next";
 import { UserType } from "@/types";
 import { getProducts } from "@/actions";

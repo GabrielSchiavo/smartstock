@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { User } from "@prisma/client";
 import { UserType } from "@/types";
-import { DataTableDropdownUser } from "../_components/data-table-dropdown-user";
+import { DataTableDropdownUser } from "@/components/tables/_components/data-table-dropdown-user";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {

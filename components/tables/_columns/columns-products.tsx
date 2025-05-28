@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { Product } from "@prisma/client";
 import { ProductType } from "@/types";
-import { DataTableDropdownProduct } from "../_components/data-table-dropdown-product";
+import { DataTableDropdownProduct } from "@/components/tables/_components/data-table-dropdown-product";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {

@@ -9,7 +9,6 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { userRepository } from "@/db";
-import { revalidatePath } from "next/cache";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   // Validação dos campos de entrada
@@ -25,14 +24,16 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const existingUser = await userRepository.findByEmail(email);
 
   if (!existingUser?.email || !existingUser.password) {
-    return { error: "O e-mail não existe!" };
+    return { error: "Credenciais inválidas!" };
   }
 
   // Verificação de e-mail não confirmado
   if (!existingUser.emailVerified) {
     try {
-      const verificationToken = await generateVerificationToken(existingUser.email);
-      
+      const verificationToken = await generateVerificationToken(
+        existingUser.email
+      );
+
       await sendVerificationEmail(
         verificationToken.email,
         verificationToken.token,
@@ -51,12 +52,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirect: false, // Explicitly enable redirect
     });
-    
-    revalidatePath("/");
-    revalidatePath("/dashboard");
-    return { success: "Login realizado com sucesso!" };
+
+    return {
+      success: "Login realizado com sucesso! Redirecionando...",
+      redirectUrl: DEFAULT_LOGIN_REDIRECT,
+      shouldReload: DEFAULT_LOGIN_REDIRECT === "/dashboard", // Adiciona flag para recarregar
+    };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

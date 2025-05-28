@@ -20,14 +20,16 @@ import { MessageSuccess } from "@/components/utils/message-success";
 import { login } from "@/actions";
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 
 export const LoginForm = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
-  ? "Email already in use with different provider!"
-  : "";
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider!"
+      : "";
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -44,13 +46,20 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-    
+
     startTransition(() => {
-      login(values)
-        .then((data) => {
-            setError(data?.error);
-            setSuccess(data?.success);
-        })
+      login(values).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+
+        // Redireciona e recarrega se necessário
+        if (data?.redirectUrl) {
+          router.push(data.redirectUrl);
+          if (data.shouldReload) {
+            window.location.reload(); // Recarrega apenas para /dashboard
+          }
+        }
+      });
     });
   };
 
@@ -89,7 +98,12 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <PasswordInput disabled={isPending} className="default-height" placeholder="********" {...field} />
+                    <PasswordInput
+                      disabled={isPending}
+                      className="default-height"
+                      placeholder="********"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                   <Button
@@ -98,9 +112,7 @@ export const LoginForm = () => {
                     asChild
                     className="px-0 font-normal justify-start"
                   >
-                    <Link href="/auth/reset">
-                      Esqueceu sua senha?
-                    </Link>
+                    <Link href="/auth/reset">Esqueceu sua senha?</Link>
                   </Button>
                 </FormItem>
               )}
@@ -108,7 +120,12 @@ export const LoginForm = () => {
           </div>
           <MessageError message={error || urlError} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
+          <Button
+            disabled={isPending}
+            type="submit"
+            size={"sm"}
+            className="w-full"
+          >
             Entrar
           </Button>
         </form>

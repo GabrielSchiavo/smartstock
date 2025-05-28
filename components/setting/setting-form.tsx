@@ -20,15 +20,16 @@ import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/auth/input-password";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-// import { MessageError } from "@/components/form-error";
-// import { MessageSuccess } from "@/components/form-success";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { MoonLoader } from "react-spinners";
 
 export const SettingForm = () => {
   const user = useCurrentUser();
 
-  // const [error, setError] = useState<string | undefined>();
-  // const [success, setSuccess] = useState<string | undefined>();
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
@@ -53,16 +54,12 @@ export const SettingForm = () => {
       updateUserSettings(cleanedValues)
         .then((data) => {
           if (data.error) {
-            // setError(data.error);
-            // setSuccess(undefined);
             toast.error(data.error);
             return;
           }
 
           if (data.success) {
             update();
-            // setSuccess(data.success);
-            // setError(undefined);
             toast.success(data.success);
             form.reset({
               ...form.getValues(),
@@ -72,7 +69,6 @@ export const SettingForm = () => {
           }
         })
         .catch(() => {
-          // setError("Algo deu errado!");
           toast.error("Algo deu errado!");
         });
     });
@@ -186,11 +182,16 @@ export const SettingForm = () => {
               )}
             />
           </div>
-          {/* <MessageError message={error} />
-          <MessageSuccess message={success} /> */}
           <div className="flex justify-end">
             <Button disabled={isPending} type="submit" size="sm">
-              Salvar Alterações
+              {isPending ? (
+                <span className="flex items-center gap-3">
+                  <MoonLoader size={16} color="#ffffff" />
+                  {"Salvando..."}
+                </span>
+              ) : (
+                "Salvar Alterações"
+              )}
             </Button>
           </div>
         </div>

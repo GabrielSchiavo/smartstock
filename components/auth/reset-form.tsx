@@ -19,6 +19,7 @@ import { MessageError } from "@/components/utils/message-error";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
+import { MoonLoader } from "react-spinners";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -75,8 +76,20 @@ export const ResetForm = () => {
           </div>
           <MessageError message={error} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
-            Enviar email de redefinição
+          <Button
+            disabled={isPending}
+            type="submit"
+            size={"sm"}
+            className="w-full"
+          >
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Enviando..."}
+              </span>
+            ) : (
+              "Enviar email de redefinição"
+            )}
           </Button>
         </form>
       </Form>

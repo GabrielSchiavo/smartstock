@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { UserType } from "@/types";
 import { AddEditFormProps } from "@/types";
+import { MoonLoader } from "react-spinners";
 
 export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
@@ -198,7 +199,14 @@ export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
         <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Criar Usuário
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Criando..."}
+              </span>
+            ) : (
+              "Criar Usuário"
+            )}
           </Button>
         </DialogFooter>
       </form>

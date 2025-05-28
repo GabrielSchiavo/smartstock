@@ -25,6 +25,7 @@ import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { UserType } from "@/types";
 import { AddEditFormProps } from "@/types";
+import { MoonLoader } from "react-spinners";
 
 export const EditUserForm = ({
   rowItemId,
@@ -110,11 +111,20 @@ export const EditUserForm = ({
   };
 
   if (isLoading) {
-    return <div>Carregando dados do usuário...</div>;
+    return (
+      <div className="w-full flex justify-center">
+        <span className="flex items-center gap-3">
+          <MoonLoader size={16} color="#ffffff" />
+          {"Carregando dados..."}
+        </span>
+      </div>
+    );
   }
 
   if (!initialValues) {
-    return <div>Usuário não encontrado ou falha ao carregar</div>;
+    return (
+      <MessageError message="Registro não encontrado ou falha ao carregar dados" />
+    );
   }
 
   return (
@@ -256,7 +266,14 @@ export const EditUserForm = ({
         <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Atualizar Usuário
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Salvando..."}
+              </span>
+            ) : (
+              "Salvar Alterações"
+            )}
           </Button>
         </DialogFooter>
       </form>

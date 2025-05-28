@@ -35,8 +35,7 @@ import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-r
 import { toast } from "sonner";
 import { ProductType, UnitType } from "@/types";
 import { AddEditFormProps } from "@/types";
-
-
+import { MoonLoader } from "react-spinners";
 
 export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
@@ -347,7 +346,14 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
         <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Criar Produto
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Criando..."}
+              </span>
+            ) : (
+              "Criar Produto"
+            )}
           </Button>
         </DialogFooter>
       </form>

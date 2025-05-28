@@ -5,6 +5,7 @@ import { FileTextIcon, PrinterIcon } from "lucide-react";
 import {
   DonationsReportResponse,
   InventoryReportResponse,
+  LocaleType,
   PurchasedReportResponse,
   ValidityReportResponse,
 } from "@/types";
@@ -162,8 +163,8 @@ export function DataTableReport<T>({
                   : ""}
           </h1>
           <p className="text-md">
-            Período: {new Date(initialDate!).toLocaleDateString()} a{" "}
-            {new Date(finalDate!).toLocaleDateString()}
+            Período: {new Date(initialDate!).toLocaleDateString(LocaleType.PTBR)} a{" "}
+            {new Date(finalDate!).toLocaleDateString(LocaleType.PTBR)}
           </p>
         </div>
         <Table className="overflow-hidden!">

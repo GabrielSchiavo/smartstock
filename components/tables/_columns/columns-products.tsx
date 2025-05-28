@@ -4,7 +4,7 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { Product } from "@prisma/client";
-import { ProductType } from "@/types";
+import { LocaleType, ProductType } from "@/types";
 import { DataTableDropdownProduct } from "@/components/tables/_components/data-table-dropdown-product";
 
 // Custom filter function for multi-column searching
@@ -58,6 +58,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Quantidade" />
     ),
+    cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PTBR),
     filterFn: multiColumnFilterFn,
   },
   {
@@ -89,7 +90,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       const diffTime = validityDate.getTime() - currentDate.getTime();
       const diffDays = diffTime / (1000 * 60 * 60 * 24); // Converter para dias
 
-      const dateString = validityDate.toLocaleDateString();
+      const dateString = validityDate.toLocaleDateString(LocaleType.PTBR);
 
       if (diffDays < 0) {
         // Data passada
@@ -123,7 +124,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("receiptDate"));
-      return date.toLocaleDateString();
+      return date.toLocaleDateString(LocaleType.PTBR);
     },
     filterFn: multiColumnFilterFn,
   },

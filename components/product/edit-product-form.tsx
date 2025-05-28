@@ -35,8 +35,12 @@ import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-r
 import { toast } from "sonner";
 import { ProductType, UnitType } from "@/types";
 import { AddEditFormProps } from "@/types";
+import { MoonLoader } from "react-spinners";
 
-export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormProps) => {
+export const EditProductForm = ({
+  rowItemId,
+  onShouldInvalidate,
+}: AddEditFormProps) => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -62,7 +66,7 @@ export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormPr
             receiver: productData.receiver || "",
             group: productData.group || "",
             subgroup: productData.subgroup || undefined,
-            productType: productData.productType as ProductType || undefined,
+            productType: (productData.productType as ProductType) || undefined,
           });
         }
       } catch (error) {
@@ -142,11 +146,20 @@ export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormPr
   };
 
   if (isLoading) {
-    return <div>Carregando dados do produto...</div>;
+    return (
+      <div className="w-full flex justify-center">
+        <span className="flex items-center gap-3">
+          <MoonLoader size={16} color="#ffffff" />
+          {"Carregando dados..."}
+        </span>
+      </div>
+    );
   }
 
   if (!initialValues) {
-    return <div>Produto não encontrado ou não foi carregado</div>;
+    return (
+      <MessageError message="Registro não encontrado ou falha ao carregar dados" />
+    );
   }
 
   return (
@@ -400,7 +413,14 @@ export const EditProductForm = ({ rowItemId, onShouldInvalidate }: AddEditFormPr
         <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
-            Update Product
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Atualizando..."}
+              </span>
+            ) : (
+              "Atualizar Produto"
+            )}
           </Button>
         </DialogFooter>
       </form>

@@ -22,6 +22,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
+import { MoonLoader } from "react-spinners";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -46,6 +48,7 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
+    setIsRedirecting(false);
 
     startTransition(() => {
       login(values).then((data) => {
@@ -54,6 +57,7 @@ export const LoginForm = () => {
 
         // Redireciona e recarrega se necessário
         if (data?.redirectUrl) {
+          setIsRedirecting(true);
           router.push(data.redirectUrl);
           if (data.shouldReload) {
             window.location.reload(); // Recarrega apenas para /dashboard
@@ -126,7 +130,14 @@ export const LoginForm = () => {
             size={"sm"}
             className="w-full"
           >
-            Entrar
+            {isPending || isRedirecting ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {isRedirecting ? "Redirecionando..." : "Autenticando..."}
+              </span>
+            ) : (
+              "Entrar"
+            )}
           </Button>
         </form>
       </Form>

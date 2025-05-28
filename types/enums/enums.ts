@@ -37,3 +37,8 @@ export enum PdfUnitType {
   IN = "in",
   A4 = "a4",
 }
+
+export enum LocaleType {
+  PTBR = "pt-BR",
+  ENUS = "en-US",
+}

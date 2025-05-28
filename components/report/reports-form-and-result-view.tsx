@@ -32,7 +32,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/tables/_columns/columns-reports";
 import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
-import { DonationsReportResponse, InventoryReportResponse, PurchasedReportResponse, ReportType, ValidityReportResponse } from "@/types";
+import {
+  DonationsReportResponse,
+  InventoryReportResponse,
+  PurchasedReportResponse,
+  ReportType,
+  ValidityReportResponse,
+} from "@/types";
+import { MoonLoader } from "react-spinners";
 
 export const ReportsFormAndResultView = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -203,7 +210,10 @@ export const ReportsFormAndResultView = () => {
                         >
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value={ReportType.VALIDITY} id="r1" />
+                              <RadioGroupItem
+                                value={ReportType.VALIDITY}
+                                id="r1"
+                              />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r1">
                               Validades
@@ -211,7 +221,10 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value={ReportType.DONATIONS} id="r2" />
+                              <RadioGroupItem
+                                value={ReportType.DONATIONS}
+                                id="r2"
+                              />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r2">
                               Doados
@@ -219,7 +232,10 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value={ReportType.PURCHASED} id="r3" />
+                              <RadioGroupItem
+                                value={ReportType.PURCHASED}
+                                id="r3"
+                              />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r3">
                               Comprados
@@ -227,7 +243,10 @@ export const ReportsFormAndResultView = () => {
                           </FormItem>
                           <FormItem className="flex items-center">
                             <FormControl>
-                              <RadioGroupItem value={ReportType.INVENTORY} id="r4" />
+                              <RadioGroupItem
+                                value={ReportType.INVENTORY}
+                                id="r4"
+                              />
                             </FormControl>
                             <FormLabel className="font-normal" htmlFor="r4">
                               Inventário
@@ -244,7 +263,14 @@ export const ReportsFormAndResultView = () => {
             <MessageError message={error} />
             <div className="flex justify-end">
               <Button disabled={isPending} type="submit" size="sm">
-                {isPending ? "Gerando..." : "Gerar Relatório"}
+                {isPending ? (
+                  <span className="flex items-center gap-3">
+                    <MoonLoader size={16} color="#ffffff" />
+                    {"Gerando..."}
+                  </span>
+                ) : (
+                  "Gerar Relatório"
+                )}
               </Button>
             </div>
           </form>

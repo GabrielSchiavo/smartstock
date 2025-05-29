@@ -20,6 +20,9 @@ export function ToolTipHelpReportType() {
         <TooltipContent side="bottom" align="center" className="max-w-[300px]">
           <div className="grid gap-2">
             <div className="flex items-center gap-2">
+                <p className="text-sm"><span className="font-semibold">OBS</span> - Os Relatórios são gerados a partir das Datas de Recebimento.</p>
+            </div>
+            <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Validades</span> - Gera um relatório de um determinado período com todos os produtos com Validade, Lote, Quantidade, status e Dias para Vencer</p>
             </div>
             <div className="flex items-center gap-2">

@@ -450,16 +450,63 @@ export function DataTableReport<TData>({
               </TableRow>
             )}
           </TableBody>
-
+          {reportType === ReportType.VALIDITY && (
+            <tfoot>
+              <TableRow className="bg-accent/50 font-normal w-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium px-8"
+                >
+                  <div className="flex items-center justify-start gap-3">
+                    TOTAL FINAL:
+                    {/* Calcula total para tabelas sem agrupamento */}
+                    {getTotalValuesDisplayForData(data)}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </tfoot>
+          )}
+          {reportType === ReportType.DONATIONS && (
+            <tfoot>
+              <TableRow className="bg-accent/50 font-normal w-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium px-8"
+                  >
+                  <div className="flex items-center justify-start gap-3">
+                    TOTAL FINAL:
+                    {/* Calcula total para tabelas sem agrupamento */}
+                    {getTotalValuesDisplayForData(data)}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </tfoot>
+          )}
           {reportType === ReportType.PURCHASED && (
             <tfoot>
               <TableRow className="bg-accent/50 font-normal w-full">
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center font-medium px-12"
+                  className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-end gap-3">
-                    Total:
+                  <div className="flex items-center justify-start gap-3">
+                    TOTAL FINAL:
+                    {/* Calcula total para tabelas sem agrupamento */}
+                    {getTotalValuesDisplayForData(data)}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </tfoot>
+          )}
+          {reportType === ReportType.INVENTORY && (
+            <tfoot>
+              <TableRow className="bg-accent/50 font-normal w-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium px-8"
+                >
+                  <div className="flex items-center justify-start gap-3">
+                    TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
                     {getTotalValuesDisplayForData(data)}
                   </div>

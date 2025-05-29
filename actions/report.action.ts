@@ -1,11 +1,23 @@
 "use server";
 
 import { productRepository } from "@/db";
-import { DateRangeParams, DonationsReportResponse, InventoryReportResponse, ProductType, PurchasedReportResponse, ReportResponse, UnitType, ValidityReportResponse, validityStatusType } from "@/types";
+import {
+  DateRangeParams,
+  DonationsReportResponse,
+  InventoryReportResponse,
+  ProductType,
+  PurchasedReportResponse,
+  ReportResponse,
+  UnitType,
+  ValidityReportResponse,
+  validityStatusType,
+} from "@/types";
 import { revalidatePath } from "next/cache";
 
 // Utilitários
-const calculateExpiryStatus = (validityDate: Date): { daysUntilExpiry: number; status: validityStatusType } => {
+const calculateExpiryStatus = (
+  validityDate: Date
+): { daysUntilExpiry: number; status: validityStatusType } => {
   const today = new Date();
   const timeDiff = validityDate.getTime() - today.getTime();
   const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -20,9 +32,15 @@ const calculateExpiryStatus = (validityDate: Date): { daysUntilExpiry: number; s
   return { daysUntilExpiry, status };
 };
 
-const validateDateRange = ({ initialDate, finalDate }: DateRangeParams): { isValid: boolean; error?: string } => {
+const validateDateRange = ({
+  initialDate,
+  finalDate,
+}: DateRangeParams): { isValid: boolean; error?: string } => {
   if (initialDate > finalDate) {
-    return { isValid: false, error: "Data inicial não pode ser maior que data final" };
+    return {
+      isValid: false,
+      error: "Data inicial não pode ser maior que data final",
+    };
   }
   return { isValid: true };
 };
@@ -36,10 +54,15 @@ export const generateValidityReport = async (
   if (!validation.isValid) return { error: validation.error };
 
   try {
-    const products = await productRepository.findByValidity(initialDate, finalDate);
+    const products = await productRepository.findByValidity(
+      initialDate,
+      finalDate
+    );
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = calculateExpiryStatus(new Date(product.validityDate));
+      const { daysUntilExpiry, status } = calculateExpiryStatus(
+        new Date(product.validityDate)
+      );
       return {
         id: product.id,
         name: product.name,
@@ -70,13 +93,18 @@ export const generateDonationsReport = async (
   if (!validation.isValid) return { error: validation.error };
 
   try {
-    const products = await productRepository.findDonated(initialDate, finalDate);
+    const products = await productRepository.findDonated(
+      initialDate,
+      finalDate
+    );
 
     const reportData = products.map((product) => ({
       id: product.id,
       name: product.name,
       quantity: product.quantity,
       unit: product.unit as UnitType,
+      unitWeight: product.unitWeight!,
+      unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
       donor: product.donor || "Não informado",
       receiptDate: product.receiptDate,
     }));
@@ -97,7 +125,10 @@ export const generatePurchasedReport = async (
   if (!validation.isValid) return { error: validation.error };
 
   try {
-    const products = await productRepository.findPurchased(initialDate, finalDate);
+    const products = await productRepository.findPurchased(
+      initialDate,
+      finalDate
+    );
 
     const reportData = products.map((product) => ({
       id: product.id,
@@ -117,12 +148,16 @@ export const generatePurchasedReport = async (
   }
 };
 
-export const generateInventoryReport = async (): Promise<ReportResponse<InventoryReportResponse>> => {
+export const generateInventoryReport = async (): Promise<
+  ReportResponse<InventoryReportResponse>
+> => {
   try {
     const products = await productRepository.findInventory();
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = calculateExpiryStatus(new Date(product.validityDate));
+      const { daysUntilExpiry, status } = calculateExpiryStatus(
+        new Date(product.validityDate)
+      );
       return {
         id: product.id,
         name: product.name,

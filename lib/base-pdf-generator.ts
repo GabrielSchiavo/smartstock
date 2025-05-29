@@ -25,8 +25,8 @@ export abstract class BasePdfGenerator {
 
     this.margins = config.margins || {
       top: 25,
-      left: 20,
-      right: 20,
+      left: 5,
+      right: 5,
       bottom: 25,
     };
 
@@ -101,10 +101,12 @@ export abstract class BasePdfGenerator {
     );
     this.currentY = this.margins.top;
 
-    // Reimprime o cabeçalho em novas páginas
-    if (this.currentHeaders.length > 0) {
-      this.addTableHeader();
-    }
+    this.addTopFooter();
+
+    // // Reimprime o cabeçalho em novas páginas
+    // if (this.currentHeaders.length > 0) {
+    //   this.addTableHeader();
+    // }
 
     // Redefine explicitamente a formatação para as linhas
     this.doc.setFont("helvetica", "normal");

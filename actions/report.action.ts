@@ -1,7 +1,7 @@
 "use server";
 
 import { productRepository } from "@/db";
-import { DateRangeParams, DonationsReportResponse, InventoryReportResponse, ProductType, PurchasedReportResponse, ReportResponse, ValidityReportResponse, validityStatusType } from "@/types";
+import { DateRangeParams, DonationsReportResponse, InventoryReportResponse, ProductType, PurchasedReportResponse, ReportResponse, UnitType, ValidityReportResponse, validityStatusType } from "@/types";
 import { revalidatePath } from "next/cache";
 
 // Utilitários
@@ -65,7 +65,7 @@ export const generateDonationsReport = async (
       id: product.id,
       name: product.name,
       quantity: product.quantity,
-      unit: product.unit,
+      unit: product.unit as UnitType,
       donor: product.donor || "Não informado",
       receiptDate: product.receiptDate,
     }));
@@ -92,7 +92,7 @@ export const generatePurchasedReport = async (
       id: product.id,
       name: product.name,
       quantity: product.quantity,
-      unit: product.unit,
+      unit: product.unit as UnitType,
       receiptDate: product.receiptDate,
     }));
 
@@ -114,10 +114,13 @@ export const generateInventoryReport = async (): Promise<ReportResponse<Inventor
         id: product.id,
         name: product.name,
         quantity: product.quantity,
-        unit: product.unit,
+        unit: product.unit as UnitType,
+        unitWeight: product.unitWeight!,
+        unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
         lot: product.lot,
         validityDate: product.validityDate,
         productType: product.productType as ProductType,
+        group: product.group,
         daysUntilExpiry,
         status,
       };

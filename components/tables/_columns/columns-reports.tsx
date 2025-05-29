@@ -271,6 +271,22 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
       } as ColumnMetaProps,
     },
     {
+      accessorKey: "unit",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Unit" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <span> {""}
+            <span className="font-medium">{row.original.unit}</span>
+          </span>
+        );
+      },
+      meta: {
+        title: "Quantidade",
+      } as ColumnMetaProps,
+    },
+    {
       accessorKey: "lot",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Lote" />

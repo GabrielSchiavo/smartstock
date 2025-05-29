@@ -60,6 +60,7 @@ export const ReportsFormAndResultView = () => {
     initialDate?: Date;
     finalDate?: Date;
   }>();
+  const [noData, setNoData] = useState(false);
 
   const form = useForm<z.infer<typeof CreateReportSchema>>({
     resolver: zodResolver(CreateReportSchema),
@@ -80,11 +81,24 @@ export const ReportsFormAndResultView = () => {
     }
   }, [isDetailsDisabled, initialDateValue, finalDateValue, form]);
 
+  const watchRadioGroup = form.watch("reportType");
+
+  useEffect(() => {
+    setNoData(false);
+    setError(undefined);
+  }, [watchRadioGroup]);
+
   const onSubmit = (values: z.infer<typeof CreateReportSchema>) => {
     setError("");
     setDates(values);
 
     startTransition(() => {
+      setValidityReportData([]);
+      setDonationsReportData([]);
+      setPurchasedReportData([]);
+      setInventoryReportData([]);
+      setNoData(false);
+
       if (values.reportType === ReportType.VALIDITY) {
         generateValidityReport(values.initialDate!, values.finalDate!)
           .then((data) => {
@@ -94,6 +108,7 @@ export const ReportsFormAndResultView = () => {
             } else if (data.data) {
               setValidityReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
+              setNoData(data.data.length === 0);
             }
           })
           .catch(() => {
@@ -109,6 +124,7 @@ export const ReportsFormAndResultView = () => {
             } else if (data.data) {
               setDonationsReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
+              setNoData(data.data.length === 0);
             }
           })
           .catch(() => {
@@ -124,6 +140,7 @@ export const ReportsFormAndResultView = () => {
             } else if (data.data) {
               setPurchasedReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
+              setNoData(data.data.length === 0);
             }
           })
           .catch(() => {
@@ -139,6 +156,7 @@ export const ReportsFormAndResultView = () => {
             } else if (data.data) {
               setInventoryReportData(data.data);
               toast.success("Relatório gerado com sucesso!");
+              setNoData(data.data.length === 0);
             }
           })
           .catch(() => {
@@ -277,17 +295,13 @@ export const ReportsFormAndResultView = () => {
         </Form>
       </div>
       <div>
-        {validityReportData.length === 0 &&
-          donationsReportData.length === 0 &&
-          purchasedReportData.length === 0 &&
-          inventoryReportData.length === 0 &&
-          dates && (
-            <div className="p-6 border rounded-md">
-              <p className="text-base text-center italic text-muted-foreground">
-                Nenhum registro encontrado para o período selecionado.
-              </p>
-            </div>
-          )}
+        {noData && dates && (
+          <div className="p-6 border rounded-md">
+            <p className="text-base text-center italic text-muted-foreground">
+              Nenhum registro encontrado para o período selecionado.
+            </p>
+          </div>
+        )}
 
         {form.watch("reportType") === ReportType.VALIDITY &&
           validityReportData.length > 0 &&
@@ -310,6 +324,7 @@ export const ReportsFormAndResultView = () => {
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
               reportType={ReportType.DONATIONS}
+              groupBy="donor"
             />
           )}
 
@@ -330,6 +345,7 @@ export const ReportsFormAndResultView = () => {
               columns={columnsTableReportInventory}
               data={inventoryReportData}
               reportType={ReportType.INVENTORY}
+              groupBy="group"
             />
           )}
       </div>

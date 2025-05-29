@@ -7,18 +7,18 @@ import {
   InventoryReportResponse,
   LocaleType,
   PurchasedReportResponse,
+  UnitType,
   ValidityReportResponse,
 } from "@/types";
 import { useReactToPrint } from "react-to-print";
-
 import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
+  Row,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -27,25 +27,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import React, { useRef, useState } from "react";
+import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
+import { DataTableReportProps, ReportType } from "@/types";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Maximize2Icon,
+  Minimize2Icon,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { toast } from "sonner";
 import {
   generateDonationsPdf,
   generateInventoryPdf,
   generatePurchasedPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
-import { toast } from "sonner";
-import React, { useRef } from "react";
-import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
-import { DataTableReportProps, ReportType } from "@/types";
 
-export function DataTableReport<T>({
+export function DataTableReport<TData>({
   columns,
   data,
   initialDate,
   finalDate,
   reportType,
-}: DataTableReportProps<T>) {
+  groupBy,
+}: DataTableReportProps<TData> & { groupBy?: keyof TData }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    new Set()
+  );
 
   const table = useReactTable({
     data,
@@ -57,6 +73,89 @@ export function DataTableReport<T>({
       sorting,
     },
   });
+
+  // Agrupa os dados se groupBy for especificado
+  const groupedData = groupBy
+    ? table
+        .getRowModel()
+        .rows.reduce((acc: Record<string, Row<TData>[]>, row) => {
+          const groupValue = row.original[groupBy];
+          const groupKey = String(groupValue);
+
+          if (!acc[groupKey]) {
+            acc[groupKey] = [];
+          }
+          acc[groupKey].push(row);
+          return acc;
+        }, {})
+    : null;
+
+  // Calcula totais para cada grupo
+  const calculateTotalValues = (rows: Row<TData>[]) => {
+    return rows.reduce(
+      (total, row) => {
+        const original = row.original as unknown as {
+          quantity?: number;
+          unit?: UnitType;
+          unitWeight?: number;
+          unitOfUnitWeight?: UnitType;
+        }; // Cast para acessar propriedades dinamicamente
+        const quantity = original.quantity || 0;
+        const unit = original.unit;
+        const unitWeight = original.unitWeight || 0;
+        const unitOfUnitWeight = original.unitOfUnitWeight || UnitType.KG;
+
+        let itemWeight = 0;
+        let itemVolume = 0;
+
+        if (unit === UnitType.KG) {
+          itemWeight = quantity; // Se a unidade for KG, o peso é igual à quantidade
+        } else if (unit === UnitType.G) {
+          itemWeight = quantity / 1000; // Converte G para KG
+        } else if (unit === UnitType.L) {
+          itemVolume = quantity; // Considerando que 1L de água pesa aproximadamente 1KG
+        } else if (unit === UnitType.UN) {
+          // Converte o peso unitário para KG se necessário
+          if (unitOfUnitWeight === UnitType.G) {
+            itemWeight = quantity * (unitWeight / 1000);
+          } else if (unitOfUnitWeight === UnitType.L) {
+            itemVolume = quantity * unitWeight; // Considerando que 1L de água pesa aproximadamente 1KG
+          } else {
+            itemWeight = quantity * unitWeight; // Se for KG ou outra unidade, multiplica diretamente
+          }
+        }
+        return {
+          weight: total.weight + itemWeight,
+          volume: total.volume + itemVolume,
+        };
+      },
+      { weight: 0, volume: 0 }
+    );
+  };
+
+  const toggleGroup = (groupName: string) => {
+    setCollapsedGroups((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(groupName)) {
+        newSet.delete(groupName);
+      } else {
+        newSet.add(groupName);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleAllGroups = () => {
+    if (!groupedData) return;
+
+    if (collapsedGroups.size === Object.keys(groupedData).length) {
+      // Todos estão recolhidos, expandir todos
+      setCollapsedGroups(new Set());
+    } else {
+      // Recolher todos os grupos
+      setCollapsedGroups(new Set(Object.keys(groupedData)));
+    }
+  };
 
   const handleGeneratePdf = async () => {
     try {
@@ -127,6 +226,28 @@ export function DataTableReport<T>({
     <div className="grid gap-4 w-full">
       <div className="flex items-center justify-end gap-6 w-full">
         <ToolTipHelpReport />
+        {groupBy && groupedData && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="sm" onClick={toggleAllGroups}>
+                  {collapsedGroups.size === Object.keys(groupedData).length ? (
+                    <Maximize2Icon className="h-4 w-4" />
+                  ) : (
+                    <Minimize2Icon className="h-4 w-4" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {collapsedGroups.size === Object.keys(groupedData).length
+                    ? "Expandir todos"
+                    : "Recolher todos"}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
         <Button
           onClick={reactToPrintFn}
           variant="outline"
@@ -160,12 +281,15 @@ export function DataTableReport<T>({
                 ? "Produtos Doados"
                 : reportType === ReportType.PURCHASED
                   ? "Produtos Comprados"
-                  : ""}
+                  : "Inventário"}
           </h1>
-          <p className="text-md">
-            Período: {new Date(initialDate!).toLocaleDateString(LocaleType.PT_BR)} a{" "}
-            {new Date(finalDate!).toLocaleDateString(LocaleType.PT_BR)}
-          </p>
+          {initialDate && finalDate && (
+            <p className="text-md">
+              Período:{" "}
+              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR)} a{" "}
+              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR)}
+            </p>
+          )}
         </div>
         <Table className="overflow-hidden!">
           <TableHeader>
@@ -188,22 +312,136 @@ export function DataTableReport<T>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className="text-center"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              groupBy && groupedData ? (
+                // Renderização agrupada
+                Object.entries(groupedData).map(([groupName, groupRows]) => {
+                  const isCollapsed = collapsedGroups.has(groupName);
+
+                  const getTotalValuesDisplay = (groupRows: Row<TData>[]) => {
+                    const totalValues = calculateTotalValues(groupRows);
+
+                    const hasUnit = (unitTypes: UnitType[]) =>
+                      groupRows.some((row) => {
+                        const product = row.original as unknown as {
+                          unit?: UnitType;
+                          unitOfUnitWeight?: UnitType;
+                        };
+                        return (
+                          unitTypes.includes(product.unit!) ||
+                          (product.unit === UnitType.UN &&
+                            unitTypes.includes(product.unitOfUnitWeight!))
+                        );
+                      });
+
+                    const format = (value: number, unit: string) =>
+                      Number(value.toFixed(3)).toLocaleString(
+                        LocaleType.PT_BR,
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 3,
+                        }
+                      ) + ` ${unit}`;
+
+                    const hasLiters = hasUnit([UnitType.L]);
+                    const hasKilos =
+                      hasUnit([UnitType.KG, UnitType.G]) ||
+                      (hasUnit([UnitType.UN]) && !hasUnit([UnitType.L]));
+
+                    return hasKilos && hasLiters ? (
+                      <span className="flex items-center gap-2">
+                        <span>{format(totalValues.weight, "KG")}</span>
+                        <span>{" & "}</span>
+                        <span>{format(totalValues.volume, "L")}</span>
+                      </span>
+                    ) : hasLiters ? (
+                      format(totalValues.volume, "L")
+                    ) : (
+                      format(totalValues.weight, "KG")
+                    );
+                  };
+
+                  const totalToShow = getTotalValuesDisplay(groupRows);
+
+                  return (
+                    <React.Fragment key={groupName}>
+                      <TableRow
+                        className={`cursor-pointer ${
+                          isCollapsed
+                            ? "bg-transparent hover:bg-accent/45"
+                            : "bg-accent/45"
+                        }`}
+                        onClick={() => toggleGroup(groupName)}
+                        aria-expanded={!isCollapsed}
+                      >
+                        <TableCell
+                          colSpan={columns.length}
+                          className="font-semibold"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-2">
+                                {isCollapsed ? (
+                                  <ChevronDownIcon className="h-4 w-4" />
+                                ) : (
+                                  <ChevronUpIcon className="h-4 w-4" />
+                                )}
+                                <span className="truncate max-w-[200px]">
+                                  {groupName}
+                                </span>
+                              </div>
+                              <span className="flex items-center font-normal text-muted-foreground gap-2">
+                                Total:
+                                <span className="font-medium">
+                                  {totalToShow}
+                                </span>
+                              </span>
+                            </div>
+                            <span className="font-normal text-muted-foreground italic">
+                              {groupRows.length}{" "}
+                              {groupRows.length === 1 ? "item" : "itens"}
+                            </span>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                      {!isCollapsed &&
+                        groupRows.map((row) => (
+                          <TableRow
+                            key={row.id}
+                            data-state={row.getIsSelected() && "selected"}
+                            className="text-center"
+                          >
+                            {row.getVisibleCells().map((cell) => (
+                              <TableCell key={cell.id}>
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                    </React.Fragment>
+                  );
+                })
+              ) : (
+                // Renderização normal (não agrupada)
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="text-center"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              )
             ) : (
               <TableRow>
                 <TableCell

@@ -1,4 +1,4 @@
-import { ProductType, validityStatusType } from "@/types";
+import { ProductType, UnitType, validityStatusType } from "@/types";
 
 export type ValidityReportResponse = {
   id: number;
@@ -15,7 +15,9 @@ export type DonationsReportResponse = {
   id: number;
   name: string;
   quantity: number;
-  unit: string;
+  unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
   donor: string;
   receiptDate: Date;
 };
@@ -24,7 +26,7 @@ export type PurchasedReportResponse = {
   id: number;
   name: string;
   quantity: number;
-  unit: string;
+  unit: UnitType;
   receiptDate: Date;
 };
 
@@ -32,12 +34,15 @@ export type InventoryReportResponse = {
   id: number;
   name: string;
   quantity: number;
-  unit: string;
+  unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
   lot: string;
   validityDate: Date;
   productType: ProductType;
   daysUntilExpiry: number;
   status: validityStatusType;
+  group: string;
 };
 
 export type DateRangeParams = {

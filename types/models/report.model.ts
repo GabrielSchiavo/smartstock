@@ -5,6 +5,8 @@ export type ValidityReportResponse = {
   name: string;
   quantity: number;
   unit: string;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
   lot: string;
   validityDate: Date;
   daysUntilExpiry: number;
@@ -27,6 +29,8 @@ export type PurchasedReportResponse = {
   name: string;
   quantity: number;
   unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
   receiptDate: Date;
 };
 

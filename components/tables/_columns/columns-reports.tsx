@@ -39,12 +39,34 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
       return (
         <span>
           {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
-          <span className="font-medium">{row.original.unit}</span>
+          {row.original.unit}
         </span>
       );
     },
     meta: {
       title: "Quantidade",
+    } as ColumnMetaProps,
+  },
+  {
+    accessorKey: "unitWeight",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Peso Unitário" />
+    ),
+    cell: ({ row }) => {
+      const unitWeight = row.getValue("unitWeight");
+      if (unitWeight === null || unitWeight === undefined) {
+        return "-";
+      } else {
+        return (
+          <span>
+            {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+            {row.original.unitOfUnitWeight}
+          </span>
+        );
+      }
+    },
+    meta: {
+      title: "Peso Unitário",
     } as ColumnMetaProps,
   },
   {
@@ -153,12 +175,34 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
         return (
           <span>
             {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
-            <span className="font-medium">{row.original.unit}</span>
+            {row.original.unit}
           </span>
         );
       },
       meta: {
         title: "Quantidade",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "unitWeight",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Peso Unitário" />
+      ),
+      cell: ({ row }) => {
+        const unitWeight = row.getValue("unitWeight");
+        if (unitWeight === null || unitWeight === undefined) {
+          return "-";
+        } else {
+          return (
+            <span>
+              {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+              {row.original.unitOfUnitWeight}
+            </span>
+          );
+        }
+      },
+      meta: {
+        title: "Peso Unitário",
       } as ColumnMetaProps,
     },
     {
@@ -212,12 +256,34 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
         return (
           <span>
             {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
-            <span className="font-medium">{row.original.unit}</span>
+            {row.original.unit}
           </span>
         );
       },
       meta: {
         title: "Quantidade",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "unitWeight",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Peso Unitário" />
+      ),
+      cell: ({ row }) => {
+        const unitWeight = row.getValue("unitWeight");
+        if (unitWeight === null || unitWeight === undefined) {
+          return "-";
+        } else {
+          return (
+            <span>
+              {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+              {row.original.unitOfUnitWeight}
+            </span>
+          );
+        }
+      },
+      meta: {
+        title: "Peso Unitário",
       } as ColumnMetaProps,
     },
     {
@@ -262,7 +328,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
         return (
           <span>
             {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
-            <span className="font-medium">{row.original.unit}</span>
+            {row.original.unit}
           </span>
         );
       },
@@ -271,19 +337,25 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
       } as ColumnMetaProps,
     },
     {
-      accessorKey: "unit",
+      accessorKey: "unitWeight",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Unit" />
+        <DataTableColumnHeader column={column} title="Peso Unitário" />
       ),
       cell: ({ row }) => {
-        return (
-          <span> {""}
-            <span className="font-medium">{row.original.unit}</span>
-          </span>
-        );
+        const unitWeight = row.getValue("unitWeight");
+        if (unitWeight === null || unitWeight === undefined) {
+          return "-";
+        } else {
+          return (
+            <span>
+              {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+              {row.original.unitOfUnitWeight}
+            </span>
+          );
+        }
       },
       meta: {
-        title: "Quantidade",
+        title: "Peso Unitário",
       } as ColumnMetaProps,
     },
     {

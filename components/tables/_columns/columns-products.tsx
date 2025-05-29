@@ -10,7 +10,7 @@ import { DataTableDropdownProduct } from "@/components/tables/_components/data-t
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.quantity} ${row.original.unit} ${row.original.unitWeight} ${row.original.unitOfUnitWeight} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.donor} ${row.original.productType}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.group} ${row.original.subgroup} ${row.original.productType} ${row.original.donor}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -87,33 +87,19 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const unitWeight = row.getValue("unitWeight");
-      if (unitWeight === null) {
+      if (unitWeight === null || unitWeight === undefined) {
         return "-";
       } else {
-        return row.original.unitWeight!.toLocaleString(LocaleType.PT_BR);
+        return (
+          <span>
+            {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+            {row.original.unitOfUnitWeight}
+          </span>
+        );
       }
     },
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Peso Unitário",
-    } as ColumnMetaProps,
-  },
-  {
-    accessorKey: "unitOfUnitWeight",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unidade Peso Unitário" />
-    ),
-    cell: ({ row }) => {
-      const unitOfUnitWeight = row.getValue("unitOfUnitWeight");
-      if (unitOfUnitWeight === null) {
-        return "-";
-      } else {
-        return unitOfUnitWeight;
-      }
-    },
-    filterFn: multiColumnFilterFn,
-    meta: {
-      title: "Unidade Peso Unitário",
     } as ColumnMetaProps,
   },
   {
@@ -212,7 +198,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const subgroup = row.getValue("subgroup");
-      if (subgroup === null) {
+      if (subgroup === null || subgroup === undefined) {
         return "-";
       } else {
         return subgroup;
@@ -256,7 +242,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const donor = row.getValue("donor");
-      if (donor === null) {
+      if (donor === null || donor === undefined) {
         return "-";
       } else {
         return donor;

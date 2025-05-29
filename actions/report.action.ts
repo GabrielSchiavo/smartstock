@@ -40,7 +40,18 @@ export const generateValidityReport = async (
 
     const reportData = products.map((product) => {
       const { daysUntilExpiry, status } = calculateExpiryStatus(new Date(product.validityDate));
-      return { ...product, daysUntilExpiry, status };
+      return {
+        id: product.id,
+        name: product.name,
+        quantity: product.quantity,
+        unit: product.unit as UnitType,
+        unitWeight: product.unitWeight!,
+        unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
+        lot: product.lot,
+        validityDate: product.validityDate,
+        daysUntilExpiry,
+        status,
+      };
     });
 
     revalidatePath("/reports");
@@ -93,6 +104,8 @@ export const generatePurchasedReport = async (
       name: product.name,
       quantity: product.quantity,
       unit: product.unit as UnitType,
+      unitWeight: product.unitWeight!,
+      unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
       receiptDate: product.receiptDate,
     }));
 

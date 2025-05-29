@@ -90,16 +90,17 @@ export function DataTableReport<TData>({
         }, {})
     : null;
 
-  // Calcula totais para cada grupo
-  const calculateTotalValues = (rows: Row<TData>[]) => {
-    return rows.reduce(
-      (total, row) => {
-        const original = row.original as unknown as {
+  // Calcula totais para cada grupo ou para a tabela inteira
+  const getTotalValuesDisplayForData = (data: TData[]) => {
+    const totalValues = data.reduce(
+      (total, item) => {
+        const original = item as unknown as {
           quantity?: number;
           unit?: UnitType;
           unitWeight?: number;
           unitOfUnitWeight?: UnitType;
-        }; // Cast para acessar propriedades dinamicamente
+        };
+
         const quantity = original.quantity || 0;
         const unit = original.unit;
         const unitWeight = original.unitWeight || 0;
@@ -109,27 +110,63 @@ export function DataTableReport<TData>({
         let itemVolume = 0;
 
         if (unit === UnitType.KG) {
-          itemWeight = quantity; // Se a unidade for KG, o peso é igual à quantidade
+          itemWeight = quantity;
         } else if (unit === UnitType.G) {
-          itemWeight = quantity / 1000; // Converte G para KG
+          itemWeight = quantity / 1000;
         } else if (unit === UnitType.L) {
-          itemVolume = quantity; // Considerando que 1L de água pesa aproximadamente 1KG
+          itemVolume = quantity;
         } else if (unit === UnitType.UN) {
-          // Converte o peso unitário para KG se necessário
           if (unitOfUnitWeight === UnitType.G) {
             itemWeight = quantity * (unitWeight / 1000);
           } else if (unitOfUnitWeight === UnitType.L) {
-            itemVolume = quantity * unitWeight; // Considerando que 1L de água pesa aproximadamente 1KG
+            itemVolume = quantity * unitWeight;
           } else {
-            itemWeight = quantity * unitWeight; // Se for KG ou outra unidade, multiplica diretamente
+            itemWeight = quantity * unitWeight;
           }
         }
+
         return {
           weight: total.weight + itemWeight,
           volume: total.volume + itemVolume,
         };
       },
       { weight: 0, volume: 0 }
+    );
+
+    const hasUnit = (unitTypes: UnitType[]) =>
+      data.some((item) => {
+        const product = item as unknown as {
+          unit?: UnitType;
+          unitOfUnitWeight?: UnitType;
+        };
+        return (
+          unitTypes.includes(product.unit!) ||
+          (product.unit === UnitType.UN &&
+            unitTypes.includes(product.unitOfUnitWeight!))
+        );
+      });
+
+    const format = (value: number, unit: string) =>
+      Number(value.toFixed(3)).toLocaleString(LocaleType.PT_BR, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 3,
+      }) + ` ${unit}`;
+
+    const hasLiters = hasUnit([UnitType.L]);
+    const hasKilos =
+      hasUnit([UnitType.KG, UnitType.G]) ||
+      (hasUnit([UnitType.UN]) && !hasUnit([UnitType.L]));
+
+    return hasKilos && hasLiters ? (
+      <span className="flex items-center gap-2">
+        <span>{format(totalValues.weight, "KG")}</span>
+        <span>{" & "}</span>
+        <span>{format(totalValues.volume, "L")}</span>
+      </span>
+    ) : hasLiters ? (
+      format(totalValues.volume, "L")
+    ) : (
+      format(totalValues.weight, "KG")
     );
   };
 
@@ -317,50 +354,10 @@ export function DataTableReport<TData>({
                 Object.entries(groupedData).map(([groupName, groupRows]) => {
                   const isCollapsed = collapsedGroups.has(groupName);
 
-                  const getTotalValuesDisplay = (groupRows: Row<TData>[]) => {
-                    const totalValues = calculateTotalValues(groupRows);
-
-                    const hasUnit = (unitTypes: UnitType[]) =>
-                      groupRows.some((row) => {
-                        const product = row.original as unknown as {
-                          unit?: UnitType;
-                          unitOfUnitWeight?: UnitType;
-                        };
-                        return (
-                          unitTypes.includes(product.unit!) ||
-                          (product.unit === UnitType.UN &&
-                            unitTypes.includes(product.unitOfUnitWeight!))
-                        );
-                      });
-
-                    const format = (value: number, unit: string) =>
-                      Number(value.toFixed(3)).toLocaleString(
-                        LocaleType.PT_BR,
-                        {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 3,
-                        }
-                      ) + ` ${unit}`;
-
-                    const hasLiters = hasUnit([UnitType.L]);
-                    const hasKilos =
-                      hasUnit([UnitType.KG, UnitType.G]) ||
-                      (hasUnit([UnitType.UN]) && !hasUnit([UnitType.L]));
-
-                    return hasKilos && hasLiters ? (
-                      <span className="flex items-center gap-2">
-                        <span>{format(totalValues.weight, "KG")}</span>
-                        <span>{" & "}</span>
-                        <span>{format(totalValues.volume, "L")}</span>
-                      </span>
-                    ) : hasLiters ? (
-                      format(totalValues.volume, "L")
-                    ) : (
-                      format(totalValues.weight, "KG")
-                    );
-                  };
-
-                  const totalToShow = getTotalValuesDisplay(groupRows);
+                  // Calcula o total para tabela com agrupamento
+                  const totalToShow = getTotalValuesDisplayForData(
+                    groupRows.map((row) => row.original)
+                  );
 
                   return (
                     <React.Fragment key={groupName}>
@@ -453,6 +450,23 @@ export function DataTableReport<TData>({
               </TableRow>
             )}
           </TableBody>
+
+          {reportType === ReportType.PURCHASED && (
+            <tfoot>
+              <TableRow className="bg-accent/50 font-normal w-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium px-12"
+                >
+                  <div className="flex items-center justify-end gap-3">
+                    Total:
+                    {/* Calcula total para tabelas sem agrupamento */}
+                    {getTotalValuesDisplayForData(data)}
+                  </div>
+                </TableCell>
+              </TableRow>
+            </tfoot>
+          )}
         </Table>
       </div>
     </div>

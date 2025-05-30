@@ -1,4 +1,4 @@
-import { PdfConfigProps, PdfUnitType } from "@/types";
+import { LocaleType, PdfConfigProps, PdfUnitType, validityStatusType } from "@/types";
 import jsPDF from "jspdf";
 
 export abstract class BasePdfGenerator {
@@ -33,6 +33,192 @@ export abstract class BasePdfGenerator {
     this.currentY = this.margins.top;
     this.pageCount = 1;
   }
+
+  protected static readonly PDF_CONFIG = {
+    orientation: "landscape" as const,
+    unit: PdfUnitType.MM,
+    format: PdfUnitType.A4,
+  };
+
+  protected COMMON_STYLES = {
+    // titleFont: { size: 16, style: "bold" as const },
+    // subtitleFont: { size: 12, style: "normal" as const },
+    sectionHeaderFont: { size: 12, style: "bolditalic" as const },
+    totalLabelFont: { size: 10, style: "bold" as const },
+    totalValueFont: { size: 10, style: "italic" as const },
+    grandTotalFont: { size: 12, style: "bold" as const },
+    horizontalLine: { color: [200, 200, 200], width: 0.2 },
+  };
+
+  // Helper functions
+  protected formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString(LocaleType.PT_BR);
+
+  protected getStatusText = (status: string): string => {
+    switch (status) {
+      case validityStatusType.EXPIRED:
+        return "Vencido";
+      case validityStatusType.ABOUT_TO_EXPIRE:
+        return "Próximo";
+      default:
+        return "Válido";
+    }
+  };
+
+  protected convertToKg = (weight: number, unit: string): number => {
+    if (!weight) return 0;
+    return unit?.toUpperCase() === "G" ? weight / 1000 : weight;
+  };
+
+  protected convertToLiters = (volume: number): number => {
+    return volume || 0;
+  };
+
+  protected addHorizontalLine(yPosition: number): void {
+      const pageWidth = this.doc.internal.pageSize.getWidth();
+      this.doc.setDrawColor(
+        this.COMMON_STYLES.horizontalLine.color[0],
+        this.COMMON_STYLES.horizontalLine.color[1],
+        this.COMMON_STYLES.horizontalLine.color[2]
+      );
+      this.doc.setLineWidth(this.COMMON_STYLES.horizontalLine.width);
+      this.doc.line(
+        this.margins.left,
+        yPosition,
+        pageWidth - this.margins.right,
+        yPosition
+      );
+    }
+  
+    protected calculateItemMetrics(item: {
+      quantity?: number;
+      unit?: string;
+      unitWeight?: number;
+      unitOfUnitWeight?: string;
+    }) {
+      const quantity = item.quantity || 0;
+      const unit = item.unit?.toUpperCase();
+      const unitWeight = item.unitWeight || 0;
+      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase() || "KG";
+  
+      let weight = 0;
+      let volume = 0;
+      let units = 0;
+  
+      if (unit === "KG" || unit === "G") {
+        weight = this.convertToKg(quantity, unit);
+      } else if (unit === "L") {
+        volume = this.convertToLiters(quantity);
+      } else if (unit === "UN") {
+        if (unitOfUnitWeight === "L") {
+          volume = this.convertToLiters(quantity * unitWeight);
+        } else {
+          weight = this.convertToKg(quantity * unitWeight, unitOfUnitWeight);
+        }
+        if (!unitWeight) units = quantity;
+      }
+  
+      return { weight, volume, units };
+    }
+  
+    protected calculateTotals(
+      items: Array<{
+        quantity?: number;
+        unit?: string;
+        unitWeight?: number;
+        unitOfUnitWeight?: string;
+      }>
+    ) {
+      return items.reduce(
+        (total, item) => {
+          const metrics = this.calculateItemMetrics(item);
+          return {
+            weight: total.weight + metrics.weight,
+            volume: total.volume + metrics.volume,
+            units: total.units + metrics.units,
+          };
+        },
+        { weight: 0, volume: 0, units: 0 }
+      );
+    }
+  
+    protected hasUnit(
+      items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
+      unitTypes: string[]
+    ) {
+      return items.some((item) => {
+        const unit = item.unit?.toUpperCase();
+        const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase();
+  
+        return (
+          unitTypes.includes(unit!) ||
+          (unit === "UN" &&
+            unitOfUnitWeight &&
+            unitTypes.includes(unitOfUnitWeight))
+        );
+      });
+    }
+  
+    protected formatTotalValues(
+      items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
+      totalValues: { weight: number; volume: number; units: number }
+    ) {
+      const parts = [];
+  
+      const hasLiters = this.hasUnit(items, ["L"]);
+      const hasKilos =
+        this.hasUnit(items, ["KG", "G"]) ||
+        (this.hasUnit(items, ["UN"]) && !hasLiters);
+      const hasUnits =
+        this.hasUnit(items, ["UN"]) && !this.hasUnit(items, ["KG", "G", "L"]);
+  
+      if (hasKilos)
+        parts.push(
+          `${Number(totalValues.weight.toFixed(3)).toLocaleString(
+            LocaleType.PT_BR,
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 3,
+            }
+          )} KG`
+        );
+      if (hasLiters)
+        parts.push(
+          `${Number(totalValues.volume.toFixed(3)).toLocaleString(
+            LocaleType.PT_BR,
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 3,
+            }
+          )} L`
+        );
+      if (hasUnits) parts.push(`${totalValues.units} UN`);
+  
+      return parts.join(" & ");
+    }
+  
+    protected addTotalSection(
+      label: string,
+      value: string,
+      isGrandTotal = false
+    ) {
+      const font = isGrandTotal
+        ? this.COMMON_STYLES.grandTotalFont
+        : this.COMMON_STYLES.totalLabelFont;
+  
+      this.doc.setFontSize(font.size);
+      this.doc.setFont("helvetica", font.style);
+      this.doc.text(`${label}: `, this.margins.left, this.currentY);
+  
+      const labelWidth = this.doc.getTextWidth(`${label}: `);
+      this.doc.setFont(
+        "helvetica",
+        isGrandTotal ? "italic" : this.COMMON_STYLES.totalValueFont.style
+      );
+      this.doc.text(value, this.margins.left + labelWidth, this.currentY);
+  
+      this.currentY += 5;
+    }
 
   protected addTopFooter(): void {
     const pageWidth = this.doc.internal.pageSize.getWidth();
@@ -103,7 +289,7 @@ export abstract class BasePdfGenerator {
 
     this.addTopFooter();
 
-    // // Reimprime o cabeçalho em novas páginas
+    // Reimprime o cabeçalho em novas páginas
     // if (this.currentHeaders.length > 0) {
     //   this.addTableHeader();
     // }
@@ -111,7 +297,7 @@ export abstract class BasePdfGenerator {
     // Redefine explicitamente a formatação para as linhas
     this.doc.setFont("helvetica", "normal");
     this.doc.setFontSize(10);
-    this.doc.setTextColor(0, 0, 0); // Preto
+    this.doc.setTextColor(0, 0, 0);
   }
 
   protected addTableHeader(): void {

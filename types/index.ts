@@ -18,3 +18,5 @@ export * from "./models/report.model";
 export * from "./models/setting.model";
 export * from "./models/subgroup.model";
 export * from "./models/user.model";
+export * from "./models/utils.model";
+

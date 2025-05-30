@@ -59,25 +59,41 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       title: "Nome",
     } as ColumnMetaProps,
   },
+  // {
+  //   accessorKey: "quantity",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Quantidade" />
+  //   ),
+  //   cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PT_BR),
+  //   filterFn: multiColumnFilterFn,
+  //   meta: {
+  //     title: "Quantidade",
+  //   } as ColumnMetaProps,
+  // },
+  // {
+  //   accessorKey: "unit",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Unidade" />
+  //   ),
+  //   filterFn: multiColumnFilterFn,
+  //   meta: {
+  //     title: "Unidade",
+  //   } as ColumnMetaProps,
+  // },
   {
     accessorKey: "quantity",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Quantidade" />
     ),
-    cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PT_BR),
-    filterFn: multiColumnFilterFn,
-    meta: {
-      title: "Quantidade",
-    } as ColumnMetaProps,
-  },
-  {
-    accessorKey: "unit",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unidade" />
+    cell: ({ row }) => (
+      <span>
+        {row.original.quantity?.toLocaleString(LocaleType.PT_BR)} {""}
+        {row.original.unit}
+      </span>
     ),
     filterFn: multiColumnFilterFn,
     meta: {
-      title: "Unidade",
+      title: "Quantidade",
     } as ColumnMetaProps,
   },
   {

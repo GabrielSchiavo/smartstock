@@ -29,9 +29,12 @@ export function useGroupedTable<TData>({
   collapsedGroups,
   setCollapsedGroups,
 }: GroupedTableProps<TData>) {
+  const getTableState = table.getState();
+
   const groupedData = React.useMemo(
     () => getGroupedData(table, groupBy as string),
-    [table, groupBy]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [table, groupBy, getTableState]
   );
 
   const toggleGroup = (groupName: string) => {

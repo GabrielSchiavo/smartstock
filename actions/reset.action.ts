@@ -5,11 +5,7 @@ import { generatePasswordResetToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/send-mail";
 import { ResetSchema } from "@/schemas";
 import { z } from "zod";
-
-type ResetPasswordResponse = {
-  success?: string;
-  error?: string;
-};
+import { ResetPasswordResponse } from "@/types";
 
 export const resetPassword = async (
   values: z.infer<typeof ResetSchema>

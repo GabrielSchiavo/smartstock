@@ -36,7 +36,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DataTableProps } from "@/types";
-import { useGroupedTable } from "@/lib/group-table";
+import { useGroupedTable } from "@/components/utils/group-table";
 
 export function DataTableProducts<TData, TValue>({
   columns,
@@ -258,10 +258,10 @@ export function DataTableProducts<TData, TValue>({
                   colSpan={columns.length}
                   className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-start gap-2">
                     TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
-                    {getTotalValuesDisplayForData(data)}
+                    <span>{getTotalValuesDisplayForData(data)}</span>
                   </div>
                 </TableCell>
               </TableRow>

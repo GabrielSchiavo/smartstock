@@ -47,7 +47,7 @@ import {
   generatePurchasedPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
-import { useGroupedTable } from "@/lib/group-table";
+import { useGroupedTable } from "@/components/utils/group-table";
 
 export function DataTableReport<TData>({
   columns,
@@ -349,10 +349,10 @@ export function DataTableReport<TData>({
                   colSpan={columns.length}
                   className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-start gap-2">
                     TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
-                    {getTotalValuesDisplayForData(data)}
+                    <span>{getTotalValuesDisplayForData(data)}</span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -365,10 +365,10 @@ export function DataTableReport<TData>({
                   colSpan={columns.length}
                   className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-start gap-2">
                     TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
-                    {getTotalValuesDisplayForData(data)}
+                    <span>{getTotalValuesDisplayForData(data)}</span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -381,10 +381,10 @@ export function DataTableReport<TData>({
                   colSpan={columns.length}
                   className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-start gap-2">
                     TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
-                    {getTotalValuesDisplayForData(data)}
+                    <span>{getTotalValuesDisplayForData(data)}</span>
                   </div>
                 </TableCell>
               </TableRow>
@@ -397,10 +397,10 @@ export function DataTableReport<TData>({
                   colSpan={columns.length}
                   className="text-center font-medium px-8"
                 >
-                  <div className="flex items-center justify-start gap-3">
+                  <div className="flex items-center justify-start gap-2">
                     TOTAL FINAL:
                     {/* Calcula total para tabelas sem agrupamento */}
-                    {getTotalValuesDisplayForData(data)}
+                    <span>{getTotalValuesDisplayForData(data)}</span>
                   </div>
                 </TableCell>
               </TableRow>

@@ -1,5 +1,6 @@
 "use client"
 
+import { ThemeContextParams } from "@/types"
 import {
   ReactNode,
   createContext,
@@ -17,12 +18,7 @@ function setThemeCookie(theme: string) {
   document.cookie = `${COOKIE_NAME}=${theme}; path=/; max-age=31536000; SameSite=Lax; ${window.location.protocol === "https:" ? "Secure;" : ""}`
 }
 
-type ThemeContextType = {
-  activeTheme: string
-  setActiveTheme: (theme: string) => void
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<ThemeContextParams | undefined>(undefined)
 
 export function ActiveThemeProvider({
   children,

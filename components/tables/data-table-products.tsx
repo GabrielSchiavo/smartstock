@@ -36,7 +36,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DataTableProps } from "@/types";
-import { useGroupedTable } from "@/components/utils/group-table";
+import { useGroupedTable } from "@/hooks/use-grouped-table";
+import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 
 export function DataTableProducts<TData, TValue>({
   columns,
@@ -81,7 +82,6 @@ export function DataTableProducts<TData, TValue>({
     groupedData,
     toggleGroup,
     toggleAllGroups,
-    getTotalValuesDisplayForData,
   } = useGroupedTable({
     table,
     groupBy,

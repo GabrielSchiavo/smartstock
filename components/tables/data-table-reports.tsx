@@ -47,7 +47,8 @@ import {
   generatePurchasedPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
-import { useGroupedTable } from "@/components/utils/group-table";
+import { useGroupedTable } from "@/hooks/use-grouped-table";
+import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 
 export function DataTableReport<TData>({
   columns,
@@ -78,7 +79,6 @@ export function DataTableReport<TData>({
     groupedData,
     toggleGroup,
     toggleAllGroups,
-    getTotalValuesDisplayForData,
   } = useGroupedTable({
     table,
     groupBy,

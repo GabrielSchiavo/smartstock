@@ -1,6 +1,6 @@
 // utils/tableGroupUtils.ts
 import React from "react";
-import { UnitType, LocaleType, GroupedTableProps, GroupedTableTotalValuesProps } from "@/types"; // Ajuste o caminho conforme necessário
+import { UnitType, LocaleType, GroupedTableTotalValuesProps } from "@/types"; // Ajuste o caminho conforme necessário
 import { Row, Table } from "@tanstack/react-table"; // Ajuste os imports conforme sua versão do TanStack Table
 
 export function getGroupedData<TData>(
@@ -21,52 +21,6 @@ export function getGroupedData<TData>(
     acc[groupKey].push(row);
     return acc;
   }, {});
-}
-
-export function useGroupedTable<TData>({
-  table,
-  groupBy,
-  collapsedGroups,
-  setCollapsedGroups,
-}: GroupedTableProps<TData>) {
-  const getTableState = table.getState();
-
-  const groupedData = React.useMemo(
-    () => getGroupedData(table, groupBy as string),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [table, groupBy, getTableState]
-  );
-
-  const toggleGroup = (groupName: string) => {
-    setCollapsedGroups((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(groupName)) {
-        newSet.delete(groupName);
-      } else {
-        newSet.add(groupName);
-      }
-      return newSet;
-    });
-  };
-
-  const toggleAllGroups = () => {
-    if (!groupedData) return;
-
-    if (collapsedGroups.size === Object.keys(groupedData).length) {
-      // Todos estão recolhidos, expandir todos
-      setCollapsedGroups(new Set());
-    } else {
-      // Recolher todos os grupos
-      setCollapsedGroups(new Set(Object.keys(groupedData)));
-    }
-  };
-
-  return {
-    groupedData,
-    toggleGroup,
-    toggleAllGroups,
-    getTotalValuesDisplayForData,
-  };
 }
 
 export function getTotalValuesDisplayForData<TData>(data: TData[]) {

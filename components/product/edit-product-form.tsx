@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { BaseProductForm } from "./base-product-form";
+import { BaseProductForm } from "@/components/product/base-product-form";
 import { editProduct, getProductById } from "@/actions";
 import { toast } from "sonner";
 import { AddEditFormProps, ProductType, UnitType } from "@/types";
@@ -9,7 +9,7 @@ import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
 import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
-import { MessageSuccess } from "../utils/message-success";
+import { MessageSuccess } from "@/components/utils/message-success";
 
 export const EditProductForm = ({
   rowItemId,

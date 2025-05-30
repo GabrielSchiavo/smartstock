@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { BaseProductForm } from "./base-product-form";
+import { BaseProductForm } from "@/components/product/base-product-form";
 import { registerProduct } from "@/actions";
 import { toast } from "sonner";
 import { AddEditFormProps } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
-import { MessageError } from "../utils/message-error";
-import { MessageSuccess } from "../utils/message-success";
+import { MessageError } from "@/components/utils/message-error";
+import { MessageSuccess } from "@/components/utils/message-success";
 import { UseFormReturn } from "react-hook-form";
 
 export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {

@@ -24,7 +24,7 @@ import { BaseUserFormProps, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { z } from "zod";
 
-export const UserFormBase = <T extends z.ZodType>({
+export const BaseUserForm = <T extends z.ZodType>({
   schema,
   defaultValues,
   onSubmit,

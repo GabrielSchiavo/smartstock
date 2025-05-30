@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { UserFormBase } from "./base-user-form";
+import { BaseUserForm } from "@/components/user/base-user-form";
 import { editUser, getUserById } from "@/actions";
 import { AddEditFormProps } from "@/types";
 import { UserType } from "@/types";
@@ -60,7 +60,7 @@ export const EditUserForm = ({
   }
 
   return (
-    <UserFormBase
+    <BaseUserForm
       schema={EditUserSchema}
       defaultValues={initialValues}
       onSubmit={(values) => editUser(rowItemId as string, values)}

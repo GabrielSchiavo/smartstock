@@ -1,4 +1,4 @@
-import { LocaleType, PdfConfigProps, PdfUnitType, validityStatusType } from "@/types";
+import { LocaleType, PdfConfigProps, PdfUnitType, UnitType, validityStatusType } from "@/types";
 import jsPDF from "jspdf";
 
 export abstract class BasePdfGenerator {
@@ -67,7 +67,7 @@ export abstract class BasePdfGenerator {
 
   protected convertToKg = (weight: number, unit: string): number => {
     if (!weight) return 0;
-    return unit?.toUpperCase() === "G" ? weight / 1000 : weight;
+    return unit?.toUpperCase() === UnitType.G ? weight / 1000 : weight;
   };
 
   protected convertToLiters = (volume: number): number => {
@@ -99,18 +99,18 @@ export abstract class BasePdfGenerator {
       const quantity = item.quantity || 0;
       const unit = item.unit?.toUpperCase();
       const unitWeight = item.unitWeight || 0;
-      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase() || "KG";
+      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase() || UnitType.KG;
   
       let weight = 0;
       let volume = 0;
       let units = 0;
-  
-      if (unit === "KG" || unit === "G") {
+
+      if (unit === UnitType.KG || unit === UnitType.G) {
         weight = this.convertToKg(quantity, unit);
-      } else if (unit === "L") {
+      } else if (unit === UnitType.L) {
         volume = this.convertToLiters(quantity);
-      } else if (unit === "UN") {
-        if (unitOfUnitWeight === "L") {
+      } else if (unit === UnitType.UN) {
+        if (unitOfUnitWeight === UnitType.L) {
           volume = this.convertToLiters(quantity * unitWeight);
         } else {
           weight = this.convertToKg(quantity * unitWeight, unitOfUnitWeight);
@@ -152,7 +152,7 @@ export abstract class BasePdfGenerator {
   
         return (
           unitTypes.includes(unit!) ||
-          (unit === "UN" &&
+          (unit === UnitType.UN &&
             unitOfUnitWeight &&
             unitTypes.includes(unitOfUnitWeight))
         );
@@ -165,13 +165,13 @@ export abstract class BasePdfGenerator {
     ) {
       const parts = [];
   
-      const hasLiters = this.hasUnit(items, ["L"]);
+      const hasLiters = this.hasUnit(items, [UnitType.L]);
       const hasKilos =
-        this.hasUnit(items, ["KG", "G"]) ||
-        (this.hasUnit(items, ["UN"]) && !hasLiters);
+        this.hasUnit(items, [UnitType.KG, UnitType.G]) ||
+        (this.hasUnit(items, [UnitType.UN]) && !hasLiters);
       const hasUnits =
-        this.hasUnit(items, ["UN"]) && !this.hasUnit(items, ["KG", "G", "L"]);
-  
+        this.hasUnit(items, [UnitType.UN]) && !this.hasUnit(items, [UnitType.KG, UnitType.G, UnitType.L]);
+
       if (hasKilos)
         parts.push(
           `${Number(totalValues.weight.toFixed(3)).toLocaleString(
@@ -180,7 +180,7 @@ export abstract class BasePdfGenerator {
               minimumFractionDigits: 2,
               maximumFractionDigits: 3,
             }
-          )} KG`
+          )} ${UnitType.G}`
         );
       if (hasLiters)
         parts.push(
@@ -190,10 +190,10 @@ export abstract class BasePdfGenerator {
               minimumFractionDigits: 2,
               maximumFractionDigits: 3,
             }
-          )} L`
+          )} ${UnitType.L}`
         );
-      if (hasUnits) parts.push(`${totalValues.units} UN`);
-  
+      if (hasUnits) parts.push(`${totalValues.units} ${UnitType.UN}`);
+
       return parts.join(" & ");
     }
   

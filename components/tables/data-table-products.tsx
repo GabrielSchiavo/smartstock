@@ -11,7 +11,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  Row,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -36,7 +35,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps, LocaleType, UnitType } from "@/types";
+import { DataTableProps } from "@/types";
+import { useGroupedTable } from "@/lib/group-table";
 
 export function DataTableProducts<TData, TValue>({
   columns,
@@ -74,127 +74,20 @@ export function DataTableProducts<TData, TValue>({
     },
   });
 
-  // Extract row model to a separate variable for the dependency array
   const rowModel = table.getRowModel();
 
-  const groupedData = React.useMemo(() => {
-    if (!groupBy) return null;
-
-    return rowModel.rows.reduce((acc: Record<string, Row<TData>[]>, row) => {
-      const groupValue = row.original[groupBy];
-      const groupKey = String(groupValue);
-
-      if (!acc[groupKey]) {
-        acc[groupKey] = [];
-      }
-      acc[groupKey].push(row);
-      return acc;
-    }, {});
-  }, [rowModel.rows, groupBy]);
-
-  const toggleGroup = (groupName: string) => {
-    setCollapsedGroups((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(groupName)) {
-        newSet.delete(groupName);
-      } else {
-        newSet.add(groupName);
-      }
-      return newSet;
-    });
-  };
-
-  const toggleAllGroups = () => {
-    if (!groupedData) return;
-
-    if (collapsedGroups.size === Object.keys(groupedData).length) {
-      // All groups are collapsed, so expand all
-      setCollapsedGroups(new Set());
-    } else {
-      // Collapse all groups
-      setCollapsedGroups(new Set(Object.keys(groupedData)));
-    }
-  };
-
-  // Calcula totais para cada grupo ou para a tabela inteira
-  const getTotalValuesDisplayForData = (data: TData[]) => {
-    const totalValues = data.reduce(
-      (total, item) => {
-        const original = item as unknown as {
-          quantity?: number;
-          unit?: UnitType;
-          unitWeight?: number;
-          unitOfUnitWeight?: UnitType;
-        };
-
-        const quantity = original.quantity || 0;
-        const unit = original.unit;
-        const unitWeight = original.unitWeight || 0;
-        const unitOfUnitWeight = original.unitOfUnitWeight || UnitType.KG;
-
-        let itemWeight = 0;
-        let itemVolume = 0;
-
-        if (unit === UnitType.KG) {
-          itemWeight = quantity;
-        } else if (unit === UnitType.G) {
-          itemWeight = quantity / 1000;
-        } else if (unit === UnitType.L) {
-          itemVolume = quantity;
-        } else if (unit === UnitType.UN) {
-          if (unitOfUnitWeight === UnitType.G) {
-            itemWeight = quantity * (unitWeight / 1000);
-          } else if (unitOfUnitWeight === UnitType.L) {
-            itemVolume = quantity * unitWeight;
-          } else {
-            itemWeight = quantity * unitWeight;
-          }
-        }
-
-        return {
-          weight: total.weight + itemWeight,
-          volume: total.volume + itemVolume,
-        };
-      },
-      { weight: 0, volume: 0 }
-    );
-
-    const hasUnit = (unitTypes: UnitType[]) =>
-      data.some((item) => {
-        const product = item as unknown as {
-          unit?: UnitType;
-          unitOfUnitWeight?: UnitType;
-        };
-        return (
-          unitTypes.includes(product.unit!) ||
-          (product.unit === UnitType.UN &&
-            unitTypes.includes(product.unitOfUnitWeight!))
-        );
-      });
-
-    const format = (value: number, unit: string) =>
-      Number(value.toFixed(3)).toLocaleString(LocaleType.PT_BR, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 3,
-      }) + ` ${unit}`;
-
-    const hasLiters = hasUnit([UnitType.L]);
-    const hasKilos =
-      hasUnit([UnitType.KG, UnitType.G]) ||
-      (hasUnit([UnitType.UN]) && !hasUnit([UnitType.L]));
-
-    return hasKilos && hasLiters ? (
-      <span className="flex items-center gap-2">
-        <span>{format(totalValues.weight, "KG")}</span>
-        <span>{" & "}</span>
-        <span>{format(totalValues.volume, "L")}</span>
-      </span>
-    ) : hasLiters ? (
-      format(totalValues.volume, "L")
-    ) : (
-      format(totalValues.weight, "KG")
-    );
-  };
+  // Agrupa os dados se groupBy for especificado
+  const {
+    groupedData,
+    toggleGroup,
+    toggleAllGroups,
+    getTotalValuesDisplayForData,
+  } = useGroupedTable({
+    table,
+    groupBy,
+    collapsedGroups,
+    setCollapsedGroups,
+  });
 
   return (
     <div className="flex flex-col w-full gap-4">

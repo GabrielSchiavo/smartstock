@@ -52,7 +52,7 @@ export abstract class BasePdfGenerator {
 
   // Helper functions
   protected formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString(LocaleType.PT_BR);
+    new Date(dateString).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
 
   protected getStatusText = (status: string): string => {
     switch (status) {

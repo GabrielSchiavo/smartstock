@@ -215,8 +215,8 @@ export function DataTableReport<TData>({
           {initialDate && finalDate && (
             <p className="text-md">
               Período:{" "}
-              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR)} a{" "}
-              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR)}
+              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC })} a{" "}
+              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC })}
             </p>
           )}
         </div>

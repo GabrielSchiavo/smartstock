@@ -1,6 +1,6 @@
 "use client";
 
-import { BeatLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -46,7 +46,7 @@ export const NewVerificationForm = () => {
       backButtonHref="/auth/login"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && <BeatLoader color="#71717b" />}
+        {!success && !error && <MoonLoader size={24} color="#71717b" />}
         <MessageSuccess message={success} />
         {!success && <MessageError message={error} />}
       </div>

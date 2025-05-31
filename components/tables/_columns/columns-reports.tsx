@@ -84,7 +84,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
       <DataTableColumnHeader column={column} title="Data de Validade" />
     ),
     cell: ({ row }) =>
-      row.original.validityDate.toLocaleDateString(LocaleType.PT_BR),
+      row.original.validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
     meta: {
       title: "Data de Validade",
     } as ColumnMetaProps,
@@ -220,7 +220,7 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
         <DataTableColumnHeader column={column} title="Data de Recebibento" />
       ),
       cell: ({ row }) =>
-        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR),
+        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
       meta: {
         title: "Data de Recebimento",
       } as ColumnMetaProps,
@@ -292,7 +292,7 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
         <DataTableColumnHeader column={column} title="Data de Recebimento" />
       ),
       cell: ({ row }) =>
-        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR),
+        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
       meta: {
         title: "Data de Recebimento",
       } as ColumnMetaProps,
@@ -373,7 +373,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
         <DataTableColumnHeader column={column} title="Data de Validade" />
       ),
       cell: ({ row }) =>
-        row.original.validityDate.toLocaleDateString(LocaleType.PT_BR),
+        row.original.validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
       meta: {
         title: "Data de Validade",
       } as ColumnMetaProps,

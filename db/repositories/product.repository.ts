@@ -22,7 +22,7 @@ export const productRepository = {
     const currentDate = new Date()
     return await db.product.findMany({
       where: {
-        validityDate: { lt: currentDate },
+        validityDate: { lte: currentDate }, // Incluindo o dia atual
       },
       orderBy: {
         validityDate: 'asc',
@@ -47,7 +47,7 @@ export const productRepository = {
       where: {
         validityDate: {
           lt: limitDate,
-          gte: new Date(),
+          gt: new Date(),  // Sem incluir o dia atual
         },
       },
       orderBy: {

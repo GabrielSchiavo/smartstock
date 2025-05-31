@@ -135,17 +135,17 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0); // Remove a parte de horas para comparar apenas datas
+      currentDate.setUTCHours(0, 0, 0, 0); // Remove a parte de horas para comparar apenas datas
 
       const validityDate = new Date(row.getValue("validityDate"));
-      validityDate.setHours(0, 0, 0, 0);
+      validityDate.setUTCHours(0, 0, 0, 0);
 
       const diffTime = validityDate.getTime() - currentDate.getTime();
       const diffDays = diffTime / (1000 * 60 * 60 * 24); // Converter para dias
 
-      const dateString = validityDate.toLocaleDateString(LocaleType.PT_BR);
+      const dateString = validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
 
-      if (diffDays < 0) {
+      if (diffDays <= 0) {  // Incluindo o dia atual
         // Data passada
         return (
           <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
@@ -180,7 +180,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     ),
     cell: ({ row }) => {
       const date = new Date(row.getValue("receiptDate"));
-      return date.toLocaleDateString(LocaleType.PT_BR);
+      return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
     },
     filterFn: multiColumnFilterFn,
     meta: {

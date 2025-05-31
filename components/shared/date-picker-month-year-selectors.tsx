@@ -15,18 +15,37 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { DatePickerFormProps } from "@/types";
+import { formatInTimeZone, toDate } from 'date-fns-tz';
+
+// Função alternativa para converter data local para UTC
+const localToUTC = (date: Date): Date => {
+  return new Date(Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+    date.getMilliseconds()
+  ));
+};
 
 export function DatePickerMonthYear<T extends FieldValues>({
   field,
   disabled = false,
 }: DatePickerFormProps<T>) {
   const [open, setOpen] = React.useState(false);
-  const initialDate = field.value as Date | undefined;
+  
+  // Converter a data UTC para o fuso horário local para exibição
+  const initialDate = field.value 
+    ? toDate(field.value as Date | string, { timeZone: 'UTC' })
+    : undefined;
+    
   const [currentMonth, setCurrentMonth] = React.useState<number>(
     initialDate?.getMonth() ?? new Date().getMonth()
   );
@@ -45,17 +64,31 @@ export function DatePickerMonthYear<T extends FieldValues>({
   // Atualizar mês/ano quando a data muda
   React.useEffect(() => {
     if (field.value) {
-      const date = field.value as Date;
+      const date = toDate(field.value as Date | string, { timeZone: 'UTC' });
       setCurrentMonth(date.getMonth());
       setCurrentYear(date.getFullYear());
     }
   }, [field.value]);
 
   const handleDateSelect = (date: Date | undefined) => {
-    field.onChange(date);
+    // Converter a data selecionada para UTC antes de salvar
+    const utcDate = date ? localToUTC(date) : undefined;
+    field.onChange(utcDate);
     if (date) {
-      setOpen(false); // Fecha o popover após selecionar uma data
+      setOpen(false);
     }
+  };
+
+  // Função para formatar a data em UTC
+  const formatUTCDate = (date: Date | string | undefined) => {
+    if (!date) return <span>Selecione uma data</span>;
+    
+    return formatInTimeZone(
+      typeof date === 'string' ? parseISO(date) : date,
+      'UTC',
+      'dd/MM/yyyy',
+      { locale: ptBR }
+    );
   };
 
   return (
@@ -71,7 +104,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
           )}
         >
           {field.value ? (
-            format(field.value as Date, "dd/MM/yyyy", { locale: ptBR })
+            formatUTCDate(field.value as Date | string)
           ) : (
             <span>Selecione uma data</span>
           )}
@@ -86,9 +119,9 @@ export function DatePickerMonthYear<T extends FieldValues>({
               const month = parseInt(value);
               setCurrentMonth(month);
               if (field.value) {
-                const newDate = new Date(field.value as Date);
+                const newDate = toDate(field.value as Date | string, { timeZone: 'UTC' });
                 newDate.setMonth(month);
-                field.onChange(newDate);
+                field.onChange(localToUTC(newDate));
               }
             }}
             disabled={disabled}
@@ -111,9 +144,9 @@ export function DatePickerMonthYear<T extends FieldValues>({
               const year = parseInt(value);
               setCurrentYear(year);
               if (field.value) {
-                const newDate = new Date(field.value as Date);
+                const newDate = toDate(field.value as Date | string, { timeZone: 'UTC' });
                 newDate.setFullYear(year);
-                field.onChange(newDate);
+                field.onChange(localToUTC(newDate));
               }
             }}
             disabled={disabled}
@@ -134,7 +167,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
         <Calendar
           className="flex justify-center p-0"
           mode="single"
-          selected={field.value as Date | undefined}
+          selected={initialDate ? new Date(initialDate.getTime() + initialDate.getTimezoneOffset() * 60000) : undefined}
           onSelect={handleDateSelect}
           month={new Date(currentYear, currentMonth)}
           onMonthChange={(date) => {

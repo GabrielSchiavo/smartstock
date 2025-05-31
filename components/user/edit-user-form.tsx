@@ -47,8 +47,8 @@ export const EditUserForm = ({
   if (isLoading) {
     return (
       <div className="w-full flex justify-center">
-        <span className="flex items-center gap-3">
-          <MoonLoader size={16} color="#ffffff" />
+        <span className="flex items-center text-muted-foreground gap-3">
+          <MoonLoader size={20} color="#71717b" />
           {"Carregando dados..."}
         </span>
       </div>

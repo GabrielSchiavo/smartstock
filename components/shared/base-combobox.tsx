@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BeatLoader } from "react-spinners";
+import { MoonLoader } from "react-spinners";
 import { BaseComboboxProps } from "@/types";
 
 export function BaseCombobox({
@@ -61,8 +61,8 @@ export function BaseCombobox({
           />
           <CommandList className="p-1">
             {isPending ? (
-              <CommandEmpty className="flex justify-center p-0">
-                <BeatLoader className="p-2" color="#71717b" />
+              <CommandEmpty className="h-[50px] flex items-center justify-center p-0">
+                <MoonLoader size={24} color="#71717b" />
               </CommandEmpty>
             ) : (
               <>

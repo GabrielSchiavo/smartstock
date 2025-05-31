@@ -62,7 +62,7 @@ export function DynamicComboboxSubgroup({
       handleSelect={handleSelect}
       handleDelete={handleDelete}
       className={className}
-      resourceName="subgrupo"
+      resourceName="Subgrupo"
     />
   );
 }

@@ -62,7 +62,7 @@ export function DynamicComboboxReceiver({
       handleSelect={handleSelect}
       handleDelete={handleDelete}
       className={className}
-      resourceName="recebedor"
+      resourceName="Recebedor"
     />
   );
 }

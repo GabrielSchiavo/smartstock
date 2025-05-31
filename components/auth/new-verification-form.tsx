@@ -46,7 +46,12 @@ export const NewVerificationForm = () => {
       backButtonHref="/auth/login"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && <MoonLoader size={24} color="#71717b" />}
+        {!success && !error && (
+          <div className="flex items-center gap-3">
+            <MoonLoader size={22} color="#ffffff" />
+            <span className="text-foreground">Verificando...</span>
+          </div>
+        )}
         <MessageSuccess message={success} />
         {!success && <MessageError message={error} />}
       </div>

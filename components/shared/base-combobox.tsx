@@ -61,8 +61,8 @@ export function BaseCombobox({
           />
           <CommandList className="p-1">
             {isPending ? (
-              <CommandEmpty className="h-[50px] flex items-center justify-center p-0">
-                <MoonLoader size={24} color="#71717b" />
+              <CommandEmpty className="h-[45px] flex items-center justify-center p-0">
+                <MoonLoader size={22} color="#71717b" />
               </CommandEmpty>
             ) : (
               <>

@@ -45,7 +45,7 @@ export function useDynamicCombobox(
         }
       } catch (error) {
         if (!isMounted) return;
-        console.error('Error loading options:', error);
+        console.error('Erro ao carregar opções:', error);
         const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
         toast.error(`Falha ao carregar ${resourceName}s`, { description: errorMessage });
         setOptions([]);

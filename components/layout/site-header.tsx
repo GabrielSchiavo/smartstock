@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeModeButton } from "@/components/shared/theme-mode-button";
-import { NotificationButton } from "@/components/shared/notification-button";
+import { AlertButton } from "@/components/alerts/alert-button";
 
 export function SiteHeader() {
   return (
@@ -15,7 +15,7 @@ export function SiteHeader() {
           />
         </div>
         <div className="flex items-center gap-3">
-          <NotificationButton></NotificationButton>
+          <AlertButton></AlertButton>
           <ThemeModeButton></ThemeModeButton>
         </div>
       </div>

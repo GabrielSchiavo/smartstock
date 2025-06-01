@@ -4,7 +4,9 @@ import { Calendar } from "@/components/ui/calendar";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -20,19 +22,21 @@ import { ptBR } from "date-fns/locale";
 import { FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { DatePickerFormProps } from "@/types";
-import { formatInTimeZone, toDate } from 'date-fns-tz';
+import { formatInTimeZone, toDate } from "date-fns-tz";
 
 // Função alternativa para converter data local para UTC
 const localToUTC = (date: Date): Date => {
-  return new Date(Date.UTC(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-    date.getMilliseconds()
-  ));
+  return new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+      date.getMilliseconds()
+    )
+  );
 };
 
 export function DatePickerMonthYear<T extends FieldValues>({
@@ -40,12 +44,12 @@ export function DatePickerMonthYear<T extends FieldValues>({
   disabled = false,
 }: DatePickerFormProps<T>) {
   const [open, setOpen] = React.useState(false);
-  
+
   // Converter a data UTC para o fuso horário local para exibição
-  const initialDate = field.value 
-    ? toDate(field.value as Date | string, { timeZone: 'UTC' })
+  const initialDate = field.value
+    ? toDate(field.value as Date | string, { timeZone: "UTC" })
     : undefined;
-    
+
   const [currentMonth, setCurrentMonth] = React.useState<number>(
     initialDate?.getMonth() ?? new Date().getMonth()
   );
@@ -64,7 +68,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
   // Atualizar mês/ano quando a data muda
   React.useEffect(() => {
     if (field.value) {
-      const date = toDate(field.value as Date | string, { timeZone: 'UTC' });
+      const date = toDate(field.value as Date | string, { timeZone: "UTC" });
       setCurrentMonth(date.getMonth());
       setCurrentYear(date.getFullYear());
     }
@@ -82,11 +86,11 @@ export function DatePickerMonthYear<T extends FieldValues>({
   // Função para formatar a data em UTC
   const formatUTCDate = (date: Date | string | undefined) => {
     if (!date) return <span>Selecione uma data</span>;
-    
+
     return formatInTimeZone(
-      typeof date === 'string' ? parseISO(date) : date,
-      'UTC',
-      'dd/MM/yyyy',
+      typeof date === "string" ? parseISO(date) : date,
+      "UTC",
+      "dd/MM/yyyy",
       { locale: ptBR }
     );
   };
@@ -119,7 +123,9 @@ export function DatePickerMonthYear<T extends FieldValues>({
               const month = parseInt(value);
               setCurrentMonth(month);
               if (field.value) {
-                const newDate = toDate(field.value as Date | string, { timeZone: 'UTC' });
+                const newDate = toDate(field.value as Date | string, {
+                  timeZone: "UTC",
+                });
                 newDate.setMonth(month);
                 field.onChange(localToUTC(newDate));
               }
@@ -130,11 +136,14 @@ export function DatePickerMonthYear<T extends FieldValues>({
               <SelectValue placeholder="Mês" />
             </SelectTrigger>
             <SelectContent>
-              {monthNames.map((month, index) => (
-                <SelectItem key={month} value={index.toString()}>
-                  {month.charAt(0).toUpperCase() + month.slice(1)}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>Meses</SelectLabel>
+                {monthNames.map((month, index) => (
+                  <SelectItem key={month} value={index.toString()}>
+                    {month.charAt(0).toUpperCase() + month.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
 
@@ -144,7 +153,9 @@ export function DatePickerMonthYear<T extends FieldValues>({
               const year = parseInt(value);
               setCurrentYear(year);
               if (field.value) {
-                const newDate = toDate(field.value as Date | string, { timeZone: 'UTC' });
+                const newDate = toDate(field.value as Date | string, {
+                  timeZone: "UTC",
+                });
                 newDate.setFullYear(year);
                 field.onChange(localToUTC(newDate));
               }
@@ -155,11 +166,14 @@ export function DatePickerMonthYear<T extends FieldValues>({
               <SelectValue placeholder="Ano" />
             </SelectTrigger>
             <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>Anos</SelectLabel>
+                {years.map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {year}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
@@ -167,7 +181,14 @@ export function DatePickerMonthYear<T extends FieldValues>({
         <Calendar
           className="flex justify-center p-0"
           mode="single"
-          selected={initialDate ? new Date(initialDate.getTime() + initialDate.getTimezoneOffset() * 60000) : undefined}
+          selected={
+            initialDate
+              ? new Date(
+                  initialDate.getTime() +
+                    initialDate.getTimezoneOffset() * 60000
+                )
+              : undefined
+          }
           onSelect={handleDateSelect}
           month={new Date(currentYear, currentMonth)}
           onMonthChange={(date) => {

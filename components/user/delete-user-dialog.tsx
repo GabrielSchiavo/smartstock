@@ -50,7 +50,7 @@ export default function DeleteUserDialog({ rowItemId, onOpenChange }: AddEditFor
           size={"sm"}
           className="flex justify-start items-center gap-2 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
           asChild
-          title="Delete"
+          title="Excluir"
         >
           <div>
             <Trash2Icon className="w-4 h-4" />

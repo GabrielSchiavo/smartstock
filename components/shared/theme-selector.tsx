@@ -96,6 +96,7 @@ export function ThemeSelector() {
               </SelectItem>
             ))}
           </SelectGroup>
+          <SelectSeparator />
           <SelectGroup>
             <SelectLabel>Escala + Monoespaçado</SelectLabel>
             {MONO_THEMES.map((theme) => (

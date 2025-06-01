@@ -114,7 +114,7 @@ export function BaseCombobox({
                             e.stopPropagation();
                             handleDelete(option.id, option.name);
                           }}
-                          className="p-1.5! h-fit opacity-0 group-hover:opacity-100 hover:bg-destructive/10!"
+                          className="p-1.5! h-fit opacity-0 group-hover:opacity-100 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
                           disabled={isPending}
                           title={`Excluir ${resourceName}`}
                         >

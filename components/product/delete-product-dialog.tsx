@@ -50,7 +50,7 @@ export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEdit
           size={"sm"}
           className="flex justify-start items-center gap-2 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
           asChild
-          title="Delete"
+          title="Excluir"
         >
           <div>
             <Trash2Icon className="w-4 h-4" />
@@ -67,8 +67,8 @@ export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEdit
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
-            <AlertDialogCancel title="Cancel">Cancelar</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirm Delete" type="submit">Excluir</AlertDialogAction>
+            <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirmar Exclusão" type="submit">Excluir</AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

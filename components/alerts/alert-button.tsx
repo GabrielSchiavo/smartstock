@@ -59,6 +59,7 @@ export function AlertButton() {
                   30 dias do vencimento. Por favor, verifique e tome as medidas
                   necessárias.
                 </span>
+                <span className="text-xs italic text-end w-full">31/05/2025</span>
               </AlertDescription>
             </Alert>
             <Alert
@@ -73,6 +74,7 @@ export function AlertButton() {
                   ultrapassou o prazo de validade. Por favor, verifique e tome
                   as medidas necessárias.
                 </span>
+                <span className="text-xs italic text-end w-full">31/05/2025</span>
               </AlertDescription>
             </Alert>
             <Alert
@@ -87,6 +89,7 @@ export function AlertButton() {
                   30 dias do vencimento. Por favor, verifique e tome as medidas
                   necessárias.
                 </span>
+                <span className="text-xs italic text-end w-full">31/05/2025</span>
               </AlertDescription>
             </Alert>
             <Alert
@@ -101,6 +104,7 @@ export function AlertButton() {
                   ultrapassou o prazo de validade. Por favor, verifique e tome
                   as medidas necessárias.
                 </span>
+                <span className="text-xs italic text-end w-full">31/05/2025</span>
               </AlertDescription>
             </Alert>
           </div>

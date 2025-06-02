@@ -26,7 +26,7 @@ enum UnitType {
   KG
   G
   L
-  UN 
+  UN
 }
 
 enum ProductType {
@@ -34,81 +34,112 @@ enum ProductType {
   PURCHASED
 }
 
+enum AlertType {
+  EXPIRED
+  ABOUT_TO_EXPIRE
+}
+
 model User {
-  id            String         @id @default(cuid())
+  id            String @id @default(cuid())
+
   name          String?
-  email         String         @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserType       @default(DEFAULT)
- 
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  role          UserType  @default(DEFAULT)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model VerificationToken {
-  id String                    @id @default(cuid())
-  email String
-  token String                 @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id String                    @id @default(cuid())
-  email String
-  token String                 @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model Product {
-  id                   Int              @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  name                 String           @db.VarChar(150)
-  quantity             Float            @db.Real
-  unit                 UnitType 
-  unitWeight           Float?           @db.Real
-  unitOfUnitWeight     UnitType? 
-  lot                  String           @db.VarChar(50)  
-  validityDate         DateTime         @db.Date
-  donor                String?          @db.VarChar(150)
-  receiptDate          DateTime         @db.Date
-  receiver             String           @db.VarChar(150)
-  group                String           @db.VarChar(50)
-  subgroup             String?          @db.VarChar(50)
-  productType          ProductType      
- 
-  createdAt            DateTime         @default(now())
-  updatedAt            DateTime         @updatedAt
+  name             String      @db.VarChar(150)
+  quantity         Float       @db.Real
+  unit             UnitType
+  unitWeight       Float?      @db.Real
+  unitOfUnitWeight UnitType?
+  lot              String      @db.VarChar(50)
+  validityDate     DateTime    @db.Date
+  donor            String?     @db.VarChar(150)
+  receiptDate      DateTime    @db.Date
+  receiver         String      @db.VarChar(150)
+  group            String      @db.VarChar(50)
+  subgroup         String?     @db.VarChar(50)
+  productType      ProductType
+
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  Alert Alert[]
+  @@index([validityDate])
 }
 
 model Group {
-  id       String   @id @default(cuid())
+  id        String   @id @default(cuid())
+
   name      String   @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Subgroup {
   id        String   @id @default(cuid())
+
   name      String   @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model Donor {
   id        String   @id @default(cuid())
+
   name      String   @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Receiver {
   id        String   @id @default(cuid())
+
   name      String   @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Alert {
+  id        String    @id @default(cuid())
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  type      AlertType
+  read      Boolean   @default(false)
+
+  createdAt DateTime  @default(now())
+
+  @@index([type, read])
 }

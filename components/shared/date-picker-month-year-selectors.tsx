@@ -21,7 +21,7 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { DatePickerFormProps } from "@/types";
+import { DatePickerFormProps, LocaleType } from "@/types";
 import { formatInTimeZone, toDate } from "date-fns-tz";
 
 // Função alternativa para converter data local para UTC
@@ -47,7 +47,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
 
   // Converter a data UTC para o fuso horário local para exibição
   const initialDate = field.value
-    ? toDate(field.value as Date | string, { timeZone: "UTC" })
+    ? toDate(field.value as Date | string, { timeZone: LocaleType.UTC })
     : undefined;
 
   const [currentMonth, setCurrentMonth] = React.useState<number>(
@@ -68,7 +68,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
   // Atualizar mês/ano quando a data muda
   React.useEffect(() => {
     if (field.value) {
-      const date = toDate(field.value as Date | string, { timeZone: "UTC" });
+      const date = toDate(field.value as Date | string, { timeZone: LocaleType.UTC });
       setCurrentMonth(date.getMonth());
       setCurrentYear(date.getFullYear());
     }
@@ -89,7 +89,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
 
     return formatInTimeZone(
       typeof date === "string" ? parseISO(date) : date,
-      "UTC",
+      LocaleType.UTC,
       "dd/MM/yyyy",
       { locale: ptBR }
     );
@@ -124,7 +124,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
               setCurrentMonth(month);
               if (field.value) {
                 const newDate = toDate(field.value as Date | string, {
-                  timeZone: "UTC",
+                  timeZone: LocaleType.UTC,
                 });
                 newDate.setMonth(month);
                 field.onChange(localToUTC(newDate));
@@ -154,7 +154,7 @@ export function DatePickerMonthYear<T extends FieldValues>({
               setCurrentYear(year);
               if (field.value) {
                 const newDate = toDate(field.value as Date | string, {
-                  timeZone: "UTC",
+                  timeZone: LocaleType.UTC,
                 });
                 newDate.setFullYear(year);
                 field.onChange(localToUTC(newDate));

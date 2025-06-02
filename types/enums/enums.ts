@@ -43,3 +43,8 @@ export enum LocaleType {
   EN_US = "en-US",
   UTC = "UTC",
 }
+
+export enum AlertType {
+  EXPIRED = "EXPIRED",
+  ABOUT_TO_EXPIRE = "ABOUT_TO_EXPIRE",
+}

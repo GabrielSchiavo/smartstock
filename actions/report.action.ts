@@ -26,7 +26,7 @@ const calculateExpiryStatus = (
   if (daysUntilExpiry <= 0) {
     status = validityStatusType.EXPIRED;
   } else if (daysUntilExpiry <= 30) {
-    status = validityStatusType.ABOUT_TO_EXPIRE;
+    status = validityStatusType.EXPIRING;
   }
 
   return { daysUntilExpiry, status };

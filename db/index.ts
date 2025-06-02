@@ -1,3 +1,4 @@
+export { alertRepository } from "./repositories/alert.repository";
 export { donorRepository } from "./repositories/donor.repository";
 export { groupRepository } from "./repositories/group.repository";
 export { passwordResetTokenRepository } from "./repositories/password-reset-token.repository";

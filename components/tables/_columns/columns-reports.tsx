@@ -126,7 +126,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
             Vencido
           </span>
         );
-      } else if (status === validityStatusType.ABOUT_TO_EXPIRE) {
+      } else if (status === validityStatusType.EXPIRING) {
         return (
           <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
             Próximo do vencimento
@@ -432,7 +432,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
               Vencido
             </span>
           );
-        } else if (status === validityStatusType.ABOUT_TO_EXPIRE) {
+        } else if (status === validityStatusType.EXPIRING) {
           return (
             <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
               Próximo do vencimento

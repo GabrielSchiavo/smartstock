@@ -58,7 +58,7 @@ export abstract class BasePdfGenerator {
     switch (status) {
       case validityStatusType.EXPIRED:
         return "Vencido";
-      case validityStatusType.ABOUT_TO_EXPIRE:
+      case validityStatusType.EXPIRING:
         return "Próximo";
       default:
         return "Válido";

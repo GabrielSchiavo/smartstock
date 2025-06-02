@@ -36,7 +36,7 @@ enum ProductType {
 
 enum AlertType {
   EXPIRED
-  ABOUT_TO_EXPIRE
+  EXPIRING
 }
 
 model User {
@@ -91,7 +91,7 @@ model Product {
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
 
-  Alert Alert[]
+  Notification     Notification[]
   @@index([validityDate])
 }
 
@@ -131,15 +131,15 @@ model Receiver {
   updatedAt DateTime @updatedAt
 }
 
-model Alert {
+model Notification {
   id        String    @id @default(cuid())
 
   product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   type      AlertType
-  read      Boolean   @default(false)
+  isRead    Boolean   @default(false)
 
-  createdAt DateTime  @default(now())
+  createdAt DateTime  @db.Date @default(now())
 
-  @@index([type, read])
+  @@index([type, isRead])
 }

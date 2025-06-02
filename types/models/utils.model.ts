@@ -29,3 +29,9 @@ export type ComboboxApiParams<T = OptionProps> = {
   delete: (id: string) => Promise<ApiResponse<T[]>>;
   checkUsage: (name: string) => Promise<UsageCheckResponse>;
 };
+
+export type AlertResponse = {
+  success: boolean
+  message?: string
+  error?: string
+}

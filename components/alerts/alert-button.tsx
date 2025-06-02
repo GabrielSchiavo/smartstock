@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -11,18 +9,24 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import {
-  BellIcon,
-  CheckCheckIcon,
-  CircleAlertIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DeleteAlertsDialog from "./delete-alerts-dialog";
+import {
+  clientCheckProductAlerts,
+  getAlerts,
+  getUnreadAlertsCount,
+  markAllAlertsAsRead,
+} from "@/actions";
+import { AlertItem } from "./alert-item";
+import { Separator } from "../ui/separator";
 
-export function AlertButton() {
+export async function AlertButton() {
+  const alerts = await getAlerts();
+  const unreadAlertsCount = await getUnreadAlertsCount();
+  await clientCheckProductAlerts();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -34,9 +38,11 @@ export function AlertButton() {
         >
           <div className="relative">
             <BellIcon />
-            <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums text-xs">
-             4 
-            </Badge>
+            {unreadAlertsCount > 0 && (
+              <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums text-xs">
+                {unreadAlertsCount > 9 ? "9+" : unreadAlertsCount}
+              </Badge>
+            )}
           </div>
         </Button>
       </SheetTrigger>
@@ -47,73 +53,59 @@ export function AlertButton() {
         </SheetHeader>
         <ScrollArea className="h-[70vh]">
           <div className="grid flex-1 auto-rows-min gap-6 px-6">
-            <Alert
-              variant={"default"}
-              className="hover:border-foreground cursor-pointer"
-            >
-              <CircleAlertIcon />
-              <AlertTitle>Aviso! Produto próximo da validade</AlertTitle>
-              <AlertDescription>
-                <span>
-                  O produto com <span className="font-bold">ID ...</span> está a
-                  30 dias do vencimento. Por favor, verifique e tome as medidas
-                  necessárias.
-                </span>
-                <span className="text-xs italic text-end w-full">31/05/2025</span>
-              </AlertDescription>
-            </Alert>
-            <Alert
-              variant={"destructive"}
-              className="hover:border-foreground cursor-pointer"
-            >
-              <TriangleAlertIcon />
-              <AlertTitle>Alerta! Produto atingiu a validade</AlertTitle>
-              <AlertDescription>
-                <span>
-                  O produto com <span className="font-bold">ID ...</span>{" "}
-                  ultrapassou o prazo de validade. Por favor, verifique e tome
-                  as medidas necessárias.
-                </span>
-                <span className="text-xs italic text-end w-full">31/05/2025</span>
-              </AlertDescription>
-            </Alert>
-            <Alert
-              variant={"read"}
-              className="hover:border-foreground cursor-pointer"
-            >
-              <CircleAlertIcon />
-              <AlertTitle>Aviso! Produto próximo da validade</AlertTitle>
-              <AlertDescription>
-                <span>
-                  O produto com <span className="font-bold">ID ...</span> está a
-                  30 dias do vencimento. Por favor, verifique e tome as medidas
-                  necessárias.
-                </span>
-                <span className="text-xs italic text-end w-full">31/05/2025</span>
-              </AlertDescription>
-            </Alert>
-            <Alert
-              variant={"read"}
-              className="hover:border-foreground cursor-pointer"
-            >
-              <TriangleAlertIcon />
-              <AlertTitle>Alerta! Produto atingiu a validade</AlertTitle>
-              <AlertDescription>
-                <span>
-                  O produto com <span className="font-bold">ID ...</span>{" "}
-                  ultrapassou o prazo de validade. Por favor, verifique e tome
-                  as medidas necessárias.
-                </span>
-                <span className="text-xs italic text-end w-full">31/05/2025</span>
-              </AlertDescription>
-            </Alert>
+            {alerts.length === 0 ? (
+              <p className="w-full text-center text-muted-foreground text-sm">
+                Nenhum alerta encontrado!
+              </p>
+            ) : (
+              <>
+                <div className="grid gap-1">
+                  <span className="text-muted-foreground italic text-sm">
+                    Não lidos
+                  </span>
+                  <Separator />
+                </div>
+                {alerts.filter((alert) => !alert.isRead).length > 0 ? (
+                  alerts
+                    .filter((alert) => !alert.isRead)
+                    .map((alert) => <AlertItem key={alert.id} alert={alert} />)
+                ) : (
+                  <p className="w-full text-center text-muted-foreground text-sm">
+                    Nenhum alerta não lido!
+                  </p>
+                )}
+
+                <div className="grid gap-1">
+                  <span className="text-muted-foreground italic text-sm">
+                    Lidos
+                  </span>
+                  <Separator />
+                </div>
+                {alerts.filter((alert) => alert.isRead).length > 0 ? (
+                  alerts
+                    .filter((alert) => alert.isRead)
+                    .map((alert) => <AlertItem key={alert.id} alert={alert} />)
+                ) : (
+                  <p className="w-full text-center text-muted-foreground text-sm">
+                    Nenhum alerta lido!
+                  </p>
+                )}
+              </>
+            )}
           </div>
         </ScrollArea>
         <SheetFooter>
-          <Button variant="outline" size={"sm"} className="w-full">
-            <CheckCheckIcon />
-            Marcar como lidos
-          </Button>
+          <form action={markAllAlertsAsRead}>
+            <Button
+              type="submit"
+              variant="outline"
+              size={"sm"}
+              className="w-full"
+            >
+              <CheckCheckIcon />
+              Marcar como lidos
+            </Button>
+          </form>
           <DeleteAlertsDialog />
         </SheetFooter>
       </SheetContent>

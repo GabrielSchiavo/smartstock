@@ -1,5 +1,6 @@
 import { ExtendedUser } from "@/next-auth";
 import { OptionProps } from "./form.interface";
+import { AlertType, Product } from "@prisma/client";
 
 export interface CardWrapperProps {
   children: React.ReactNode;
@@ -45,4 +46,17 @@ export interface BaseComboboxProps {
   handleDelete: (id: string, name: string) => void;
   className?: string;
   resourceName: string;
+}
+
+export interface BasicAlertProps {
+  id: string;
+  type: AlertType;
+  isRead: boolean;
+  createdAt: Date;
+  product: Product;
+}
+
+export interface AlertProps {
+  alert: BasicAlertProps;
+  key?: string;
 }

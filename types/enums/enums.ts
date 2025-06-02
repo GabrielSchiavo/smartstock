@@ -27,7 +27,7 @@ export enum ReportType {
 export enum validityStatusType {
   VALID = "VALID",
   EXPIRED = "EXPIRED",
-  ABOUT_TO_EXPIRE = "ABOUT_TO_EXPIRE",
+  EXPIRING = "EXPIRING",
 }
 
 export enum PdfUnitType {
@@ -46,5 +46,10 @@ export enum LocaleType {
 
 export enum AlertType {
   EXPIRED = "EXPIRED",
-  ABOUT_TO_EXPIRE = "ABOUT_TO_EXPIRE",
+  EXPIRING = "EXPIRING",
+}
+export enum AlertStyleType {
+  DEFAULT = "default",
+  DESTRUCTIVE = "destructive",
+  READ = "read",
 }

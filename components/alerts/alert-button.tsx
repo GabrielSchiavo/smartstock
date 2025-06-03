@@ -12,15 +12,15 @@ import {
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import DeleteAlertsDialog from "./delete-alerts-dialog";
+import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
 import {
   clientCheckProductAlerts,
   getAlerts,
   getUnreadAlertsCount,
   markAllAlertsAsRead,
 } from "@/actions";
-import { AlertItem } from "./alert-item";
-import { Separator } from "../ui/separator";
+import { AlertItem } from "@/components/alerts/alert-item";
+import { Separator } from "@/components/ui/separator";
 
 export async function AlertButton() {
   const alerts = await getAlerts();

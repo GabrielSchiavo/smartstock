@@ -14,15 +14,16 @@ export async function getAllGroups(): Promise<GroupResponse> {
     const groups = await groupRepository.findAll();
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Grupos carregados com sucesso.",
       data: groups,
-      message: "Grupos carregados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao buscar Grupos:", error);
     return {
       success: false,
-      message: "Falha ao carregar grupos",
-      error: "Não foi possível acessar a lista de grupos",
+      title: "Erro!",
+      description: "Não foi possível acessar a lista de grupos.",
     };
   }
 }
@@ -34,15 +35,16 @@ export async function searchGroups(query: string): Promise<GroupResponse> {
     const groups = await groupRepository.search(query);
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Grupos encontrados com sucesso.",
       data: groups,
-      message: "Grupos encontrados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao pesquisar Grupos:", error);
     return {
       success: false,
-      message: "Falha na busca",
-      error: "Erro ao pesquisar grupos",
+      title: "Erro!",
+      description: "Erro ao pesquisar grupos.",
     };
   }
 }
@@ -53,8 +55,8 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
   if (!trimmedName) {
     return {
       success: false,
-      message: "Dados inválidos",
-      error: "O campo não pode estar vazio",
+      title: "Erro!",
+      description: "O campo de não pode estar vazio.",
     };
   }
 
@@ -63,15 +65,16 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
     revalidatePath("/");
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Grupo criado com sucesso.",
       data: newGroup,
-      message: "Grupo criado com sucesso",
     };
   } catch (error) {
     console.error("Erro ao criar Grupo:", error);
     return {
       success: false,
-      message: "Falha ao criar grupo",
-      error: "Grupo já existe ou nome inválido",
+      title: "Erro!",
+      description: "Erro ao criar grupo.",
     };
   }
 }
@@ -83,8 +86,8 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
     if (!existingGroup) {
       return {
         success: false,
-        message: "Grupo não encontrado",
-        error: "O grupo solicitado não existe",
+        title: "Erro!",
+        description: "Grupo não encontrado.",
       };
     }
 
@@ -92,14 +95,15 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
     revalidatePath("/");
     return {
       success: true,
-      message: "Grupo excluído com sucesso",
+      title: "Sucesso!",
+      description: "Grupo excluído com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao excluir Grupo:", error);
     return {
       success: false,
-      message: "Falha ao excluir grupo",
-      error: "Grupo não encontrado ou em uso",
+      title: "Erro!",
+      description: "Erro ao excluir grupo.",
     };
   }
 }
@@ -112,15 +116,17 @@ export async function checkGroupInProducts(
 
     return {
       isUsed: !!productWithGroup,
-      message: productWithGroup
-        ? "Este Grupo está associado a um ou mais produtos"
-        : null,
+      success: false,
+      title: "Aviso!",
+      description: "Este grupo está associado a um ou mais produtos.",
     };
   } catch (error) {
     console.error("Erro ao verificar produtos associados:", error);
     return {
       isUsed: true,
-      message: "Não foi possível verificar os produtos associados",
+      success: false,
+      title: "Erro!",
+      description: "Erro ao verificar produtos associados.",
     };
   }
 }

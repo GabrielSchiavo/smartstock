@@ -7,6 +7,7 @@ import {
   InventoryReportResponse,
   LocaleType,
   PurchasedReportResponse,
+  ToastType,
   ValidityReportResponse,
 } from "@/types";
 import { useReactToPrint } from "react-to-print";
@@ -40,7 +41,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { toast } from "sonner";
 import {
   generateDonationsPdf,
   generateInventoryPdf,
@@ -49,6 +49,7 @@ import {
 } from "@/lib/pdf-generator";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
+import { showToast } from "@/components/utils/show-toast";
 
 export function DataTableReport<TData>({
   columns,
@@ -75,11 +76,7 @@ export function DataTableReport<TData>({
   });
 
   // Agrupa os dados se groupBy for especificado
-  const {
-    groupedData,
-    toggleGroup,
-    toggleAllGroups,
-  } = useGroupedTable({
+  const { groupedData, toggleGroup, toggleAllGroups } = useGroupedTable({
     table,
     groupBy,
     collapsedGroups,
@@ -116,11 +113,19 @@ export function DataTableReport<TData>({
           pdf = await generateInventoryPdf(data as InventoryReportResponse[]);
           break;
         default:
-          throw new Error("Tipo de relatório inválido");
+          throw showToast({
+            title: "Erro!",
+            description: "Tipo de relatório inválido.",
+            type: ToastType.ERROR,
+          });
       }
 
       if (!pdf) {
-        throw new Error("Falha ao gerar PDF");
+        showToast({
+          title: "Erro!",
+          description: "Erro ao gerar o PDF.",
+          type: ToastType.ERROR,
+        });
       }
       const pdfData = new Uint8Array(pdf);
       const blob = new Blob([pdfData], { type: "application/pdf" });
@@ -143,8 +148,12 @@ export function DataTableReport<TData>({
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error generating PDF:", error);
-      toast.error("Erro ao gerar PDF");
+      console.error("Erro ao gerar PDF:", error);
+      showToast({
+        title: "Erro!",
+        description: "Erro ao gerar o PDF.",
+        type: ToastType.ERROR,
+      });
     }
   };
 
@@ -215,8 +224,13 @@ export function DataTableReport<TData>({
           {initialDate && finalDate && (
             <p className="text-md">
               Período:{" "}
-              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC })} a{" "}
-              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC })}
+              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR, {
+                timeZone: LocaleType.UTC,
+              })}{" "}
+              a{" "}
+              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR, {
+                timeZone: LocaleType.UTC,
+              })}
             </p>
           )}
         </div>

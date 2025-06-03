@@ -14,15 +14,16 @@ export const getAllReceivers = async (): Promise<ReceiverResponse> => {
     const receivers = await receiverRepository.findAll();
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Recebedores carregados com sucesso.",
       data: receivers,
-      message: "Recebedores carregados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao buscar Recebedores:", error);
     return {
       success: false,
-      message: "Falha ao carregar recebedores",
-      error: "Erro ao acessar a lista de recebedores",
+      title: "Erro!",
+      description: "Erro ao acessar a lista de recebedores.",
     };
   }
 };
@@ -36,15 +37,16 @@ export const searchReceivers = async (
     const receivers = await receiverRepository.search(query);
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Recebedores encontrados com sucesso.",
       data: receivers,
-      message: "Recebedores encontrados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao buscar Recebedores:", error);
     return {
       success: false,
-      message: "Falha na busca",
-      error: "Erro ao pesquisar recebedores",
+      title: "Erro!",
+      description: "Erro ao pesquisar recebedores.",
     };
   }
 };
@@ -55,8 +57,8 @@ export const createReceiver = async (
   if (!name.trim()) {
     return {
       success: false,
-      message: "Dados inválidos",
-      error: "O campo não pode estar vazio",
+      title: "Erro!",
+      description: "O campo de não pode estar vazio.",
     };
   }
 
@@ -66,14 +68,15 @@ export const createReceiver = async (
     return {
       success: true,
       data: newReceiver,
-      message: "Recebedor criado com sucesso",
+      title: "Sucesso!",
+      description: "Recebedor criado com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao criar Recebedor:", error);
     return {
       success: false,
-      message: "Falha ao criar recebedor",
-      error: "Recebedor já existe ou nome inválido",
+      title: "Erro!",
+      description: "Erro ao criar recebedor.",
     };
   }
 };
@@ -87,8 +90,8 @@ export const deleteReceiver = async (
     if (!existingReceiver) {
       return {
         success: false,
-        message: "Recebedor não encontrado",
-        error: "O recebedor solicitado não existe",
+        title: "Erro!",
+        description: "Recebedor não encontrado.",
       };
     }
 
@@ -96,14 +99,15 @@ export const deleteReceiver = async (
     revalidatePath("/");
     return {
       success: true,
-      message: "Recebedor excluído com sucesso",
+      title: "Sucesso!",
+      description: "Recebedor excluído com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao excluir Recebedor:", error);
     return {
       success: false,
-      message: "Falha ao excluir recebedor",
-      error: "Recebedor não encontrado ou em uso",
+      title: "Erro!",
+      description: "Erro ao excluir recebedor.",
     };
   }
 };
@@ -117,15 +121,17 @@ export const checkReceiverUsage = async (
 
     return {
       isUsed: !!productWithReceiver,
-      message: productWithReceiver
-        ? "Este Recebedor está associado a um ou mais produtos"
-        : null,
+      success: false,
+      title: "Aviso!",
+      description: "Este recebedor está associado a um ou mais produtos.",
     };
   } catch (error) {
     console.error("Erro ao verificar produtos associados:", error);
     return {
       isUsed: true,
-      message: "Não foi possível verificar os produtos associados",
+      success: false,
+      title: "Erro!",
+      description: "Erro ao verificar produtos associados.",
     };
   }
 };

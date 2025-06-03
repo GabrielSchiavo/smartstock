@@ -12,17 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/utils/message-error";
-import { MessageSuccess } from "@/components/utils/message-success";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
-import { toast } from "sonner";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
-import { BaseUserFormProps, UserType } from "@/types";
+import { BaseUserFormProps, ToastType, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { z } from "zod";
+import { showToast } from "@/components/utils/show-toast";
 
 export const BaseUserForm = <T extends z.ZodType>({
   schema,
@@ -33,45 +31,42 @@ export const BaseUserForm = <T extends z.ZodType>({
   loadingText,
   isEdit = false,
 }: BaseUserFormProps<T>) => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-const form = useForm<z.infer<T>>({
-  resolver: zodResolver(schema),
-  defaultValues: {
-    email: "",
-    name: "",
-    userType: undefined,
-    ...(isEdit ? {} : { password: undefined, confirmPassword: undefined }),
-    ...defaultValues,
-  } as z.infer<T>,
-});
+  const form = useForm<z.infer<T>>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: "",
+      name: "",
+      userType: undefined,
+      ...(isEdit ? {} : { password: undefined, confirmPassword: undefined }),
+      ...defaultValues,
+    } as z.infer<T>,
+  });
 
   const handleSubmit = (values: z.infer<T>) => {
-    setError("");
-    setSuccess("");
+    startTransition(async () => {
+      try {
+        const response = await onSubmit(values);
 
-    startTransition(() => {
-      onSubmit(values)
-        .then((data) => {
-          setError(data.error);
-          setSuccess(data.success);
+        if (response.success === true) {
+          onSuccess?.();
+        }
 
-          if (data.success) {
-            toast.success(data.success);
-            onSuccess?.();
-          } else if (data.error) {
-            toast.error(data.error);
-          }
-        })
-        .catch(() => {
-          setError("Algo deu errado!");
-          toast.error("Algo deu errado!");
+        showToast({
+          title: response.title,
+          description: response.description,
+          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
+      } catch {
+        showToast({
+          title: "Algo deu errado!",
+          type: ToastType.ERROR,
+        });
+      }
     });
   };
-  
+
   type FieldName = Path<z.infer<T>>;
 
   return (
@@ -217,8 +212,6 @@ const form = useForm<z.infer<T>>({
             )}
           />
         </div>
-        <MessageError message={error} />
-        <MessageSuccess message={success} />
         <DialogFooter>
           <Button disabled={isPending} type="submit" size="sm">
             {isPending ? (

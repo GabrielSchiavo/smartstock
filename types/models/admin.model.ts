@@ -1,5 +1,6 @@
 export type AuthorizationResponse = {
-  success?: string
-  error?: string
+  success?: boolean
+  title: string
+  description?: string
   isAuthorized?: boolean
 }

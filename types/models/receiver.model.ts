@@ -1,17 +1,19 @@
-import { Receiver } from "@prisma/client"
+import { Receiver } from "@prisma/client";
 
 export type ReceiverResponse<T = Receiver[]> = {
-  success: boolean
-  data?: T
-  message?: string
-  error?: string
-}
+  success: boolean;
+  title?: string;
+  description?: string;
+  data?: T;
+};
 
-export type SingleReceiverResponse = ReceiverResponse<Receiver>
+export type SingleReceiverResponse = ReceiverResponse<Receiver>;
 
-export type ReceiverOperationResponse = Omit<ReceiverResponse, 'data'>
+export type ReceiverOperationResponse = Omit<ReceiverResponse, "data">;
 
 export type CheckReceiverResponse = {
-  isUsed: boolean
-  message: string | null
-}
+  isUsed: boolean;
+  success: boolean;
+  title?: string;
+  description?: string;
+};

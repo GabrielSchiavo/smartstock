@@ -13,15 +13,18 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AddEditFormProps } from "@/types";
+import { AddEditFormProps, ToastType } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+import { showToast } from "@/components/utils/show-toast";
 
-export default function DeleteUserDialog({ rowItemId, onOpenChange }: AddEditFormProps) {
-      const [open, setOpen] = useState(false);
+export default function DeleteUserDialog({
+  rowItemId,
+  onOpenChange,
+}: AddEditFormProps) {
+  const [open, setOpen] = useState(false);
 
-    const handleOpenChange = (newOpen: boolean) => {
+  const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
     if (!newOpen && onOpenChange) {
       onOpenChange(newOpen);
@@ -31,14 +34,25 @@ export default function DeleteUserDialog({ rowItemId, onOpenChange }: AddEditFor
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteUser(rowItemId as string);
+      const response = await deleteUser(rowItemId as string);
 
-      toast.success(`Usuário com ID ${rowItemId} excluído com sucesso`);
-            setOpen(false);
-      if (onOpenChange) onOpenChange(false);
+      if (response.success === true) {
+        setOpen(false);
+        if (onOpenChange) onOpenChange(false);
+      }
+
+      showToast({
+        title: response.title,
+        description: response.description,
+        type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+      });
     } catch (error) {
-      console.error("Erro ao excluir usuário:", error);
-      toast.error("Falha ao excluir usuário");
+      console.error("Algo deu errado:", error);
+      showToast({
+        title: "Erro!",
+        description: "Algo deu errado.",
+        type: ToastType.ERROR,
+      });
     }
   };
 
@@ -62,13 +76,20 @@ export default function DeleteUserDialog({ rowItemId, onOpenChange }: AddEditFor
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o registro.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+            registro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
             <AlertDialogCancel title="Cancel">Cancelar</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirm Delete" type="submit">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              className="bg-red-700 hover:bg-destructive"
+              title="Confirm Delete"
+              type="submit"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

@@ -23,6 +23,18 @@ export const CreateReportSchema = z
     }
   )
   .refine(
+    (data) => !(
+      data.reportType !== ReportType.INVENTORY && 
+      data.finalDate && 
+      data.initialDate && 
+      data.initialDate > data.finalDate
+    ),
+    {
+      message: "Data inicial não pode ser maior que data final.",
+      path: ["initialDate"],
+    }
+  )
+  .refine(
     (data) => !(data.reportType !== ReportType.INVENTORY && !data.initialDate),
     {
       message: "Data Inicial é obrigatória.",

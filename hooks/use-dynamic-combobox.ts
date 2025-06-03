@@ -1,6 +1,6 @@
 import { useState, useEffect, useTransition } from "react";
-import { toast } from "sonner";
-import { ComboboxApiParams, OptionProps } from "@/types";
+import { ComboboxApiParams, OptionProps, ToastType } from "@/types";
+import { showToast } from "@/components/utils/show-toast";
 
 export function useDynamicCombobox(
   api: ComboboxApiParams,
@@ -25,29 +25,33 @@ export function useDynamicCombobox(
 
     const fetchOptions = async () => {
       if (!open) return;
-      
+
       setIsLoading(true);
       try {
-        // Removido .trim() e adicionado verificação de string vazia
-        const results = !inputValue
+        const response = !inputValue
           ? await api.getAll()
           : await api.search(inputValue);
 
         if (!isMounted) return;
 
-        if (results?.success) {
-          setOptions(Array.isArray(results.data) ? results.data : []);
+        if (response?.success) {
+          setOptions(Array.isArray(response.data) ? response.data : []);
         } else {
-          toast.error(results?.message || "A operação falhou", {
-            description: results?.error || "Ocorreu um erro desconhecido",
+          showToast({
+            title: "Erro!",
+            description: response.description || "A operação falhou.",
+            type: ToastType.ERROR,
           });
           setOptions([]);
         }
       } catch (error) {
         if (!isMounted) return;
-        console.error('Erro ao carregar opções:', error);
-        const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
-        toast.error(`Falha ao carregar ${resourceName}s`, { description: errorMessage });
+        console.error("Erro ao carregar opções:", error);
+        showToast({
+          title: "Erro!",
+          description: `Erro ao carregar ${resourceName}s.`,
+          type: ToastType.ERROR,
+        });
         setOptions([]);
       } finally {
         if (isMounted) setIsLoading(false);
@@ -62,29 +66,40 @@ export function useDynamicCombobox(
   }, [open, inputValue, api, resourceName]);
 
   const handleCreateNew = async () => {
-    // Removido .trim() - agora verifica apenas se há valor
     if (!inputValue) return;
 
     setIsLoading(true);
     try {
-      const result = await api.create(inputValue);
+      const response = await api.create(inputValue);
 
-      if (result.success && result.data) {
-        toast.success(`${resourceName} criado com sucesso`);
-        onChange(result.data.name);
-        setInputValue(result.data.name);
+      if (response.success && response.data) {
+        showToast({
+          title: "Sucesso!",
+          description: `${resourceName} criado com sucesso.`,
+          type: ToastType.SUCCESS,
+        });
+        onChange(response.data.name);
+        setInputValue(response.data.name);
         setOpen(false);
 
-        const updatedResults = await api.getAll();
-        if (updatedResults.success) {
-          setOptions(updatedResults.data || []);
+        const updatedResponse = await api.getAll();
+        if (updatedResponse.success) {
+          setOptions(updatedResponse.data || []);
         }
       } else {
-        toast.error(result.message || `Falha ao criar ${resourceName}`);
+        showToast({
+          title: "Erro!",
+          description: response.description || `Erro ao criar ${resourceName}.`,
+          type: ToastType.ERROR,
+        });
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao criar";
-      toast.error("Erro inesperado", { description: errorMessage });
+      console.error("Algo deu errado:", error);
+      showToast({
+        title: "Erro!",
+        description: "Algo deu errado:",
+        type: ToastType.ERROR,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -99,33 +114,48 @@ export function useDynamicCombobox(
   const handleDelete = async (optionId: string, optionName: string) => {
     setIsLoading(true);
     try {
-      const { isUsed, message } = await api.checkUsage(optionName);
+      const { isUsed } = await api.checkUsage(optionName);
 
       if (isUsed) {
-        toast.warning("Não é possível excluir", {
-          description: message || `Este ${resourceName} está em uso`,
+        showToast({
+          title: "Aviso!",
+          description: `Este ${resourceName} está em uso e não pode ser excluído.`,
+          type: ToastType.WARNING,
         });
         return;
       }
 
-      const result = await api.delete(optionId);
+      const response = await api.delete(optionId);
 
-      if (result.success) {
-        toast.success(result.message || `${resourceName} excluído com sucesso`);
+      if (response.success) {
+        showToast({
+          title: "Sucesso!",
+          description: response.description || `${resourceName} excluído com sucesso.`,
+          type: ToastType.SUCCESS,
+        });
+
         if (value === optionName) {
           onChange("");
           setInputValue("");
         }
-        const updatedResults = await api.getAll();
-        if (updatedResults.success) {
-          setOptions(updatedResults.data || []);
+        const updatedResponse = await api.getAll();
+        if (updatedResponse.success) {
+          setOptions(updatedResponse.data || []);
         }
       } else {
-        toast.error(result.message || "Falha na exclusão");
+        showToast({
+          title: "Erro!",
+          description: response.description || "Erro ao excluir registro.",
+          type: ToastType.ERROR,
+        });
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Erro ao excluir";
-      toast.error("Erro inesperado", { description: errorMessage });
+      console.error("Algo deu errado:", error);
+      showToast({
+        title: "Erro!",
+        description: "Algo deu errado.",
+        type: ToastType.ERROR,
+      });
     } finally {
       setIsLoading(false);
     }

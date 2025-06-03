@@ -1,6 +1,6 @@
 // hooks/useGroupedTable.ts
 import { getGroupedData } from "@/components/utils/group-table";
-import { GroupedTableProps } from "../types";
+import { GroupedTableProps } from "@/types";
 import { useMemo } from "react";
 
 export function useGroupedTable<TData>({

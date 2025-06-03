@@ -40,8 +40,9 @@ export interface BaseUserFormProps<T extends z.ZodType> {
   schema: T;
   defaultValues?: Partial<z.infer<T>>;
   onSubmit: (values: z.infer<T>) => Promise<{
-    error?: string;
-    success?: string;
+    success: boolean;
+    title: string;
+    description?: string;
   }>;
   onSuccess?: () => void;
   submitButtonText: string;

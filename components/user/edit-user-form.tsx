@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { BaseUserForm } from "@/components/user/base-user-form";
 import { editUser, getUserById } from "@/actions";
-import { AddEditFormProps } from "@/types";
+import { AddEditFormProps, ToastType } from "@/types";
 import { UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { MessageError } from "@/components/utils/message-error";
 import { EditUserSchema } from "@/schemas";
 import { z } from "zod";
+import { showToast } from "@/components/utils/show-toast";
 
 export const EditUserForm = ({
   rowItemId,
@@ -18,7 +19,6 @@ export const EditUserForm = ({
   const [initialValues, setInitialValues] = useState<z.infer<
     typeof EditUserSchema
   > | null>(null);
-  const [error, setError] = useState<string | undefined>("");
 
   useEffect(() => {
     const loadUser = async () => {
@@ -34,8 +34,12 @@ export const EditUserForm = ({
           });
         }
       } catch (error) {
-        console.error("Erro ao carregar usuário:", error);
-        setError("Falha ao carregar dados do usuário");
+        console.error("Erro ao carregar dados do usuário:", error);
+        showToast({
+          title: "Erro!",
+          description: "Não foi possível carregar os dados do usuário.",
+          type: ToastType.ERROR,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -56,7 +60,7 @@ export const EditUserForm = ({
   }
 
   if (!initialValues) {
-    return <MessageError message={error || "Registro não encontrado"} />;
+    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
   }
 
   return (

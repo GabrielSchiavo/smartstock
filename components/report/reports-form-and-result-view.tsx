@@ -12,10 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/utils/message-error";
 import { useEffect, useState, useTransition } from "react";
 import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
-import { toast } from "sonner";
 import {
   generateDonationsReport,
   generateInventoryReport,
@@ -37,12 +35,13 @@ import {
   InventoryReportResponse,
   PurchasedReportResponse,
   ReportType,
+  ToastType,
   ValidityReportResponse,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
+import { showToast } from "@/components/utils/show-toast";
 
 export const ReportsFormAndResultView = () => {
-  const [error, setError] = useState<string | undefined>("");
   const [validityReportData, setValidityReportData] = useState<
     ValidityReportResponse[]
   >([]);
@@ -85,14 +84,12 @@ export const ReportsFormAndResultView = () => {
 
   useEffect(() => {
     setNoData(false);
-    setError(undefined);
   }, [watchRadioGroup]);
 
   const onSubmit = (values: z.infer<typeof CreateReportSchema>) => {
-    setError("");
     setDates(values);
 
-    startTransition(() => {
+    startTransition(async () => {
       setValidityReportData([]);
       setDonationsReportData([]);
       setPurchasedReportData([]);
@@ -100,69 +97,95 @@ export const ReportsFormAndResultView = () => {
       setNoData(false);
 
       if (values.reportType === ReportType.VALIDITY) {
-        generateValidityReport(values.initialDate!, values.finalDate!)
-          .then((data) => {
-            if (data.error) {
-              setError(data.error);
-              toast.error("Erro ao gerar relatório!");
-            } else if (data.data) {
-              setValidityReportData(data.data);
-              toast.success("Relatório gerado com sucesso!");
-              setNoData(data.data.length === 0);
-            }
-          })
-          .catch(() => {
-            setError("Algo deu errado!");
-            toast.error("Algo deu errado!");
+        try {
+          const response = await generateValidityReport(
+            values.initialDate!,
+            values.finalDate!
+          );
+
+          if (response.success === true) {
+            setValidityReportData(response.data!);
+            setNoData(response.data!.length === 0);
+          }
+
+          showToast({
+            title: response.title,
+            description: response.description,
+            type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
           });
+        } catch (error) {
+          console.error("Algo deu errado:", error);
+          showToast({
+            title: "Algo deu errado!",
+            type: ToastType.ERROR,
+          });
+        }
       } else if (values.reportType === ReportType.DONATIONS) {
-        generateDonationsReport(values.initialDate!, values.finalDate!)
-          .then((data) => {
-            if (data.error) {
-              setError(data.error);
-              toast.error("Erro ao gerar relatório!");
-            } else if (data.data) {
-              setDonationsReportData(data.data);
-              toast.success("Relatório gerado com sucesso!");
-              setNoData(data.data.length === 0);
-            }
-          })
-          .catch(() => {
-            setError("Algo deu errado!");
-            toast.error("Algo deu errado!");
+        try {
+          const response = await generateDonationsReport(
+            values.initialDate!,
+            values.finalDate!
+          );
+          if (response.success === true) {
+            setDonationsReportData(response.data!);
+            setNoData(response.data!.length === 0);
+          }
+
+          showToast({
+            title: response.title,
+            description: response.description,
+            type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
           });
+        } catch (error) {
+          console.error("Algo deu errado:", error);
+          showToast({
+            title: "Algo deu errado!",
+            type: ToastType.ERROR,
+          });
+        }
       } else if (values.reportType === ReportType.PURCHASED) {
-        generatePurchasedReport(values.initialDate!, values.finalDate!)
-          .then((data) => {
-            if (data.error) {
-              setError(data.error);
-              toast.error("Erro ao gerar relatório!");
-            } else if (data.data) {
-              setPurchasedReportData(data.data);
-              toast.success("Relatório gerado com sucesso!");
-              setNoData(data.data.length === 0);
-            }
-          })
-          .catch(() => {
-            setError("Algo deu errado!");
-            toast.error("Algo deu errado!");
+        try {
+          const response = await generatePurchasedReport(
+            values.initialDate!,
+            values.finalDate!
+          );
+          if (response.success === true) {
+            setPurchasedReportData(response.data!);
+            setNoData(response.data!.length === 0);
+          }
+
+          showToast({
+            title: response.title,
+            description: response.description,
+            type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
           });
+        } catch (error) {
+          console.error("Algo deu errado:", error);
+          showToast({
+            title: "Algo deu errado!",
+            type: ToastType.ERROR,
+          });
+        }
       } else if (values.reportType === ReportType.INVENTORY) {
-        generateInventoryReport()
-          .then((data) => {
-            if (data.error) {
-              setError(data.error);
-              toast.error("Erro ao gerar relatório!");
-            } else if (data.data) {
-              setInventoryReportData(data.data);
-              toast.success("Relatório gerado com sucesso!");
-              setNoData(data.data.length === 0);
-            }
-          })
-          .catch(() => {
-            setError("Algo deu errado!");
-            toast.error("Algo deu errado!");
+        try {
+          const response = await generateInventoryReport();
+          if (response.success === true) {
+            setInventoryReportData(response.data!);
+            setNoData(response.data!.length === 0);
+          }
+
+          showToast({
+            title: response.title,
+            description: response.description,
+            type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
           });
+        } catch (error) {
+          console.error("Algo deu errado:", error);
+          showToast({
+            title: "Algo deu errado!",
+            type: ToastType.ERROR,
+          });
+        }
       }
     });
   };
@@ -278,7 +301,6 @@ export const ReportsFormAndResultView = () => {
                 />
               </div>
             </div>
-            <MessageError message={error} />
             <div className="flex justify-end">
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? (

@@ -37,7 +37,7 @@ export const resetPassword = async (
 
     return { success: "Email de redefinição de senha enviado!" };
   } catch (error) {
-    console.error("Falha no processo de redefinição de senha:", error);
+    console.error("Erro no processo de redefinição de senha:", error);
     return { error: "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente." };
   }
 };

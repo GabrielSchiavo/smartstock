@@ -11,10 +11,10 @@ export type ThemeContextParams = {
 }
 
 export type ApiResponse<T> = {
-  success: boolean;
+  success: boolean
+  title?: string
+  description?: string
   data?: T;
-  message?: string | null | undefined;
-  error?: string;
 };
 
 export type UsageCheckResponse = {
@@ -29,9 +29,3 @@ export type ComboboxApiParams<T = OptionProps> = {
   delete: (id: string) => Promise<ApiResponse<T[]>>;
   checkUsage: (name: string) => Promise<UsageCheckResponse>;
 };
-
-export type AlertResponse = {
-  success: boolean
-  message?: string
-  error?: string
-}

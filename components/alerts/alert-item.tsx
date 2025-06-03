@@ -1,21 +1,21 @@
 "use client";
 
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlertIcon, TriangleAlertIcon } from "lucide-react";
-import { AlertStyleType, AlertType, LocaleType } from "@/types";
+import { AlertStyleType, AlertType, LocaleType, ToastType } from "@/types";
 import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
-import { toast } from "sonner";
+import { showToast } from "@/components/utils/show-toast";
 
 export function AlertItem({ alert }: AlertProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-      const data = await toggleAlertReadStatus(alert.id);
-      if (data.success) {
-        toast.success(data.message);
-      } else if (data.error) {
-        toast.error(data.error);
-      }
+    const response = await toggleAlertReadStatus(alert.id);
+    showToast({
+      title: response.title,
+      description: response.description,
+      type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+    });
   };
 
   const getAlertMessage = () => {

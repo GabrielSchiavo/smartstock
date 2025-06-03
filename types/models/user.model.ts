@@ -9,7 +9,8 @@ export type UserResponse = {
 };
 
 export type UserOperationResponse = {
-  success?: string;
-  error?: string;
+  success: boolean;
+  title: string;
+  description?: string;
   user?: User;
 };

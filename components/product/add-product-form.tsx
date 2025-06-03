@@ -1,42 +1,40 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useRef, useTransition } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
 import { registerProduct } from "@/actions";
-import { toast } from "sonner";
-import { AddEditFormProps } from "@/types";
+import { AddEditFormProps, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
-import { MessageError } from "@/components/utils/message-error";
-import { MessageSuccess } from "@/components/utils/message-success";
 import { UseFormReturn } from "react-hook-form";
+import { showToast } from "@/components/utils/show-toast";
 
 export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const formRef = useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
+  const formRef =
+    useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
-    setError("");
-    setSuccess("");
 
     await startTransition(async () => {
       try {
-        const data = await registerProduct(values);
-        setError(data.error);
-        setSuccess(data.success);
-
-        if (data.success) {
-          toast.success(data.success);
+        const response = await registerProduct(values);
+        
+        if (response.success === true) {
           formRef.current?.reset();
           onShouldInvalidate?.(true);
-        } else if (data.error) {
-          toast.error(data.error);
         }
+
+        showToast({
+          title: response.title,
+          description: response.description,
+          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+        });
       } catch {
-        setError("Algo deu errado!");
-        toast.error("Algo deu errado!");
+        showToast({
+          title: "Algo deu errado!",
+          type: ToastType.ERROR,
+        });
       }
     });
   };
@@ -49,8 +47,6 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
         submitButtonLabel="Criar Produto"
         loadingButtonLabel="Criando..."
       />
-      <MessageError message={error} />
-      <MessageSuccess message={success} />
     </div>
   );
 };

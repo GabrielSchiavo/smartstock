@@ -12,17 +12,20 @@ import type {
 export async function getAllDonors(): Promise<DonorResponse> {
   try {
     const donors = await donorRepository.findAll();
+
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Doadores carregados com sucesso.",
       data: donors,
-      message: "Doadores carregados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao buscar Doadores:", error);
+
     return {
       success: false,
-      message: "Falha ao carregar doadores",
-      error: "Erro ao acessar a lista de doadores",
+      title: "Erro!",
+      description: "Erro ao acessar a lista de doadores.",
     };
   }
 }
@@ -38,7 +41,8 @@ export async function getDonorsCount(): Promise<DonorCountResponse> {
     console.error("Erro ao contar Doadores:", error);
     return {
       success: false,
-      error: "Não foi possível contar os doadores",
+      title: "Erro!",
+      description: "Não foi possível contar os doadores.",
     };
   }
 }
@@ -57,15 +61,16 @@ export async function searchDonors(query: string): Promise<DonorResponse> {
     const donors = await donorRepository.search(query);
     return {
       success: true,
-      message: "Doadores encontrados com sucesso",
+      title: "Sucesso!",
+      description: "Doadores encontrados com sucesso.",
       data: donors,
     };
   } catch (error) {
     console.error("Erro na busca por Doadores:", error);
     return {
       success: false,
-      message: "Falha na busca",
-      error: "Erro ao pesquisar doadores",
+      title: "Erro!",
+      description: "Erro ao pesquisar doadores.",
     };
   }
 }
@@ -76,8 +81,8 @@ export async function createDonor(name: string): Promise<SingleDonorResponse> {
   if (!trimmedName) {
     return {
       success: false,
-      message: "Dados inválidos",
-      error: "O campo não pode estar vazio",
+      title: "Erro!",
+      description: "O campo de não pode estar vazio.",
     };
   }
 
@@ -86,15 +91,16 @@ export async function createDonor(name: string): Promise<SingleDonorResponse> {
     revalidatePath("/");
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Doador criado com sucesso.",
       data: newDonor,
-      message: "Doador criado com sucesso",
     };
   } catch (error) {
     console.error("Erro ao criar Doador:", error);
     return {
       success: false,
-      message: "Falha ao criar doador",
-      error: "Doador já existe ou nome inválido",
+      title: "Erro!",
+      description: "Erro ao criar doador.",
     };
   }
 }
@@ -106,8 +112,8 @@ export async function deleteDonor(id: string): Promise<DonorResponse> {
     if (!existingDonor) {
       return {
         success: false,
-        message: "Doador não encontrado",
-        error: "O doador solicitado não existe",
+        title: "Erro!",
+        description: "Doador não encontrado.",
       };
     }
 
@@ -116,14 +122,15 @@ export async function deleteDonor(id: string): Promise<DonorResponse> {
 
     return {
       success: true,
-      message: "Doador excluído com sucesso",
+      title: "Sucesso!",
+      description: "Doador excluído com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao excluir Doador:", error);
     return {
       success: false,
-      message: "Falha ao excluir doador",
-      error: "Doador não encontrado ou em uso",
+      title: "Erro!",
+      description: "Erro ao excluir doador.",
     };
   }
 }
@@ -137,15 +144,17 @@ export async function checkDonorInProducts(
 
     return {
       isUsed: !!productWithDonor,
-      message: productWithDonor
-        ? "Este Doador está associado a um ou mais produtos"
-        : null,
+      success: false,
+      title: "Aviso!",
+      description: "Este doador está associado a um ou mais produtos.",
     };
   } catch (error) {
     console.error("Erro ao verificar produtos associados", error);
     return {
       isUsed: true,
-      message: "Não foi possível verificar se há produtos associados",
+      success: false,
+      title: "Erro!",
+      description: "Erro ao verificar produtos associados.",
     };
   }
 }

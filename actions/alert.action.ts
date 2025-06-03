@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { alertRepository } from "@/db";
-import { AlertResponse, AlertType } from "@/types";
+import { AlertType } from "@/types";
 
 export async function checkProductAlerts() {
   const products = await alertRepository.findExpiringProducts();
@@ -24,15 +24,14 @@ export async function checkProductAlerts() {
   }
 }
 
-export async function toggleAlertReadStatus(
-  alertId: string
-): Promise<AlertResponse> {
+export async function toggleAlertReadStatus(alertId: string) {
   const alert = await alertRepository.getById(alertId);
 
   if (!alert) {
     return {
       success: false,
-      error: "Alerta não encontrado!",
+      title: "Erro!",
+      description: "O alerta solicitado não existe.",
     };
   }
 
@@ -42,7 +41,8 @@ export async function toggleAlertReadStatus(
 
   return {
     success: true,
-    message: "Status do alerta atualizado com sucesso",
+    title: "Sucesso!",
+    description: "Status do alerta atualizado com sucesso.",
   };
 }
 
@@ -57,8 +57,23 @@ export async function markAllAlertsAsRead() {
 }
 
 export async function deleteAllAlerts() {
-  await alertRepository.deleteAll();
-  revalidatePath("/");
+  try {
+    await alertRepository.deleteAll();
+    revalidatePath("/");
+
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Todos os alertas foram excluídos.",
+    };
+  } catch (error) {
+    console.error("Erro ao verificar alertas:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível excluir os alertas.",
+    };
+  }
 }
 
 export async function getAlerts() {
@@ -73,8 +88,19 @@ export async function clientCheckProductAlerts() {
   "use client";
   try {
     await checkProductAlerts();
+
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Alertas verificados com sucesso.",
+    };
   } catch (error) {
-    console.error("Falha ao verificar alertas:", error);
+    console.error("Erro ao verificar alertas:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível verificar os alertas.",
+    };
   }
 }
 

@@ -3,19 +3,21 @@ import type { Group } from '@prisma/client'
 
 export type GroupResponse = {
   success: boolean
+  title?: string
+  description?: string
   data?: Group[]
-  message?: string
-  error?: string
 }
 
 export type SingleGroupResponse = {
   success: boolean
+  title?: string
+  description?: string
   data?: Group
-  message?: string
-  error?: string
 }
 
 export type CheckGroupResponse = {
+  success: boolean
+  title?: string
+  description?: string
   isUsed: boolean
-  message: string | null
 }

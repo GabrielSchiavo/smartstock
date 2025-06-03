@@ -13,13 +13,16 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AddEditFormProps } from "@/types";
+import { AddEditFormProps, ToastType } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
+import { showToast } from "@/components/utils/show-toast";
 
-export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEditFormProps) {
-    const [open, setOpen] = useState(false);
+export default function DeleteProductDialog({
+  rowItemId,
+  onOpenChange,
+}: AddEditFormProps) {
+  const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
@@ -31,14 +34,25 @@ export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEdit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await deleteProduct(rowItemId as number);
+      const response = await deleteProduct(rowItemId as number);
 
-      toast.success(`Produto com ID ${rowItemId} excluído com sucesso`);
-      setOpen(false);
-      if (onOpenChange) onOpenChange(false);
+      if (response.success === true) {
+        setOpen(false);
+        if (onOpenChange) onOpenChange(false);
+      }
+
+      showToast({
+        title: response.title,
+        description: response.description,
+        type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+      });
     } catch (error) {
-      console.error("Erro ao excluir produto:", error);
-      toast.error("Falha ao excluir o produto.");
+      console.error("Algo deu errado:", error);
+      showToast({
+        title: "Erro!",
+        description: "Algo deu errado.",
+        type: ToastType.ERROR,
+      });
     }
   };
 
@@ -62,13 +76,20 @@ export default function DeleteProductDialog({ rowItemId, onOpenChange }: AddEdit
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o registro.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+            registro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
             <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-700 hover:bg-destructive" title="Confirmar Exclusão" type="submit">Excluir</AlertDialogAction>
+            <AlertDialogAction
+              className="bg-red-700 hover:bg-destructive"
+              title="Confirmar Exclusão"
+              type="submit"
+            >
+              Excluir
+            </AlertDialogAction>
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

@@ -1,5 +1,12 @@
 import { ProductType, UnitType, validityStatusType } from "@/types";
 
+export type ReportResponse<T> = {
+  data?: T[];
+  success: boolean;
+  title: string;
+  description?: string;
+};
+
 export type ValidityReportResponse = {
   id: number;
   name: string;
@@ -52,9 +59,4 @@ export type InventoryReportResponse = {
 export type DateRangeParams = {
   initialDate: Date;
   finalDate: Date;
-};
-
-export type ReportResponse<T> = {
-  data?: T[];
-  error?: string;
 };

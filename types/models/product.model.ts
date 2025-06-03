@@ -22,13 +22,8 @@ export interface ProductUpdateResponse extends ProductResponse {
 }
 
 export type ProductOperationResponse = {
-  success?: string;
-  error?: string;
+  success: boolean;
+  title: string;
+  description?: string;
   product?: Product;
 };
-
-export type ProductCountResponse = {
-  success: boolean
-  count?: number
-  error?: string
-}

@@ -3,7 +3,7 @@
 import bcryptjs from "bcryptjs";
 import { CreateUserSchema, EditUserSchema } from "@/schemas";
 import { z } from "zod";
-import { userRepository } from '@/db';
+import { userRepository } from "@/db";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { revalidatePath } from "next/cache";
@@ -15,8 +15,12 @@ export const registerUser = async (
 ): Promise<UserOperationResponse> => {
   // Validação dos campos
   const validationResult = CreateUserSchema.safeParse(values);
-  if (!validationResult.success) {
-    return { error: "Campos inválidos!" };
+  if (validationResult.success === false) {
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Campos inválidos.",
+    };
   }
 
   const { email, password, name, userType } = validationResult.data;
@@ -25,7 +29,11 @@ export const registerUser = async (
     // Verificação de email existente
     const existingUser = await userRepository.findByEmail(email);
     if (existingUser) {
-      return { error: "Email já em uso!" };
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Este email já está em uso.",
+      };
     }
 
     // Criação do usuário
@@ -39,14 +47,26 @@ export const registerUser = async (
 
     // Envio de email de verificação
     const verificationToken = await generateVerificationToken(email);
-    await sendVerificationEmail(verificationToken.email, verificationToken.token, name);
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+      name
+    );
 
     revalidatePath("/");
-    return { success: "Usuário registrado com sucesso e email de confirmação enviado!" };
-
+    return {
+      success: true,
+      title: "Sucesso!",
+      description:
+        "Usuário registrado com sucesso, email de confirmação enviado.",
+    };
   } catch (error) {
     console.error("Erro no registro de usuário:", error);
-    return { error: "Erro ao registrar usuário!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível registrar o usuário.",
+    };
   }
 };
 
@@ -55,17 +75,26 @@ export const getUsers = async (): Promise<User[]> => {
     return await userRepository.findAll();
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);
-    throw new Error("Falha ao carregar lista de usuários");
+    throw new Error("Erro ao carregar lista de usuários.");
   }
 };
 
-export const deleteUser = async (id: string): Promise<void> => {
+export const deleteUser = async (id: string) => {
   try {
     await userRepository.delete(id);
     revalidatePath("/");
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: `Usuário com ID ${id} excluído com sucesso.`,
+    };
   } catch (error) {
     console.error("Erro ao excluir usuário:", error);
-    throw new Error("Falha ao excluir usuário");
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível excluir o usuário.",
+    };
   }
 };
 
@@ -78,7 +107,7 @@ export const getUserById = async (id: string): Promise<User> => {
     return user;
   } catch (error) {
     console.error("Erro ao buscar usuário:", error);
-    throw new Error("Falha ao buscar o usuário");
+    throw new Error("Erro ao buscar o usuário");
   }
 };
 
@@ -88,23 +117,38 @@ export const editUser = async (
 ): Promise<UserOperationResponse> => {
   // Validação dos campos
   const validationResult = EditUserSchema.safeParse(values);
-  if (!validationResult.success) {
-    return { error: "Campos inválidos!" };
+  if (validationResult.success === false) {
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Campos inválidos.",
+    };
   }
 
   const { email, password, name, userType } = validationResult.data;
 
   try {
     // Verificação de email existente
-    const existingUserEmail = await userRepository.findByEmailExcludingId(email, id);
+    const existingUserEmail = await userRepository.findByEmailExcludingId(
+      email,
+      id
+    );
     if (existingUserEmail) {
-      return { error: "Email já em uso!" };
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Este email já está em uso.",
+      };
     }
 
     // Verifica se o usuário existe
     const existingUser = await userRepository.findById(id);
     if (!existingUser) {
-      return { error: "Usuário não encontrado!" };
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Usuário não encontrado.",
+      };
     }
 
     // Prepara dados para atualização
@@ -120,11 +164,17 @@ export const editUser = async (
     revalidatePath("/");
 
     return {
-      success: "Usuário atualizado com sucesso!",
+      success: true,
+      title: "Sucesso!",
+      description: `Usuário atualizado com sucesso.`,
       user: updatedUser,
     };
   } catch (error) {
     console.error("Erro ao editar usuário:", error);
-    return { error: "Falha ao atualizar o usuário" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível atualizar o usuário.",
+    };
   }
 };

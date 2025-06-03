@@ -1,11 +1,11 @@
 import "@/app/globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
-import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ActiveThemeProvider } from "@/components/providers/active-theme-provider";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
+import ToastProvider from "@/components/providers/toast-provider";
 
 export default async function RootLayout({
   children,
@@ -34,7 +34,7 @@ export default async function RootLayout({
             enableColorScheme
           >
             <ActiveThemeProvider initialTheme={activeThemeValue}>
-              <Toaster position="top-center" richColors />
+              <ToastProvider />
               {children}
             </ActiveThemeProvider>
           </ThemeProvider>

@@ -14,15 +14,16 @@ export const getAllSubgroups = async (): Promise<SubgroupResponse> => {
     const subgroups = await subgroupRepository.findAll();
     return {
       success: true,
+      title: "Sucesso!",
+      description: "Subgrupo carregados com sucesso.",
       data: subgroups,
-      message: "Subgrupos carregados com sucesso",
     };
   } catch (error) {
     console.error("Erro ao buscar Subgrupos:", error);
     return {
       success: false,
-      message: "Falha ao carregar subgrupos",
-      error: "Erro ao acessar a lista de subgrupos",
+      title: "Erro!",
+      description: "Erro ao acessar a lista de subgrupos.",
     };
   }
 };
@@ -37,14 +38,15 @@ export const searchSubgroups = async (
     return {
       success: true,
       data: subgroups,
-      message: "Subgrupos encontrados com sucesso",
+      title: "Sucesso!",
+      description: "Subgrupos encontrados com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao buscar Subgrupos:", error);
     return {
       success: false,
-      message: "Falha na busca",
-      error: "Erro ao pesquisar subgrupos",
+      title: "Erro!",
+      description: "Erro ao pesquisar subgrupos.",
     };
   }
 };
@@ -56,8 +58,8 @@ export const createSubgroup = async (
   if (!name.trim()) {
     return {
       success: false,
-      message: "Dados inválidos",
-      error: "O campo não pode estar vazio",
+      title: "Erro!",
+      description: "O campo não pode estar vazio.",
     };
   }
 
@@ -67,14 +69,15 @@ export const createSubgroup = async (
     return {
       success: true,
       data: newSubgroup,
-      message: "Subgrupo criado com sucesso",
+      title: "Sucesso!",
+      description: "Subgrupo criado com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao criar Subgrupo:", error);
     return {
       success: false,
-      message: "Falha ao criar subgrupo",
-      error: "Subgrupo já existe ou nome inválido",
+      title: "Erro!",
+      description: "Erro ao criar subgrupo.",
     };
   }
 };
@@ -88,8 +91,8 @@ export const deleteSubgroup = async (
     if (!existingSubgroup) {
       return {
         success: false,
-        message: "Subgrupo não encontrado",
-        error: "O subgrupo solicitado não existe",
+        title: "Erro!",
+        description: "Subgrupo não encontrado.",
       };
     }
 
@@ -97,14 +100,15 @@ export const deleteSubgroup = async (
     revalidatePath("/");
     return {
       success: true,
-      message: "Subgrupo excluído com sucesso",
+      title: "Sucesso!",
+      description: "Subgrupo excluído com sucesso.",
     };
   } catch (error) {
     console.error("Erro ao excluir Subgrupo:", error);
     return {
       success: false,
-      message: "Falha ao excluir subgrupo",
-      error: "Subgrupo não encontrado ou em uso",
+      title: "Erro!",
+      description: "Erro ao excluir subgrupo.",
     };
   }
 };
@@ -118,15 +122,17 @@ export const checkSubgroupUsage = async (
 
     return {
       isUsed: !!productWithSubgroup,
-      message: productWithSubgroup
-        ? "Este Subgrupo está associado a um ou mais produtos"
-        : null,
+      success: false,
+      title: "Aviso!",
+      description: "Este subgrupo está associado a um ou mais produtos.",
     };
   } catch (error) {
     console.error("Erro ao verificar produtos associados:", error);
     return {
       isUsed: true,
-      message: "Não foi possível verificar os produtos associados",
+      success: false,
+      title: "Erro!",
+      description: "Erro ao verificar produtos associados.",
     };
   }
 };

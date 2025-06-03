@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-import { toast } from "sonner";
 import { SettingsSchema } from "@/schemas";
 import { updateUserSettings } from "@/actions";
 import { useSession } from "next-auth/react";
@@ -26,6 +25,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MoonLoader } from "react-spinners";
+import { showToast } from "@/components/utils/show-toast";
+import { ToastType } from "@/types";
 
 export const SettingForm = () => {
   const user = useCurrentUser();
@@ -50,27 +51,31 @@ export const SettingForm = () => {
       password: values.password || undefined,
       newPassword: values.newPassword || undefined,
     };
-    startTransition(() => {
-      updateUserSettings(cleanedValues)
-        .then((data) => {
-          if (data.error) {
-            toast.error(data.error);
-            return;
-          }
+    startTransition(async () => {
+      try {
+        const response = await updateUserSettings(cleanedValues);
 
-          if (data.success) {
-            update();
-            toast.success(data.success);
-            form.reset({
-              ...form.getValues(),
-              password: undefined,
-              newPassword: undefined,
-            });
-          }
-        })
-        .catch(() => {
-          toast.error("Algo deu errado!");
+        if (response.success === true) {
+          update();
+          form.reset({
+            ...form.getValues(),
+            password: undefined,
+            newPassword: undefined,
+          });
+        }
+
+        showToast({
+          title: response.title,
+          description: response.description,
+          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
+      } catch (error) {
+        console.error("Algo deu errado:", error);
+        showToast({
+          title: "Algo deu errado.",
+          type: ToastType.ERROR,
+        });
+      }
     });
   };
 
@@ -80,10 +85,18 @@ export const SettingForm = () => {
     navigator.clipboard
       .writeText(userId)
       .then(() => {
-        toast.success("ID copiado para a área de transferência!");
+        showToast({
+          title: "Sucesso!",
+          description: "ID copiado para a área de transferência.",
+          type: ToastType.SUCCESS,
+        });
       })
       .catch(() => {
-        toast.error("Falha ao copiar o ID");
+        showToast({
+          title: "Erro!",
+          description: "Erro ao copiar o ID.",
+          type: ToastType.ERROR,
+        });
       });
   };
 

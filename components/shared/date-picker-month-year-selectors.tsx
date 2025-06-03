@@ -68,7 +68,9 @@ export function DatePickerMonthYear<T extends FieldValues>({
   // Atualizar mês/ano quando a data muda
   React.useEffect(() => {
     if (field.value) {
-      const date = toDate(field.value as Date | string, { timeZone: LocaleType.UTC });
+      const date = toDate(field.value as Date | string, {
+        timeZone: LocaleType.UTC,
+      });
       setCurrentMonth(date.getMonth());
       setCurrentYear(date.getFullYear());
     }

@@ -3,20 +3,17 @@
 import { useState, useEffect, useTransition } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
 import { editProduct, getProductById } from "@/actions";
-import { toast } from "sonner";
-import { AddEditFormProps, ProductType, UnitType } from "@/types";
+import { AddEditFormProps, ProductType, ToastType, UnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
 import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
-import { MessageSuccess } from "@/components/utils/message-success";
+import { showToast } from "@/components/utils/show-toast";
 
 export const EditProductForm = ({
   rowItemId,
   onShouldInvalidate,
 }: AddEditFormProps) => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
@@ -52,7 +49,11 @@ export const EditProductForm = ({
         }
       } catch (error) {
         console.error("Erro ao carregar o produto:", error);
-        setError("Falha ao carregar dados do produto");
+        showToast({
+          title: "Erro!",
+          description: "Não foi possível carregar os dados do produto.",
+          type: ToastType.ERROR,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -62,24 +63,24 @@ export const EditProductForm = ({
   }, [rowItemId]);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
-    setError("");
-    setSuccess("");
-
     await startTransition(async () => {
       try {
-        const data = await editProduct(rowItemId as number, values);
-        setError(data.error);
-        setSuccess(data.success);
+        const response = await editProduct(rowItemId as number, values);
 
-        if (data.success) {
-          toast.success(data.success);
+        if (response.success === true) {
           onShouldInvalidate?.(true);
-        } else if (data.error) {
-          toast.error(data.error);
         }
+
+        showToast({
+          title: response.title,
+          description: response.description,
+          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+        });
       } catch {
-        setError("Algo deu errado!");
-        toast.error("Algo deu errado!");
+        showToast({
+          title: "Algo deu errado!",
+          type: ToastType.ERROR,
+        });
       }
     });
   };
@@ -96,9 +97,7 @@ export const EditProductForm = ({
   }
 
   if (!initialValues) {
-    return (
-      <MessageError message="Registro não encontrado ou falha ao carregar dados" />
-    );
+    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
   }
 
   return (
@@ -110,8 +109,6 @@ export const EditProductForm = ({
         submitButtonLabel="Atualizar Produto"
         loadingButtonLabel="Atualizando..."
       />
-      <MessageError message={error} />
-      <MessageSuccess message={success} />
     </div>
   );
 };

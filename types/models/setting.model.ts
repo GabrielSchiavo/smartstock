@@ -1,6 +1,7 @@
 export type UserSettingsResponse = {
-  success?: string;
-  error?: string;
+  success: boolean;
+  title: string;
+  description?: string;
 };
 
 export type UserSettingsUpdateResponse = {
@@ -13,4 +14,11 @@ export type UserSettingsUpdateResponse = {
 export type PasswordSettingsParams = {
   password: string;
   newPassword: string;
+};
+
+export type PasswordUpdateResponse = {
+  success: boolean;
+  title: string;
+  description?: string;
+  hashedPassword?: string;
 };

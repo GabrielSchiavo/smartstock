@@ -2,7 +2,6 @@
 
 import { productRepository } from "@/db";
 import {
-  DateRangeParams,
   DonationsReportResponse,
   InventoryReportResponse,
   ProductType,
@@ -32,27 +31,11 @@ const calculateExpiryStatus = (
   return { daysUntilExpiry, status };
 };
 
-const validateDateRange = ({
-  initialDate,
-  finalDate,
-}: DateRangeParams): { isValid: boolean; error?: string } => {
-  if (initialDate > finalDate) {
-    return {
-      isValid: false,
-      error: "Data inicial não pode ser maior que data final",
-    };
-  }
-  return { isValid: true };
-};
-
 // Geradores de Relatório
 export const generateValidityReport = async (
   initialDate: Date,
   finalDate: Date
 ): Promise<ReportResponse<ValidityReportResponse>> => {
-  const validation = validateDateRange({ initialDate, finalDate });
-  if (!validation.isValid) return { error: validation.error };
-
   try {
     const products = await productRepository.findByValidity(
       initialDate,
@@ -78,10 +61,19 @@ export const generateValidityReport = async (
     });
 
     revalidatePath("/reports");
-    return { data: reportData };
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de validade gerado com sucesso.",
+      data: reportData,
+    };
   } catch (error) {
     console.error("Erro ao gerar relatório de validade:", error);
-    return { error: "Erro ao gerar relatório de validade" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de validade.",
+    };
   }
 };
 
@@ -89,9 +81,6 @@ export const generateDonationsReport = async (
   initialDate: Date,
   finalDate: Date
 ): Promise<ReportResponse<DonationsReportResponse>> => {
-  const validation = validateDateRange({ initialDate, finalDate });
-  if (!validation.isValid) return { error: validation.error };
-
   try {
     const products = await productRepository.findDonated(
       initialDate,
@@ -110,10 +99,19 @@ export const generateDonationsReport = async (
     }));
 
     revalidatePath("/reports");
-    return { data: reportData };
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de doações gerado com sucesso.",
+      data: reportData,
+    };
   } catch (error) {
     console.error("Erro ao gerar relatório de doações:", error);
-    return { error: "Erro ao gerar relatório de doações" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de doações.",
+    };
   }
 };
 
@@ -121,9 +119,6 @@ export const generatePurchasedReport = async (
   initialDate: Date,
   finalDate: Date
 ): Promise<ReportResponse<PurchasedReportResponse>> => {
-  const validation = validateDateRange({ initialDate, finalDate });
-  if (!validation.isValid) return { error: validation.error };
-
   try {
     const products = await productRepository.findPurchased(
       initialDate,
@@ -141,10 +136,19 @@ export const generatePurchasedReport = async (
     }));
 
     revalidatePath("/reports");
-    return { data: reportData };
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de compras gerado com sucesso.",
+      data: reportData,
+    };
   } catch (error) {
     console.error("Erro ao gerar relatório de compras:", error);
-    return { error: "Erro ao gerar relatório de compras" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de compras.",
+    };
   }
 };
 
@@ -175,9 +179,18 @@ export const generateInventoryReport = async (): Promise<
     });
 
     revalidatePath("/reports");
-    return { data: reportData };
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de inventário gerado com sucesso.",
+      data: reportData,
+    };
   } catch (error) {
     console.error("Erro ao gerar relatório de inventário:", error);
-    return { error: "Erro ao gerar relatório de inventário" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de inventário.",
+    };
   }
 };

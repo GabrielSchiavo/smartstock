@@ -14,8 +14,20 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
+import { showToast } from "@/components/utils/show-toast";
+import { ToastType } from "@/types";
 
 export default function DeleteProductDialog() {
+  const handleDeleteAllAlerts = async () => {
+    const response = await deleteAllAlerts();
+
+    showToast({
+      title: response.title,
+      description: response.description,
+      type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+    });
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -36,7 +48,7 @@ export default function DeleteProductDialog() {
             os alertas.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form action={deleteAllAlerts}>
+        <form action={handleDeleteAllAlerts}>
           <AlertDialogFooter className="flex gap-4">
             <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
             <AlertDialogAction

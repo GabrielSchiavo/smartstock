@@ -5,7 +5,12 @@ import { currentUser } from "@/lib/auth";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { SettingsSchema } from "@/schemas";
-import { PasswordSettingsParams, UserSettingsResponse, UserSettingsUpdateResponse } from "@/types";
+import {
+  PasswordSettingsParams,
+  PasswordUpdateResponse,
+  UserSettingsResponse,
+  UserSettingsUpdateResponse,
+} from "@/types";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 
@@ -14,12 +19,20 @@ export const updateUserSettings = async (
 ): Promise<UserSettingsResponse> => {
   const user = await currentUser();
   if (!user || !user.id) {
-    return { error: "Não autorizado!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não autorizado.",
+    };
   }
 
   const dbUser = await userRepository.findById(user.id);
   if (!dbUser) {
-    return { error: "Não autorizado!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não autorizado.",
+    };
   }
 
   try {
@@ -30,12 +43,15 @@ export const updateUserSettings = async (
 
     // Atualização de senha
     if (values.password && values.newPassword) {
-      const passwordResponse = await handlePasswordUpdate({
-        password: values.password,
-        newPassword: values.newPassword
-      }, dbUser);
-      if (passwordResponse.error) return passwordResponse;
-      
+      const passwordResponse = await handlePasswordUpdate(
+        {
+          password: values.password,
+          newPassword: values.newPassword,
+        },
+        dbUser
+      );
+      if (passwordResponse.success === false) return passwordResponse;
+
       // Atualiza o objeto values com a nova senha hashada
       values.password = passwordResponse.hashedPassword;
       values.newPassword = undefined;
@@ -44,12 +60,19 @@ export const updateUserSettings = async (
     // Atualização geral das configurações
     const updateData: UserSettingsUpdateResponse = { ...values };
     await userRepository.updateSettings(dbUser.id, updateData);
-    
-    return { success: "Configurações atualizadas com sucesso!" };
 
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Configurações atualizadas com sucesso.",
+    };
   } catch (error) {
     console.error("Erro ao atualizar configurações:", error);
-    return { error: "Ocorreu um erro ao atualizar as configurações" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível atualizar as configurações",
+    };
   }
 };
 
@@ -59,7 +82,11 @@ const handleEmailUpdate = async (
 ): Promise<UserSettingsResponse> => {
   const existingUser = await userRepository.findByEmail(newEmail);
   if (existingUser && existingUser.id !== dbUser.id) {
-    return { error: "Email já está em uso!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Este email já está em uso.",
+    };
   }
 
   await userRepository.updateEmail(dbUser.id, newEmail);
@@ -71,22 +98,39 @@ const handleEmailUpdate = async (
     dbUser.name || ""
   );
 
-  return { success: "Email de verificação enviado!" };
+  return {
+    success: true,
+    title: "Sucesso!",
+    description: "Email de verificação enviado.",
+  };
 };
 
 const handlePasswordUpdate = async (
   { password, newPassword }: PasswordSettingsParams,
   dbUser: { password?: string | null }
-): Promise<{ error?: string; hashedPassword?: string }> => {
+): Promise<PasswordUpdateResponse> => {
   if (!dbUser.password) {
-    return { error: "Operação não permitida!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Operação não permitida.",
+    };
   }
 
   const isPasswordValid = await bcrypt.compare(password, dbUser.password);
   if (!isPasswordValid) {
-    return { error: "Senha atual inválida!" };
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Senha atual inválida!",
+    };
   }
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
-  return { hashedPassword };
+  return {
+    success: true,
+    title: "Sucesso!",
+    description: "Senha atualizada com sucesso.",
+    hashedPassword,
+  };
 };

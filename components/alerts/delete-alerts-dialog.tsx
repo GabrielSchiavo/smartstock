@@ -17,15 +17,25 @@ import { Trash2Icon } from "lucide-react";
 import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 
-export default function DeleteProductDialog() {
-  const handleDeleteAllAlerts = async () => {
-    const response = await deleteAllAlerts();
+export default function DeleteAlertsDialog() {
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await deleteAllAlerts();
 
-    showToast({
-      title: response.title,
-      description: response.description,
-      type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
-    });
+      showToast({
+        title: response.title,
+        description: response.description,
+        type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+      });
+    } catch (error) {
+      console.error("Algo deu errado:", error);
+      showToast({
+        title: "Erro!",
+        description: "Algo deu errado.",
+        type: ToastType.ERROR,
+      });
+    }
   };
 
   return (
@@ -48,7 +58,7 @@ export default function DeleteProductDialog() {
             os alertas.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form action={handleDeleteAllAlerts}>
+        <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
             <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
             <AlertDialogAction

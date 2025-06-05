@@ -44,6 +44,7 @@ export function AlertItem({ alert }: AlertProps) {
         );
     }
   };
+
   const getAlertTitle = () => {
     switch (alert.type) {
       case AlertType.EXPIRING:
@@ -52,28 +53,25 @@ export function AlertItem({ alert }: AlertProps) {
         return `Alerta! Produto atingiu a validade`;
     }
   };
+
   const getAlertDate = () => {
     return new Date(alert.createdAt).toLocaleDateString(LocaleType.PT_BR, {
       timeZone: LocaleType.UTC,
     });
   };
 
+  const alertVariant = alert.isRead
+    ? AlertStyleType.READ
+    : alert.type === AlertType.EXPIRED
+      ? AlertStyleType.DESTRUCTIVE
+      : AlertStyleType.DEFAULT;
+
   return (
     <form onSubmit={handleSubmit}>
       <input type="hidden" name="alertId" value={alert.id} />
       <button type="submit" title="Marcar como Lido/Não lido">
         <Alert
-          variant={
-            alert.type === AlertType.EXPIRING && alert.isRead === true
-              ? AlertStyleType.READ
-              : alert.type === AlertType.EXPIRED && alert.isRead === true
-                ? AlertStyleType.READ
-                : alert.isRead === false
-                  ? alert.type === AlertType.EXPIRING
-                    ? AlertStyleType.DEFAULT
-                    : AlertStyleType.DESTRUCTIVE
-                  : AlertStyleType.DEFAULT
-          }
+          variant={alertVariant}
           className="hover:border-foreground cursor-pointer text-start"
         >
           {alert.type === AlertType.EXPIRED ? (

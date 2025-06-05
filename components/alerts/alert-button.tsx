@@ -12,7 +12,6 @@ import {
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
 import {
   clientCheckProductAlerts,
   getAlerts,
@@ -21,6 +20,7 @@ import {
 } from "@/actions";
 import { AlertItem } from "@/components/alerts/alert-item";
 import { Separator } from "@/components/ui/separator";
+import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
 
 export async function AlertButton() {
   const alerts = await getAlerts();

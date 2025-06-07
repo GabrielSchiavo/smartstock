@@ -36,7 +36,7 @@ export interface BaseProductFormProps {
   loadingButtonLabel: string;
 }
 
-export interface BaseUserFormProps<T extends z.ZodType> {
+export interface BaseUserFormProps<T extends z.ZodTypeAny> {
   schema: T;
   defaultValues?: Partial<z.infer<T>>;
   onSubmit: (values: z.infer<T>) => Promise<{
@@ -47,5 +47,6 @@ export interface BaseUserFormProps<T extends z.ZodType> {
   onSuccess?: () => void;
   submitButtonText: string;
   loadingText: string;
-  isEdit?: boolean;
+  hidePasswordInputs: boolean;
+  isEditForm: boolean;
 }

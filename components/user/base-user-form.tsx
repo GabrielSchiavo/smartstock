@@ -1,6 +1,7 @@
 "use client";
 
 import { Path, useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -19,18 +20,20 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { BaseUserFormProps, ToastType, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
-import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
+import { useSession } from "next-auth/react";
 
-export const BaseUserForm = <T extends z.ZodType>({
+export const BaseUserForm = <T extends z.ZodTypeAny>({
   schema,
   defaultValues,
   onSubmit,
   onSuccess,
   submitButtonText,
   loadingText,
-  isEdit = false,
+  hidePasswordInputs = false,
+  isEditForm = false,
 }: BaseUserFormProps<T>) => {
+  const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<T>>({
@@ -39,7 +42,7 @@ export const BaseUserForm = <T extends z.ZodType>({
       email: "",
       name: "",
       userType: undefined,
-      ...(isEdit ? {} : { password: undefined, confirmPassword: undefined }),
+      ...(hidePasswordInputs ? {} : { password: "", confirmPassword: "" }),
       ...defaultValues,
     } as z.infer<T>,
   });
@@ -48,6 +51,10 @@ export const BaseUserForm = <T extends z.ZodType>({
     startTransition(async () => {
       try {
         const response = await onSubmit(values);
+
+        if (isEditForm === true) {
+          update();
+        }
 
         if (response.success === true) {
           onSuccess?.();
@@ -112,7 +119,7 @@ export const BaseUserForm = <T extends z.ZodType>({
             )}
           />
 
-          {!isEdit && (
+          {!hidePasswordInputs && (
             <>
               <FormField
                 control={form.control}

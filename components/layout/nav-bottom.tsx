@@ -13,6 +13,7 @@ import {
 import { ThemeSelector } from "@/components/shared/theme-selector";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AboutButton } from "@/components/shared/about-button";
 
 export function NavBottom({
   items,
@@ -31,18 +32,25 @@ export function NavBottom({
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>
-              <ThemeSelector></ThemeSelector>
+            <ThemeSelector></ThemeSelector>
           </SidebarMenuItem>
           {items.map((item) => (
             <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton asChild tooltip={item.label} className={`${pathname === item.href ? "min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}>
-              <Link href={item.href}>
-                <item.icon />
-                <span>{item.label}</span>
-              </Link>
+              <SidebarMenuButton
+                asChild
+                tooltip={item.label}
+                className={`${pathname === item.href ? "min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <SidebarMenuItem>
+            <AboutButton />
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

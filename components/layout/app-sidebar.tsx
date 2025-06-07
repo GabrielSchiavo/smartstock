@@ -1,12 +1,7 @@
 "use client";
 
 import * as React from "react";
-import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
-import {
-  HelpCircleIcon,
-  SettingsIcon,
-  LayoutDashboardIcon,
-} from "lucide-react";
+import { SettingsIcon, LayoutDashboardIcon } from "lucide-react";
 
 import { NavTop } from "@/components/layout/nav-top";
 import { UserButton } from "@/components/auth/user-button";
@@ -16,13 +11,13 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-  SidebarMenuButton
+  SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { NavBottom } from "@/components/layout/nav-bottom";
-import Image from "next/image";
 import { NavMain } from "@/components/layout/nav-main";
 import { NavMainSecondary } from "@/components/layout/nav-main-secondary";
 import Link from "next/link";
+import { LogoWithText } from "../shared/logo-with-text";
 
 // This is sample data.
 const data = {
@@ -33,22 +28,13 @@ const data = {
       icon: LayoutDashboardIcon,
     },
   ],
-  navMain: [
-
-  ],
-  navMainSecondary: [
-
-  ],
+  navMain: [],
+  navMainSecondary: [],
   navBottom: [
     {
       label: "Configurações",
       href: "/settings",
       icon: SettingsIcon,
-    },
-    {
-      label: "Obter Ajuda",
-      href: "#",
-      icon: HelpCircleIcon,
     },
   ],
   user: {
@@ -67,14 +53,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           className="data-[slot=sidebar-menu-button]:!p-1.5"
         >
           <Link href="/dashboard">
-            <Image
-              className="size-5"
-              src={LogoSmartstock}
-              alt="Logo SmartStock"
+            <LogoWithText
+              imageSize="size-5"
+              textSize="text-base"
+              containerClasses="justify-around! flex-nowrap!"
             />
-            <span className="text-base fontAlbertSans font-extralight">
-              <span className="font-semibold">Smart</span>stock
-            </span>
           </Link>
         </SidebarMenuButton>
       </SidebarHeader>

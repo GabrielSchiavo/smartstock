@@ -161,8 +161,8 @@ export const editUser = async (
 
     // Atualiza o usuário
     const updatedUser = await userRepository.update(id, updateData);
+    
     revalidatePath("/");
-
     return {
       success: true,
       title: "Sucesso!",

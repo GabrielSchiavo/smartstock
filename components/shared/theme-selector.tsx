@@ -73,8 +73,8 @@ export function ThemeSelector() {
           className="justify-between *:data-[slot=select-value]:w-12 w-full"
         >
           <span className="flex gap-2">
-            <span className="text-muted-foreground hidden sm:block">Tema:</span>
-            <span className="text-muted-foreground block sm:hidden">Tema</span>
+            <span className="text-muted-foreground hidden sm:block">Cor:</span>
+            <span className="text-muted-foreground block sm:hidden">Cor</span>
             <SelectValue placeholder="Selecione um tema" />
           </span>
         </SelectTrigger>

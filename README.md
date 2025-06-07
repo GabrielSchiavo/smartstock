@@ -53,8 +53,9 @@
     - Produtos doados ou comprados;
     - Inventário de todos os produtos cadastrados;
 
-<!-- - **Alertas**
-  - `Notificações e pop-ups:` alertas de produtos prestes a vencer e produtos com estoque baixo. -->
+- **Alertas**
+  - `Alertas simples:` alertas de produtos prestes a vencer e vencidos. Os alertas são atualizados tada vez que a página é recarregada.
+  - `Lidos/Não Lidos:` organização de alertas em lidos e não lidos.
 
 - **Organização**
    - `Dashboard:` tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.

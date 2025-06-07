@@ -13,6 +13,8 @@ export const AddUserForm = ({ onShouldInvalidate }: AddEditFormProps) => {
       onSuccess={() => onShouldInvalidate?.(true)}
       submitButtonText="Criar Usuário"
       loadingText="Criando..."
+      hidePasswordInputs={false}
+      isEditForm={false}
     />
   );
 };

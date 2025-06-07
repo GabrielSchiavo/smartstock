@@ -71,7 +71,8 @@ export const EditUserForm = ({
       onSuccess={() => onShouldInvalidate?.(true)}
       submitButtonText="Salvar Alterações"
       loadingText="Salvando..."
-      isEdit={false}
+      hidePasswordInputs={false}
+      isEditForm={true}
     />
   );
 };

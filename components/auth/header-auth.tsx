@@ -1,5 +1,5 @@
 import { HeaderProps } from "@/types";
-import { LogoWithText } from "../shared/logo-with-text";
+import { LogoWithText } from "@/components/shared/logo-with-text";
 
 export const HeaderAuth = ({ label }: HeaderProps) => {
   return (

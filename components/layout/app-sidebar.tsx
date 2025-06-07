@@ -17,7 +17,7 @@ import { NavBottom } from "@/components/layout/nav-bottom";
 import { NavMain } from "@/components/layout/nav-main";
 import { NavMainSecondary } from "@/components/layout/nav-main-secondary";
 import Link from "next/link";
-import { LogoWithText } from "../shared/logo-with-text";
+import { LogoWithText } from "@/components/shared/logo-with-text";
 
 // This is sample data.
 const data = {

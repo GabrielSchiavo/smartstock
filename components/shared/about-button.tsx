@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { VersionBadge } from "@/components/shared/version-badge";
+import { VersionBadge } from "@/components/utils/version-badge";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { LogoWithText } from "@/components/shared/logo-with-text";
 

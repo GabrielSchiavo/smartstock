@@ -1,4 +1,4 @@
-import { OptionProps } from "../interfaces/form.interface";
+import { OptionProps } from "@/types";
 
 export type ResetPasswordResponse = {
   success?: string;

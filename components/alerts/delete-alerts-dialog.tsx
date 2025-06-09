@@ -17,8 +17,12 @@ import { Trash2Icon } from "lucide-react";
 import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 
-export default function DeleteAlertsDialog() {
-  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+export default function DeleteAlertsDialog({
+  onDeleteSuccess,
+}: {
+  onDeleteSuccess: () => void;
+}) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await deleteAllAlerts();
@@ -28,6 +32,9 @@ export default function DeleteAlertsDialog() {
         description: response.description,
         type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
       });
+      if (response.success) {
+        onDeleteSuccess(); // Chama a função de atualização
+      }
     } catch (error) {
       console.error("Algo deu errado:", error);
       showToast({

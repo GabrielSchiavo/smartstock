@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -21,11 +23,47 @@ import {
 import { AlertItem } from "@/components/alerts/alert-item";
 import { Separator } from "@/components/ui/separator";
 import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
+import { useCallback, useEffect, useState } from "react";
+import { useAlertWatcher } from "@/hooks/use-alert-watcher";
+import { BasicAlertProps, ToastType } from "@/types";
+import { showToast } from "@/components/utils/show-toast";
 
-export async function AlertButton() {
-  const alerts = await getAlerts();
-  const unreadAlertsCount = await getUnreadAlertsCount();
-  await clientCheckProductAlerts();
+export function AlertButton() {
+  const [alerts, setAlerts] = useState<BasicAlertProps[]>([]);
+  const [unreadAlertsCount, setUnreadAlertsCount] = useState(0);
+
+  // Use useCallback para memoizar a função de refresh
+  const refreshAlerts = useCallback(async () => {
+    try {
+      const [alertsData, count] = await Promise.all([
+        getAlerts(),
+        getUnreadAlertsCount(),
+      ]);
+      setAlerts(alertsData);
+      setUnreadAlertsCount(count);
+      return count;
+    } catch (error) {
+      console.error("Erro ao carregar alertas:", error);
+      showToast({
+        title: "Erro!",
+        description: `Não foi possível carregar os alertas.`,
+        type: ToastType.ERROR,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshAlerts();
+    clientCheckProductAlerts();
+  }, [refreshAlerts]);
+
+  useAlertWatcher(refreshAlerts, unreadAlertsCount);
+
+  const handleMarkAllAsRead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await markAllAlertsAsRead();
+    await refreshAlerts();
+  };
 
   return (
     <Sheet>
@@ -68,7 +106,13 @@ export async function AlertButton() {
                 {alerts.filter((alert) => !alert.isRead).length > 0 ? (
                   alerts
                     .filter((alert) => !alert.isRead)
-                    .map((alert) => <AlertItem key={alert.id} alert={alert} />)
+                    .map((alert) => (
+                      <AlertItem
+                        key={alert.id}
+                        alert={alert}
+                        onAlertChange={refreshAlerts}
+                      />
+                    ))
                 ) : (
                   <p className="w-full text-center text-muted-foreground text-sm">
                     Nenhum alerta não lido!
@@ -84,7 +128,13 @@ export async function AlertButton() {
                 {alerts.filter((alert) => alert.isRead).length > 0 ? (
                   alerts
                     .filter((alert) => alert.isRead)
-                    .map((alert) => <AlertItem key={alert.id} alert={alert} />)
+                    .map((alert) => (
+                      <AlertItem
+                        key={alert.id}
+                        alert={alert}
+                        onAlertChange={refreshAlerts}
+                      />
+                    ))
                 ) : (
                   <p className="w-full text-center text-muted-foreground text-sm">
                     Nenhum alerta lido!
@@ -95,7 +145,7 @@ export async function AlertButton() {
           </div>
         </ScrollArea>
         <SheetFooter>
-          <form action={markAllAlertsAsRead}>
+          <form onSubmit={handleMarkAllAsRead}>
             <Button
               type="submit"
               variant="outline"
@@ -106,7 +156,7 @@ export async function AlertButton() {
               Marcar como lidos
             </Button>
           </form>
-          <DeleteAlertsDialog />
+          <DeleteAlertsDialog onDeleteSuccess={refreshAlerts} />
         </SheetFooter>
       </SheetContent>
     </Sheet>

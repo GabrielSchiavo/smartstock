@@ -54,7 +54,10 @@
     - Inventário de todos os produtos cadastrados;
 
 - **Alertas**
-  - `Alertas simples:` alertas de produtos prestes a vencer e vencidos. Os alertas são atualizados tada vez que a página é recarregada.
+  - `Alertas simples:` alertas de produtos prestes a vencer e vencidos. O sistema verifica os alertas qunado o usuário abre o sistema e também verifica de forma automática a cada hora.
+  
+  - `Aviso:` qunado usuário abre o sistema pela primeira vez é disparado um aviso com o total de alertas não lidos e quando um novo alerta é encontrado também é    disparado um aviso para o usuário.
+  
   - `Lidos/Não Lidos:` organização de alertas em lidos e não lidos.
 
 - **Organização**
@@ -67,10 +70,10 @@
 
 ## :film_strip: Galeria
 <!-- <p align="center">
-  <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Dashboard"/>
-  <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Cadastro de Livros"/>
-  <img width="1000" src="./resources/assets/images/screenshots/" alt="Screenshot Acervo"/>
-  <img width="250" src="./resources/assets/images/screenshots/" alt="Screenshot Dashboard Mobile"/>
+  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
+  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
+  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
+  <img width="250" src="./public/assets/images/screenshots/" alt=""/>
 </p> -->
 
 ## :file_folder: Acesso ao projeto

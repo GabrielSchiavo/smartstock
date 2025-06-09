@@ -19,14 +19,10 @@ import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/auth/input-password";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
+import { CopyToClipboard } from "@/components/utils/copy-to-clipboard";
 
 export const SettingForm = () => {
   const user = useCurrentUser();
@@ -81,24 +77,6 @@ export const SettingForm = () => {
 
   // Copiar ID para área de tranferência
   const userId = user?.id as string;
-  const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(userId)
-      .then(() => {
-        showToast({
-          title: "Sucesso!",
-          description: "ID copiado para a área de transferência.",
-          type: ToastType.SUCCESS,
-        });
-      })
-      .catch(() => {
-        showToast({
-          title: "Erro!",
-          description: "Erro ao copiar o ID.",
-          type: ToastType.ERROR,
-        });
-      });
-  };
 
   return (
     <Form {...form}>
@@ -107,19 +85,13 @@ export const SettingForm = () => {
           <div className="grid gap-6 grid-cols-1">
             <div className="flex flex-row items-center justify-between gap-4 rounded-md border p-2">
               <p className="text-sm font-medium">ID</p>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p
-                    onClick={copyToClipboard}
-                    className="truncate bg-muted px-3 py-1 rounded-sm text-sm cursor-pointer hover:dark:bg-zinc-500 hover:bg-zinc-300 transition-all duration-400"
-                  >
-                    {userId}
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" align="center">
-                  Copiar ID
-                </TooltipContent>
-              </Tooltip>
+              <CopyToClipboard
+                textToCopy={userId}
+                tooltipContent="Copiar ID"
+                className="truncate bg-muted px-3 py-1 rounded-sm text-sm cursor-pointer hover:dark:bg-zinc-500 hover:bg-zinc-300 transition-all duration-400"
+              >
+                {userId}
+              </CopyToClipboard>
             </div>
             <FormField
               control={form.control}

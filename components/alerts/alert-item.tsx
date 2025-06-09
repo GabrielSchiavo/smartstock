@@ -7,7 +7,8 @@ import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
 
-export function AlertItem({ alert }: AlertProps) {
+export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await toggleAlertReadStatus(alert.id);
@@ -16,6 +17,7 @@ export function AlertItem({ alert }: AlertProps) {
       description: response.description,
       type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
     });
+    onAlertChange(); // Atualiza apenas o estado local
   };
 
   const getAlertMessage = () => {

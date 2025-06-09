@@ -33,3 +33,10 @@ export interface GroupedTableTotalValuesProps {
   weight: number;
   volume: number;
 }
+
+export interface CopyToClipboardProps {
+  textToCopy: string;
+  children: React.ReactNode;
+  className?: string;
+  tooltipContent: string;
+}

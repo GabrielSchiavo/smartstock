@@ -1,7 +1,7 @@
 import { ExtendedUser } from "@/next-auth";
-import { OptionProps } from "./form.interface";
+import { OptionProps } from "@/types";
 import { AlertType, Product } from "@prisma/client";
-import { ToastType } from "../enums/enums";
+import { ToastType } from "@/types";
 
 export interface CardWrapperProps {
   children: React.ReactNode;

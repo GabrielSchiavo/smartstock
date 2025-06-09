@@ -37,8 +37,6 @@ export async function toggleAlertReadStatus(alertId: string) {
 
   await alertRepository.toggleReadStatus(alertId, !alert.isRead);
 
-  revalidatePath("/");
-
   return {
     success: true,
     title: "Sucesso!",
@@ -85,7 +83,6 @@ export async function getUnreadAlertsCount() {
 }
 
 export async function clientCheckProductAlerts() {
-  "use client";
   try {
     await checkProductAlerts();
 
@@ -103,5 +100,3 @@ export async function clientCheckProductAlerts() {
     };
   }
 }
-
-setInterval(clientCheckProductAlerts, 60 * 60 * 1000); // Verifica alertas a cada hora (em milissegundos)

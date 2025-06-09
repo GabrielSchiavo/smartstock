@@ -48,6 +48,7 @@ export enum AlertType {
   EXPIRED = "EXPIRED",
   EXPIRING = "EXPIRING",
 }
+
 export enum AlertStyleType {
   DEFAULT = "default",
   DESTRUCTIVE = "destructive",

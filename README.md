@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="300" src="./public/assets/images/logos/smartstock-logo-4.png" alt="Logo BookWise"/>
+    <img width="300" src="./public/assets/images/logos/smartstock-logo-4.png" alt="Logo SmartStock"/>
 </p>
 
 <h1 align="center">
@@ -20,6 +20,10 @@
 - **Login com RBAC:**
   - `Login:` sistema de login com email e senha. 
   
+  - `Verificação de conta:` envio de email para verificação de conta. 
+  
+  - `Recuperação de senha:` envio de email para recuperação de senha. 
+  
   - `Níveis de acesso:` diferentes tipos de usuários podem acessar recursos distintos:
     - `Admin:` acesso a todos os recursos do sistema, incluindo controle e cadastro de novos usuários.
     - `Padrão:` acesso a cadastro e geração de relatórios.
@@ -27,7 +31,7 @@
     - `Geração:` acesso somente a geração e visualização de relatórios.
 
 - **Cadastro:**
-  - `Cadastro de produtos alimentícios:` cadastro simples de produtos com os seguintes dados: Lote; Data Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, g...); Grupo; Subgrupo; Data de recebimento.
+  - `Cadastro de produtos alimentícios:` cadastro simples de produtos com os seguintes dados: Lote; Data Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
   
   - `Cadastro de Usuários:` cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
   
@@ -43,38 +47,42 @@
   
   - `Exclusão:` exclusão de usuários antigos.
   
-- **Geração de Relatórios**
+- **Geração de Relatórios:**
   - `Visualização:` os relatórios ssão gerados dentro do sistema, onde é posível visualizar ou gerar novos.
   
   - `Impressão:` todos os relatórios gerados podem ser exportados como PDF ou impressos.
   
   - `Tipos:` estre os principais tipos de relatórios estão:
     - Produtos por data de validade;
-    - Produtos doados ou comprados;
+    - Produtos doados;
+    - Produtos comprados;
     - Inventário de todos os produtos cadastrados;
 
-- **Alertas**
+- **Alertas:**
   - `Alertas simples:` alertas de produtos prestes a vencer e vencidos. O sistema verifica os alertas qunado o usuário abre o sistema e também verifica de forma automática a cada hora.
   
   - `Aviso:` qunado usuário abre o sistema pela primeira vez é disparado um aviso com o total de alertas não lidos e quando um novo alerta é encontrado também é    disparado um aviso para o usuário.
   
   - `Lidos/Não Lidos:` organização de alertas em lidos e não lidos.
 
-- **Organização**
+- **Organização:**
    - `Dashboard:` tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.
 
    - `Pesquisa e filtros:` é posivel pesquisar ou filtrar por algum registro específico presente nas tabelas, facilitando a busca por registros específicos.
   
-   - `Organização:` os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
+   - `Separação:` os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
+  
+- **Dispositivos Móveis:**
+   - `Otimização:` o sistema é totalmente otimizado para permitir uso em dispositivos móveis.
   
 
 ## :film_strip: Galeria
-<!-- <p align="center">
-  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
-  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
-  <img width="1000" src="./public/assets/images/screenshots/" alt=""/>
-  <img width="250" src="./public/assets/images/screenshots/" alt=""/>
-</p> -->
+<p align="center">
+  <img width="1000" src="./public/assets/images/screenshots/screenshot-2.png" alt="Screenshot Dashboard"/>
+  <img width="1000" src="./public/assets/images/screenshots/screenshot-3.png" alt="Screenshot Tabela Estoque"/>
+  <img width="1000" src="./public/assets/images/screenshots/screenshot-4.png" alt="Screenshot Cadastro"/>
+  <img width="1000" src="./public/assets/images/screenshots/screenshot-5.png" alt="Screenshot Relatórios"/>
+</p>
 
 ## :file_folder: Acesso ao projeto
 Você pode [acessar o código-fonte do projeto](https://github.com/GabrielSchiavo/smartstock) ou [baixá-lo](https://github.com/GabrielSchiavo/smartstock/archive/refs/heads/main.zip).
@@ -83,7 +91,7 @@ Você pode [acessar o código-fonte do projeto](https://github.com/GabrielSchiav
 Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
 * Node.js >=22.15.0
-* PostgreSQL >=17.4
+* PostgreSQL >=17.5
 
 `Configurando o projeto:`
 
@@ -148,11 +156,13 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
     ```
 
 ## :white_check_mark: Tecnologias utilizadas
-* `TS`
+* `TypeScript`
 * `Node.js - 22.15.0`
-* `React.js - 19`
+* `React.js - 19.0.1`
+* `Next.js - 15.3.3`
+* `PostgreSQL - 17.5`
+* `Prisma - 6.9.0`
+* `Auth.js - 5.0.0`
+* `Nodemailer - 6.10.1`
 * `Tailwind CSS - 4.0`
 * `shadcn/ui`
-* `Next.js - 15.3.2`
-* `PostgreSQL - 17.5`
-* `Prisma - 6.7.0`

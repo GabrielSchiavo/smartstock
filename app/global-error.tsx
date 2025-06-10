@@ -28,7 +28,7 @@ export default function Error({
               </p>
               <p className="text-md text-muted-foreground">
                 Desculpe, ocorreu um erro inesperado. Por favor, tente
-                novamente. Se o problema persistir, tente novamente mais tarde.
+                novamente.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Button

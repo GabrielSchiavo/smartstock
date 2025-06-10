@@ -1,7 +1,7 @@
 "use client";
 
 import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
-import { BaseCombobox } from "@/components/shared/base-combobox";
+import { BaseCombobox } from "@/components/product/base-combobox";
 import {
   searchReceivers,
   createReceiver,

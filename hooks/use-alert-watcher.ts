@@ -1,4 +1,3 @@
-// hooks/useAlertWatcher.ts
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -8,69 +7,122 @@ import { ToastType } from "@/types";
 
 export function useAlertWatcher(
   onNewAlert?: () => void,
-  initialUnreadCount?: number,
-  interval = 60 * 60 * 1000 // Executa a cada 1 hora (em milissegundos)
+  initialUnreadCount = 0,
+  interval = 60 * 60 * 1000
 ) {
-  const prevCountRef = useRef(initialUnreadCount || 0);
-  const isInitialLoad = useRef(true);
+  const prevCount = useRef<number>(initialUnreadCount);
+  const hasInitialized = useRef<boolean>(false);
+  const callbackRef = useRef(onNewAlert);
+  const isChecking = useRef<boolean>(false);
+
+  // Mantém o último onNewAlert sem re-inscrever o efeito
+  useEffect(() => {
+    callbackRef.current = onNewAlert;
+  }, [onNewAlert]);
 
   useEffect(() => {
-    // Verifica se é um carregamento inicial real (não há marcação no sessionStorage)
-    const isRealInitialLoad = !sessionStorage.getItem(
-      "alertWatcherInitialized"
-    );
+    const storageKey = "alertWatcherInitialized";
+    let timerId: number | null = null;
 
     const checkForNewAlerts = async () => {
+      if (!document || document.visibilityState !== "visible") {
+        // se aba estiver oculta, aborta
+        return;
+      }
+      if (isChecking.current) return; // previne sobreposição de chamadas
+      isChecking.current = true;
       try {
-        const currentCount = await getUnreadAlertsCount();
+        const current = await getUnreadAlertsCount();
 
-        // Comportamento na carga inicial da página
-        if (isInitialLoad.current && isRealInitialLoad) {
-          if (currentCount > 0) {
+        // primeira carga real nesta aba
+        if (!hasInitialized.current && !sessionStorage.getItem(storageKey)) {
+          if (current > 0) {
             showToast({
               title: "Alertas Pendentes",
-              description: `Você tem ${currentCount} alerta(s) não lido(s)`,
+              description: `Você tem ${current} alerta(s) não lido(s)`,
               type: ToastType.INFO,
             });
           }
-          // Marca que o carregamento inicial já ocorreu
-          sessionStorage.setItem("alertWatcherInitialized", "true");
-          isInitialLoad.current = false;
-          prevCountRef.current = currentCount;
-          return;
-        }
-        // Comportamento para navegações subsequentes
-        if (isInitialLoad.current) {
-          isInitialLoad.current = false;
-          prevCountRef.current = currentCount;
+          sessionStorage.setItem(storageKey, "true");
+          prevCount.current = current;
+          hasInitialized.current = true;
           return;
         }
 
-        // Comportamento para novos alertas
-        if (currentCount > prevCountRef.current) {
-          const newAlertsCount = currentCount - prevCountRef.current;
+        // primeira montagem após hidratação
+        if (!hasInitialized.current) {
+          prevCount.current = current;
+          hasInitialized.current = true;
+          return;
+        }
+
+        // novos alertas chegaram
+        if (current > prevCount.current) {
+          const diff = current - prevCount.current;
           showToast({
             title: "Novo Alerta!",
-            description: `Você tem ${newAlertsCount} novo(s) alerta(s)`,
+            description: `Você tem ${diff} novo(s) alerta(s)`,
             type: ToastType.INFO,
           });
-          onNewAlert?.();
+          callbackRef.current?.();
         }
 
-        prevCountRef.current = currentCount;
-      } catch (error) {
-        console.error("Erro ao verificar alertas:", error);
-        showToast({
-          title: "Erro!",
-          description: `Não foi possível verificar os alertas.`,
-          type: ToastType.ERROR,
-        });
+        prevCount.current = current;
+      } catch (err) {
+        console.error("Erro ao verificar alertas:", err);
+        // só exibe o erro uma vez, ou faz throttling:
+        if (!sessionStorage.getItem("alertWatcherErrShown")) {
+          sessionStorage.setItem("alertWatcherErrShown", "true");
+          showToast({
+            title: "Erro!",
+            description: `Não foi possível verificar os alertas.`,
+            type: ToastType.ERROR,
+          });
+        }
+      } finally {
+        isChecking.current = false;
       }
     };
 
-    const intervalId = setInterval(checkForNewAlerts, interval);
-    checkForNewAlerts(); // Executa imediatamente
+    // faça imediatamente + polling
+    // const intervalId = setInterval(checkForNewAlerts, interval);
+    // checkForNewAlerts();
 
-    return () => clearInterval(intervalId);
-  }, [interval, onNewAlert, initialUnreadCount]);
+    // return () => clearInterval(intervalId);
+
+    // dispara imediatamente e agenda intervalo
+    const startPolling = () => {
+      checkForNewAlerts();
+      timerId = window.setInterval(checkForNewAlerts, interval);
+    };
+    const stopPolling = () => {
+      if (timerId != null) window.clearInterval(timerId);
+      timerId = null;
+    };
+
+    // listener de visibilidade
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        startPolling();
+      } else {
+        stopPolling();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    // inicia polling apenas se a aba já estiver visível
+    if (document.visibilityState === "visible") {
+      startPolling();
+    }
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      stopPolling();
+    };
+  }, [interval, initialUnreadCount]);
 }
+
+export const clearSessionStorage = () => {
+  sessionStorage.removeItem("alertWatcherInitialized");
+  sessionStorage.removeItem("alertWatcherErrShown");
+};

@@ -10,6 +10,7 @@ import {
   checkReceiverUsage,
 } from "@/actions";
 import { DynamicComboboxProps } from "@/types";
+import { useMemo } from "react";
 
 export function DynamicComboboxReceiver({
   value,
@@ -20,13 +21,16 @@ export function DynamicComboboxReceiver({
   disabled,
   className,
 }: DynamicComboboxProps) {
-  const api = {
-    search: searchReceivers,
-    create: createReceiver,
-    getAll: getAllReceivers,
-    delete: deleteReceiver,
-    checkUsage: checkReceiverUsage,
-  };
+  const api = useMemo(
+    () => ({
+      search: searchReceivers,
+      create: createReceiver,
+      getAll: getAllReceivers,
+      delete: deleteReceiver,
+      checkUsage: checkReceiverUsage,
+    }),
+    []
+  );
 
   const {
     open,

@@ -24,9 +24,13 @@ export type UsageCheckResponse = {
   message?: string | null | undefined;
 };
 
+export interface FetchParams {
+  signal?: AbortSignal;
+}
+
 export type ComboboxApiParams<T = OptionProps> = {
-  search: (query: string) => Promise<ApiResponse<T[]>>;
-  getAll: () => Promise<ApiResponse<T[]>>;
+  search: (query: string, params?: FetchParams) => Promise<ApiResponse<T[]>>;
+  getAll: (params?: FetchParams) => Promise<ApiResponse<T[]>>;
   create: (name: string) => Promise<ApiResponse<T>>;
   delete: (id: string) => Promise<ApiResponse<T[]>>;
   checkUsage: (name: string) => Promise<UsageCheckResponse>;

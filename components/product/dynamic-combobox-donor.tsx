@@ -10,6 +10,7 @@ import {
 import { DynamicComboboxProps } from "@/types";
 import { BaseCombobox } from "@/components/product/base-combobox";
 import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
+import { useMemo } from "react";
 
 export function DynamicComboboxDonor({
   value,
@@ -20,25 +21,28 @@ export function DynamicComboboxDonor({
   disabled,
   className,
 }: DynamicComboboxProps) {
-    const api = {
+  const api = useMemo(
+    () => ({
       search: searchDonors,
       create: createDonor,
       getAll: getAllDonors,
       delete: deleteDonor,
       checkUsage: checkDonorInProducts,
-    };
-  
-    const {
-      open,
-      setOpen,
-      inputValue,
-      setInputValue,
-      options,
-      isLoading,
-      handleCreateNew,
-      handleSelect,
-      handleDelete,
-    } = useDynamicCombobox(api, "Doador", value, onChange);
+    }),
+    []
+  );
+
+  const {
+    open,
+    setOpen,
+    inputValue,
+    setInputValue,
+    options,
+    isLoading,
+    handleCreateNew,
+    handleSelect,
+    handleDelete,
+  } = useDynamicCombobox(api, "Doador", value, onChange);
 
   const displayValue = value
     ? options.find((option) => option.name === value)?.name || value

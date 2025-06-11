@@ -1,6 +1,6 @@
 {
   "name": "smartstock",
-  "version": "1.3.1",
+  "version": "1.3.3",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -70,8 +70,8 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.2",
+    "eslint": "^9.28.0",
+    "eslint-config-next": "^15.3.3",
     "prisma": "^6.9.0",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.2.9",

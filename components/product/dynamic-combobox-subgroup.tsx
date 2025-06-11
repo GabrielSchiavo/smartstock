@@ -10,6 +10,7 @@ import {
   checkSubgroupUsage,
 } from "@/actions";
 import { DynamicComboboxProps } from "@/types";
+import { useMemo } from "react";
 
 export function DynamicComboboxSubgroup({
   value,
@@ -20,13 +21,16 @@ export function DynamicComboboxSubgroup({
   disabled,
   className,
 }: DynamicComboboxProps) {
-  const api = {
-    search: searchSubgroups,
-    create: createSubgroup,
-    getAll: getAllSubgroups,
-    delete: deleteSubgroup,
-    checkUsage: checkSubgroupUsage,
-  };
+  const api = useMemo(
+    () => ({
+      search: searchSubgroups,
+      create: createSubgroup,
+      getAll: getAllSubgroups,
+      delete: deleteSubgroup,
+      checkUsage: checkSubgroupUsage,
+    }),
+    []
+  );
 
   const {
     open,

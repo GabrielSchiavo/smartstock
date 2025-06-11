@@ -23,9 +23,17 @@ export function useAlertWatcher(
     const storageKey = "alertWatcherLastCount";
 
     const checkForNewAlerts = async () => {
+      // Se já estivermos checando, pulamos esta execução
+      if (isChecking.current) return;
+      isChecking.current = true;
+
       try {
         const current = await getUnreadAlertsCount();
         const lastCount = Number(sessionStorage.getItem(storageKey)) || 0;
+
+        if (sessionStorage.getItem("alertWatcherErrorShown")) {
+          sessionStorage.removeItem("alertWatcherErrorShown");
+        }
 
         // Primeira vez que o usuário acessa o site
         if (!hasInitialized.current && lastCount === 0) {

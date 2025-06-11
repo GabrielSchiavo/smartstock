@@ -10,6 +10,7 @@ import {
   checkGroupInProducts,
 } from "@/actions";
 import { DynamicComboboxProps } from "@/types";
+import { useMemo } from "react";
 
 export function DynamicComboboxGroup({
   value,
@@ -20,13 +21,16 @@ export function DynamicComboboxGroup({
   disabled,
   className,
 }: DynamicComboboxProps) {
-  const api = {
-    search: searchGroups,
-    create: createGroup,
-    getAll: getAllGroups,
-    delete: deleteGroup,
-    checkUsage: checkGroupInProducts,
-  };
+  const api = useMemo(
+    () => ({
+      search: searchGroups,
+      create: createGroup,
+      getAll: getAllGroups,
+      delete: deleteGroup,
+      checkUsage: checkGroupInProducts,
+    }),
+    []
+  );
 
   const {
     open,

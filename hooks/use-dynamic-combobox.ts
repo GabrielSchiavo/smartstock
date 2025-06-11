@@ -1,18 +1,32 @@
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useRef } from "react";
 import { ComboboxApiParams, OptionProps, ToastType } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export function useDynamicCombobox(
   api: ComboboxApiParams,
   resourceName: string,
   value: string = "",
-  onChange: (value: string) => void
+  onChange: (value: string) => void,
+  debounceDelay: number = 300
 ) {
+  const apiRef = useRef(api);
+  const nameRef = useRef(resourceName);
+
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState(value);
+  const debouncedInputValue = useDebounce(inputValue, debounceDelay); // Usando o hook de debounce
   const [options, setOptions] = useState<OptionProps[]>([]);
   const [, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // sempre que o pai passar um novo api ou resourceName,
+  // atualiza o ref, mas não dispara o useEffect abaixo
+  useEffect(() => {
+    apiRef.current = api;
+    nameRef.current = resourceName;
+  }, [api, resourceName]);
 
   // Sincroniza inputValue com value externo
   useEffect(() => {
@@ -21,40 +35,51 @@ export function useDynamicCombobox(
 
   // Carrega opções quando o popover abre ou quando inputValue muda
   useEffect(() => {
+    if (!open) return;
+    // aborta requisição anterior
+    abortControllerRef.current?.abort();
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     let isMounted = true;
 
     const fetchOptions = async () => {
-      if (!open) return;
-
       setIsLoading(true);
       try {
-        const response = !inputValue
-          ? await api.getAll()
-          : await api.search(inputValue);
+        const response = !debouncedInputValue
+          ? await apiRef.current.getAll({ signal: controller.signal })
+          : await apiRef.current.search(debouncedInputValue, {
+              signal: controller.signal,
+            });
 
-        if (!isMounted) return;
+        if (!isMounted || controller.signal.aborted) return;
 
         if (response?.success) {
-          setOptions(Array.isArray(response.data) ? response.data : []);
+          startTransition(() => {
+            setOptions(Array.isArray(response.data) ? response.data : []);
+          });
         } else {
+          setOptions([]);
           showToast({
             title: "Erro!",
             description: response.description || "A operação falhou.",
             type: ToastType.ERROR,
           });
-          setOptions([]);
         }
       } catch (error) {
         if (!isMounted) return;
+        setOptions([]);
         console.error("Erro ao carregar opções:", error);
         showToast({
           title: "Erro!",
-          description: `Erro ao carregar ${resourceName}s.`,
+          description: `Erro ao carregar ${nameRef.current}s.`,
           type: ToastType.ERROR,
         });
-        setOptions([]);
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (isMounted && !controller.signal.aborted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -62,8 +87,11 @@ export function useDynamicCombobox(
 
     return () => {
       isMounted = false;
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
     };
-  }, [open, inputValue, api, resourceName]);
+  }, [open, debouncedInputValue]);
 
   const handleCreateNew = async () => {
     if (!inputValue) return;
@@ -82,7 +110,9 @@ export function useDynamicCombobox(
         setInputValue(response.data.name);
         setOpen(false);
 
-        const updatedResponse = await api.getAll();
+        const updatedResponse = await api.getAll({
+          signal: abortControllerRef.current?.signal,
+        });
         if (updatedResponse.success) {
           setOptions(updatedResponse.data || []);
         }
@@ -130,7 +160,8 @@ export function useDynamicCombobox(
       if (response.success) {
         showToast({
           title: "Sucesso!",
-          description: response.description || `${resourceName} excluído com sucesso.`,
+          description:
+            response.description || `${resourceName} excluído com sucesso.`,
           type: ToastType.SUCCESS,
         });
 
@@ -138,7 +169,9 @@ export function useDynamicCombobox(
           onChange("");
           setInputValue("");
         }
-        const updatedResponse = await api.getAll();
+        const updatedResponse = await api.getAll({
+          signal: abortControllerRef.current?.signal,
+        });
         if (updatedResponse.success) {
           setOptions(updatedResponse.data || []);
         }

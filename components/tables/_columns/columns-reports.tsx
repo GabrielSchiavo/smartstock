@@ -10,6 +10,7 @@ import {
 } from "@/types";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { ProductType } from "@/types";
+import { formatDateToLocale } from "@/lib/date-utils";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
   {
@@ -83,8 +84,10 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data de Validade" />
     ),
-    cell: ({ row }) =>
-      row.original.validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
+    cell: ({ row }) => {
+      const validityDate = row.original.validityDate;
+      return formatDateToLocale(validityDate);
+    },
     meta: {
       title: "Data de Validade",
     } as ColumnMetaProps,
@@ -219,8 +222,10 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Data de Recebibento" />
       ),
-      cell: ({ row }) =>
-        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
+      cell: ({ row }) => {
+        const receiptDate = row.original.receiptDate;
+        return formatDateToLocale(receiptDate);
+      },
       meta: {
         title: "Data de Recebimento",
       } as ColumnMetaProps,
@@ -291,8 +296,10 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Data de Recebimento" />
       ),
-      cell: ({ row }) =>
-        row.original.receiptDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
+      cell: ({ row }) => {
+        const receiptDate = row.original.receiptDate;
+        return formatDateToLocale(receiptDate);
+      },
       meta: {
         title: "Data de Recebimento",
       } as ColumnMetaProps,
@@ -372,8 +379,10 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Data de Validade" />
       ),
-      cell: ({ row }) =>
-        row.original.validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC }),
+      cell: ({ row }) => {
+        const validityDate = row.original.validityDate;
+        return formatDateToLocale(validityDate);
+      },
       meta: {
         title: "Data de Validade",
       } as ColumnMetaProps,

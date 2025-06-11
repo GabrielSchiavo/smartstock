@@ -2,10 +2,11 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlertIcon, TriangleAlertIcon } from "lucide-react";
-import { AlertStyleType, AlertType, LocaleType, ToastType } from "@/types";
+import { AlertStyleType, AlertType, ToastType } from "@/types";
 import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
+import { formatDateToLocale } from "@/lib/date-utils";
 
 export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
 
@@ -57,9 +58,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
   };
 
   const getAlertDate = () => {
-    return new Date(alert.createdAt).toLocaleDateString(LocaleType.PT_BR, {
-      timeZone: LocaleType.UTC,
-    });
+    return formatDateToLocale(new Date(alert.createdAt));
   };
 
   const alertVariant = alert.isRead

@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "@/components/tables/_components/data-tabl
 import { Product } from "@prisma/client";
 import { ColumnMetaProps, LocaleType, ProductType } from "@/types";
 import { DataTableDropdownProduct } from "@/components/tables/_components/data-table-dropdown-product";
+import { formatDateToLocale } from "@/lib/date-utils";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
@@ -143,7 +144,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       const diffTime = validityDate.getTime() - currentDate.getTime();
       const diffDays = diffTime / (1000 * 60 * 60 * 24); // Converter para dias
 
-      const dateString = validityDate.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
+      const dateString = formatDateToLocale(validityDate);
 
       if (diffDays <= 0) {  // Incluindo o dia atual
         // Data passada
@@ -179,8 +180,8 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Data de Recebimento" />
     ),
     cell: ({ row }) => {
-      const date = new Date(row.getValue("receiptDate"));
-      return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
+      const receiptDate = new Date(row.getValue("receiptDate"));
+      return formatDateToLocale(receiptDate);
     },
     filterFn: multiColumnFilterFn,
     meta: {

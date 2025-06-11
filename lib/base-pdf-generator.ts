@@ -1,5 +1,6 @@
 import { LocaleType, PdfConfigProps, PdfUnitType, UnitType, validityStatusType } from "@/types";
 import jsPDF from "jspdf";
+import { formatDateToLocale } from "@/lib/date-utils";
 
 export abstract class BasePdfGenerator {
   protected doc: jsPDF;
@@ -52,7 +53,7 @@ export abstract class BasePdfGenerator {
 
   // Helper functions
   protected formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC });
+    formatDateToLocale(new Date(dateString));
 
   protected getStatusText = (status: string): string => {
     switch (status) {

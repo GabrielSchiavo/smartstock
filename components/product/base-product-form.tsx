@@ -31,8 +31,9 @@ import { DynamicComboboxGroup } from "@/components/product/dynamic-combobox-grou
 import { DynamicComboboxSubgroup } from "@/components/product/dynamic-combobox-subgroup";
 import { DynamicComboboxDonor } from "@/components/product/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-receiver";
-import { BaseProductFormProps, ProductType, UnitType } from "@/types";
+import { BaseProductFormProps, LocaleType, ProductType, UnitType } from "@/types";
 import { MoonLoader } from "react-spinners";
+import { ptBR } from "date-fns/locale";
 
 export const BaseProductForm = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
@@ -257,7 +258,7 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Data de Validade</FormLabel>
                     <FormControl>
-                      <DatePickerMonthYear field={field} />
+                      <DatePickerMonthYear field={field} locale={ptBR} dateFormat={LocaleType.DD_MM_YYYY} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -292,7 +293,7 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Data de Recebimento</FormLabel>
                     <FormControl>
-                      <DatePickerMonthYear field={field} />
+                      <DatePickerMonthYear field={field} locale={ptBR} dateFormat={LocaleType.DD_MM_YYYY} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

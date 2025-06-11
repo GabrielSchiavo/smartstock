@@ -42,6 +42,7 @@ export enum LocaleType {
   PT_BR = "pt-BR",
   EN_US = "en-US",
   UTC = "UTC",
+  DD_MM_YYYY = "dd/MM/yyyy",
 }
 
 export enum AlertType {

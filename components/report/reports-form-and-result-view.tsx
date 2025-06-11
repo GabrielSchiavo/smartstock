@@ -33,6 +33,7 @@ import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-
 import {
   DonationsReportResponse,
   InventoryReportResponse,
+  LocaleType,
   PurchasedReportResponse,
   ReportType,
   ToastType,
@@ -40,6 +41,7 @@ import {
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
+import { ptBR } from "date-fns/locale";
 
 export const ReportsFormAndResultView = () => {
   const [validityReportData, setValidityReportData] = useState<
@@ -210,6 +212,8 @@ export const ReportsFormAndResultView = () => {
                         <DatePickerMonthYear
                           disabled={isDetailsDisabled}
                           field={field}
+                          locale={ptBR}
+                          dateFormat={LocaleType.DD_MM_YYYY}
                         />
                       </FormControl>
                       <FormMessage />
@@ -226,6 +230,8 @@ export const ReportsFormAndResultView = () => {
                         <DatePickerMonthYear
                           disabled={isDetailsDisabled}
                           field={field}
+                          locale={ptBR}
+                          dateFormat={LocaleType.DD_MM_YYYY}
                         />
                       </FormControl>
                       <FormMessage />

@@ -5,7 +5,6 @@ import { FileTextIcon, PrinterIcon } from "lucide-react";
 import {
   DonationsReportResponse,
   InventoryReportResponse,
-  LocaleType,
   PurchasedReportResponse,
   ToastType,
   ValidityReportResponse,
@@ -50,6 +49,7 @@ import {
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { showToast } from "@/components/utils/show-toast";
+import { formatDateToLocale } from "@/lib/date-utils";
 
 export function DataTableReport<TData>({
   columns,
@@ -224,13 +224,9 @@ export function DataTableReport<TData>({
           {initialDate && finalDate && (
             <p className="text-md">
               Período:{" "}
-              {new Date(initialDate).toLocaleDateString(LocaleType.PT_BR, {
-                timeZone: LocaleType.UTC,
-              })}{" "}
+              {formatDateToLocale(new Date(initialDate))}{" "}
               a{" "}
-              {new Date(finalDate).toLocaleDateString(LocaleType.PT_BR, {
-                timeZone: LocaleType.UTC,
-              })}
+              {formatDateToLocale(new Date(finalDate))}
             </p>
           )}
         </div>

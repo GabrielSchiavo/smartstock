@@ -22,9 +22,6 @@ export default async function UserRegistrationPage() {
             <div className="px-4 pt-4">
               <MessageSuccess message="Você tem permissão para ver este conteúdo!" />
             </div>
-            <h1 className="text-base font-medium px-4 lg:px-6">
-              Cadastro de Usuários
-            </h1>
             <div className="px-4 md:px-6 ">
               <DataTableUsers addButton={true} data={users} columns={columnsTableUsers} />
             </div>

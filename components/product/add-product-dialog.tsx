@@ -24,7 +24,7 @@ export function AddProductDialog({}) {
           <span className="hidden lg:inline">Criar Produto</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] overflow-auto">
+      <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-auto">
         <DialogHeader>
           <DialogTitle>Criar Produto</DialogTitle>
           <DialogDescription>

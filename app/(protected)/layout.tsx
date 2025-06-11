@@ -14,9 +14,9 @@ export default async function MainLayout({
 
   return (
     <main>
-      <SidebarProvider defaultOpen={defaultOpen}>
+      <SidebarProvider defaultOpen={defaultOpen} className="bg-sidebar">
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="m-0 ml-0! sm:m-2 rounded-none sm:rounded-xl shadow-sm">
           <SiteHeader />
           <main>{children}</main>
         </SidebarInset>

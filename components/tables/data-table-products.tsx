@@ -127,14 +127,14 @@ export function DataTableProducts<TData, TValue>({
         )}
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-xl border overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="text-center">
+              <TableRow key={headerGroup.id} className="text-center!">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-center!">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

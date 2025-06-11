@@ -32,3 +32,16 @@ export const apiAuthPrefix = "/api/auth";
 * @type {string}
 */
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+
+/**
+* An object mapping page paths to their titles
+* @type {Record<string, string>}
+*/
+export const pageTitles: Record<string, string> = {
+  "/": "Home",
+  "/dashboard": "Dashboard",
+  "/reports": "Relatórios",
+  "/settings": "Configurações",
+  "/stocks/food": "Estoque de Alimentos",
+  "/users": "Usuários",
+};

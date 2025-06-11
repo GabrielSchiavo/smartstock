@@ -183,8 +183,8 @@ body {
   }
 }
 
-.theme-default,
-.theme-default-scaled {
+.theme-blue,
+.theme-blue-scaled {
   --primary: var(--color-blue-600);
   --primary-foreground: var(--color-blue-50);
 
@@ -194,8 +194,8 @@ body {
   }
 }
 
-.theme-blue,
-.theme-blue-scaled {
+.theme-neutral,
+.theme-neutral-scaled {
   --primary: var(--color-neutral-600);
   --primary-foreground: var(--color-neutral-50);
 

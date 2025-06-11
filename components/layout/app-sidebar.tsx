@@ -10,7 +10,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { NavBottom } from "@/components/layout/nav-bottom";
@@ -46,7 +45,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} className="border-0!">
       <SidebarHeader>
         <SidebarMenuButton
           asChild
@@ -54,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         >
           <Link href="/dashboard">
             <LogoWithText
-              imageSize="size-5"
+              imageSize="size-5 min-w-5"
               textSize="text-base"
               containerClasses="justify-around! flex-nowrap!"
             />
@@ -70,7 +69,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <UserButton />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   );
 }

@@ -73,7 +73,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
       <button type="submit" title="Marcar como Lido/Não lido">
         <Alert
           variant={alertVariant}
-          className="hover:border-foreground cursor-pointer text-start"
+          className="hover:border-foreground cursor-pointer text-start rounded-xl"
         >
           {alert.type === AlertType.EXPIRED ? (
             <TriangleAlertIcon />

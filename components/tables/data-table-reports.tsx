@@ -207,7 +207,7 @@ export function DataTableReport<TData>({
       </div>
 
       <div
-        className="styleForPrint overflow-auto rounded-md border"
+        className="styleForPrint rounded-xl border overflow-auto"
         ref={contentRef}
       >
         <div className="showForPrint space-y-3 mb-6">
@@ -233,10 +233,10 @@ export function DataTableReport<TData>({
         <Table className="overflow-hidden!">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="text-center!">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-center!">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

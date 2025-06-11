@@ -24,7 +24,7 @@ export function AboutButton() {
           Sobre
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] rounded-xl">
         <DialogHeader>
             <DialogTitle>Sobre</DialogTitle>
           </DialogHeader>

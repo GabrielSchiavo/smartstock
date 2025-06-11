@@ -53,11 +53,13 @@ export function AlertButton() {
   }, []);
 
   useEffect(() => {
-    refreshAlerts();
     clientCheckProductAlerts();
+    refreshAlerts();
   }, [refreshAlerts]);
 
-  useAlertWatcher(refreshAlerts, unreadAlertsCount);
+  useAlertWatcher(() => {
+    refreshAlerts();
+  }, unreadAlertsCount);
 
   const handleMarkAllAsRead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,12 +86,12 @@ export function AlertButton() {
           </div>
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="h-full!">
         <SheetHeader>
           <SheetTitle>Alertas</SheetTitle>
           <SheetDescription>Veja todos os alertas aqui.</SheetDescription>
         </SheetHeader>
-        <ScrollArea className="h-[70vh]">
+        <ScrollArea className="overflow-auto">
           <div className="grid flex-1 auto-rows-min gap-6 px-6">
             {alerts.length === 0 ? (
               <p className="w-full text-center text-muted-foreground text-sm">

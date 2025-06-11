@@ -143,14 +143,19 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
      - Usando `GMAIL`: acesse o arquivo `.env` e altere `GMAIL_SMTP_USER` e `GMAIL_SMTP_PASS` para as credenciais da sua conta do Google (é necessário criar uma 'Senha de App').
   
      - Usando `OUTRO PROVEDOR`: para usar outro provedor SMTP consulte a documentação do `NODEMAILER` e altere as configurações do mesmo em `lib/mail.ts`.
+  
+   - `Remetente dos emails:` A variável `MAIL_FROM` (definida no arquivo .env) especifica o endereço que aparecerá como remetente em todos os envios.
+     - Se você atribuir um valor a MAIL_FROM, esse será usado como remetente.
 
-7. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
+     - Se MAIL_FROM não for definida, o remetente padrão será o usuário SMTP configurado (valor de GMAIL_SMTP_USER ou ETHEREAL_USERNAME).
+
+6. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
 
     ```bash
     npm run type-check 
     ```
 
-8. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
+7. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
     ```bash
     npm run dev
     ```

@@ -1,4 +1,6 @@
 import { OptionProps } from "@/types";
+import { Transporter } from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export type ResetPasswordResponse = {
   success?: string;
@@ -6,14 +8,14 @@ export type ResetPasswordResponse = {
 };
 
 export type ThemeContextParams = {
-  activeTheme: string
-  setActiveTheme: (theme: string) => void
-}
+  activeTheme: string;
+  setActiveTheme: (theme: string) => void;
+};
 
 export type ApiResponse<T> = {
-  success: boolean
-  title?: string
-  description?: string
+  success: boolean;
+  title?: string;
+  description?: string;
   data?: T;
 };
 
@@ -28,4 +30,8 @@ export type ComboboxApiParams<T = OptionProps> = {
   create: (name: string) => Promise<ApiResponse<T>>;
   delete: (id: string) => Promise<ApiResponse<T[]>>;
   checkUsage: (name: string) => Promise<UsageCheckResponse>;
+};
+
+export type SmtpTransporter = Transporter<SMTPTransport.SentMessageInfo> & {
+  transporter: SMTPTransport;
 };

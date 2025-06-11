@@ -22,6 +22,8 @@ export async function checkProductAlerts() {
       await alertRepository.create(product.id, alertType);
     }
   }
+  
+  revalidatePath("/");
 }
 
 export async function toggleAlertReadStatus(alertId: string) {
@@ -36,6 +38,8 @@ export async function toggleAlertReadStatus(alertId: string) {
   }
 
   await alertRepository.toggleReadStatus(alertId, !alert.isRead);
+
+  revalidatePath("/");
 
   return {
     success: true,

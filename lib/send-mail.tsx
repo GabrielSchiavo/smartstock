@@ -2,6 +2,17 @@ import { render } from "@react-email/components";
 import ResetPasswordEmailTemplate from "@/components/emails/reset-password-email-template";
 import { transporter } from "@/lib/mail";
 import VerificationEmailTemplate from "@/components/emails/verification-email-template";
+import { SmtpTransporter } from "@/types";
+
+export function getAuthenticateSmtpUser(): string {
+  const t = transporter as SmtpTransporter;
+
+  const auth = t.transporter.options.auth;
+  if (!auth?.user) {
+    throw new Error("Usuário SMTP não configurado no nodemailer transporter.");
+  }
+  return auth.user;
+}
 
 export const sendPasswordResetEmail = async (
   email: string,
@@ -14,7 +25,7 @@ export const sendPasswordResetEmail = async (
   );
 
   await transporter.sendMail({
-    from: '"Smartstock" <gabriel@sysbase.com.br>',
+    from: `SmartStock <${process.env.MAIL_FROM || getAuthenticateSmtpUser()}>`,
     to: email,
     priority: "high",
     subject: "Redefinir sua senha",
@@ -37,7 +48,7 @@ export const sendVerificationEmail = async (
   );
 
   await transporter.sendMail({
-    from: '"Smartstock" <gabriel@sysbase.com.br>',
+    from: `SmartStock <${process.env.MAIL_FROM || getAuthenticateSmtpUser()}>`,
     to: email,
     priority: "high",
     subject: "Confirme sua conta",

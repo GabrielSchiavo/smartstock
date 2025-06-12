@@ -22,7 +22,7 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-export function UserButton() {
+export function SidebarUserMenu() {
   const { isMobile } = useSidebar();
   const user = useCurrentUser();
 

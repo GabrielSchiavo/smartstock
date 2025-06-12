@@ -20,6 +20,7 @@ import { MessageSuccess } from "@/components/utils/message-success";
 import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { MoonLoader } from "react-spinners";
+import { ROUTES } from "@/routes";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -49,7 +50,7 @@ export const ResetForm = () => {
     <CardWrapper
       headerLabel="Esqueceu sua senha?"
       backButtonLabel="Voltar ao login?"
-      backButtonHref="/auth/login"
+      backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">

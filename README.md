@@ -110,9 +110,13 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
           npm install
           ```
 
-2. `Atualizar .env:` abra o arquivo `.env.example`, localizado na raiz do projeto e altere as configurações de DATABASE_URL para as configurações do seu Banco de Dados. Após, renomeie o arquivo para `.env`.
+2. `Configurar .env:` Renomeie o arquivo `.env.example` para `.env`.
 
-3. `Gerar AUTH_SECRET:` abra um terminal na raiz do projeto e execute o comando a seguir para configurar o Auth.js:
+3. `Configurar Banco de Dados:` configure a URL do Banco de Dados:
+   
+   - No arquivo `.env` na raiz do projeto altere as configurações da variável `DATABASE_URL` para as configurações do seu Banco de Dados.
+
+4. `Gerar AUTH_SECRET:` abra um terminal na raiz do projeto e execute o comando a seguir para configurar o Auth.js:
    
    - Gera um arquivo `.env.local` com a variável `AUTH_SECRET`, copie toda a variavel e susbtitua `AUTH_SECRET` no arquivo `.env`, após exclua o arquivo `.env.local`:
   
@@ -120,7 +124,11 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
         npx auth secret
         ```
 
-4. `Configura o Prisma Client e DB:` na raiz do projeto e execute os comandos a seguir. Sempre que alterar o arquivo `schema.prisma` execute novamente estes comandos:
+4. `URL Base do sistema:` configure a url base do sistema:
+   
+   - No arquivo `.env` altere a variável `BASE_URL` caso use uma URL personalizada. Caso deixe a variável em branco, será usado por padrão esta URL: "http://localhost:3000".
+
+5. `Configura o Prisma Client:` na raiz do projeto e execute os comandos a seguir. Sempre que alterar o arquivo `schema.prisma` execute novamente estes comandos:
 
    - Analisa o arquivo `schema.prisma` e gera o Prisma Client:
   
@@ -134,7 +142,7 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
         npx prisma db push
         ```
 
-5. `Configurar geração e envio de email:` para o envio de email é necessário configurar:
+6. `Configurar geração e envio de email:` para o envio de email é necessário configurar:
    
    - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para criar uma conta e gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`. Agora com estas credenciais é possivel acessar sua conta Ethereal.
   
@@ -149,13 +157,13 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
      - Se MAIL_FROM não for definida, o remetente padrão será o usuário SMTP configurado (valor de GMAIL_SMTP_USER ou ETHEREAL_USERNAME).
 
-6. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
+7. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
 
     ```bash
     npm run type-check 
     ```
 
-7. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
+8. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
     ```bash
     npm run dev
     ```

@@ -5,7 +5,7 @@ import { AuthError } from "next-auth";
 
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, ROUTES } from "@/routes";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { userRepository } from "@/db";
@@ -58,7 +58,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return {
       success: "Login realizado com sucesso! Redirecionando...",
       redirectUrl: DEFAULT_LOGIN_REDIRECT,
-      shouldReload: DEFAULT_LOGIN_REDIRECT === "/dashboard", // Adiciona flag para recarregar
+      shouldReload: DEFAULT_LOGIN_REDIRECT === ROUTES.PAGE_DASHBOARD, // Adiciona flag para recarregar
     };
   } catch (error) {
     if (error instanceof AuthError) {

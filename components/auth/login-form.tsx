@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { MoonLoader } from "react-spinners";
+import { ROUTES } from "@/routes";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -116,7 +117,7 @@ export const LoginForm = () => {
                     asChild
                     className="px-0 font-normal justify-start"
                   >
-                    <Link href="/auth/reset">Esqueceu sua senha?</Link>
+                    <Link href={ROUTES.AUTH_RESET_PASSWORD}>Esqueceu sua senha?</Link>
                   </Button>
                 </FormItem>
               )}

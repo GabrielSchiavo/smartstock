@@ -1,6 +1,7 @@
 "use server";
 
 import { productRepository } from "@/db";
+import { ROUTES } from "@/routes";
 import {
   DonationsReportResponse,
   InventoryReportResponse,
@@ -60,7 +61,7 @@ export const generateValidityReport = async (
       };
     });
 
-    revalidatePath("/reports");
+    revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
       title: "Sucesso!",
@@ -98,7 +99,7 @@ export const generateDonationsReport = async (
       receiptDate: product.receiptDate,
     }));
 
-    revalidatePath("/reports");
+    revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
       title: "Sucesso!",
@@ -135,7 +136,7 @@ export const generatePurchasedReport = async (
       receiptDate: product.receiptDate,
     }));
 
-    revalidatePath("/reports");
+    revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
       title: "Sucesso!",
@@ -178,7 +179,7 @@ export const generateInventoryReport = async (): Promise<
       };
     });
 
-    revalidatePath("/reports");
+    revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
       title: "Sucesso!",

@@ -1,4 +1,3 @@
-import { ExtendedUser } from "@/next-auth";
 import { OptionProps } from "@/types";
 import { AlertType, Product } from "@prisma/client";
 import { ToastType } from "@/types";
@@ -12,11 +11,6 @@ export interface CardWrapperProps {
 
 export interface BackButtonProps {
   href: string;
-  label: string;
-}
-
-export interface UserInfoProps {
-  user?: ExtendedUser;
   label: string;
 }
 

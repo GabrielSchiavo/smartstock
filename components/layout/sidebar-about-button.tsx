@@ -15,24 +15,21 @@ import { VersionBadge } from "@/components/utils/version-badge";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { LogoWithText } from "@/components/shared/logo-with-text";
 
-export function AboutButton() {
+export function SidebarAboutButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <SidebarMenuButton>
+        <SidebarMenuButton tooltip={"Sobre"}>
           <HelpCircleIcon />
           Sobre
         </SidebarMenuButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] rounded-xl">
         <DialogHeader>
-            <DialogTitle>Sobre</DialogTitle>
-          </DialogHeader>
+          <DialogTitle>Sobre</DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col items-center justify-center gap-4">
-          <LogoWithText
-            imageSize="size-14"
-            textSize="text-4xl"
-          />
+          <LogoWithText imageSize="size-14" textSize="text-4xl" />
           <div className="flex w-full flex-col items-center gap-2">
             <Separator />
             <p className="text-md font-light">
@@ -41,16 +38,15 @@ export function AboutButton() {
             <Separator />
           </div>
 
-            <p className="text-md text-muted-foreground">
-              Copyright &copy; {new Date().getFullYear()} SmartStock
+          <p className="text-md text-muted-foreground">
+            Copyright &copy; {new Date().getFullYear()} SmartStock
+          </p>
+          <span className="flex items-center gap-2">
+            <p className="text-md">
+              <span className="font-semibold">Versão:</span>
             </p>
-            <span className="flex items-center gap-2">
-              <p className="text-md">
-                <span className="font-semibold">Versão:</span>
-              </p>
-              <VersionBadge />
-            </span>
-
+            <VersionBadge />
+          </span>
         </div>
         <DialogFooter>
           <DialogClose asChild>

@@ -5,12 +5,13 @@ import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import { userRepository } from "@/db";
 import { UserType } from "@/types";
+import { ROUTES } from "@/routes";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: {
-    signIn: "/auth/login",
-    signOut: "/auth/login",
-    error: "/auth/error",
+    signIn: ROUTES.AUTH_LOGIN,
+    signOut: ROUTES.AUTH_LOGIN,
+    error: ROUTES.AUTH_ERROR,
   },
   events: {
     async linkAccount({ user }) {

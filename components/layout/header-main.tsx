@@ -7,7 +7,7 @@ import { AlertButton } from "@/components/alerts/alert-button";
 import { pageTitles } from "@/routes";
 import { usePathname } from "next/navigation";
 
-export function SiteHeader() {
+export function HeaderMain() {
   const pathname = usePathname();
   const headerTitle = pageTitles[pathname] || "SmartStock";
 

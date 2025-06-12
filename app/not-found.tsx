@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/routes";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -15,7 +16,7 @@ export default function NotFound() {
             foi removida.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link href="/">
+            <Link href={ROUTES.HOME}>
               <Button variant={"default"} size={"default"}>
                 Voltar para Home
               </Button>

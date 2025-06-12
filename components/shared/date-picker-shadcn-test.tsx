@@ -1,12 +1,12 @@
 import * as React from "react";
 import { FieldValues } from "react-hook-form";
 import { DatePickerFormProps } from "@/types";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { FormControl } from "../ui/form";
-import { Button } from "../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { FormControl } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { formatDateToLocale } from "@/lib/date-utils";
 

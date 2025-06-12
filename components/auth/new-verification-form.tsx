@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { MessageError } from "@/components/utils/message-error";
+import { ROUTES } from "@/routes";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message
@@ -43,7 +44,7 @@ export const NewVerificationForm = () => {
     <CardWrapper
       headerLabel="Confirmando sua verificação"
       backButtonLabel="Voltar ao login"
-      backButtonHref="/auth/login"
+      backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <div className="flex items-center w-full justify-center">
         {!success && !error && (

@@ -20,6 +20,7 @@ import { newPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
+import { ROUTES } from "@/routes";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -53,7 +54,7 @@ export const NewPasswordForm = () => {
     <CardWrapper
       headerLabel="Digite uma nova senha"
       backButtonLabel="Voltar ao login"
-      backButtonHref="/auth/login"
+      backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">

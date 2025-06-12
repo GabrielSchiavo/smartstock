@@ -33,7 +33,7 @@ export function SidebarAboutButton() {
           <div className="flex w-full flex-col items-center gap-2">
             <Separator />
             <p className="text-md font-light">
-              O melhor serviço de gestão de estoque
+              O melhor sistema de gestão de estoque
             </p>
             <Separator />
           </div>

@@ -14,9 +14,9 @@ export default function Home() {
     <main className="flex h-full flex-col items-center justify-center bg-radial from-sky-400 to-blue-800">
       <Card className="p-7 sm:px-16 sm:py-10 shadow-md">
         <div className="grid gap-6 text-center">
-          <LogoWithText imageSize="size-16" textSize="text-5xl" />
-          <p className="text-lg font-light">
-            O melhor serviço de gestão de estoque
+          <LogoWithText imageSize="size-12 sm:size-14" textSize="text-3xl sm:text-4xl" />
+          <p className="text-md sm:text-lg font-light">
+            O melhor sistema de gestão de estoque
           </p>
           <div>
             <LoginButton>

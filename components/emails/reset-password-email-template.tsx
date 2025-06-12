@@ -94,7 +94,7 @@ export const ResetPasswordEmailTemplate = ({
                     <span className="font-semibold">Smart</span>stock
                   </Text>
                   <Text className="mt-[4px] mb-0 text-[14px] text-gray-500 leading-[24px]">
-                    &copy; {currentYear} - O melhor serviço de gestão de estoque
+                    &copy; {currentYear} - O melhor sistema de gestão de estoque
                   </Text>
                 </td>
               </tr>

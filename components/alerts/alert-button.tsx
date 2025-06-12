@@ -74,7 +74,6 @@ export function AlertButton() {
           variant="outline"
           size="icon"
           className="cursor-pointer"
-          title="Alertas"
         >
           <div className="relative">
             <BellIcon />

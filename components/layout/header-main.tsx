@@ -6,7 +6,7 @@ import { ThemeModeButton } from "@/components/shared/theme-mode-button";
 import { AlertButton } from "@/components/alerts/alert-button";
 import { pageTitles } from "@/routes";
 import { usePathname } from "next/navigation";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function HeaderMain() {
   const pathname = usePathname();

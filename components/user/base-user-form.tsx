@@ -59,6 +59,10 @@ export const BaseUserForm = <T extends z.ZodTypeAny>({
         if (response.success === true) {
           onSuccess?.();
         }
+        
+        if (response.success === false) {
+          form.reset();
+        }
 
         showToast({
           title: response.title,

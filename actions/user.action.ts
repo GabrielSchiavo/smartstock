@@ -36,7 +36,24 @@ export const registerUser = async (
       };
     }
 
-    // Criação do usuário
+    // Envio de email de verificação
+    const verificationToken = await generateVerificationToken(email);
+    try {
+      await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+        name
+      );
+    } catch (error) {
+      console.error("Erro ao enviar o email de verificação:", error);
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Não foi possível enviar o email de verificação.",
+      };
+    }
+
+        // Criação do usuário
     const hashedPassword = await bcryptjs.hash(password, 10);
     await userRepository.create({
       name,
@@ -45,20 +62,11 @@ export const registerUser = async (
       role: userType,
     });
 
-    // Envio de email de verificação
-    const verificationToken = await generateVerificationToken(email);
-    await sendVerificationEmail(
-      verificationToken.email,
-      verificationToken.token,
-      name
-    );
-
     revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
-      description:
-        "Usuário registrado com sucesso, email de confirmação enviado.",
+      description: "Usuário registrado. Um email de verificação foi enviado.",
     };
   } catch (error) {
     console.error("Erro no registro de usuário:", error);
@@ -117,7 +125,7 @@ export const editUser = async (
 ): Promise<UserOperationResponse> => {
   // Validação dos campos
   const validationResult = EditUserSchema.safeParse(values);
-  if (validationResult.success === false) {
+  if (!validationResult.success) {
     return {
       success: false,
       title: "Erro!",
@@ -128,19 +136,6 @@ export const editUser = async (
   const { email, password, name, userType } = validationResult.data;
 
   try {
-    // Verificação de email existente
-    const existingUserEmail = await userRepository.findByEmailExcludingId(
-      email,
-      id
-    );
-    if (existingUserEmail) {
-      return {
-        success: false,
-        title: "Erro!",
-        description: "Este email já está em uso.",
-      };
-    }
-
     // Verifica se o usuário existe
     const existingUser = await userRepository.findById(id);
     if (!existingUser) {
@@ -151,22 +146,70 @@ export const editUser = async (
       };
     }
 
+    const isEmailChanged = existingUser.email !== email;
+    let requiresVerification = false;
+
+    // Verificação de email somente se for alterado
+    if (isEmailChanged) {
+      const existingUserEmail = await userRepository.findByEmailExcludingId(
+        email,
+        id
+      );
+
+      if (existingUserEmail) {
+        return {
+          success: false,
+          title: "Erro!",
+          description: "Este email já está em uso.",
+        };
+      }
+    }
+
+    // Envia email de verificação se o email foi alterado
+    if (isEmailChanged) {
+      const verificationToken = await generateVerificationToken(email);
+      try {
+        await sendVerificationEmail(
+          verificationToken.email,
+          verificationToken.token,
+          name
+        );
+      } catch (error) {
+        console.error("Erro ao enviar o email de verificação:", error);
+        return {
+          success: false,
+          title: "Erro!",
+          description: "Não foi possível enviar o email de verificação.",
+        };
+      }
+    }
+
     // Prepara dados para atualização
     const updateData = {
       name,
       email,
       role: userType,
+      emailVerified: existingUser.emailVerified, // Mantém o status de verificação atual
       ...(password && { password: await bcryptjs.hash(password, 10) }),
     };
 
+    // Se o email foi alterado, marca como não verificado
+    if (isEmailChanged) {
+      updateData.emailVerified = null;
+      requiresVerification = true;
+    }
+
     // Atualiza o usuário
     const updatedUser = await userRepository.update(id, updateData);
-    
+
     revalidatePath("/");
+
     return {
       success: true,
       title: "Sucesso!",
-      description: `Usuário atualizado com sucesso.`,
+      description: requiresVerification
+        ? "Usuário atualizado. Um email de verificação foi enviado para o novo email."
+        : "Usuário atualizado com sucesso.",
       user: updatedUser,
     };
   } catch (error) {

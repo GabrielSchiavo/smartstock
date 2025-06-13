@@ -9,7 +9,7 @@ export * from "./new-verification.action";
 export * from "./product.action";
 export * from "./receiver.action";
 export * from "./report.action";
-export * from "./reset.action";
+export * from "./reset-password.action";
 export * from "./setting.action";
 export * from "./subgroup.action";
 export * from "./user.action";

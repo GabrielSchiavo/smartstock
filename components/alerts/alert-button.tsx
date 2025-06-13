@@ -27,6 +27,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAlertWatcher } from "@/hooks/use-alert-watcher";
 import { BasicAlertProps, ToastType } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function AlertButton() {
   const [alerts, setAlerts] = useState<BasicAlertProps[]>([]);
@@ -69,22 +70,25 @@ export function AlertButton() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="cursor-pointer"
-        >
-          <div className="relative">
-            <BellIcon />
-            {unreadAlertsCount > 0 && (
-              <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums text-xs font-medium">
-                {unreadAlertsCount > 9 ? "9+" : unreadAlertsCount}
-              </Badge>
-            )}
-          </div>
-        </Button>
-      </SheetTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="cursor-pointer">
+              <div className="relative">
+                <BellIcon />
+                {unreadAlertsCount > 0 && (
+                  <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums text-xs font-medium">
+                    {unreadAlertsCount > 9 ? "9+" : unreadAlertsCount}
+                  </Badge>
+                )}
+              </div>
+            </Button>
+          </SheetTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Alertas</p>
+        </TooltipContent>
+      </Tooltip>
       <SheetContent className="h-full!">
         <SheetHeader>
           <SheetTitle>Alertas</SheetTitle>

@@ -6,21 +6,11 @@ import { useRouter } from "next/navigation";
 
 export const LoginButton = ({
     children,
-    mode = "redirect",
-    // asChild
 }: LoginButtonProps) => {
     const router = useRouter();
 
     const onClick = () => {
         router.push(ROUTES.AUTH_LOGIN);
-    }
-
-    if(mode === "modal") {
-        return (
-            <span>
-                TODO: Implemets modal
-            </span>
-        )
     }
 
     return (

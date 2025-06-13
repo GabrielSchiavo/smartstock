@@ -60,6 +60,10 @@ export const SettingForm = () => {
           });
         }
 
+        if (response.success === false) {
+          form.reset();
+        }
+
         showToast({
           title: response.title,
           description: response.description,

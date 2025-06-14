@@ -31,7 +31,7 @@ export function ThemeModeButton() {
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Alterar tema</p>
+          <p>Alterar Tema</p>
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent align="end">

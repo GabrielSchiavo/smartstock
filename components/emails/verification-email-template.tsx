@@ -54,20 +54,20 @@ export const VerificationEmailTemplate = ({
               </Row>
             </Section>
             <Heading className="mx-0 my-[30px] p-0 text-center font-normal text-[24px] text-black">
-              <strong>Confirme</strong> sua conta
+              <strong>Verificar</strong> email
             </Heading>
             <Text className="text-[14px] text-black leading-[24px]">
               Olá <strong>{userName}</strong>,
             </Text>
             <Text className="text-[14px] text-black leading-[24px]">
-              Obrigado por escolher Smartstock. Para confirmar sua conta, clique no botão abaixo:
+              Obrigado por escolher Smartstock. Para verificar seu email, clique no botão abaixo:
             </Text>
             <Section className="mt-[32px] mb-[32px] text-center">
               <Button
                 className="rounded-md bg-blue-700 px-5 py-3 text-center font-semibold text-[14px] text-white no-underline"
                 href={url}
               >
-                Confirmar conta
+                Verificar email
               </Button>
             </Section>
             <Text className="text-[14px] text-black leading-[24px]">

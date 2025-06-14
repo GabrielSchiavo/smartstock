@@ -21,7 +21,7 @@ export function NavSidebarSecondary() {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarGroupLabel>Estoques</SidebarGroupLabel>
+        <SidebarGroupLabel>Estoque</SidebarGroupLabel>
         <SidebarMenu>
           <RoleGate
             isPage={false}
@@ -35,7 +35,7 @@ export function NavSidebarSecondary() {
               >
                 <Link href={ROUTES.PAGE_STOCKS_FOOD}>
                   <AppleIcon />
-                  <span>Estoque de Alimentos</span>
+                  <span>Alimentos</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

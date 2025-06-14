@@ -42,14 +42,18 @@ export const ResetForm = () => {
       resetPassword(values).then((data) => {
         setError(data?.error);
         setSuccess(data?.success);
+
+        if (data?.success) {
+          form.reset();
+        }
       });
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Esqueceu sua senha?"
-      backButtonLabel="Voltar ao login?"
+      headerLabel="Redefina sua senha"
+      backButtonLabel="Voltar para o login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
@@ -86,10 +90,10 @@ export const ResetForm = () => {
             {isPending ? (
               <span className="flex items-center gap-3">
                 <MoonLoader size={16} color="#ffffff" />
-                {"Enviando..."}
+                {"Enviando email..."}
               </span>
             ) : (
-              "Enviar email de redefinição"
+              "Continuar"
             )}
           </Button>
         </form>

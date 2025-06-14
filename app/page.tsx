@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-radial from-sky-400 via-blue-500 to-blue-800">
+    <main className="h-full flex items-center justify-center p-6 bg-radial from-sky-400 via-blue-500 to-blue-800">
       <Card className="w-full max-w-md shadow-lg p-8 sm:p-8 md:p-10 justify-center">
         <div className="grid gap-6 text-center">
           <LogoWithText 

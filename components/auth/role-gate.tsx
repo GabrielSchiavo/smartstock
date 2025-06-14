@@ -15,7 +15,7 @@ export const RoleGate = ({
         if (isPage === true) {
             return (
                 <div className="px-4 pt-4">
-                    <MessageError message="Você não tem permissão para visualizar este conteúdo!" />
+                    <MessageError message="Você não tem permissão para acessar este conteúdo!" />
                 </div>
             )
         } else {

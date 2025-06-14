@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EmailSchema, NameSchema, UserTypeSchema, PasswordSchema } from "@/schemas/shared/base.schema";
+import { EmailSchema, NameSchema, UserTypeSchema, PasswordSchema, ConfirmPasswordSchema } from "@/schemas/shared/base.schema";
 
 export const CreateUserSchema = z
   .object({
@@ -7,7 +7,7 @@ export const CreateUserSchema = z
     name: NameSchema,
     userType: UserTypeSchema,
     password: PasswordSchema,
-    confirmPassword: PasswordSchema,
+    confirmPassword: ConfirmPasswordSchema,
   })
   .refine(
     (data) => data.password === data.confirmPassword,

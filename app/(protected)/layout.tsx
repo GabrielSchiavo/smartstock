@@ -18,7 +18,7 @@ export default async function MainLayout({
         <SidebarMain />
         <SidebarInset className="m-0 ml-0! sm:m-2 rounded-none sm:rounded-xl shadow-sm">
           <HeaderMain />
-          <main>{children}</main>
+          <div className="p-4 md:p-6">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </main>

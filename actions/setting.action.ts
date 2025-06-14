@@ -138,7 +138,7 @@ const handleEmailUpdate = async (
   return {
     success: true,
     title: "Sucesso!",
-    description: "O email foi atualizado. Email de verificação enviado.",
+    description: "O email foi atualizado. -mail de verificação enviado.",
   };
 };
 

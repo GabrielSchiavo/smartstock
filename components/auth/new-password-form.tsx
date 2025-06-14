@@ -21,6 +21,7 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { ROUTES } from "@/routes";
+import { MoonLoader } from "react-spinners";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -34,6 +35,7 @@ export const NewPasswordForm = () => {
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -42,18 +44,20 @@ export const NewPasswordForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      newPassword(values, token)
-        .then((data) => {
-            setError(data?.error);
-            setSuccess(data?.success);
-        })
+      newPassword(values, token).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+        if (data?.success) {
+          form.reset();
+        }
+      });
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Digite uma nova senha"
-      backButtonLabel="Voltar ao login"
+      headerLabel="Redefina sua senha"
+      backButtonLabel="Voltar para o login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
@@ -64,9 +68,32 @@ export const NewPasswordForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel>Nova senha</FormLabel>
                   <FormControl>
-                    <PasswordInput disabled={isPending} className="default-height" placeholder="********" {...field} />
+                    <PasswordInput
+                      disabled={isPending}
+                      className="default-height"
+                      placeholder="********"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirme a senha</FormLabel>
+                  <FormControl>
+                    <PasswordInput
+                      disabled={isPending}
+                      className="default-height"
+                      placeholder="********"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,8 +102,20 @@ export const NewPasswordForm = () => {
           </div>
           <MessageError message={error} />
           <MessageSuccess message={success} />
-          <Button disabled={isPending} type="submit" size={"sm"} className="w-full">
-            Redefinir senha
+          <Button
+            disabled={isPending}
+            type="submit"
+            size={"sm"}
+            className="w-full"
+          >
+            {isPending ? (
+              <span className="flex items-center gap-3">
+                <MoonLoader size={16} color="#ffffff" />
+                {"Alterando senha..."}
+              </span>
+            ) : (
+              "Continuar"
+            )}
           </Button>
         </form>
       </Form>

@@ -139,7 +139,7 @@ export const SettingForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha Atual</FormLabel>
+                  <FormLabel>Senha atual</FormLabel>
                   <FormControl>
                     <PasswordInput
                       disabled={isPending}
@@ -157,7 +157,7 @@ export const SettingForm = () => {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nova Senha</FormLabel>
+                  <FormLabel>Nova senha</FormLabel>
                   <FormControl>
                     <PasswordInput
                       disabled={isPending}

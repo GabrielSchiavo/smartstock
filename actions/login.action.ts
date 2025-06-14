@@ -27,7 +27,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return { error: "Credenciais inválidas!" };
   }
 
-  // Verificação de e-mail não confirmado
+  // Verificação de email não confirmado
   if (!existingUser.emailVerified) {
     try {
       const verificationToken = await generateVerificationToken(
@@ -40,10 +40,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         existingUser.name ?? ""
       );
 
-      return { success: "E-mail de confirmação enviado!" };
+      return { success: "Email de confirmação enviado!" };
     } catch (error) {
-      console.error("Erro ao enviar e-mail de confirmação:", error);
-      return { error: "Erro ao enviar e-mail de confirmação!" };
+      console.error("Erro ao enviar email de confirmação:", error);
+      return { error: "Erro ao enviar email de confirmação!" };
     }
   }
 

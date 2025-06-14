@@ -73,5 +73,5 @@ export const pageTitles: Record<string, string> = {
   [ROUTES.PAGE_REPORTS]: "Relatórios",
   [ROUTES.PAGE_SETTINGS]: "Configurações",
   [ROUTES.PAGE_STOCKS_FOOD]: "Estoque de Alimentos",
-  [ROUTES.PAGE_USERS]: "Usuários",
+  [ROUTES.PAGE_USERS]: "Gerenciar Usuários",
 };

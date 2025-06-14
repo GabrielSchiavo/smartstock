@@ -34,9 +34,9 @@ export const newVerification = async (token: string) => {
     // Limpeza do token utilizado
     await verificationTokenRepository.delete(existingToken.id);
 
-    return { success: "E-mail verificado com sucesso!" };
+    return { success: "Email verificado com sucesso!" };
   } catch (error) {
-    console.error("Erro durante a verificação de e-mail:", error);
-    return { error: "Ocorreu um erro ao verificar o e-mail. Por favor, tente novamente." };
+    console.error("Erro durante a verificação de email:", error);
+    return { error: "Ocorreu um erro ao verificar o email. Por favor, tente novamente." };
   }
 };

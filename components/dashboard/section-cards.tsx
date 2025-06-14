@@ -24,7 +24,7 @@ export async function SectionCards() {
   const donorsCount = donorsResponse.count;
 
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card  grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="bg-transparent!">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">

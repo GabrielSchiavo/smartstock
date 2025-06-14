@@ -45,12 +45,12 @@ export function NavSidebarTertiary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Registro de Usuários"}
+                tooltip={"Gerenciar Usuários"}
                 className={`${pathname === ROUTES.PAGE_USERS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
                 <Link href={ROUTES.PAGE_USERS}>
                   <UsersIcon />
-                  <span>Registro de Usuários</span>
+                  <span>Gerenciar Usuários</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

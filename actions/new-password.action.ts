@@ -52,9 +52,9 @@ export const newPassword = async (
     // Limpeza do token utilizado
     await passwordResetTokenRepository.delete(existingToken.id);
 
-    return { success: "Senha atualizada com sucesso!" };
+    return { success: "Senha alterada com sucesso!" };
   } catch (error) {
     console.error("Erro durante a redefinição de senha:", error);
-    return { error: "Ocorreu um erro ao atualizar a senha. Por favor, tente novamente." };
+    return { error: "Ocorreu um erro ao alterar a senha. Por favor, tente novamente." };
   }
 };

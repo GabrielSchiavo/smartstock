@@ -140,8 +140,8 @@ export function DataTableUsers<TData, TValue>({
               <TooltipContent>
                 <p>
                   {collapsedGroups.size === Object.keys(groupedData).length
-                    ? "Expandir todos"
-                    : "Recolher todos"}
+                    ? "Expandir Grupos"
+                    : "Recolher Grupos"}
                 </p>
               </TooltipContent>
             </Tooltip>

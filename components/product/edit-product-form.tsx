@@ -31,10 +31,11 @@ export const EditProductForm = ({
               quantity: productData.quantity?.toString() || "",
               unit: productData.unit as UnitType,
               unitWeight: productData.unitWeight?.toString() || "",
-              unitOfUnitWeight: productData.unitOfUnitWeight as
+              unitOfUnitWeight: (productData.unitOfUnitWeight as
                 | UnitType.KG
                 | UnitType.G
-                | UnitType.L,
+                | UnitType.L
+              ) || undefined,
               lot: productData.lot || "",
               validityDate: productData.validityDate || undefined,
               donor: productData.donor || undefined,

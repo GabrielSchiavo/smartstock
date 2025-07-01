@@ -18,62 +18,62 @@
 
 ## :hammer: Funcionalidades
 - **Login com RBAC:**
-  - `Login:` sistema de login com email e senha. 
+  - `Login:` Sistema de login com email e senha. 
   
-  - `Verificação de conta:` envio de email para verificação de conta. 
+  - `Verificação de conta:` Envio de email para verificação de conta. 
   
-  - `Recuperação de senha:` envio de email para recuperação de senha. 
+  - `Recuperação de senha:` Envio de email para recuperação de senha. 
   
-  - `Níveis de acesso:` diferentes tipos de usuários podem acessar recursos distintos:
-    - `Admin:` acesso a todos os recursos do sistema, incluindo controle e cadastro de novos usuários.
-    - `Padrão:` acesso a cadastro e geração de relatórios.
-    - `Cadastro:` acesso somente ao cadastro de produtos.
-    - `Geração:` acesso somente a geração e visualização de relatórios.
+  - `Níveis de acesso:` Diferentes tipos de usuários podem acessar recursos distintos:
+    - `Admin:` Acesso a todos os recursos do sistema, incluindo controle e cadastro de novos usuários.
+    - `Padrão:` Acesso a cadastro e geração de relatórios.
+    - `Cadastro:` Acesso somente ao cadastro de produtos.
+    - `Geração:` Acesso somente a geração e visualização de relatórios.
 
 - **Cadastro:**
-  - `Cadastro de produtos alimentícios:` cadastro simples de produtos com os seguintes dados: Lote; Data Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
+  - `Cadastro de produtos alimentícios:` Cadastro simples de produtos com os seguintes dados: Lote; Data de Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
   
-  - `Cadastro de Usuários:` cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
+  - `Cadastro de Usuários:` Cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
   
 - **Controle de Estoque:**
-  - `Edição:` edição completa de produtos cadastrados.
+  - `Edição:` Edição completa de produtos cadastrados.
   
-  - `Exclusão:` exclusão de produtos cadastrados.
+  - `Exclusão:` Exclusão de produtos cadastrados.
 
 - **Controle de Usuários:**
-    Somente o usuário administrador tem acesso ao Controle de Usuários
+    Somente o usuário administrador tem acesso ao Controle de Usuários.
 
-  - `Edição:` edição total de usuários, incluindo troca do nível de acesso.
+  - `Edição:` Edição total de usuários, incluindo troca do nível de acesso.
   
-  - `Exclusão:` exclusão de usuários antigos.
+  - `Exclusão:` Exclusão de usuários antigos.
   
 - **Geração de Relatórios:**
-  - `Visualização:` os relatórios ssão gerados dentro do sistema, onde é posível visualizar ou gerar novos.
+  - `Visualização:` Os relatórios são gerados dentro do sistema, onde é possível visualizar ou gerar novos.
   
-  - `Impressão:` todos os relatórios gerados podem ser exportados como PDF ou impressos.
+  - `Impressão:` Todos os relatórios gerados podem ser exportados como PDF ou impressos.
   
-  - `Tipos:` estre os principais tipos de relatórios estão:
+  - `Tipos:` Entre os principais tipos de relatórios estão:
     - Produtos por data de validade;
     - Produtos doados;
     - Produtos comprados;
-    - Inventário de todos os produtos cadastrados;
+    - Inventário de todos os produtos cadastrados.
 
 - **Alertas:**
-  - `Alertas simples:` alertas de produtos prestes a vencer e vencidos. O sistema verifica os alertas qunado o usuário abre o sistema e também verifica de forma automática a cada hora.
+  - `Alertas simples:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
   
-  - `Aviso:` qunado usuário abre o sistema pela primeira vez é disparado um aviso com o total de alertas não lidos e quando um novo alerta é encontrado também é    disparado um aviso para o usuário.
+  - `Aviso:` Quando o usuário abre o sistema pela primeira vez, é disparado um aviso com o total de alertas não lidos e, quando um novo alerta é encontrado, também é disparado um aviso para o usuário.
   
-  - `Lidos/Não Lidos:` organização de alertas em lidos e não lidos.
+  - `Lidos/Não Lidos:` Organização dos alertas em lidos e não lidos.
 
 - **Organização:**
-   - `Dashboard:` tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.
+   - `Dashboard:` Tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.
 
-   - `Pesquisa e filtros:` é posivel pesquisar ou filtrar por algum registro específico presente nas tabelas, facilitando a busca por registros específicos.
+   - `Pesquisa e filtros:` É possível pesquisar ou filtrar por algum registro específico presente nas tabelas, facilitando a busca por registros específicos.
   
-   - `Separação:` os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
+   - `Separação:` Os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
   
 - **Dispositivos Móveis:**
-   - `Otimização:` o sistema é totalmente otimizado para permitir uso em dispositivos móveis.
+   - `Otimização:` O sistema é totalmente otimizado para permitir uso em dispositivos móveis.
   
 
 ## :film_strip: Galeria
@@ -90,12 +90,12 @@ Você pode [acessar o código-fonte do projeto](https://github.com/GabrielSchiav
 ## 	:hammer_and_wrench: Abrir e rodar o projeto
 Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
-* Node.js >=22.15.0
+* Node.js >=22.17.0
 * PostgreSQL >=17.5
 
 `Configurando o projeto:`
 
-1. `Baixar e atualizar dependências:` Na raiz do projeto abra um terminal e execute:
+1. `Baixar e atualizar dependências:` Na raiz do projeto, abra um terminal e execute:
    
     - Pacotes JS:
       - Instala e atualiza pacotes para versão mais recente:
@@ -112,23 +112,23 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
 2. `Configurar .env:` Renomeie o arquivo `.env.example` para `.env`.
 
-3. `Configurar Banco de Dados:` configure a URL do Banco de Dados:
+3. `Configurar Banco de Dados:` Configure a URL do Banco de Dados:
    
-   - No arquivo `.env` na raiz do projeto altere as configurações da variável `DATABASE_URL` para as configurações do seu Banco de Dados.
+   - No arquivo `.env` na raiz do projeto, altere as configurações da variável `DATABASE_URL` para as configurações do seu Banco de Dados.
 
-4. `Gerar AUTH_SECRET:` abra um terminal na raiz do projeto e execute o comando a seguir para configurar o Auth.js:
+4. `Gerar AUTH_SECRET:` Abra um terminal na raiz do projeto e execute o comando a seguir para configurar o Auth.js:
    
-   - Gera um arquivo `.env.local` com a variável `AUTH_SECRET`, copie toda a variavel e susbtitua `AUTH_SECRET` no arquivo `.env`, após exclua o arquivo `.env.local`:
+   - Gera um arquivo `.env.local` com a variável `AUTH_SECRET`, copie toda a variável e substitua `AUTH_SECRET` no arquivo `.env`, após exclua o arquivo `.env.local`:
   
         ```bash
         npx auth secret
         ```
 
-4. `URL Base do sistema:` configure a url base do sistema:
+4. `URL Base do sistema:` Configure a URL base do sistema:
    
-   - No arquivo `.env` altere a variável `BASE_URL` caso use uma URL personalizada. Caso deixe a variável em branco, será usado por padrão esta URL: "http://localhost:3000".
+   - No arquivo `.env` altere a variável `BASE_URL` caso use uma URL personalizada. Caso deixe a variável em branco, será usada por padrão esta URL: "http://localhost:3000".
 
-5. `Configura o Prisma Client:` na raiz do projeto e execute os comandos a seguir. Sempre que alterar o arquivo `schema.prisma` execute novamente estes comandos:
+5. `Configura o Prisma Client:` Na raiz do projeto e execute os comandos a seguir. Sempre que alterar o arquivo `schema.prisma` execute novamente estes comandos:
 
    - Analisa o arquivo `schema.prisma` e gera o Prisma Client:
   
@@ -142,9 +142,9 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
         npx prisma db push
         ```
 
-6. `Configurar geração e envio de email:` para o envio de email é necessário configurar:
+6. `Configurar geração e envio de email:` Para o envio de email, é necessário configurar:
    
-   - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para criar uma conta e gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`. Agora com estas credenciais é possivel acessar sua conta Ethereal.
+   - Para `DESENVOLVIMENTO`: acesse `https://ethereal.email/create` para criar uma conta e gerar as credenciais de teste, altere as variáveis `ETHEREAL_USERNAME` e `ETHEREAL_PASSWORD` no arquivo `.env`. Agora com estas credenciais é possível acessar sua conta Ethereal.
   
    - Para `PRODUÇÃO`: 
   
@@ -157,25 +157,26 @@ Após baixar o projeto, deve verificar se possui os seguintes requisitos:
 
      - Se MAIL_FROM não for definida, o remetente padrão será o usuário SMTP configurado (valor de GMAIL_SMTP_USER ou ETHEREAL_USERNAME).
 
-7. `TypeScript Type Check:` executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
+7. `TypeScript Type Check:` Executa um script de verificação de tipo para verificar a segurança do tipo sem compilar o código:
 
     ```bash
     npm run type-check 
     ```
 
-8. `Inicializar:` Para inicializar o projeto execute o comando a seguir:
+8. `Inicializar:` Para inicializar o projeto, execute o comando a seguir:
+   
     ```bash
     npm run dev
     ```
 
 ## :white_check_mark: Tecnologias utilizadas
 * `TypeScript`
-* `Node.js - 22.15.0`
-* `React.js - 19.0.1`
+* `Node.js - 22.17.0`
+* `React.js - 19.1.0`
 * `Next.js - 15.3.3`
 * `PostgreSQL - 17.5`
 * `Prisma - 6.9.0`
 * `Auth.js - 5.0.0`
 * `Nodemailer - 6.10.1`
-* `Tailwind CSS - 4.0`
+* `Tailwind CSS - 4.1.10`
 * `shadcn/ui`

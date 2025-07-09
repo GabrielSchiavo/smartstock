@@ -181,7 +181,7 @@ export abstract class BasePdfGenerator {
               minimumFractionDigits: 2,
               maximumFractionDigits: 3,
             }
-          )} ${UnitType.G}`
+          )} ${UnitType.KG}`
         );
       if (hasLiters)
         parts.push(

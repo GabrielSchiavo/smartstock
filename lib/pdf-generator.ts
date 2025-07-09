@@ -78,8 +78,6 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    this.currentY += 10;
-
     // Group data by donor
     const donorsMap = new Map<string, DonationsReportResponse[]>();
     this.data.forEach((item) => {
@@ -244,6 +242,12 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
       `Data de geração: ${this.formatDate(new Date().toISOString())}`
     );
 
+    // Group data by group
+    const groupsMap = this.groupByGroup(this.data);
+    const sortedGroups = Array.from(groupsMap.entries()).sort((a, b) =>
+      a[0].localeCompare(b[0])
+    );
+
     const headers = [
       "ID",
       "Produto",
@@ -256,12 +260,6 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
       "Status",
     ];
     const columnWidths = [10, 100, 20, 20, 30, 30, 20, 30, 20];
-
-    // Group and sort items
-    const groupsMap = this.groupByGroup(this.data);
-    const sortedGroups = Array.from(groupsMap.entries()).sort((a, b) =>
-      a[0].localeCompare(b[0])
-    );
 
     const grandTotals = { weight: 0, volume: 0, units: 0 };
 

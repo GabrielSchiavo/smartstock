@@ -133,7 +133,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 
    - Executa as migrations no Banco de Dados:
       ```bash
-        prisma migrate deploy
+        npx prisma migrate deploy
       ```
 
 6. `Configurar geração e envio de email:`
@@ -162,6 +162,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 - `npm run start` - Inicia o servidor em modo de produção
 - `npm run lint` - Executa o linter ESLint
 - `npm run type-check` - Executa a verificação de tipos TypeScript em modo watch
+- `npx prisma generate` - Gera o Prisma Client
 - `npx prisma migrate deploy` - Executa as migrations já criadas ou as pendentes
 - `npx prisma migrate dev` - Cria e executa uma nova migration
 - `npx prisma migrate status` - Verifica quais migrations foram aplicadas no banco atual

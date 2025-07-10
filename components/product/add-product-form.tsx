@@ -3,7 +3,7 @@
 import { useRef, useTransition } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
 import { registerProduct } from "@/actions";
-import { AddEditFormProps, ToastType } from "@/types";
+import { AddEditFormProps, ProductType, ToastType, UnitType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
@@ -15,13 +15,23 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
     useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
-
     await startTransition(async () => {
       try {
         const response = await registerProduct(values);
-        
+
         if (response.success === true) {
           formRef.current?.reset();
+
+          // Reseta especificamente campos desabilitados
+          if (values.productType !== ProductType.DONATED) {
+            formRef.current?.setValue("donor", undefined);
+          }
+
+          if (values.unit !== UnitType.UN) {
+            formRef.current?.setValue("unitWeight", undefined);
+            formRef.current?.setValue("unitOfUnitWeight", undefined);
+          }
+
           onShouldInvalidate?.(true);
         }
 

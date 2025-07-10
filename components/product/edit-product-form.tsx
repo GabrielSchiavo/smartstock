@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useRef } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
 import { editProduct, getProductById } from "@/actions";
 import { AddEditFormProps, ProductType, ToastType, UnitType } from "@/types";
@@ -9,6 +9,7 @@ import { MoonLoader } from "react-spinners";
 import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
+import { UseFormReturn } from "react-hook-form";
 
 export const EditProductForm = ({
   rowItemId,
@@ -19,6 +20,8 @@ export const EditProductForm = ({
   const [initialValues, setInitialValues] = useState<z.infer<
     typeof CreateEditProductSchema
   > | null>(null);
+  const formRef =
+    useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -27,24 +30,24 @@ export const EditProductForm = ({
         if (productData) {
           if (productData) {
             setInitialValues({
-              name: productData.name || "",
-              quantity: productData.quantity?.toString() || "",
+              name: productData.name,
+              quantity: productData.quantity?.toString(),
               unit: productData.unit as UnitType,
               unitWeight: productData.unitWeight?.toString() || "",
-              unitOfUnitWeight: (productData.unitOfUnitWeight as
-                | UnitType.KG
-                | UnitType.G
-                | UnitType.L
-              ) || undefined,
-              lot: productData.lot || "",
-              validityDate: productData.validityDate || undefined,
+              unitOfUnitWeight:
+                (productData.unitOfUnitWeight as
+                  | UnitType.KG
+                  | UnitType.G
+                  | UnitType.L | undefined),
+              lot: productData.lot,
+              validityDate: productData.validityDate,
               donor: productData.donor || undefined,
-              receiptDate: productData.receiptDate || undefined,
-              receiver: productData.receiver || "",
-              group: productData.group || "",
+              receiptDate: productData.receiptDate,
+              receiver: productData.receiver,
+              group: productData.group,
               subgroup: productData.subgroup || undefined,
               productType:
-                (productData.productType as ProductType) || undefined,
+                (productData.productType as ProductType),
             });
           }
         }
@@ -69,8 +72,18 @@ export const EditProductForm = ({
         const response = await editProduct(rowItemId as number, values);
 
         if (response.success === true) {
-          onShouldInvalidate?.(true);
+        // Limpeza condicional após o reset completo
+        if (values.productType !== ProductType.DONATED) {
+          formRef.current?.setValue("donor", undefined);
         }
+
+        if (values.unit !== UnitType.UN) {
+          formRef.current?.setValue("unitWeight", undefined);
+          formRef.current?.setValue("unitOfUnitWeight", undefined);
+        }
+
+        onShouldInvalidate?.(true);
+      }
 
         showToast({
           title: response.title,
@@ -98,12 +111,15 @@ export const EditProductForm = ({
   }
 
   if (!initialValues) {
-    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
+    return (
+      <MessageError message="Registro não encontrado ou erro ao carregar dados." />
+    );
   }
 
   return (
     <div className="flex flex-col gap-4">
       <BaseProductForm
+        ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}
         isPending={isPending}

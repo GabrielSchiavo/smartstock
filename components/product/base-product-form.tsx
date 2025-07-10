@@ -31,7 +31,12 @@ import { DynamicComboboxGroup } from "@/components/product/dynamic-combobox-grou
 import { DynamicComboboxSubgroup } from "@/components/product/dynamic-combobox-subgroup";
 import { DynamicComboboxDonor } from "@/components/product/dynamic-combobox-donor";
 import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-receiver";
-import { BaseProductFormProps, LocaleType, ProductType, UnitType } from "@/types";
+import {
+  BaseProductFormProps,
+  LocaleType,
+  ProductType,
+  UnitType,
+} from "@/types";
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 
@@ -71,10 +76,7 @@ export const BaseProductForm = forwardRef<
     useImperativeHandle(ref, () => form, [form]);
 
     const selectedType = form.watch("productType");
-    const detailsValue = form.watch("donor");
     const unitSelected = form.watch("unit");
-    const unitWeightValue = form.watch("unitWeight");
-    const unitOfUnitWeightValue = form.watch("unitOfUnitWeight");
 
     // Determina se o input deve estar desabilitado
     const isDetailsDisabled =
@@ -83,17 +85,17 @@ export const BaseProductForm = forwardRef<
 
     // Efeitos para limpar valores quando campos são desabilitados
     useEffect(() => {
-      if (isDetailsDisabled && detailsValue) {
+      if (isDetailsDisabled) {
         form.setValue("donor", undefined, { shouldValidate: true });
       }
-    }, [isDetailsDisabled, detailsValue, form]);
+    }, [isDetailsDisabled, form]);
 
     useEffect(() => {
-      if (isUnitWeightDisabled && [unitWeightValue, unitOfUnitWeightValue]) {
+      if (isUnitWeightDisabled) {
         form.setValue("unitWeight", undefined, { shouldValidate: true });
         form.setValue("unitOfUnitWeight", undefined, { shouldValidate: true });
       }
-    }, [isUnitWeightDisabled, unitWeightValue, unitOfUnitWeightValue, form]);
+    }, [isUnitWeightDisabled, form]);
 
     return (
       <Form {...form}>
@@ -258,7 +260,11 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Data de Validade</FormLabel>
                     <FormControl>
-                      <DatePickerMonthYear field={field} locale={ptBR} dateFormat={LocaleType.DD_MM_YYYY} />
+                      <DatePickerMonthYear
+                        field={field}
+                        locale={ptBR}
+                        dateFormat={LocaleType.DD_MM_YYYY}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -293,7 +299,11 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Data de Recebimento</FormLabel>
                     <FormControl>
-                      <DatePickerMonthYear field={field} locale={ptBR} dateFormat={LocaleType.DD_MM_YYYY} />
+                      <DatePickerMonthYear
+                        field={field}
+                        locale={ptBR}
+                        dateFormat={LocaleType.DD_MM_YYYY}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

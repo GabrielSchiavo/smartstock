@@ -69,7 +69,7 @@ export const CreateEditProductSchema = z
   .refine(
     (data) => !(data.productType === ProductType.DONATED && !data.donor),
     {
-      message: "Detalhes são obrigatórios para itens doados.",
+      message: "Doador é obrigatórios para itens doados.",
       path: ["donor"],
     }
   )

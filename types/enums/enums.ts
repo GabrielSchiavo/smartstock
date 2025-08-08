@@ -62,3 +62,9 @@ export enum ToastType {
   INFO = "info",
   WARNING = "warning",
 }
+
+export enum ProductCountType {
+  ALL = "all",
+  EXPIRED = "expired",
+  ABOUT_TO_EXPIRE = "aboutToExpire",
+}

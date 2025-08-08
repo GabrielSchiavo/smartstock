@@ -5,15 +5,15 @@ export type ProductResponse = {
   name: string;
   quantity: number;
   unit: UnitType;
-  unitWeight?: number;
-  unitOfUnitWeight?: UnitType;
+  unitWeight?: number | null;
+  unitOfUnitWeight?: UnitType | null;
   lot: string;
   validityDate: Date;
-  donor?: string;
+  donor?: string | null;
   receiptDate: Date;
   receiver: string;
   group: string;
-  subgroup?: string;
+  subgroup?: string | null;
   productType: ProductType;
 };
 

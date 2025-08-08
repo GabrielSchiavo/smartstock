@@ -5,7 +5,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { productRepository } from "@/db";
 import type { Product } from "@prisma/client";
-import { ProductOperationResponse } from "@/types";
+import { ProductCountType, ProductOperationResponse } from "@/types";
 
 export const registerProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
@@ -136,9 +136,10 @@ export const getProducts = async (): Promise<Product[]> => {
   }
 };
 
-export async function getProductsCount() {
+export async function getProductsCount(type: ProductCountType = ProductCountType.ALL) {
   try {
-    const count = await productRepository.count();
+    const count = await productRepository.countProducts(type);
+
     return {
       success: true,
       title: "Sucesso!",
@@ -146,7 +147,8 @@ export async function getProductsCount() {
       count
     };
   } catch (error) {
-    console.error("Erro ao contar produtos:", error);
+    console.error(`Erro ao contar produtos (${type}):`, error);
+
     return {
       success: false,
       title: "Erro!",
@@ -164,25 +166,6 @@ export const getExpiredProducts = async (): Promise<Product[]> => {
   }
 };
 
-export async function getExpiredProductsCount() {
-  try {
-    const count = await productRepository.countExpired();
-    return {
-      success: true,
-      title: "Sucesso!",
-      description: "Contagem bem-sucedida.",
-      count
-    };
-  } catch (error) {
-    console.error("Erro ao contar produtos expirados:", error);
-    return {
-      success: false,
-      title: "Erro!",
-      description: "Erro na contagem.",
-    };
-  }
-}
-
 export const getProductsToExpire = async (): Promise<Product[]> => {
   try {
     return await productRepository.findAboutToExpire();
@@ -192,21 +175,3 @@ export const getProductsToExpire = async (): Promise<Product[]> => {
   }
 };
 
-export async function getProductsToExpireCount() {
-  try {
-    const count = await productRepository.countAboutToExpire();
-    return {
-      success: true,
-      title: "Sucesso!",
-      description: "Contagem bem-sucedida.",
-      count
-    };
-  } catch (error) {
-    console.error("Erro ao contar produtos próximos a expirar:", error);
-    return {
-      success: false,
-      title: "Erro!",
-      description: "Erro na contagem.",
-    };
-  }
-}

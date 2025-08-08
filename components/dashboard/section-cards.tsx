@@ -1,8 +1,4 @@
-import { getDonorsCount, getExpiredProductsCount } from "@/actions";
-import {
-  getProductsCount,
-  getProductsToExpireCount,
-} from "@/actions";
+import { getDonorsCount, getProductsCount } from "@/actions";
 import {
   Card,
   CardContent,
@@ -10,18 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ProductCountType } from "@/types";
 import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, HandHeartIcon } from "lucide-react";
 
 export async function SectionCards() {
-  const productsResponse = await getProductsCount();
-  const productsToExpireResponse = await getProductsToExpireCount();
-  const productsExpiredResponse = await getExpiredProductsCount();
-  const donorsResponse = await getDonorsCount();
-
-  const productsCount = productsResponse.count;
-  const productsToExpireCount = productsToExpireResponse.count;
-  const productsExpiredCount = productsExpiredResponse.count;
-  const donorsCount = donorsResponse.count;
+  const productsCount = (await getProductsCount()).count;
+  const productsToExpireCount = (await getProductsCount(ProductCountType.ABOUT_TO_EXPIRE)).count;
+  const productsExpiredCount = (await getProductsCount(ProductCountType.EXPIRED)).count;
+  const donorsCount = (await getDonorsCount()).count;
 
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">

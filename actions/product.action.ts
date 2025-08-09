@@ -147,7 +147,7 @@ export async function getProductsCount(type: ProductCountType = ProductCountType
       count
     };
   } catch (error) {
-    console.error(`Erro ao contar produtos (${type}):`, error);
+    console.error("Erro ao contar produtos (%s):", type, error);
 
     return {
       success: false,

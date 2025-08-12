@@ -38,7 +38,7 @@ export const ResetPasswordEmailTemplate = ({
                     <tr>
                       <td>
                         <Img
-                          alt="Smartstock image"
+                          alt="SmartStock image"
                           height="60"
                           src={urlImage}
                         />
@@ -82,7 +82,7 @@ export const ResetPasswordEmailTemplate = ({
               <tr className="w-full">
                 <td align="center">
                   <Img
-                    alt="Smartstock image"
+                    alt="SmartStock image"
                     height="42"
                     src={urlImage}
                   />

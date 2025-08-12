@@ -5,8 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { Product } from "@prisma/client";
 import { ColumnMetaProps, LocaleType, ProductType } from "@/types";
-import { DataTableDropdownProduct } from "@/components/tables/_components/data-table-dropdown-product";
 import { formatDateToLocale } from "@/lib/date-utils";
+import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
+import { EditProductForm } from "@/components/product/edit-product-form";
+import { deleteProduct } from "@/actions";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
@@ -21,21 +23,25 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -146,7 +152,8 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
 
       const dateString = formatDateToLocale(validityDate);
 
-      if (diffDays <= 0) {  // Incluindo o dia atual
+      if (diffDays <= 0) {
+        // Incluindo o dia atual
         // Data passada
         return (
           <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
@@ -274,7 +281,14 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return <DataTableDropdownProduct rowItemId={row.original.id} />;
+      return (
+        <DataTableDropdown
+          entity="Alimento"
+          rowItemId={row.original.id as number}
+          formComponent={EditProductForm}
+          deleteAction={deleteProduct}
+        />
+      );
     },
   },
 ];

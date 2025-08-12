@@ -39,3 +39,9 @@ export type ComboboxApiParams<T = OptionProps> = {
 export type SmtpTransporter = Transporter<SMTPTransport.SentMessageInfo> & {
   transporter: SMTPTransport;
 };
+
+export type DeleteActionResponse = {
+  success: boolean;
+  title: string;
+  description: string;
+};

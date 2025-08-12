@@ -68,3 +68,20 @@ export enum ProductCountType {
   EXPIRED = "expired",
   ABOUT_TO_EXPIRE = "aboutToExpire",
 }
+
+export enum ResourceType {
+  DONOR = "donor",
+  GROUP = "group",
+  RECEIVER = "receiver",
+  SUBGROUP = "subgroup",
+}
+
+export enum ModeType {
+  ADD = "add",
+  EDIT = "edit",
+}
+
+export enum BaseDataType {
+  USER = "user",
+  PRODUCT = "product",
+}

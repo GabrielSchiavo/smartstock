@@ -229,8 +229,8 @@ export abstract class BasePdfGenerator {
     this.doc.setFontSize(8);
     this.doc.setTextColor(100, 100, 100); // Gray
 
-    // "Smartstock" text centered at the top
-    this.doc.text("Smartstock", pageWidth / 2, topFooterY, { align: "center" });
+    // "SmartStock" text centered at the top
+    this.doc.text('SmartStock', pageWidth / 2, topFooterY, { align: "center" });
   }
 
   protected addFooter(): void {

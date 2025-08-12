@@ -15,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MoonLoader } from "react-spinners";
-import { BaseComboboxProps } from "@/types";
+import { BaseDynamicComboboxProps } from "@/types";
 
-export function BaseCombobox({
+export function BaseDynamicCombobox({
   value,
   placeholder = "Pesquisar...",
   displayValue,
@@ -35,7 +35,7 @@ export function BaseCombobox({
   handleDelete,
   className,
   resourceName,
-}: BaseComboboxProps) {
+}: BaseDynamicComboboxProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="truncate">

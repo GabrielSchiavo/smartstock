@@ -1,14 +1,7 @@
 import React from "react";
 import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
 import Image from "next/image";
-
-interface LogoWithTextProps {
-  imageSize?: string;
-  textSize?: string;
-  containerClasses?: string;
-  containerImageClasses?: string;
-  containerTextClasses?: string;
-}
+import { LogoWithTextProps } from "@/types";
 
 export const LogoWithText = ({
   imageSize = "size-12",

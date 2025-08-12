@@ -2,29 +2,20 @@
 
 import * as React from "react";
 import {
+  ColumnDef,
   ColumnFiltersState,
+  Row,
   SortingState,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
 import {
-  ChevronDownIcon,
-  ChevronUpIcon,
   Maximize2Icon,
   Minimize2Icon,
 } from "lucide-react";
@@ -38,6 +29,7 @@ import {
 import { DataTableProps } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
+import { BaseDataTable } from "./base-data-table";
 
 export function DataTableProducts<TData, TValue>({
   columns,
@@ -75,14 +67,8 @@ export function DataTableProducts<TData, TValue>({
     },
   });
 
-  const rowModel = table.getRowModel();
-
   // Agrupa os dados se groupBy for especificado
-  const {
-    groupedData,
-    toggleGroup,
-    toggleAllGroups,
-  } = useGroupedTable({
+  const { groupedData, toggleGroup, toggleAllGroups } = useGroupedTable({
     table,
     groupBy,
     collapsedGroups,
@@ -128,146 +114,21 @@ export function DataTableProducts<TData, TValue>({
       </div>
 
       <div className="rounded-xl border overflow-hidden">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="text-center!">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-center!">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {rowModel.rows?.length ? (
-              groupBy && groupedData ? (
-                // Render grouped rows with toggle functionality
-                Object.entries(groupedData).map(([groupName, groupRows]) => {
-                  const isCollapsed = collapsedGroups.has(groupName);
-
-                  // Calcula o total para tabela com agrupamento
-                  const totalToShow = getTotalValuesDisplayForData(
-                    groupRows.map((row) => row.original)
-                  );
-
-                  return (
-                    <React.Fragment key={groupName}>
-                      <TableRow
-                        className={`cursor-pointer ${
-                          isCollapsed
-                            ? "bg-transparent hover:bg-accent/45"
-                            : "bg-accent/45"
-                        }`}
-                        onClick={() => toggleGroup(groupName)}
-                        aria-expanded={!isCollapsed}
-                      >
-                        <TableCell
-                          colSpan={columns.length}
-                          className="font-semibold"
-                        >
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-2">
-                                {isCollapsed ? (
-                                  <ChevronDownIcon className="h-4 w-4" />
-                                ) : (
-                                  <ChevronUpIcon className="h-4 w-4" />
-                                )}
-                                <span className="truncate max-w-[200px]">
-                                  {groupName}
-                                </span>
-                              </div>
-                              <span className="flex items-center font-normal text-muted-foreground gap-2">
-                                Total:
-                                <span className="font-medium">
-                                  {totalToShow}
-                                </span>
-                              </span>
-                            </div>
-                            <span className="font-normal text-muted-foreground italic">
-                              {groupRows.length}{" "}
-                              {groupRows.length === 1 ? "item" : "itens"}
-                            </span>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                      {!isCollapsed &&
-                        groupRows.map((row) => (
-                          <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
-                            className="text-center"
-                          >
-                            {row.getVisibleCells().map((cell) => (
-                              <TableCell key={cell.id}>
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                                )}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        ))}
-                    </React.Fragment>
-                  );
-                })
-              ) : (
-                // Render normal rows
-                rowModel.rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-center"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              )
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Nenhum resultado.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-
-          {
-            <tfoot>
-              <TableRow className="bg-accent/50 font-normal w-full">
-                <TableCell
-                  colSpan={columns.length}
-                  className="text-center font-medium px-8"
-                >
-                  <div className="flex items-center justify-start gap-2">
-                    TOTAL FINAL:
-                    {/* Calcula total para tabelas sem agrupamento */}
-                    <span>{getTotalValuesDisplayForData(data)}</span>
-                  </div>
-                </TableCell>
-              </TableRow>
-            </tfoot>
+        <BaseDataTable
+          table={table}
+          columns={columns as ColumnDef<TData>[]}
+          groupedData={groupedData as Record<string, Row<TData>[]>}
+          collapsedGroups={collapsedGroups}
+          toggleGroup={toggleGroup}
+          showGroupTotal={true}
+          showFooter={true}
+          footerContent={
+            <div className="flex items-center justify-start gap-2">
+              TOTAL FINAL:
+              <span>{getTotalValuesDisplayForData(data)}</span>
+            </div>
           }
-        </Table>
+        />
       </div>
       <DataTablePagination table={table} />
     </div>

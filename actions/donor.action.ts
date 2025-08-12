@@ -9,7 +9,7 @@ import type {
   DonorCountResponse,
 } from "@/types";
 
-export async function getAllDonors(): Promise<DonorResponse> {
+export async function getAllDonor(): Promise<DonorResponse> {
   try {
     const donors = await donorRepository.findAll();
 
@@ -47,7 +47,7 @@ export async function getDonorsCount(): Promise<DonorCountResponse> {
   }
 }
 
-export async function searchDonors(query: string): Promise<DonorResponse> {
+export async function searchDonor(query: string): Promise<DonorResponse> {
   if (!query) return { success: true, data: [] };
 
   try {
@@ -135,12 +135,12 @@ export async function deleteDonor(id: string): Promise<DonorResponse> {
   }
 }
 
-export async function checkDonorInProducts(
+export async function checkDonorUsage(
   donorName: string
 ): Promise<CheckDonorResponse> {
   try {
     const productWithDonor =
-      await donorRepository.checkDonorInProducts(donorName);
+      await donorRepository.checkDonorUsage(donorName);
 
     return {
       isUsed: !!productWithDonor,

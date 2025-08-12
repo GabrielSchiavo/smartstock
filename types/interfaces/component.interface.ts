@@ -23,7 +23,7 @@ export interface MessageProps {
   className?: string;
 }
 
-export interface BaseComboboxProps {
+export interface BaseDynamicComboboxProps {
   value: string;
   placeholder?: string;
   displayValue: string;
@@ -60,4 +60,12 @@ export interface ToastProps {
   title: string;
   description?: string;
   type: ToastType;
+}
+
+export interface LogoWithTextProps {
+  imageSize?: string;
+  textSize?: string;
+  containerClasses?: string;
+  containerImageClasses?: string;
+  containerTextClasses?: string;
 }

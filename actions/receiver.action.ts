@@ -9,7 +9,7 @@ import {
   ReceiverResponse,
 } from "@/types";
 
-export const getAllReceivers = async (): Promise<ReceiverResponse> => {
+export const getAllReceiver = async (): Promise<ReceiverResponse> => {
   try {
     const receivers = await receiverRepository.findAll();
     return {
@@ -28,7 +28,7 @@ export const getAllReceivers = async (): Promise<ReceiverResponse> => {
   }
 };
 
-export const searchReceivers = async (
+export const searchReceiver = async (
   query: string
 ): Promise<ReceiverResponse> => {
   if (!query) return { success: true, data: [] };

@@ -9,7 +9,7 @@ import type {
 import { groupRepository } from "@/db";
 
 // Implementações
-export async function getAllGroups(): Promise<GroupResponse> {
+export async function getAllGroup(): Promise<GroupResponse> {
   try {
     const groups = await groupRepository.findAll();
     return {
@@ -28,7 +28,7 @@ export async function getAllGroups(): Promise<GroupResponse> {
   }
 }
 
-export async function searchGroups(query: string): Promise<GroupResponse> {
+export async function searchGroup(query: string): Promise<GroupResponse> {
   if (!query.trim()) return { success: true, data: [] };
 
   try {
@@ -108,7 +108,7 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
   }
 }
 
-export async function checkGroupInProducts(
+export async function checkGroupUsage(
   groupName: string
 ): Promise<CheckGroupResponse> {
   try {

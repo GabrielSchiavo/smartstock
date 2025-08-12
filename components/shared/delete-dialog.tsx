@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteUser } from "@/actions";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -13,15 +12,16 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AddEditFormProps, ToastType } from "@/types";
+import { DeleteRegisterProps, ToastType } from "@/types";
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { showToast } from "@/components/utils/show-toast";
 
-export default function DeleteUserDialog({
+export default function DeleteDialog<T extends string | number>({
   rowItemId,
+  deleteAction,
   onOpenChange,
-}: AddEditFormProps) {
+}: DeleteRegisterProps<T>) {
   const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {
@@ -34,7 +34,7 @@ export default function DeleteUserDialog({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await deleteUser(rowItemId as string);
+      const response = await deleteAction!(rowItemId!);
 
       if (response.success === true) {
         setOpen(false);
@@ -76,16 +76,15 @@ export default function DeleteUserDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
-            registro.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o cadastro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
-            <AlertDialogCancel title="Cancel">Cancelar</AlertDialogCancel>
+            <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-700 hover:bg-destructive"
-              title="Confirm Delete"
+              title="Confirmar Exclusão"
               type="submit"
             >
               Excluir

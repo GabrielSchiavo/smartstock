@@ -72,15 +72,15 @@ export const ReportsFormAndResultView = () => {
   const finalDateValue = form.watch("finalDate");
 
   // Determina se o input deve estar desabilitado
-  const isDetailsDisabled = selectedType === ReportType.INVENTORY;
+  const isDateRangeDisabled = selectedType === ReportType.INVENTORY;
 
   // Efeito para limpar o valor quando o campo é desabilitado
   useEffect(() => {
-    if (isDetailsDisabled && initialDateValue && finalDateValue) {
+    if (isDateRangeDisabled && initialDateValue && finalDateValue) {
       form.setValue("initialDate", undefined, { shouldValidate: true });
       form.setValue("finalDate", undefined, { shouldValidate: true });
     }
-  }, [isDetailsDisabled, initialDateValue, finalDateValue, form]);
+  }, [isDateRangeDisabled, initialDateValue, finalDateValue, form]);
 
   const watchRadioGroup = form.watch("reportType");
 
@@ -210,7 +210,7 @@ export const ReportsFormAndResultView = () => {
                       <FormLabel>Data Inicial</FormLabel>
                       <FormControl>
                         <DatePickerMonthYear
-                          disabled={isDetailsDisabled}
+                          disabled={isDateRangeDisabled}
                           field={field}
                           locale={ptBR}
                           dateFormat={LocaleType.DD_MM_YYYY}
@@ -228,7 +228,7 @@ export const ReportsFormAndResultView = () => {
                       <FormLabel>Data Final</FormLabel>
                       <FormControl>
                         <DatePickerMonthYear
-                          disabled={isDetailsDisabled}
+                          disabled={isDateRangeDisabled}
                           field={field}
                           locale={ptBR}
                           dateFormat={LocaleType.DD_MM_YYYY}

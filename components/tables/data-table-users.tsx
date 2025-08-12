@@ -5,25 +5,20 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   Row,
+  ColumnDef,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import { ChevronDownIcon, ChevronUpIcon, Maximize2Icon, Minimize2Icon } from "lucide-react";
+import {
+  Maximize2Icon,
+  Minimize2Icon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -32,6 +27,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DataTableProps } from "@/types";
+import { BaseDataTable } from "./base-data-table";
 
 export function DataTableUsers<TData, TValue>({
   columns,
@@ -150,113 +146,15 @@ export function DataTableUsers<TData, TValue>({
       </div>
 
       <div className="rounded-xl border overflow-hidden">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="text-center!">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-center!">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {rowModel.rows?.length ? (
-              groupBy && groupedData ? (
-                // Render grouped rows with toggle functionality
-                Object.entries(groupedData).map(([groupName, groupRows]) => {
-                  const isCollapsed = collapsedGroups.has(groupName);
-                  return (
-                    <React.Fragment key={groupName}>
-                      <TableRow
-                        className={`cursor-pointer ${
-                          isCollapsed
-                            ? "bg-transparent hover:bg-accent/45"
-                            : "bg-accent/45"
-                        }`}
-                        onClick={() => toggleGroup(groupName)}
-                        aria-expanded={!isCollapsed}
-                      >
-                        <TableCell
-                          colSpan={columns.length}
-                          className="font-semibold"
-                        >
-                          <div className="flex items-center gap-2">
-                            {isCollapsed ? (
-                              <ChevronDownIcon className="h-4 w-4" />
-                            ) : (
-                              <ChevronUpIcon className="h-4 w-4" />
-                            )}
-                            <span className="truncate max-w-[200px]">
-                              {groupName}
-                            </span>
-                            <span className="font-normal text-muted-foreground italic">
-                              ({groupRows.length}{" "}
-                              {groupRows.length === 1 ? "item" : "itens"})
-                            </span>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                      {!isCollapsed &&
-                        groupRows.map((row) => (
-                          <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
-                            className="text-center"
-                          >
-                            {row.getVisibleCells().map((cell) => (
-                              <TableCell key={cell.id}>
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                                )}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        ))}
-                    </React.Fragment>
-                  );
-                })
-              ) : (
-                // Render normal rows
-                rowModel.rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-center"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              )
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  Nenhum resultado.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <BaseDataTable
+          table={table}
+          columns={columns as ColumnDef<TData>[]}
+          groupedData={groupedData as Record<string, Row<TData>[]>}
+          collapsedGroups={collapsedGroups}
+          toggleGroup={toggleGroup}
+          showGroupTotal={false}
+          showFooter={false}
+        />
       </div>
       <DataTablePagination table={table} />
     </div>

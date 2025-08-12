@@ -14,6 +14,7 @@ import { UseFormReturn } from "react-hook-form";
 export const EditProductForm = ({
   rowItemId,
   onShouldInvalidate,
+  onCancel,
 }: AddEditFormProps) => {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
@@ -34,11 +35,11 @@ export const EditProductForm = ({
               quantity: productData.quantity?.toString(),
               unit: productData.unit as UnitType,
               unitWeight: productData.unitWeight?.toString() || "",
-              unitOfUnitWeight:
-                (productData.unitOfUnitWeight as
-                  | UnitType.KG
-                  | UnitType.G
-                  | UnitType.L | undefined),
+              unitOfUnitWeight: productData.unitOfUnitWeight as
+                | UnitType.KG
+                | UnitType.G
+                | UnitType.L
+                | undefined,
               lot: productData.lot,
               validityDate: productData.validityDate,
               donor: productData.donor || undefined,
@@ -46,8 +47,7 @@ export const EditProductForm = ({
               receiver: productData.receiver,
               group: productData.group,
               subgroup: productData.subgroup || undefined,
-              productType:
-                (productData.productType as ProductType),
+              productType: productData.productType as ProductType,
             });
           }
         }
@@ -72,18 +72,8 @@ export const EditProductForm = ({
         const response = await editProduct(rowItemId as number, values);
 
         if (response.success === true) {
-        // Limpeza condicional após o reset completo
-        if (values.productType !== ProductType.DONATED) {
-          formRef.current?.setValue("donor", undefined);
+          onShouldInvalidate?.(true);
         }
-
-        if (values.unit !== UnitType.UN) {
-          formRef.current?.setValue("unitWeight", undefined);
-          formRef.current?.setValue("unitOfUnitWeight", undefined);
-        }
-
-        onShouldInvalidate?.(true);
-      }
 
         showToast({
           title: response.title,
@@ -122,9 +112,10 @@ export const EditProductForm = ({
         ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}
+        onCancel={onCancel}
         isPending={isPending}
-        submitButtonLabel="Atualizar Produto"
-        loadingButtonLabel="Atualizando..."
+        submitButtonText="Salvar"
+        loadingText="Atualizando..."
       />
     </div>
   );

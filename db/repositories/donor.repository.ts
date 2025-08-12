@@ -48,7 +48,7 @@ export const donorRepository = {
     });
   },
 
-  async checkDonorInProducts(donorName: string) {
+  async checkDonorUsage(donorName: string) {
     return await db.product.findFirst({
       where: {
         donor: donorName,

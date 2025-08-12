@@ -9,7 +9,7 @@ import {
   SubgroupResponse,
 } from "@/types";
 
-export const getAllSubgroups = async (): Promise<SubgroupResponse> => {
+export const getAllSubgroup = async (): Promise<SubgroupResponse> => {
   try {
     const subgroups = await subgroupRepository.findAll();
     return {
@@ -28,7 +28,7 @@ export const getAllSubgroups = async (): Promise<SubgroupResponse> => {
   }
 };
 
-export const searchSubgroups = async (
+export const searchSubgroup = async (
   query: string
 ): Promise<SubgroupResponse> => {
   if (!query) return { success: true, data: [] };

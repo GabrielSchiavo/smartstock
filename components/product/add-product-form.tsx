@@ -3,13 +3,16 @@
 import { useRef, useTransition } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
 import { registerProduct } from "@/actions";
-import { AddEditFormProps, ProductType, ToastType, UnitType } from "@/types";
+import { AddEditFormProps, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 
-export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
+export const AddProductForm = ({
+  onShouldInvalidate,
+  onCancel,
+}: AddEditFormProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
     useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
@@ -21,16 +24,6 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
 
         if (response.success === true) {
           formRef.current?.reset();
-
-          // Reseta especificamente campos desabilitados
-          if (values.productType !== ProductType.DONATED) {
-            formRef.current?.setValue("donor", undefined);
-          }
-
-          if (values.unit !== UnitType.UN) {
-            formRef.current?.setValue("unitWeight", undefined);
-            formRef.current?.setValue("unitOfUnitWeight", undefined);
-          }
 
           onShouldInvalidate?.(true);
         }
@@ -53,9 +46,10 @@ export const AddProductForm = ({ onShouldInvalidate }: AddEditFormProps) => {
     <div className="flex flex-col gap-4">
       <BaseProductForm
         onSubmit={onSubmit}
+        onCancel={onCancel}
         isPending={isPending}
-        submitButtonLabel="Criar Produto"
-        loadingButtonLabel="Criando..."
+        submitButtonText="Salvar"
+        loadingText="Criando..."
       />
     </div>
   );

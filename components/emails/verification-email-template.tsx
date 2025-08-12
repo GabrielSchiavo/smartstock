@@ -38,7 +38,7 @@ export const VerificationEmailTemplate = ({
                     <tr>
                       <td>
                         <Img
-                          alt="Smartstock image"
+                          alt="SmartStock image"
                           height="60"
                           src={urlImage}
                         />
@@ -60,7 +60,7 @@ export const VerificationEmailTemplate = ({
               Olá <strong>{userName}</strong>,
             </Text>
             <Text className="text-[14px] text-black leading-[24px]">
-              Obrigado por escolher Smartstock. Para verificar seu email, clique no botão abaixo:
+              Obrigado por escolher SmartStock. Para verificar seu email, clique no botão abaixo:
             </Text>
             <Section className="mt-[32px] mb-[32px] text-center">
               <Button
@@ -82,7 +82,7 @@ export const VerificationEmailTemplate = ({
               <tr className="w-full">
                 <td align="center">
                   <Img
-                    alt="Smartstock image"
+                    alt="SmartStock image"
                     height="42"
                     src={urlImage}
                   />

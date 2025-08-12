@@ -5,7 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { User } from "@prisma/client";
 import { ColumnMetaProps, UserType } from "@/types";
-import { DataTableDropdownUser } from "@/components/tables/_components/data-table-dropdown-user";
+import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
+import { EditUserForm } from "@/components/user/edit-user-form";
+import { deleteUser } from "@/actions";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
@@ -20,21 +22,25 @@ export const columnsTableUsers: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -126,7 +132,14 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return <DataTableDropdownUser rowItemId={row.original.id} />;
+      return (
+        <DataTableDropdown
+          entity="Usuário"
+          rowItemId={row.original.id as string}
+          formComponent={EditUserForm}
+          deleteAction={deleteUser}
+        />
+      );
     },
   },
 ];

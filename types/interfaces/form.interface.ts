@@ -1,6 +1,9 @@
 import { CreateEditProductSchema } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
+import { ModeType, ResourceType } from "@/types";
+import { DeleteActionResponse } from "@/types";
 import { z } from "zod";
+import { ReactNode } from "react";
 
 export interface DatePickerFormProps<T extends FieldValues> {
   field: ControllerRenderProps<T, Path<T>>;
@@ -15,6 +18,7 @@ export interface DynamicComboboxProps {
   allowDelete?: boolean;
   disabled: boolean;
   className?: string;
+  resourceType: ResourceType;
 }
 
 export interface OptionProps {
@@ -26,14 +30,35 @@ export interface AddEditFormProps {
   rowItemId?: string | number;
   onOpenChange?: (open: boolean) => void;
   onShouldInvalidate?: (shouldInvalidate: boolean) => void;
+  onCancel?: () => void;
+}
+
+export interface AddEditDialogProps extends AddEditFormProps {
+  mode: ModeType;
+  entity: string;
+  formComponent: React.ComponentType<AddEditFormProps>;
+  triggerClassName?: string;
+  children?: ReactNode;
+}
+
+export interface DeleteRegisterProps<T extends string | number> {
+  rowItemId?: T;
+  deleteAction: (id: T) => Promise<DeleteActionResponse>;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export interface DataTableDropdownProps<T extends string | number> extends DeleteRegisterProps<T> {
+  formComponent: React.ComponentType<AddEditFormProps>;
+  entity: string;
 }
 
 export interface BaseProductFormProps {
   defaultValues?: z.infer<typeof CreateEditProductSchema>;
   onSubmit: (values: z.infer<typeof CreateEditProductSchema>) => Promise<void>;
+  onCancel?: () => void;
   isPending: boolean;
-  submitButtonLabel: string;
-  loadingButtonLabel: string;
+  submitButtonText: string;
+  loadingText: string;
 }
 
 export interface BaseUserFormProps<T extends z.ZodTypeAny> {
@@ -44,6 +69,7 @@ export interface BaseUserFormProps<T extends z.ZodTypeAny> {
     title: string;
     description?: string;
   }>;
+  onCancel?: () => void;
   onSuccess?: () => void;
   submitButtonText: string;
   loadingText: string;

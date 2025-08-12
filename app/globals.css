@@ -467,6 +467,7 @@ button {
   }
   .styleForPrint {
     border: none !important;
+    margin: 5mm !important;
   }
 }
 @page {
@@ -474,7 +475,7 @@ button {
   margin: 10mm;
 
   @top-center {
-    content: "Smartstock";
+    content: "SmartStock";
     font-size: 14px;
     padding-top: 5mm;
   }

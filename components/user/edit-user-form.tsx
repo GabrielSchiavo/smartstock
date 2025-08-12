@@ -14,6 +14,7 @@ import { showToast } from "@/components/utils/show-toast";
 export const EditUserForm = ({
   rowItemId,
   onShouldInvalidate,
+  onCancel,
 }: AddEditFormProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
@@ -60,7 +61,9 @@ export const EditUserForm = ({
   }
 
   if (!initialValues) {
-    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
+    return (
+      <MessageError message="Registro não encontrado ou erro ao carregar dados." />
+    );
   }
 
   return (
@@ -68,8 +71,9 @@ export const EditUserForm = ({
       schema={EditUserSchema}
       defaultValues={initialValues}
       onSubmit={(values) => editUser(rowItemId as string, values)}
+      onCancel={onCancel}
       onSuccess={() => onShouldInvalidate?.(true)}
-      submitButtonText="Salvar Alterações"
+      submitButtonText="Salvar"
       loadingText="Salvando..."
       hidePasswordInputs={false}
       isEditForm={true}

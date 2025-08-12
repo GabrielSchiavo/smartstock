@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { forwardRef, useEffect, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -27,18 +27,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
-import { DynamicComboboxGroup } from "@/components/product/dynamic-combobox-group";
-import { DynamicComboboxSubgroup } from "@/components/product/dynamic-combobox-subgroup";
-import { DynamicComboboxDonor } from "@/components/product/dynamic-combobox-donor";
-import { DynamicComboboxReceiver } from "@/components/product/dynamic-combobox-receiver";
 import {
   BaseProductFormProps,
   LocaleType,
   ProductType,
+  ResourceType,
   UnitType,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
+import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 
 export const BaseProductForm = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
@@ -48,9 +46,10 @@ export const BaseProductForm = forwardRef<
     {
       defaultValues,
       onSubmit,
+      onCancel,
       isPending,
-      submitButtonLabel,
-      loadingButtonLabel,
+      submitButtonText,
+      loadingText,
     },
     ref
   ) => {
@@ -79,22 +78,38 @@ export const BaseProductForm = forwardRef<
     const unitSelected = form.watch("unit");
 
     // Determina se o input deve estar desabilitado
-    const isDetailsDisabled =
+    const isDonorDisabled =
       !selectedType || selectedType !== ProductType.DONATED;
     const isUnitWeightDisabled = !unitSelected || unitSelected !== UnitType.UN;
 
     // Efeitos para limpar valores quando campos são desabilitados
+    const prevRef = useRef(isDonorDisabled);
     useEffect(() => {
-      if (isDetailsDisabled) {
-        form.setValue("donor", undefined, { shouldValidate: true });
+      if (!prevRef.current && isDonorDisabled) {
+        form.setValue("donor", undefined, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
       }
-    }, [isDetailsDisabled, form]);
+      prevRef.current = isDonorDisabled;
+    }, [isDonorDisabled, form]);
 
+    const prevRefUnit = useRef(isUnitWeightDisabled);
     useEffect(() => {
-      if (isUnitWeightDisabled) {
-        form.setValue("unitWeight", undefined, { shouldValidate: true });
-        form.setValue("unitOfUnitWeight", undefined, { shouldValidate: true });
+      if (!prevRefUnit.current && isUnitWeightDisabled) {
+        form.setValue("unitWeight", undefined, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+        form.setValue("unitOfUnitWeight", undefined, {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
       }
+      prevRefUnit.current = isUnitWeightDisabled;
     }, [isUnitWeightDisabled, form]);
 
     return (
@@ -149,7 +164,7 @@ export const BaseProductForm = forwardRef<
                       <Select
                         disabled={isPending}
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger size="sm">
@@ -186,7 +201,7 @@ export const BaseProductForm = forwardRef<
                         className="default-height"
                         placeholder={
                           isUnitWeightDisabled
-                            ? "Selecione a unidade 'UN.' para habilitar"
+                            ? "Selecione 'UN.' para habilitar"
                             : "Digite o peso unitário"
                         }
                         {...field}
@@ -205,16 +220,18 @@ export const BaseProductForm = forwardRef<
                     <div className="select-container">
                       <Select
                         disabled={isUnitWeightDisabled || isPending}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value ?? ""}
+                        onValueChange={(val) =>
+                          field.onChange(val ?? undefined)
+                        }
                       >
                         <FormControl>
                           <SelectTrigger size="sm">
                             <SelectValue
                               placeholder={
                                 isUnitWeightDisabled
-                                  ? "Selecione a unidade 'UN.' para habilitar"
-                                  : "Digite a unidade do peso unitário"
+                                  ? "Selecione 'UN.' para habilitar"
+                                  : "Selecione a unidade do peso unitário"
                               }
                             />
                           </SelectTrigger>
@@ -279,12 +296,11 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Recebedor</FormLabel>
                     <div className="select-container relative w-full min-w-0">
-                      <DynamicComboboxReceiver
-                        value={field.value}
+                      <DynamicCombobox
+                        resourceType={ResourceType.RECEIVER}
+                        value={field.value ? field.value : ""}
                         onChange={field.onChange}
                         disabled={isPending}
-                        allowCreate={true}
-                        allowDelete={true}
                         placeholder="Selecione um recebedor..."
                       />
                     </div>
@@ -318,12 +334,11 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Grupo</FormLabel>
                     <div className="select-container relative w-full min-w-0">
-                      <DynamicComboboxGroup
-                        value={field.value}
+                      <DynamicCombobox
+                        resourceType={ResourceType.GROUP}
+                        value={field.value ? field.value : ""}
                         onChange={field.onChange}
                         disabled={isPending}
-                        allowCreate={true}
-                        allowDelete={true}
                         placeholder="Selecione um grupo..."
                       />
                     </div>
@@ -338,12 +353,11 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Subgrupo (Opcional)</FormLabel>
                     <div className="select-container relative w-full min-w-0">
-                      <DynamicComboboxSubgroup
-                        value={field.value!}
+                      <DynamicCombobox
+                        resourceType={ResourceType.SUBGROUP}
+                        value={field.value ? field.value : ""}
                         onChange={field.onChange}
                         disabled={isPending}
-                        allowCreate={true}
-                        allowDelete={true}
                         placeholder="Selecione um subgrupo..."
                       />
                     </div>
@@ -362,7 +376,7 @@ export const BaseProductForm = forwardRef<
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                         className="flex flex-col"
                       >
                         <FormItem className="flex items-center">
@@ -393,16 +407,15 @@ export const BaseProductForm = forwardRef<
                   <FormItem>
                     <FormLabel>Doador</FormLabel>
                     <div className="select-container relative w-full min-w-0">
-                      <DynamicComboboxDonor
-                        value={field.value!}
+                      <DynamicCombobox
+                        resourceType={ResourceType.DONOR}
+                        value={field.value ? field.value : ""}
                         onChange={field.onChange}
-                        disabled={isDetailsDisabled || isPending}
-                        allowCreate={true}
-                        allowDelete={true}
+                        disabled={isDonorDisabled || isPending}
                         placeholder={
-                          isDetailsDisabled
+                          isDonorDisabled
                             ? "Selecione 'Doado' para habilitar"
-                            : "Digite o Doador"
+                            : "Selecione um doador"
                         }
                       />
                     </div>
@@ -413,16 +426,37 @@ export const BaseProductForm = forwardRef<
             </div>
           </div>
           <DialogFooter>
-            <Button disabled={isPending} type="submit" size="sm">
-              {isPending ? (
-                <span className="flex items-center gap-3">
-                  <MoonLoader size={16} color="#ffffff" />
-                  {loadingButtonLabel}
-                </span>
-              ) : (
-                submitButtonLabel
-              )}
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                disabled={isPending}
+                size="sm"
+                type="reset"
+                variant={"ghost"}
+                onClick={() => {
+                  form.reset();
+                  onCancel?.();
+                }}
+              >
+                {isPending ? (
+                  <span className="flex items-center gap-3">
+                    <MoonLoader size={16} color="#ffffff" />
+                    {loadingText}
+                  </span>
+                ) : (
+                  "Cancelar"
+                )}
+              </Button>
+              <Button disabled={isPending} type="submit" size="sm">
+                {isPending ? (
+                  <span className="flex items-center gap-3">
+                    <MoonLoader size={16} color="#ffffff" />
+                    {loadingText}
+                  </span>
+                ) : (
+                  submitButtonText
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </Form>

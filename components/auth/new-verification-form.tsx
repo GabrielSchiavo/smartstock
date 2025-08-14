@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { MessageError } from "@/components/utils/message-error";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message

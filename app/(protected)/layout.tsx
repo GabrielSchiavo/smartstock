@@ -1,4 +1,4 @@
-import "@/app/globals.css";
+import "@/styles/globals.css";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarMain } from "@/components/layout/sidebar-main";
 import { HeaderMain } from "@/components/layout/header-main";

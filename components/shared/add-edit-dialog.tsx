@@ -38,7 +38,7 @@ export function AddEditDialog({
       description: `Clique em Salvar quando terminar.`,
       icon: PlusIcon,
       triggerText: `Cadastrar`,
-      variant: "outline" as const,
+      variant: "default" as const,
     },
     [ModeType.EDIT]: {
       title: `Editar ${entity}`,

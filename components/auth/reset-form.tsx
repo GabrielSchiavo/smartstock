@@ -20,7 +20,7 @@ import { MessageSuccess } from "@/components/utils/message-success";
 import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { MoonLoader } from "react-spinners";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");

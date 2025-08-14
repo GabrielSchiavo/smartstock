@@ -3,9 +3,15 @@
 * It includes constants for public routes, authentication routes,
 * and other application-specific routes.
 */
-export const ROUTES = {
-  BASE_URL: process.env.BASE_URL || "http://localhost:3000",
+export const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
+export const METADATA_ROUTES = {
+  OG_IMAGE: `${BASE_URL}/assets/images/og/og.png`,
+  MANIFEST: `${BASE_URL}/manifest.webmanifest`,
+  SITEMAP: `${BASE_URL}/sitemap.xml`,
+} as const;
+
+export const ROUTES = {
   HOME: "/",
 
   // Auth Routes:

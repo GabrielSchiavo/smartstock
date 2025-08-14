@@ -1,6 +1,7 @@
 import { RoleGate } from "@/components/auth/role-gate";
 import { SectionCards } from "@/components/dashboard/section-cards";
 import { SectionDataTables } from "@/components/dashboard/section-data-tables";
+import { ROUTES } from "@/config/routes";
 import { UserType } from "@/types";
 
 import { Metadata } from "next";
@@ -8,7 +9,10 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Dashboard - SmartStock",
   description:
-    "Acompanhe as principais métricas do estoque da sua empresa na dashboard",
+    "Acompanhe as principais métricas do estoque da sua empresa na dashboard.",
+  alternates: {
+    canonical: `${ROUTES.PAGE_DASHBOARD}`,
+  },
 };
 
 const DashboardPage = () => {

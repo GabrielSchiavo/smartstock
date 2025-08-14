@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="300" src="./public/assets/images/logos/smartstock-logo-4.png" alt="Logo SmartStock"/>
+    <img width="300" src="./public/assets/images/brand/combo-mark-full.png" alt="Logo SmartStock"/>
 </div>
 
 <div align="center">
@@ -82,10 +82,10 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 
 ## 🎞️ Galeria
 <div align="center">
-  <img width="1000" src="./public/assets/images/screenshots/screenshot-2.png" alt="Screenshot Dashboard"/>
-  <img width="1000" src="./public/assets/images/screenshots/screenshot-3.png" alt="Screenshot Tabela Estoque"/>
-  <img width="1000" src="./public/assets/images/screenshots/screenshot-4.png" alt="Screenshot Cadastro"/>
-  <img width="1000" src="./public/assets/images/screenshots/screenshot-5.png" alt="Screenshot Relatórios"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-dashboard.png" alt="Screenshot Dashboard"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-stock.png" alt="Screenshot Tabela Estoque"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-cadastre.png" alt="Screenshot Cadastro"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-receiver.png" alt="Screenshot Relatórios"/>
 </div>
 
 ## ⚙️ Setup e Configuração

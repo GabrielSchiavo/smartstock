@@ -14,7 +14,7 @@ import { SidebarThemeSelector } from "@/components/layout/sidebar-theme-selector
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SidebarAboutButton } from "@/components/layout/sidebar-about-button";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 
 export function NavSidebarQuaternary() {
   const pathname = usePathname();

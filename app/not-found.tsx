@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import Link from "next/link";
 
 export default function NotFound() {

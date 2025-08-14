@@ -2,10 +2,14 @@ import { RoleGate } from "@/components/auth/role-gate";
 import { Metadata } from "next";
 import { UserType } from "@/types";
 import { ReportsFormAndResultView } from "@/components/report/reports-form-and-result-view";
+import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
   title: "Relatórios - SmartStock",
-  description: "Gere relatórios de estoque",
+  description: "Gere relatórios de estoque.",
+  alternates: {
+    canonical: `${ROUTES.PAGE_REPORTS}`,
+  },
 };
 
 export default function ReportsPage() {

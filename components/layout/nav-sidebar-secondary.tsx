@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RoleGate } from "@/components/auth/role-gate";
 import { UserType } from "@/types";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import { AppleIcon } from "lucide-react";
 
 export function NavSidebarSecondary() {

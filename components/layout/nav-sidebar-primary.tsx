@@ -7,7 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import { LayoutDashboardIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

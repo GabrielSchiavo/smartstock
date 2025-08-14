@@ -1,10 +1,14 @@
 import { SettingForm } from "@/components/setting/setting-form";
 import { ToolTipHelpSetting } from "@/components/setting/tool-tip-help-setting";
+import { ROUTES } from "@/config/routes";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Configurações - SmartStock",
-  description: "Vizualize e cadastre os usuários do sistema",
+  description: "Altere as configurações da sua conta.",
+  alternates: {
+    canonical: `${ROUTES.PAGE_SETTINGS}`,
+  },
 };
 
 export default function SettingsPage() {

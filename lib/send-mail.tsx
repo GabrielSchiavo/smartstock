@@ -3,7 +3,7 @@ import ResetPasswordEmailTemplate from "@/components/emails/reset-password-email
 import { transporter } from "@/lib/mail";
 import VerificationEmailTemplate from "@/components/emails/verification-email-template";
 import { SmtpTransporter } from "@/types";
-import { ROUTES } from "@/routes";
+import { BASE_URL, ROUTES } from "@/config/routes";
 
 export function getAuthenticateSmtpUser(): string {
   const t = transporter as SmtpTransporter;
@@ -20,7 +20,7 @@ export const sendPasswordResetEmail = async (
   token: string,
   name: string
 ) => {
-  const resetUrl = `${ROUTES.BASE_URL}${ROUTES.EMAIL_NEW_PASSWORD}${token}`;
+  const resetUrl = `${BASE_URL}${ROUTES.EMAIL_NEW_PASSWORD}${token}`;
   const emailTemplate = await render(
     <ResetPasswordEmailTemplate url={resetUrl} userName={name} />
   );
@@ -43,7 +43,7 @@ export const sendVerificationEmail = async (
   token: string,
   name: string,
 ) => {
-  const confirmUrl = `${ROUTES.BASE_URL}${ROUTES.EMAIL_NEW_VERIFICATION}${token}`;
+  const confirmUrl = `${BASE_URL}${ROUTES.EMAIL_NEW_VERIFICATION}${token}`;
   const emailTemplate = await render(
     <VerificationEmailTemplate url={confirmUrl} userName={name} />
   );

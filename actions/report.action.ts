@@ -1,7 +1,7 @@
 "use server";
 
 import { productRepository } from "@/db";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import {
   DonationsReportResponse,
   InventoryReportResponse,

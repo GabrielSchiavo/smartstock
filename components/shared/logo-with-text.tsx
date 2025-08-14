@@ -1,5 +1,5 @@
 import React from "react";
-import LogoSmartstock from "@/public/assets/images/logos/smartstock-logo.png";
+import LogoSmartstock from "@/public/assets/images/brand/brandmark.png";
 import Image from "next/image";
 import { LogoWithTextProps } from "@/types";
 

@@ -1,5 +1,5 @@
 import { CardWrapper } from "@/components/auth/card-wrapper"
-import { ROUTES } from "@/routes"
+import { ROUTES } from "@/config/routes"
 import { TriangleAlertIcon } from "lucide-react"
 
 export const ErrorCard = () => {

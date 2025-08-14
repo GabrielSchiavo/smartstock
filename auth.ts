@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import { userRepository } from "@/db";
 import { UserType } from "@/types";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: {

@@ -20,7 +20,7 @@ import { newPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import { MoonLoader } from "react-spinners";
 
 export const NewPasswordForm = () => {

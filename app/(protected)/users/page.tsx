@@ -5,10 +5,14 @@ import { RoleGate } from "@/components/auth/role-gate";
 import { columnsTableUsers } from "@/components/tables/_columns/columns-users";
 import { UserType } from "@/types";
 import { getUsers } from "@/actions";
+import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
   title: "Gerenciar Usuários - SmartStock",
-  description: "Vizualize e cadastre os usuários do sistema",
+  description: "Visualize, cadastre e gerencie os usuários do sistema.",
+  alternates: {
+    canonical: `${ROUTES.PAGE_USERS}`,
+  },
 };
 
 export default async function UserRegistrationPage() {
@@ -23,7 +27,11 @@ export default async function UserRegistrationPage() {
               <MessageSuccess message="Você tem permissão para acessar este conteúdo!" />
             </div>
             <div className="gap-4 md:gap-6">
-              <DataTableUsers addButton={true} data={users} columns={columnsTableUsers} />
+              <DataTableUsers
+                addButton={true}
+                data={users}
+                columns={columnsTableUsers}
+              />
             </div>
           </div>
         </div>

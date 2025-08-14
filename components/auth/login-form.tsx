@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { MoonLoader } from "react-spinners";
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 
 export const LoginForm = () => {
   const router = useRouter();

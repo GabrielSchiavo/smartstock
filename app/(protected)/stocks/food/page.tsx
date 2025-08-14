@@ -4,10 +4,14 @@ import { Metadata } from "next";
 import { UserType } from "@/types";
 import { getProducts } from "@/actions";
 import { RoleGate } from "@/components/auth/role-gate";
+import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
   title: "Estoque de Alimentos - SmartStock",
-  description: "Vizualize e cadastre produtos alimentícios",
+  description: "Visualize, cadastre e gerencie produtos.",
+  alternates: {
+    canonical: `${ROUTES.PAGE_STOCKS_FOOD}`,
+  },
 };
 
 export default async function StockFoodPage() {

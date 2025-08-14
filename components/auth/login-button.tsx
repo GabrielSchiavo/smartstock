@@ -1,6 +1,6 @@
 "use client";
 
-import { ROUTES } from "@/routes";
+import { ROUTES } from "@/config/routes";
 import { LoginButtonProps } from "@/types";
 import { useRouter } from "next/navigation";
 

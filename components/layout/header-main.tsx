@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeModeButton } from "@/components/shared/theme-mode-button";
 import { AlertButton } from "@/components/alerts/alert-button";
-import { pageTitles } from "@/routes";
+import { pageTitles } from "@/config/routes";
 import { usePathname } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 

@@ -4,7 +4,7 @@
 
 <div align="center">
 
-# SmartStock - Gestão de Estoque
+# SmartStock V2 - Gestão de Estoque
 
 </div>
 
@@ -16,7 +16,7 @@
 
 <div align="center">
 
-SmartStock é um sistema web com o principal objetivo de controlar de forma eficiente o estoque de produtos, principalmente produtos alimentícios.
+SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido com novos recursos e refatorações.
 
 </div>
 

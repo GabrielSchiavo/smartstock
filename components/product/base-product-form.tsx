@@ -63,7 +63,7 @@ export const BaseProductForm = forwardRef<
         unitOfUnitWeight: undefined,
         lot: "",
         validityDate: undefined,
-        donor: undefined,
+        supplier: undefined,
         receiptDate: undefined,
         receiver: "",
         group: "",
@@ -78,22 +78,22 @@ export const BaseProductForm = forwardRef<
     const unitSelected = form.watch("unit");
 
     // Determina se o input deve estar desabilitado
-    const isDonorDisabled =
+    const isSupplierDisabled =
       !selectedType || selectedType !== ProductType.DONATED;
     const isUnitWeightDisabled = !unitSelected || unitSelected !== UnitType.UN;
 
     // Efeitos para limpar valores quando campos são desabilitados
-    const prevRef = useRef(isDonorDisabled);
+    const prevRef = useRef(isSupplierDisabled);
     useEffect(() => {
-      if (!prevRef.current && isDonorDisabled) {
-        form.setValue("donor", undefined, {
+      if (!prevRef.current && isSupplierDisabled) {
+        form.setValue("supplier", undefined, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
         });
       }
-      prevRef.current = isDonorDisabled;
-    }, [isDonorDisabled, form]);
+      prevRef.current = isSupplierDisabled;
+    }, [isSupplierDisabled, form]);
 
     const prevRefUnit = useRef(isUnitWeightDisabled);
     useEffect(() => {
@@ -402,20 +402,20 @@ export const BaseProductForm = forwardRef<
 
               <FormField
                 control={form.control}
-                name="donor"
+                name="supplier"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Doador</FormLabel>
+                    <FormLabel>Fornecedor</FormLabel>
                     <div className="select-container relative w-full min-w-0">
                       <DynamicCombobox
-                        resourceType={ResourceType.DONOR}
+                        resourceType={ResourceType.SUPPLIER}
                         value={field.value ? field.value : ""}
                         onChange={field.onChange}
-                        disabled={isDonorDisabled || isPending}
+                        disabled={isSupplierDisabled || isPending}
                         placeholder={
-                          isDonorDisabled
+                          isSupplierDisabled
                             ? "Selecione 'Doado' para habilitar"
-                            : "Selecione um doador"
+                            : "Selecione um fornecedor"
                         }
                       />
                     </div>

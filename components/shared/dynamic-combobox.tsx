@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  searchDonor,
-  createDonor,
-  getAllDonor,
-  deleteDonor,
-  checkDonorUsage,
+  searchSupplier,
+  createSupplier,
+  getAllSupplier,
+  deleteSupplier,
+  checkSupplierUsage,
   searchGroup,
   createGroup,
   getAllGroup,
@@ -26,6 +26,7 @@ import { DynamicComboboxProps, ResourceType } from "@/types";
 import { BaseDynamicCombobox } from "@/components/shared/base-combobox";
 import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
 import { useEffect, useMemo } from "react";
+import { checkCategoryUsage, createCategory, deleteCategory, getAllCategory, searchCategory } from "@/actions/category.action";
 
 export function DynamicCombobox({
   resourceType,
@@ -40,13 +41,21 @@ export function DynamicCombobox({
   // Configurações específicas por tipo de recurso
   const resourceConfig = useMemo(() => {
     const config = {
-      [ResourceType.DONOR]: {
-        search: searchDonor,
-        create: createDonor,
-        getAll: getAllDonor,
-        delete: deleteDonor,
-        checkUsage: checkDonorUsage,
-        resourceName: "Doador",
+      [ResourceType.SUPPLIER]: {
+        search: searchSupplier,
+        create: createSupplier,
+        getAll: getAllSupplier,
+        delete: deleteSupplier,
+        checkUsage: checkSupplierUsage,
+        resourceName: "Fornecedor",
+      },
+      [ResourceType.CATEGORY]: {
+        search: searchCategory,
+        create: createCategory,
+        getAll: getAllCategory,
+        delete: deleteCategory,
+        checkUsage: checkCategoryUsage,
+        resourceName: "Grupo",
       },
       [ResourceType.GROUP]: {
         search: searchGroup,

@@ -95,7 +95,7 @@ export const generateDonationsReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
-      donor: product.donor || "Não informado",
+      supplier: product.supplier || "Não informado",
       receiptDate: product.receiptDate,
     }));
 

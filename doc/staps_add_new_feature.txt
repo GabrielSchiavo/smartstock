@@ -1,0 +1,4 @@
+1 - (OPCIONAL) Criar Schema* 		*Somente se tiver cadastro e edição
+2 - Criar Model em /types
+3 - Criar Repository em /db
+4 - Criar Actions em /action

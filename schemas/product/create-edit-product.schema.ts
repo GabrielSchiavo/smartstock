@@ -60,17 +60,17 @@ export const CreateEditProductSchema = z
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       required_error: "Selecione um tipo de produto.",
     }),
-    donor: z
+    supplier: z
       .string()
-      .min(2, { message: "Doador é obrigatório" })
-      .max(30, { message: "Doador deve ter no máximo 30 caracteres" })
+      .min(2, { message: "Fornecedor é obrigatório" })
+      .max(30, { message: "Fornecedor deve ter no máximo 30 caracteres" })
       .optional(),
   })
   .refine(
-    (data) => !(data.productType === ProductType.DONATED && !data.donor),
+    (data) => !(data.productType === ProductType.DONATED && !data.supplier),
     {
-      message: "Doador é obrigatórios para itens doados.",
-      path: ["donor"],
+      message: "Fornecedor é obrigatórios para itens doados.",
+      path: ["supplier"],
     }
   )
   .refine(

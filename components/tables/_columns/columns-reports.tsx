@@ -209,12 +209,12 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
       } as ColumnMetaProps,
     },
     {
-      accessorKey: "donor",
+      accessorKey: "supplier",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Doador" />
+        <DataTableColumnHeader column={column} title="Fornecedor" />
       ),
       meta: {
-        title: "Doador",
+        title: "Fornecedor",
       } as ColumnMetaProps,
     },
     {

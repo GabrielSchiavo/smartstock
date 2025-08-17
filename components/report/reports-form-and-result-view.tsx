@@ -352,7 +352,7 @@ export const ReportsFormAndResultView = () => {
               initialDate={dates.initialDate}
               finalDate={dates.finalDate}
               reportType={ReportType.DONATIONS}
-              groupBy="donor"
+              groupBy="supplier"
             />
           )}
 

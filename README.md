@@ -35,7 +35,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     - `Geração:` Acesso somente a geração e visualização de relatórios.
 
 - **Cadastro:**
-  - `Cadastro de produtos alimentícios:` Cadastro simples de produtos com os seguintes dados: Lote; Data de Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
+  - `Cadastro de produtos alimentícios:` Cadastro simples de produtos com os seguintes dados: Lote; Data de Validade; Fornecedor; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
   
   - `Cadastro de Usuários:` Cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
   
@@ -157,6 +157,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     ```
 
 ## ⚡ Scripts Disponíveis
+- `docker-compose up -d` - Cria e executa o container docker necessário
 - `npm run dev` - Executa o servidor em modo de desenvolvimento com Turbopack
 - `npm run build` - Compila o projeto para produção
 - `npm run start` - Inicia o servidor em modo de produção
@@ -164,7 +165,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 - `npm run type-check` - Executa a verificação de tipos TypeScript em modo watch
 - `npx prisma generate` - Gera o Prisma Client
 - `npx prisma migrate deploy` - Executa as migrations já criadas ou as pendentes
-- `npx prisma migrate dev` - Cria e executa uma nova migration
+- `npx prisma migrate dev` - Cria e executa uma nova migration (executar novamente sempre que alterar o schema.prisma)
 - `npx prisma migrate status` - Verifica quais migrations foram aplicadas no banco atual
 - `npx prisma migrate reset` - Reseta o banco e aplica todas as migrations
 

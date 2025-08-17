@@ -78,12 +78,12 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    // Group data by donor
-    const donorsMap = new Map<string, DonationsReportResponse[]>();
+    // Group data by supplier
+    const suppliersMap = new Map<string, DonationsReportResponse[]>();
     this.data.forEach((item) => {
-      const donorItems = donorsMap.get(item.donor) || [];
-      donorItems.push(item);
-      donorsMap.set(item.donor, donorItems);
+      const supplierItems = suppliersMap.get(item.supplier) || [];
+      supplierItems.push(item);
+      suppliersMap.set(item.supplier, supplierItems);
     });
 
     const headers = [
@@ -91,18 +91,18 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       "Produto",
       "Quantidade",
       "Peso Uni.",
-      "Doador",
+      "Fornecedor",
       "Data de Receb.",
     ];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
-    for (const [donor, items] of donorsMap) {
+    for (const [supplier, items] of suppliersMap) {
       this.checkPageBreak(50);
 
-      // Add donor header
+      // Add supplier header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(`Doador: ${donor}`, this.margins.left, this.currentY);
+      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
@@ -111,7 +111,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
         item.name,
         `${item.quantity} ${item.unit}`,
         `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
-        item.donor,
+        item.supplier,
         this.formatDate(item.receiptDate.toString()),
       ]);
 
@@ -120,7 +120,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       this.addHorizontalLine(this.currentY);
       this.currentY += 5;
 
-      // Add donor totals
+      // Add supplier totals
       const totals = this.calculateTotals(items);
       const formatted = this.formatTotalValues(items, totals);
       this.addTotalSection("TOTAL", formatted);

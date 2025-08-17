@@ -10,9 +10,9 @@ export const productRepository = {
       data.unitWeight = null;
       data.unitOfUnitWeight = null;
     }
-    // Regra para limpar campo Doador se tipo de produto não for Doado
+    // Regra para limpar campo Fornecedor se tipo de produto não for Doado
     if (data.productType !== ProductType.DONATED) {
-      data.donor = null;
+      data.supplier = null;
     }
 
     await db.product.create({ data });
@@ -98,9 +98,9 @@ async countProducts(type: ProductCountType = ProductCountType.ALL): Promise<numb
       data.unitWeight = null;
       data.unitOfUnitWeight = null;
     }
-    // Regra para limpar campo Doador se tipo de produto não for Doado
+    // Regra para limpar campo Fornecedor se tipo de produto não for Doado
     if (data.productType !== ProductType.DONATED) {
-      data.donor = null;
+      data.supplier = null;
     }
 
     return await db.product.update({

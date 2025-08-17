@@ -27,7 +27,7 @@ export type DonationsReportResponse = {
   unit: UnitType;
   unitWeight?: number;
   unitOfUnitWeight?: UnitType;
-  donor: string;
+  supplier: string;
   receiptDate: Date;
 };
 

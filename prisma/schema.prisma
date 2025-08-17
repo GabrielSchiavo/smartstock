@@ -39,8 +39,23 @@ enum AlertType {
   EXPIRING
 }
 
+enum ActionType {
+  ADJUSTMENTS // ajustes
+  RECEIPTS // entradas
+  ISSUES // saídas
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum OutputType {
+  ADJUSTMENTS // ajustes
+  RECEIPTS // entradas
+  ISSUES // saídas
+}
+
 model User {
-  id            String @id @default(cuid())
+  id String @id @default(cuid())
 
   name          String?   @db.VarChar(50)
   email         String    @unique
@@ -49,17 +64,22 @@ model User {
   password      String?
   role          UserType  @default(DEFAULT)
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  AuditLog AuditLog[]
+
+  @@index([id, email])
 }
 
 model VerificationToken {
   id      String   @id @default(cuid())
-  email   String
+  email   String   
   token   String   @unique
   expires DateTime
 
   @@unique([email, token])
+  @@index([token])
 }
 
 model PasswordResetToken {
@@ -69,10 +89,58 @@ model PasswordResetToken {
   expires DateTime
 
   @@unique([email, token])
+  @@index([token])
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  type      AlertType
+  isRead    Boolean   @default(false)
+
+  createdAt DateTime @default(now()) @db.Date
+
+  @@index([type, isRead])
+}
+
+model AuditLog {
+  id String @id @default(cuid())
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  recordId      String
+  actionType    ActionType
+  oldValue      String     @db.VarChar(50)
+  newValue      String     @db.VarChar(50)
+  changeSummary String     @db.VarChar(150)
+
+  createdAt DateTime @default(now()) @db.Date
+}
+
+model MasterProduct {
+  id String @id @default(cuid())
+
+  name             String      @db.VarChar(150)
+  unit             UnitType
+  category         String      @db.VarChar(50)
+  group            String      @db.VarChar(50)
+  subgroup         String?     @db.VarChar(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product Product[]
+
+  @@index([name, unit])
 }
 
 model Product {
   id Int @id @default(autoincrement())
+
+  masterProduct     MasterProduct?    @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
+  masterProductId   String?
 
   name             String      @db.VarChar(150)
   quantity         Float       @db.Real
@@ -81,65 +149,65 @@ model Product {
   unitOfUnitWeight UnitType?
   lot              String      @db.VarChar(50)
   validityDate     DateTime    @db.Date
-  donor            String?     @db.VarChar(150)
   receiptDate      DateTime    @db.Date
   receiver         String      @db.VarChar(150)
-  group            String      @db.VarChar(50)
-  subgroup         String?     @db.VarChar(50)
+  supplier         String?     @db.VarChar(150)
   productType      ProductType
 
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  category         String?     @db.VarChar(50)
+  group            String      @db.VarChar(50)
+  subgroup         String?     @db.VarChar(50)
 
-  Notification     Notification[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Notification Notification[]
+  StockOutputs StockOutputs[]
+
   @@index([validityDate])
+}
+
+model StockOutputs {
+  id String @id @default(cuid())
+
+  product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   Int
+  quantity    Float      @db.Real
+  unit        UnitType
+  outputType  OutputType
+  observation String     @db.VarChar(150)
+
+  createdAt DateTime @default(now())
+
+  @@index([productId, outputType])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(50)
+  createdAt DateTime @default(now())
 }
 
 model Group {
   id        String   @id @default(cuid())
-
   name      String   @unique @db.VarChar(50)
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Subgroup {
   id        String   @id @default(cuid())
-
   name      String   @unique @db.VarChar(50)
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Donor {
-  id        String   @id @default(cuid())
-
-  name      String   @unique @db.VarChar(150)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Receiver {
   id        String   @id @default(cuid())
-
   name      String   @unique @db.VarChar(150)
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
-model Notification {
-  id        String    @id @default(cuid())
-
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
-  type      AlertType
-  isRead    Boolean   @default(false)
-
-  createdAt DateTime  @db.Date @default(now())
-
-  @@index([type, isRead])
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(150)
+  createdAt DateTime @default(now())
 }

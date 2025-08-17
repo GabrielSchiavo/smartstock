@@ -1,19 +1,19 @@
 import { db } from "@/lib/db";
 
-export const donorRepository = {
+export const categoryRepository = {
   async findAll(take = 100) {
-    return await db.donor.findMany({
+    return await db.category.findMany({
       orderBy: { name: "asc" },
       take,
     });
   },
 
   async count() {
-    return await db.donor.count();
+    return await db.category.count();
   },
 
   async search(query: string, take = 10) {
-    return await db.donor.findMany({
+    return await db.category.findMany({
       where: {
         name: {
           contains: query,
@@ -25,33 +25,33 @@ export const donorRepository = {
   },
 
   async findByName(name: string) {
-    return await db.donor.findFirst({
+    return await db.category.findFirst({
       where: { name },
     });
   },
 
   async create(name: string) {
-    return await db.donor.create({
+    return await db.category.create({
       data: { name },
     });
   },
 
   async delete(id: string) {
-    return await db.donor.delete({
+    return await db.category.delete({
       where: { id },
     });
   },
 
   async findById(id: string) {
-    return await db.donor.findUnique({
+    return await db.category.findUnique({
       where: { id },
     });
   },
 
-  async checkDonorUsage(donorName: string) {
+  async checkCategoryUsage(categoryName: string) {
     return await db.product.findFirst({
       where: {
-        donor: donorName,
+        category: categoryName,
       },
       select: { id: true },
     });

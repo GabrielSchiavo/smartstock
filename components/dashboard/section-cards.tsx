@@ -1,4 +1,4 @@
-import { getDonorsCount, getProductsCount } from "@/actions";
+import { getSuppliersCount, getProductsCount } from "@/actions";
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ export async function SectionCards() {
   const productsCount = (await getProductsCount()).count;
   const productsToExpireCount = (await getProductsCount(ProductCountType.ABOUT_TO_EXPIRE)).count;
   const productsExpiredCount = (await getProductsCount(ProductCountType.EXPIRED)).count;
-  const donorsCount = (await getDonorsCount()).count;
+  const suppliersCount = (await getSuppliersCount()).count;
 
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -73,17 +73,17 @@ export async function SectionCards() {
       </Card>
       <Card className="bg-transparent!">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-md font-medium text-muted-foreground">Doadores</CardTitle>
+          <CardTitle className="text-md font-medium text-muted-foreground">Fornecedores</CardTitle>
           <HandHeartIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            {donorsCount}
+            {suppliersCount}
           </CardTitle>
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-md  text-muted-foreground">
           <div className="line-clamp-1 flex gap-2">
-            Total de doadores cadastrados
+            Total de fornecedores cadastrados
           </div>
         </CardFooter>
       </Card>

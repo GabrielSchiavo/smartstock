@@ -42,7 +42,7 @@ export const EditProductForm = ({
                 | undefined,
               lot: productData.lot,
               validityDate: productData.validityDate,
-              donor: productData.donor || undefined,
+              supplier: productData.supplier || undefined,
               receiptDate: productData.receiptDate,
               receiver: productData.receiver,
               group: productData.group,

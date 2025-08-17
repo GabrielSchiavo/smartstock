@@ -1,27 +1,27 @@
-import type { Donor } from '@prisma/client'
+import type { Supplier } from '@prisma/client'
 
-export type DonorResponse = {
+export type SupplierResponse = {
   success: boolean
   title?: string
   description?: string
-  data?: Donor[]
+  data?: Supplier[]
 }
 
-export type SingleDonorResponse = {
+export type SingleSupplierResponse = {
   success: boolean
   title?: string
   description?: string
-  data?: Donor
+  data?: Supplier
 }
 
-export type CheckDonorResponse = {
+export type CheckSupplierResponse = {
   success: boolean
   title?: string
   description?: string
   isUsed: boolean
 }
 
-export type DonorCountResponse = {
+export type SupplierCountResponse = {
   success: boolean
   title?: string
   description?: string

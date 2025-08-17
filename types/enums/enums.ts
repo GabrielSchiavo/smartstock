@@ -70,7 +70,8 @@ export enum ProductCountType {
 }
 
 export enum ResourceType {
-  DONOR = "donor",
+  SUPPLIER = "supplier",
+  CATEGORY = "category",
   GROUP = "group",
   RECEIVER = "receiver",
   SUBGROUP = "subgroup",

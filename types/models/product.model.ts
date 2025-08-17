@@ -9,7 +9,7 @@ export type ProductResponse = {
   unitOfUnitWeight?: UnitType | null;
   lot: string;
   validityDate: Date;
-  donor?: string | null;
+  supplier?: string | null;
   receiptDate: Date;
   receiver: string;
   group: string;

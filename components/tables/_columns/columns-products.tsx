@@ -13,7 +13,7 @@ import { deleteProduct } from "@/actions";
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Product> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.group} ${row.original.subgroup} ${row.original.productType} ${row.original.donor}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.group} ${row.original.subgroup} ${row.original.productType} ${row.original.supplier}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -260,21 +260,21 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "donor",
+    accessorKey: "supplier",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Doador" />
+      <DataTableColumnHeader column={column} title="Fornecedor" />
     ),
     cell: ({ row }) => {
-      const donor = row.getValue("donor");
-      if (donor === null || donor === undefined) {
+      const supplier = row.getValue("supplier");
+      if (supplier === null || supplier === undefined) {
         return "-";
       } else {
-        return donor;
+        return supplier;
       }
     },
     filterFn: multiColumnFilterFn,
     meta: {
-      title: "Doador",
+      title: "Fornecedor",
     } as ColumnMetaProps,
   },
   {

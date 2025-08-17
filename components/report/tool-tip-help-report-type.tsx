@@ -26,7 +26,7 @@ export function ToolTipHelpReportType() {
                 <p className="text-sm"><span className="font-semibold">Validades</span> - Gera um relatório de um determinado período com todos os produtos com Validade, Lote, Quantidade, status e Dias para Vencer</p>
             </div>
             <div className="flex items-center gap-2">
-                <p className="text-sm"><span className="font-semibold">Doados</span> - Gera um relatório de um determinado período com todos os produtos doados com Quantidade, Doador e Data de Recebimento</p>
+                <p className="text-sm"><span className="font-semibold">Doados</span> - Gera um relatório de um determinado período com todos os produtos doados com Quantidade, Fornecedor e Data de Recebimento</p>
             </div>
             <div className="flex items-center gap-2">
                 <p className="text-sm"><span className="font-semibold">Comprados</span> - Gera um relatório de um determinado período com todos os produtos comprados com Quantidade e Data de Recebimento</p>

@@ -1,6 +1,6 @@
 export * from "./admin.action";
 export * from "./alert.action";
-export * from "./donor.action";
+export * from "./supplier.action";
 export * from "./group.action";
 export * from "./login.action";
 export * from "./logout.action";

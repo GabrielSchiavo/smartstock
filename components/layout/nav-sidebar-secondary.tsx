@@ -13,7 +13,13 @@ import { usePathname } from "next/navigation";
 import { RoleGate } from "@/components/auth/role-gate";
 import { UserType } from "@/types";
 import { ROUTES } from "@/config/routes";
-import { AppleIcon } from "lucide-react";
+import {
+  BoxesIcon,
+  PackageIcon,
+  PackageMinusIcon,
+  PackagePlusIcon,
+  WrenchIcon,
+} from "lucide-react";
 
 export function NavSidebarSecondary() {
   const pathname = usePathname();
@@ -30,12 +36,60 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Estoque de Alimentos"}
-                className={`${pathname === ROUTES.PAGE_STOCKS_FOOD ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={"Estoque"}
+                className={`${pathname === ROUTES.PAGE_STOCK ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
-                <Link href={ROUTES.PAGE_STOCKS_FOOD}>
-                  <AppleIcon />
-                  <span>Alimentos</span>
+                <Link href={ROUTES.PAGE_STOCK}>
+                  <BoxesIcon />
+                  <span>Estoque</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip={"Item Mestre"}
+                className={`${pathname === ROUTES.PAGE_STOCK_ITEM_MASTER ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={ROUTES.PAGE_STOCK_ITEM_MASTER}>
+                  <PackageIcon />
+                  <span>Item Mestre</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip={"Entradas"}
+                className={`${pathname === ROUTES.PAGE_STOCK_IN ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={ROUTES.PAGE_STOCK_IN}>
+                  <PackagePlusIcon />
+                  <span>Entradas</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip={"Saídas"}
+                className={`${pathname === ROUTES.PAGE_STOCK_OUT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={ROUTES.PAGE_STOCK_OUT}>
+                  <PackageMinusIcon />
+                  <span>Saídas</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip={"Ajustes"}
+                className={`${pathname === ROUTES.PAGE_STOCK_ADJUSTMENT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={ROUTES.PAGE_STOCK_ADJUSTMENT}>
+                  <WrenchIcon />
+                  <span>Ajustes</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

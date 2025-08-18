@@ -179,7 +179,7 @@ export const SettingForm = () => {
                   {"Salvando..."}
                 </span>
               ) : (
-                "Salvar Alterações"
+                "Salvar"
               )}
             </Button>
           </div>

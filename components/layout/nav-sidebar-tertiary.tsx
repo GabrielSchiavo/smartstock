@@ -1,6 +1,6 @@
 "use client";
 
-import { FileChartLineIcon, UsersIcon } from "lucide-react";
+import { FileChartPieIcon, HistoryIcon, UserCogIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -35,7 +35,7 @@ export function NavSidebarTertiary() {
                 className={`${pathname === ROUTES.PAGE_REPORTS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
                 <Link href={ROUTES.PAGE_REPORTS}>
-                  <FileChartLineIcon />
+                  <FileChartPieIcon />
                   <span>Relatórios</span>
                 </Link>
               </SidebarMenuButton>
@@ -49,8 +49,20 @@ export function NavSidebarTertiary() {
                 className={`${pathname === ROUTES.PAGE_USERS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
                 <Link href={ROUTES.PAGE_USERS}>
-                  <UsersIcon />
+                  <UserCogIcon />
                   <span>Gerenciar Usuários</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                tooltip={"Histórico de Alterações"}
+                className={`${pathname === ROUTES.PAGE_HISTORY ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              >
+                <Link href={ROUTES.PAGE_HISTORY}>
+                  <HistoryIcon />
+                  <span>Histórico</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

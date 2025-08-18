@@ -28,11 +28,34 @@ export const ROUTES = {
 
   // Pages Routes:
   PAGE_DASHBOARD: "/dashboard",
+  PAGE_STOCK: "/stock",
+  PAGE_STOCK_ITEM_MASTER: "/stock/item-master",
+  PAGE_STOCK_IN: "/stock/in",
+  PAGE_STOCK_OUT: "/stock/out",
+  PAGE_STOCK_ADJUSTMENT: "/stock/adjustment",
   PAGE_REPORTS: "/reports",
-  PAGE_SETTINGS: "/settings",
-  PAGE_STOCKS_FOOD: "/stocks/food",
   PAGE_USERS: "/users",
+  PAGE_HISTORY: "/history",
+  PAGE_SETTINGS: "/settings",
 } as const;
+
+/**
+* An object mapping page paths to their titles
+* @type {Record<string, string>}
+*/
+export const pageTitles: Record<string, string> = {
+  [ROUTES.HOME]: "Home",
+  [ROUTES.PAGE_DASHBOARD]: "Dashboard",
+  [ROUTES.PAGE_STOCK]: "Estoque",
+  [ROUTES.PAGE_STOCK_ITEM_MASTER]: "Item Mestre",
+  [ROUTES.PAGE_STOCK_IN]: "Entradas",
+  [ROUTES.PAGE_STOCK_OUT]: "Saídas",
+  [ROUTES.PAGE_STOCK_ADJUSTMENT]: "Ajustes",
+  [ROUTES.PAGE_REPORTS]: "Relatórios",
+  [ROUTES.PAGE_USERS]: "Gerenciar Usuários",
+  [ROUTES.PAGE_HISTORY]: "Histórico",
+  [ROUTES.PAGE_SETTINGS]: "Configurações",
+};
 
 /**
 * An array of routes that are accessible to the public
@@ -68,16 +91,3 @@ export const apiAuthPrefix = ROUTES.AUTH_API;
 * @type {string}
 */
 export const DEFAULT_LOGIN_REDIRECT = ROUTES.PAGE_DASHBOARD;
-
-/**
-* An object mapping page paths to their titles
-* @type {Record<string, string>}
-*/
-export const pageTitles: Record<string, string> = {
-  [ROUTES.HOME]: "Home",
-  [ROUTES.PAGE_DASHBOARD]: "Dashboard",
-  [ROUTES.PAGE_REPORTS]: "Relatórios",
-  [ROUTES.PAGE_SETTINGS]: "Configurações",
-  [ROUTES.PAGE_STOCKS_FOOD]: "Estoque de Alimentos",
-  [ROUTES.PAGE_USERS]: "Gerenciar Usuários",
-};

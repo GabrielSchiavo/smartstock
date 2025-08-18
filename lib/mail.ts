@@ -16,7 +16,7 @@ function createTransport() {
   return nodemailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
-    secure: false,
+    // secure: false,
     auth: {
       user: process.env.ETHEREAL_USERNAME,
       pass: process.env.ETHEREAL_PASSWORD,

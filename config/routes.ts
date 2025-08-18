@@ -29,7 +29,7 @@ export const ROUTES = {
   // Pages Routes:
   PAGE_DASHBOARD: "/dashboard",
   PAGE_STOCK: "/stock",
-  PAGE_STOCK_ITEM_MASTER: "/stock/item-master",
+  PAGE_STOCK_MASTER_ITEM: "/stock/master-item",
   PAGE_STOCK_IN: "/stock/in",
   PAGE_STOCK_OUT: "/stock/out",
   PAGE_STOCK_ADJUSTMENT: "/stock/adjustment",
@@ -47,7 +47,7 @@ export const pageTitles: Record<string, string> = {
   [ROUTES.HOME]: "Home",
   [ROUTES.PAGE_DASHBOARD]: "Dashboard",
   [ROUTES.PAGE_STOCK]: "Estoque",
-  [ROUTES.PAGE_STOCK_ITEM_MASTER]: "Item Mestre",
+  [ROUTES.PAGE_STOCK_MASTER_ITEM]: "Item Mestre",
   [ROUTES.PAGE_STOCK_IN]: "Entradas",
   [ROUTES.PAGE_STOCK_OUT]: "Saídas",
   [ROUTES.PAGE_STOCK_ADJUSTMENT]: "Ajustes",

@@ -74,7 +74,7 @@ model User {
 
 model VerificationToken {
   id      String   @id @default(cuid())
-  email   String   
+  email   String
   token   String   @unique
   expires DateTime
 
@@ -119,28 +119,28 @@ model AuditLog {
   createdAt DateTime @default(now()) @db.Date
 }
 
-model MasterProduct {
-  id String @id @default(cuid())
+model MasterItem {
+  id Int @id @default(autoincrement())
 
-  name             String      @db.VarChar(150)
-  unit             UnitType
-  category         String      @db.VarChar(50)
-  group            String      @db.VarChar(50)
-  subgroup         String?     @db.VarChar(50)
+  name     String   @db.VarChar(150)
+  baseUnit UnitType
+  category String   @db.VarChar(50)
+  group    String   @db.VarChar(50)
+  subgroup String?  @db.VarChar(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Product Product[]
 
-  @@index([name, unit])
+  @@index([name, baseUnit])
 }
 
 model Product {
   id Int @id @default(autoincrement())
 
-  masterProduct     MasterProduct?    @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
-  masterProductId   String?
+  masterProduct   MasterItem? @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
+  masterProductId Int?
 
   name             String      @db.VarChar(150)
   quantity         Float       @db.Real
@@ -154,9 +154,9 @@ model Product {
   supplier         String?     @db.VarChar(150)
   productType      ProductType
 
-  category         String?     @db.VarChar(50)
-  group            String      @db.VarChar(50)
-  subgroup         String?     @db.VarChar(50)
+  category String? @db.VarChar(50)
+  group    String  @db.VarChar(50)
+  subgroup String? @db.VarChar(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

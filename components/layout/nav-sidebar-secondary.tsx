@@ -49,9 +49,9 @@ export function NavSidebarSecondary() {
               <SidebarMenuButton
                 asChild
                 tooltip={"Item Mestre"}
-                className={`${pathname === ROUTES.PAGE_STOCK_ITEM_MASTER ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                className={`${pathname === ROUTES.PAGE_STOCK_MASTER_ITEM ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
-                <Link href={ROUTES.PAGE_STOCK_ITEM_MASTER}>
+                <Link href={ROUTES.PAGE_STOCK_MASTER_ITEM}>
                   <PackageIcon />
                   <span>Item Mestre</span>
                 </Link>

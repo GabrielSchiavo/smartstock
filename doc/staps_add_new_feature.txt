@@ -1,4 +1,8 @@
-1 - (OPCIONAL) Criar Schema* 		*Somente se tiver cadastro e edição
-2 - Criar Model em /types
-3 - Criar Repository em /db
-4 - Criar Actions em /action
+1 - (OPCIONAL) Criar Schema* e atualizar index.ts em /schemas 		*Somente se tiver cadastro e edição
+2 - Criar Model e atualizar index.ts em /types 
+3 - Criar Repository e atualizar index.ts em /db
+4 - Criar Actions e atualizar index.ts em /action
+
+
+5 - Criar componentes de formulários cadastro e edição
+6 - Criar as tabelas e colunas para exibição

@@ -8,6 +8,7 @@ import { DataTableToolbarProps, ModeType } from "@/types";
 import { AddEditDialog } from "@/components/shared/add-edit-dialog";
 import { AddProductForm } from "@/components/product/add-product-form";
 import { AddUserForm } from "@/components/user/add-user-form";
+import { AddMasterItemForm } from "@/components/stock/add-master-item-form";
 
 export function DataTableToolbar<TData>({
   table,
@@ -31,9 +32,16 @@ export function DataTableToolbar<TData>({
       ) : null}
       {addButton === true && addButtonType === "PRODUCT" ? (
         <AddEditDialog
-          entity="Alimento"
+          entity="Produto"
           mode={ModeType.ADD}
           formComponent={AddProductForm}
+        />
+      ) : null}
+      {addButton === true && addButtonType === "MASTER_ITEM" ? (
+        <AddEditDialog
+          entity="Item Mestre"
+          mode={ModeType.ADD}
+          formComponent={AddMasterItemForm}
         />
       ) : null}
       {addButton === false ? null : null}

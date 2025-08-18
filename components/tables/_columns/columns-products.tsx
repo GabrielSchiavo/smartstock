@@ -283,7 +283,7 @@ export const columnsTableProducts: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       return (
         <DataTableDropdown
-          entity="Alimento"
+          entity="Produto"
           rowItemId={row.original.id as number}
           formComponent={EditProductForm}
           deleteAction={deleteProduct}

@@ -16,16 +16,16 @@ export async function getAllCategory(): Promise<CategoryResponse> {
     return {
       success: true,
       title: "Sucesso!",
-      description: "Fornecedores carregados com sucesso.",
+      description: "Categorias carregados com sucesso.",
       data: categorys,
     };
   } catch (error) {
-    console.error("Erro ao buscar Fornecedores:", error);
+    console.error("Erro ao buscar Categorias:", error);
 
     return {
       success: false,
       title: "Erro!",
-      description: "Erro ao acessar a lista de fornecedores.",
+      description: "Erro ao acessar a lista de categorias.",
     };
   }
 }
@@ -38,11 +38,11 @@ export async function getCategorysCount(): Promise<CategoryCountResponse> {
       count,
     };
   } catch (error) {
-    console.error("Erro ao contar Fornecedores:", error);
+    console.error("Erro ao contar Categorias:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Não foi possível contar os fornecedores.",
+      description: "Não foi possível contar os categorias.",
     };
   }
 }
@@ -62,15 +62,15 @@ export async function searchCategory(query: string): Promise<CategoryResponse> {
     return {
       success: true,
       title: "Sucesso!",
-      description: "Fornecedores encontrados com sucesso.",
+      description: "Categorias encontrados com sucesso.",
       data: categorys,
     };
   } catch (error) {
-    console.error("Erro na busca por Fornecedores:", error);
+    console.error("Erro na busca por Categorias:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Erro ao pesquisar fornecedores.",
+      description: "Erro ao pesquisar categorias.",
     };
   }
 }
@@ -92,15 +92,15 @@ export async function createCategory(name: string): Promise<SingleCategoryRespon
     return {
       success: true,
       title: "Sucesso!",
-      description: "Fornecedor criado com sucesso.",
+      description: "Categoria criada com sucesso.",
       data: newCategory,
     };
   } catch (error) {
-    console.error("Erro ao criar Fornecedor:", error);
+    console.error("Erro ao criar Categoria:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Erro ao criar fornecedor.",
+      description: "Erro ao criar categoria.",
     };
   }
 }
@@ -113,7 +113,7 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
       return {
         success: false,
         title: "Erro!",
-        description: "Fornecedor não encontrado.",
+        description: "Categoria não encontrado.",
       };
     }
 
@@ -123,14 +123,14 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
     return {
       success: true,
       title: "Sucesso!",
-      description: "Fornecedor excluído com sucesso.",
+      description: "Categoria excluído com sucesso.",
     };
   } catch (error) {
-    console.error("Erro ao excluir Fornecedor:", error);
+    console.error("Erro ao excluir Categoria:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Erro ao excluir fornecedor.",
+      description: "Erro ao excluir categoria.",
     };
   }
 }
@@ -146,7 +146,7 @@ export async function checkCategoryUsage(
       isUsed: !!productWithCategory,
       success: false,
       title: "Aviso!",
-      description: "Este fornecedor está associado a um ou mais produtos.",
+      description: "Este categoria está associado a um ou mais produtos.",
     };
   } catch (error) {
     console.error("Erro ao verificar produtos associados", error);

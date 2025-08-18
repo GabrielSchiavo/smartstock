@@ -53,7 +53,7 @@ export const registerUser = async (
       };
     }
 
-        // Criação do usuário
+    // Criação do usuário
     const hashedPassword = await bcryptjs.hash(password, 10);
     await userRepository.create({
       name,

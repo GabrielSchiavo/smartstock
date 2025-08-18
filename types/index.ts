@@ -12,6 +12,7 @@ export * from "./enums/enums";
 export * from "./models/admin.model";
 export * from "./models/category.model";
 export * from "./models/group.model";
+export * from "./models/master-item.model";
 export * from "./models/product.model";
 export * from "./models/receiver.model";
 export * from "./models/report.model";

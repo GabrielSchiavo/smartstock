@@ -437,14 +437,7 @@ export const BaseProductForm = forwardRef<
                   onCancel?.();
                 }}
               >
-                {isPending ? (
-                  <span className="flex items-center gap-3">
-                    <MoonLoader size={16} color="#ffffff" />
-                    {loadingText}
-                  </span>
-                ) : (
-                  "Cancelar"
-                )}
+                Cancelar
               </Button>
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? (

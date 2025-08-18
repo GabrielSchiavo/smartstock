@@ -1,4 +1,4 @@
-import { CreateEditProductSchema } from "@/schemas";
+import { CreateEditMasterItemSchema, CreateEditProductSchema } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { ModeType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
@@ -50,6 +50,15 @@ export interface DeleteRegisterProps<T extends string | number> {
 export interface DataTableDropdownProps<T extends string | number> extends DeleteRegisterProps<T> {
   formComponent: React.ComponentType<AddEditFormProps>;
   entity: string;
+}
+
+export interface BaseMasterItemFormProps {
+  defaultValues?: z.infer<typeof CreateEditMasterItemSchema>;
+  onSubmit: (values: z.infer<typeof CreateEditMasterItemSchema>) => Promise<void>;
+  onCancel?: () => void;
+  isPending: boolean;
+  submitButtonText: string;
+  loadingText: string;
 }
 
 export interface BaseProductFormProps {

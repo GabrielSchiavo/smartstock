@@ -26,7 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps } from "@/types";
+import { DataTableProps, TableType } from "@/types";
 import { BaseDataTable } from "./base-data-table";
 
 export function DataTableUsers<TData, TValue>({
@@ -113,7 +113,7 @@ export function DataTableUsers<TData, TValue>({
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
-          addButtonType={"USER"}
+          addButtonType={TableType.USER}
           table={table}
         />
         {groupBy && groupedData && (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import { BaseMasterItemForm } from "@/components/stock/base-master-item-form";
+import { BaseMasterItemForm } from "@/components/stock/master-item/base-master-item-form";
 import { editMasterItem, getMasterItemById } from "@/actions";
 import { AddEditFormProps, ToastType, UnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";

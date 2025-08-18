@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useTransition } from "react";
-import { BaseMasterItemForm } from "@/components/stock/base-master-item-form";
+import { BaseMasterItemForm } from "@/components/stock/master-item/base-master-item-form";
 import { registerMasterItem } from "@/actions";
 import { AddEditFormProps, ToastType } from "@/types";
 import { z } from "zod";

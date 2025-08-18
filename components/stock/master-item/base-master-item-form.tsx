@@ -63,7 +63,7 @@ export const BaseMasterItemForm = forwardRef<
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
           <div className="grid grid-cols-1 gap-4 items-start">
             <FormField
               control={form.control}
@@ -83,7 +83,7 @@ export const BaseMasterItemForm = forwardRef<
                 </FormItem>
               )}
             />
-            <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
+            <div className="grid sm:grid-cols-1 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
                 name="baseUnit"

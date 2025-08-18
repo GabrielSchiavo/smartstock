@@ -86,3 +86,9 @@ export enum BaseDataType {
   USER = "user",
   PRODUCT = "product",
 }
+
+export enum TableType {
+  USER = "user",
+  PRODUCT = "product",
+  MASTER_ITEM = "masterItem",
+}

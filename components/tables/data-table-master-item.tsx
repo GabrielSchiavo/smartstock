@@ -26,7 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps } from "@/types";
+import { DataTableProps, TableType } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { BaseDataTable } from "./base-data-table";
 
@@ -80,7 +80,7 @@ export function DataTableMasterItems<TData, TValue>({
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
-          addButtonType={"MASTER_ITEM"}
+          addButtonType={TableType.MASTER_ITEM}
           table={table}
         />
         {groupBy && groupedData && (

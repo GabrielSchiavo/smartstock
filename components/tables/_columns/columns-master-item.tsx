@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from "@/components/tables/_components/data-tabl
 import { MasterItem } from "@prisma/client";
 import { ColumnMetaProps } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { EditMasterItemForm } from "@/components/stock/edit-master-item-form";
+import { EditMasterItemForm } from "@/components/stock/master-item/edit-master-item-form";
 import { deleteMasterItem } from "@/actions";
 
 // Custom filter function for multi-column searching

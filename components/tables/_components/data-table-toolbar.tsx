@@ -4,11 +4,11 @@ import { DataTableViewOptions } from "@/components/tables/_components/data-table
 
 import { DataTableFacetedFilter } from "@/components/tables/_components/data-table-faceted-filter";
 import { DataTableToolTipHelp } from "@/components/tables/_components/data-table-tool-tip-help";
-import { DataTableToolbarProps, ModeType } from "@/types";
+import { DataTableToolbarProps, ModeType, TableType } from "@/types";
 import { AddEditDialog } from "@/components/shared/add-edit-dialog";
 import { AddProductForm } from "@/components/product/add-product-form";
 import { AddUserForm } from "@/components/user/add-user-form";
-import { AddMasterItemForm } from "@/components/stock/add-master-item-form";
+import { AddMasterItemForm } from "@/components/stock/master-item/add-master-item-form";
 
 export function DataTableToolbar<TData>({
   table,
@@ -23,21 +23,21 @@ export function DataTableToolbar<TData>({
         {toolTip ? <DataTableToolTipHelp /> : null}
       </div>
       <DataTableViewOptions table={table} />
-      {addButton === true && addButtonType === "USER" ? (
+      {addButton === true && addButtonType === TableType.USER ? (
         <AddEditDialog
           entity="Usuário"
           mode={ModeType.ADD}
           formComponent={AddUserForm}
         />
       ) : null}
-      {addButton === true && addButtonType === "PRODUCT" ? (
+      {addButton === true && addButtonType === TableType.PRODUCT ? (
         <AddEditDialog
           entity="Produto"
           mode={ModeType.ADD}
           formComponent={AddProductForm}
         />
       ) : null}
-      {addButton === true && addButtonType === "MASTER_ITEM" ? (
+      {addButton === true && addButtonType === TableType.MASTER_ITEM ? (
         <AddEditDialog
           entity="Item Mestre"
           mode={ModeType.ADD}

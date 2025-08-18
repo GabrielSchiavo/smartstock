@@ -83,7 +83,7 @@ export const BaseUserForm = <T extends z.ZodTypeAny>({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="grid gap-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="grid gap-8">
         <div className="grid grid-cols-1 gap-4 items-start">
           <FormField
             control={form.control}

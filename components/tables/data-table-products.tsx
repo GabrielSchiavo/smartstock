@@ -26,7 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps } from "@/types";
+import { DataTableProps, TableType } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTable } from "./base-data-table";
@@ -81,7 +81,7 @@ export function DataTableProducts<TData, TValue>({
         <DataTableToolbar
           toolTip={true}
           addButton={addButton}
-          addButtonType={"PRODUCT"}
+          addButtonType={TableType.PRODUCT}
           table={table}
         />
         {groupBy && groupedData && (

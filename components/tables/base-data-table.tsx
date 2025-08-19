@@ -20,11 +20,12 @@ import {
   ChevronUpIcon,
 } from "lucide-react";
 import { getTotalValuesDisplayForData } from "../utils/group-table";
+import { CalculableTotalItemProps } from "@/types";
 
 interface BaseDataTableProps<TData> {
   table: TanstackTable<TData>;
   columns: ColumnDef<TData>[];
-  groupedData?: Record<string, Row<TData>[]>;
+  groupedData?: Record<string, Row<CalculableTotalItemProps>[]>;
   collapsedGroups: Set<string>;
   toggleGroup: (groupName: string) => void;
   showGroupTotal?: boolean;

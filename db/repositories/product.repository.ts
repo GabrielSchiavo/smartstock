@@ -1,4 +1,9 @@
-import { ProductCountType, ProductResponse, ProductUpdateResponse, UnitType } from "@/types";
+import {
+  ProductCountType,
+  ProductResponse,
+  ProductUpdateResponse,
+  UnitType,
+} from "@/types";
 import { db } from "@/lib/db";
 import { ProductType } from "@/types";
 import { Product } from "@prisma/client";
@@ -9,6 +14,10 @@ export const productRepository = {
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
       data.unitOfUnitWeight = null;
+    }
+    // Regra para caso o valor do campo Peso Unitário seja 0 o campo seja limpo
+    if (data.unit === UnitType.UN && data.unitWeight == 0) {
+      data.unitWeight = null;
     }
     // Regra para limpar campo Fornecedor se tipo de produto não for Doado
     if (data.productType !== ProductType.DONATED) {
@@ -24,32 +33,34 @@ export const productRepository = {
     });
   },
 
-async countProducts(type: ProductCountType = ProductCountType.ALL): Promise<number> {
-  const currentDate = new Date()
+  async countProducts(
+    type: ProductCountType = ProductCountType.ALL
+  ): Promise<number> {
+    const currentDate = new Date();
 
-  if (type === ProductCountType.EXPIRED) {
-    return db.product.count({
-      where: { validityDate: { lt: currentDate } },
-    })
-  }
+    if (type === ProductCountType.EXPIRED) {
+      return db.product.count({
+        where: { validityDate: { lt: currentDate } },
+      });
+    }
 
-  if (type === ProductCountType.ABOUT_TO_EXPIRE) {
-    const limitDate = new Date()
-    limitDate.setDate(limitDate.getDate() + 30)
+    if (type === ProductCountType.ABOUT_TO_EXPIRE) {
+      const limitDate = new Date();
+      limitDate.setDate(limitDate.getDate() + 30);
 
-    return db.product.count({
-      where: {
-        validityDate: {
-          lt: limitDate,
-          gte: currentDate,
+      return db.product.count({
+        where: {
+          validityDate: {
+            lt: limitDate,
+            gte: currentDate,
+          },
         },
-      },
-    })
-  }
+      });
+    }
 
-  // padrão: contar todos
-  return db.product.count()
-},
+    // padrão: contar todos
+    return db.product.count();
+  },
 
   async findExpired(): Promise<Product[]> {
     const currentDate = new Date();
@@ -97,6 +108,10 @@ async countProducts(type: ProductCountType = ProductCountType.ALL): Promise<numb
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
       data.unitOfUnitWeight = null;
+    }
+    // Regra para caso o valor do campo Peso Unitário seja 0 o campo seja limpo
+    if (data.unit === UnitType.UN && data.unitWeight == 0) {
+      data.unitWeight = null;
     }
     // Regra para limpar campo Fornecedor se tipo de produto não for Doado
     if (data.productType !== ProductType.DONATED) {

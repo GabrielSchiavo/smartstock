@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { FileTextIcon, PrinterIcon } from "lucide-react";
 import {
+  CalculableTotalItemProps,
   DonationsReportResponse,
   InventoryReportResponse,
   PurchasedReportResponse,
@@ -222,7 +223,7 @@ export function DataTableReport<TData>({
         <BaseDataTable
           table={table}
           columns={columns}
-          groupedData={groupedData as Record<string, Row<TData>[]>}
+          groupedData={groupedData as Record<string, Row<CalculableTotalItemProps>[]>}
           collapsedGroups={collapsedGroups}
           toggleGroup={toggleGroup}
           showGroupTotal={true}
@@ -230,7 +231,7 @@ export function DataTableReport<TData>({
           footerContent={
             <div className="flex items-center justify-start gap-2">
               TOTAL FINAL:
-              <span>{getTotalValuesDisplayForData(data)}</span>
+              <span>{getTotalValuesDisplayForData(data as CalculableTotalItemProps[])}</span>
             </div>
           }
         />

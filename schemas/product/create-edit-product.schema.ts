@@ -19,7 +19,7 @@ export const CreateEditProductSchema = z
           return !isNaN(n) && n > 0;
         },
         {
-          message: "Número inválido. Use apenas números positivos.",
+          message: "Número inválido. Use apenas números positivos maiores que 0.",
         }
       ),
     unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
@@ -36,7 +36,7 @@ unitWeight: z
       return !isNaN(n) && n > 0;
     },
     {
-      message: "Número inválido. Use apenas números positivos.",
+      message: "Número inválido. Use apenas números positivos maiores que 0.",
     }
   )
   .optional(),

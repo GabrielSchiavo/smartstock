@@ -26,7 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps, TableType } from "@/types";
+import { CalculableTotalItemProps, DataTableProps, TableType } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTable } from "./base-data-table";
@@ -117,7 +117,7 @@ export function DataTableProducts<TData, TValue>({
         <BaseDataTable
           table={table}
           columns={columns as ColumnDef<TData>[]}
-          groupedData={groupedData as Record<string, Row<TData>[]>}
+          groupedData={groupedData as Record<string, Row<CalculableTotalItemProps>[]>}
           collapsedGroups={collapsedGroups}
           toggleGroup={toggleGroup}
           showGroupTotal={true}
@@ -125,7 +125,7 @@ export function DataTableProducts<TData, TValue>({
           footerContent={
             <div className="flex items-center justify-start gap-2">
               TOTAL FINAL:
-              <span>{getTotalValuesDisplayForData(data)}</span>
+              <span>{getTotalValuesDisplayForData(data as CalculableTotalItemProps[])}</span>
             </div>
           }
         />

@@ -1,4 +1,3 @@
-// src/components/pdf/ValidityPdfGenerator.ts
 import { BasePdfGenerator } from "@/lib/base-pdf-generator";
 import {
   DonationsReportResponse,
@@ -102,7 +101,11 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       // Add supplier header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
+      this.doc.text(
+        `Fornecedor: ${supplier}`,
+        this.margins.left,
+        this.currentY
+      );
       this.currentY += 10;
 
       // Add items table
@@ -120,9 +123,9 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       this.addHorizontalLine(this.currentY);
       this.currentY += 5;
 
-      // Add supplier totals
-      const totals = this.calculateTotals(items);
-      const formatted = this.formatTotalValues(items, totals);
+      // Add supplier total
+      const total = this.calculateTotals(items);
+      const formatted = this.formatTotalValues(total);
       this.addTotalSection("TOTAL", formatted);
 
       this.currentY -= 2;
@@ -131,14 +134,14 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       this.currentY += 15;
     }
 
-    // Add grand totals
+    // Add grand total
     this.checkPageBreak(20);
     this.addHorizontalLine(this.currentY);
     this.currentY += 5;
 
-    const grandTotals = this.calculateTotals(this.data);
-    const grandFormatted = this.formatTotalValues(this.data, grandTotals);
-    this.addTotalSection("TOTAL GERAL", grandFormatted, true);
+    const mainTotal = this.calculateTotals(this.data);
+    const mainTotalFormatted = this.formatTotalValues(mainTotal);
+    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
@@ -196,9 +199,9 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
     this.addHorizontalLine(this.currentY);
     this.currentY += 5;
 
-    const totals = this.calculateTotals(this.data);
-    const formattedTotals = this.formatTotalValues(this.data, totals);
-    this.addTotalSection("TOTAL GERAL", formattedTotals, true);
+    const mainTotal = this.calculateTotals(this.data);
+    const mainTotalFormatted = this.formatTotalValues(mainTotal);
+    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
@@ -261,8 +264,6 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [10, 100, 20, 20, 30, 30, 20, 30, 20];
 
-    const grandTotals = { weight: 0, volume: 0, units: 0 };
-
     for (const [groupName, groupItems] of sortedGroups) {
       this.checkPageBreak(40);
 
@@ -287,18 +288,13 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
       this.addTable(headers, columnWidths, rows);
 
-      // Calculate and show group totals
-      const groupTotals = this.calculateTotals(groupItems);
-      grandTotals.weight += groupTotals.weight;
-      grandTotals.volume += groupTotals.volume;
-      grandTotals.units += groupTotals.units;
-
       this.currentY += 5;
       this.addHorizontalLine(this.currentY);
       this.currentY += 5;
 
-      const formattedTotals = this.formatTotalValues(groupItems, groupTotals);
-      this.addTotalSection("TOTAL DO GRUPO", formattedTotals);
+      const total = this.calculateTotals(groupItems);
+      const formatted = this.formatTotalValues(total);
+      this.addTotalSection("TOTAL", formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -306,13 +302,14 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
       this.currentY += 15;
     }
 
-    // Add grand totals
+    // Add grand total
     this.checkPageBreak(20);
     this.addHorizontalLine(this.currentY);
     this.currentY += 5;
 
-    const grandFormatted = this.formatTotalValues(this.data, grandTotals);
-    this.addTotalSection("TOTAL GERAL", grandFormatted, true);
+    const mainTotal = this.calculateTotals(this.data);
+    const mainTotalFormatted = this.formatTotalValues(mainTotal);
+    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);

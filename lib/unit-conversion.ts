@@ -1,5 +1,5 @@
 import { showToast } from "@/components/utils/show-toast";
-import { ToastType, UnitType } from "@/types";
+import { ConvertOptionsProps, ToastType, UnitType } from "@/types";
 
 // Base peso = Kg, base volume = L
 const unitConversionFactors: Record<UnitType, number> = {
@@ -11,20 +11,14 @@ const unitConversionFactors: Record<UnitType, number> = {
   [UnitType.UN]: 1,
 };
 
-type ConvertOptions = {
-  unitWeight?: number;
-  unitWeightUnit?: UnitType;
-  decimals?: number;
-};
-
 export function convertUnit(
   value: number,
   from: UnitType,
   to: UnitType,
-  unitWeightOrOptions?: number | ConvertOptions,
+  unitWeightOrOptions?: number | ConvertOptionsProps,
   unitWeightUnitArg?: UnitType
 ): number {
-  const options: ConvertOptions =
+  const options: ConvertOptionsProps =
     typeof unitWeightOrOptions === "number"
       ? { unitWeight: unitWeightOrOptions, unitWeightUnit: unitWeightUnitArg }
       : unitWeightOrOptions || {};
@@ -64,6 +58,7 @@ export function convertUnit(
     result = baseValue / factor(to);
   }
 
+  // Formata o result caso o valor passado para decimals seja diferente de null
   if (options.decimals != null) {
     const p = Math.pow(10, options.decimals);
     return Math.round(result * p) / p;
@@ -84,9 +79,9 @@ export function convertUnit(
  * @param unit unidade da quantidade (UnitType)
  * @param unitWeight opcional: peso/volume por unidade (ex: 250)
  * @param unitWeightUnit opcional: unidade do unitWeight (ex: UnitType.G, UnitType.KG, UnitType.L)
- * @param decimals opcional: casas decimais para arredondamento (passa para convertUnit e aplica também a multiplicações diretas)
+ * @param decimals opcional: casas decimais para arredondamento (aplicado apenas nas conversões)
  */
-export function normalizeQuantity(
+export function normalizeValue(
   quantity: number,
   unit: UnitType,
   unitWeight?: number,
@@ -97,61 +92,42 @@ export function normalizeQuantity(
   let volume = 0;
   let units = 0;
 
-  const roundIf = (v: number): number => {
-    if (decimals == null) return v;
-    const p = Math.pow(10, decimals);
-    return Math.round(v * p) / p;
-  };
-
   if (unit === UnitType.KG) {
-    weight = roundIf(quantity);
+    weight = quantity; // Sem arredondamento direto
   } else if (unit === UnitType.G) {
-    // converte g -> kg
+    // Usa convertUnit para conversão com possível arredondamento
     weight = convertUnit(quantity, UnitType.G, UnitType.KG, { decimals });
   } else if (unit === UnitType.L) {
-    volume = roundIf(quantity);
+    volume = quantity; // Sem arredondamento direto
   } else if (unit === UnitType.UN) {
-    // se não informou unitWeight => só sabemos a contagem
-    if (unitWeight == null || unitWeightUnit == null) {
-      units = roundIf(quantity);
+    if (unitWeight == null || unitWeightUnit == null || unitWeight === 0) {
+      units = quantity; // Sem arredondamento direto
     } else {
-      // se unitWeightUnit for massa (G/KG) -> produz weight em KG
+      // Usa convertUnit para todas as conversões de UN
       if (unitWeightUnit === UnitType.G || unitWeightUnit === UnitType.KG) {
         weight = convertUnit(quantity, UnitType.UN, UnitType.KG, {
           unitWeight,
           unitWeightUnit,
           decimals,
         });
-      }
-      // se unitWeightUnit for volume (L / ML) -> produz volume em L
-      else if (
-        unitWeightUnit === UnitType.L /*|| unitWeightUnit === UnitType.ML*/
-      ) {
+      } else if (unitWeightUnit === UnitType.L) {
         volume = convertUnit(quantity, UnitType.UN, UnitType.L, {
           unitWeight,
           unitWeightUnit,
           decimals,
         });
-      }
-      // fallback conservador: assume unitWeight já está em KG (caso raro)
-      else {
-        weight = roundIf(quantity * unitWeight);
+      } else {
+        // Fallback sem conversão (unidades não suportadas)
+        weight = quantity * unitWeight; // Sem arredondamento direto
       }
     }
   } else {
-    // para unidades desconhecidas, tente converter diretamente se mapeadas na tabela:
     try {
-      // tenta converter para kg (se fizer sentido na tabela)
       weight = convertUnit(quantity, unit, UnitType.KG, { decimals });
     } catch {
-      // tenta converter para L
       try {
         volume = convertUnit(quantity, unit, UnitType.L, { decimals });
       } catch {
-        weight = 0;
-        volume = 0;
-        units = 0;
-
         showToast({
           title: "Erro! Não foi possível converter a quantidade.",
           description: "Verifique a unidade de medida.",

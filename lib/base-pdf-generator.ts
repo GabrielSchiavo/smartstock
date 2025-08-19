@@ -1,13 +1,12 @@
 import {
-  LocaleType,
+  CalculableTotalItemProps,
   PdfConfigProps,
   PdfUnitType,
-  UnitType,
   validityStatusType,
 } from "@/types";
 import jsPDF from "jspdf";
 import { formatDateToLocale } from "@/lib/date-utils";
-import { normalizeQuantity } from "./unit-conversion";
+import { calculateTotals, createTotalSummary } from "./calculate-totals";
 
 export abstract class BasePdfGenerator {
   protected doc: jsPDF;
@@ -89,99 +88,14 @@ export abstract class BasePdfGenerator {
     );
   }
 
-  protected calculateTotals(
-    items: Array<{
-      quantity?: number;
-      unit?: string;
-      unitWeight?: number;
-      unitOfUnitWeight?: string;
-    }>
-  ) {
-    return items.reduce(
-      (total, item) => {
-        const quantity = item.quantity || 0;
-        const unit = item.unit?.toUpperCase() as UnitType;
-        const unitWeight = item.unitWeight || 0;
-        const unitOfUnitWeight =
-          item.unitOfUnitWeight?.toUpperCase() as UnitType;
-
-        // 1. Normaliza o valor do item
-        const normalizedValue = normalizeQuantity(
-          quantity,
-          unit,
-          unitWeight,
-          unitOfUnitWeight
-        );
-
-        // 2. Atualiza os totais
-        return {
-          weight: total.weight + normalizedValue.weight,
-          volume: total.volume + normalizedValue.volume,
-          units: total.units + normalizedValue.units,
-        };
-      },
-      {
-        weight: 0,
-        volume: 0,
-        units: 0,
-      }
-    );
-  }
-
-  protected hasUnit(
-    items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
-    unitTypes: string[]
-  ) {
-    return items.some((item) => {
-      const unit = item.unit?.toUpperCase();
-      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase();
-
-      return (
-        unitTypes.includes(unit!) ||
-        (unit === UnitType.UN &&
-          unitOfUnitWeight &&
-          unitTypes.includes(unitOfUnitWeight))
-      );
-    });
+  protected calculateTotals(items: Array<CalculableTotalItemProps>) {
+    return calculateTotals(items);
   }
 
   protected formatTotalValues(
-    items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
     totalValues: { weight: number; volume: number; units: number }
   ) {
-    const parts = [];
-
-    const hasLiters = this.hasUnit(items, [UnitType.L]);
-    const hasKilos =
-      this.hasUnit(items, [UnitType.KG, UnitType.G]) ||
-      (this.hasUnit(items, [UnitType.UN]) && !hasLiters);
-    const hasUnits =
-      this.hasUnit(items, [UnitType.UN]) &&
-      !this.hasUnit(items, [UnitType.KG, UnitType.G, UnitType.L]);
-
-    if (hasKilos)
-      parts.push(
-        `${Number(totalValues.weight.toFixed(3)).toLocaleString(
-          LocaleType.PT_BR,
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 3,
-          }
-        )} ${UnitType.KG}`
-      );
-    if (hasLiters)
-      parts.push(
-        `${Number(totalValues.volume.toFixed(3)).toLocaleString(
-          LocaleType.PT_BR,
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 3,
-          }
-        )} ${UnitType.L}`
-      );
-    if (hasUnits) parts.push(`${totalValues.units} ${UnitType.UN}`);
-
-    return parts.join(" & ");
+    return createTotalSummary(totalValues);
   }
 
   protected addTotalSection(

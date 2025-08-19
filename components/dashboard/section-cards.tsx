@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProductCountType } from "@/types";
-import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, HandHeartIcon } from "lucide-react";
+import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, TruckIcon } from "lucide-react";
 
 export async function SectionCards() {
   const productsCount = (await getProductsCount()).count;
@@ -22,7 +22,7 @@ export async function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Cadastrados
           </CardTitle>
-          <BoxesIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <BoxesIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -40,7 +40,7 @@ export async function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos à vencer
           </CardTitle>
-          <CalendarClockIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <CalendarClockIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -58,7 +58,7 @@ export async function SectionCards() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Vencidos
           </CardTitle>
-          <CalendarX2Icon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <CalendarX2Icon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -74,7 +74,7 @@ export async function SectionCards() {
       <Card className="bg-transparent!">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">Fornecedores</CardTitle>
-          <HandHeartIcon strokeWidth={1.5} className="h-10 w-10 text-muted-foreground" />
+          <TruckIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">

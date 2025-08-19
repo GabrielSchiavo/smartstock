@@ -51,13 +51,6 @@ export async function searchCategory(query: string): Promise<CategoryResponse> {
   if (!query) return { success: true, data: [] };
 
   try {
-    const testRecord = await categoryRepository.findByName("Anônimo");
-
-    if (!testRecord) {
-      await categoryRepository.create("Anônimo");
-      revalidatePath("/");
-    }
-
     const categorys = await categoryRepository.search(query);
     return {
       success: true,

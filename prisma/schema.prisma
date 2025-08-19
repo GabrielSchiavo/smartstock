@@ -162,24 +162,24 @@ model Product {
   updatedAt DateTime @updatedAt
 
   Notification Notification[]
-  StockOutputs StockOutputs[]
+  StockMovement StockMovement[]
 
   @@index([validityDate])
 }
 
-model StockOutputs {
+model StockMovement {
   id String @id @default(cuid())
 
   product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   Int
   quantity    Float      @db.Real
   unit        UnitType
-  outputType  OutputType
+  movementType  OutputType
   observation String     @db.VarChar(150)
 
   createdAt DateTime @default(now())
 
-  @@index([productId, outputType])
+  @@index([productId, movementType])
 }
 
 model Category {

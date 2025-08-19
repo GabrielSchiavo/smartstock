@@ -1,6 +1,13 @@
-import { LocaleType, PdfConfigProps, PdfUnitType, UnitType, validityStatusType } from "@/types";
+import {
+  LocaleType,
+  PdfConfigProps,
+  PdfUnitType,
+  UnitType,
+  validityStatusType,
+} from "@/types";
 import jsPDF from "jspdf";
 import { formatDateToLocale } from "@/lib/date-utils";
+import { normalizeQuantity } from "./unit-conversion";
 
 export abstract class BasePdfGenerator {
   protected doc: jsPDF;
@@ -66,160 +73,139 @@ export abstract class BasePdfGenerator {
     }
   };
 
-  protected convertToKg = (weight: number, unit: string): number => {
-    if (!weight) return 0;
-    return unit?.toUpperCase() === UnitType.G ? weight / 1000 : weight;
-  };
-
-  protected convertToLiters = (volume: number): number => {
-    return volume || 0;
-  };
-
   protected addHorizontalLine(yPosition: number): void {
-      const pageWidth = this.doc.internal.pageSize.getWidth();
-      this.doc.setDrawColor(
-        this.COMMON_STYLES.horizontalLine.color[0],
-        this.COMMON_STYLES.horizontalLine.color[1],
-        this.COMMON_STYLES.horizontalLine.color[2]
-      );
-      this.doc.setLineWidth(this.COMMON_STYLES.horizontalLine.width);
-      this.doc.line(
-        this.margins.left,
-        yPosition,
-        pageWidth - this.margins.right,
-        yPosition
-      );
-    }
-  
-    protected calculateItemMetrics(item: {
+    const pageWidth = this.doc.internal.pageSize.getWidth();
+    this.doc.setDrawColor(
+      this.COMMON_STYLES.horizontalLine.color[0],
+      this.COMMON_STYLES.horizontalLine.color[1],
+      this.COMMON_STYLES.horizontalLine.color[2]
+    );
+    this.doc.setLineWidth(this.COMMON_STYLES.horizontalLine.width);
+    this.doc.line(
+      this.margins.left,
+      yPosition,
+      pageWidth - this.margins.right,
+      yPosition
+    );
+  }
+
+  protected calculateTotals(
+    items: Array<{
       quantity?: number;
       unit?: string;
       unitWeight?: number;
       unitOfUnitWeight?: string;
-    }) {
-      const quantity = item.quantity || 0;
-      const unit = item.unit?.toUpperCase();
-      const unitWeight = item.unitWeight || 0;
-      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase() || UnitType.KG;
-  
-      let weight = 0;
-      let volume = 0;
-      let units = 0;
+    }>
+  ) {
+    return items.reduce(
+      (total, item) => {
+        const quantity = item.quantity || 0;
+        const unit = item.unit?.toUpperCase() as UnitType;
+        const unitWeight = item.unitWeight || 0;
+        const unitOfUnitWeight =
+          item.unitOfUnitWeight?.toUpperCase() as UnitType;
 
-      if (unit === UnitType.KG || unit === UnitType.G) {
-        weight = this.convertToKg(quantity, unit);
-      } else if (unit === UnitType.L) {
-        volume = this.convertToLiters(quantity);
-      } else if (unit === UnitType.UN) {
-        if (unitOfUnitWeight === UnitType.L) {
-          volume = this.convertToLiters(quantity * unitWeight);
-        } else {
-          weight = this.convertToKg(quantity * unitWeight, unitOfUnitWeight);
-        }
-        if (!unitWeight) units = quantity;
+        // 1. Normaliza o valor do item
+        const normalizedValue = normalizeQuantity(
+          quantity,
+          unit,
+          unitWeight,
+          unitOfUnitWeight
+        );
+
+        // 2. Atualiza os totais
+        return {
+          weight: total.weight + normalizedValue.weight,
+          volume: total.volume + normalizedValue.volume,
+          units: total.units + normalizedValue.units,
+        };
+      },
+      {
+        weight: 0,
+        volume: 0,
+        units: 0,
       }
-  
-      return { weight, volume, units };
-    }
-  
-    protected calculateTotals(
-      items: Array<{
-        quantity?: number;
-        unit?: string;
-        unitWeight?: number;
-        unitOfUnitWeight?: string;
-      }>
-    ) {
-      return items.reduce(
-        (total, item) => {
-          const metrics = this.calculateItemMetrics(item);
-          return {
-            weight: total.weight + metrics.weight,
-            volume: total.volume + metrics.volume,
-            units: total.units + metrics.units,
-          };
-        },
-        { weight: 0, volume: 0, units: 0 }
-      );
-    }
-  
-    protected hasUnit(
-      items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
-      unitTypes: string[]
-    ) {
-      return items.some((item) => {
-        const unit = item.unit?.toUpperCase();
-        const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase();
-  
-        return (
-          unitTypes.includes(unit!) ||
-          (unit === UnitType.UN &&
-            unitOfUnitWeight &&
-            unitTypes.includes(unitOfUnitWeight))
-        );
-      });
-    }
-  
-    protected formatTotalValues(
-      items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
-      totalValues: { weight: number; volume: number; units: number }
-    ) {
-      const parts = [];
-  
-      const hasLiters = this.hasUnit(items, [UnitType.L]);
-      const hasKilos =
-        this.hasUnit(items, [UnitType.KG, UnitType.G]) ||
-        (this.hasUnit(items, [UnitType.UN]) && !hasLiters);
-      const hasUnits =
-        this.hasUnit(items, [UnitType.UN]) && !this.hasUnit(items, [UnitType.KG, UnitType.G, UnitType.L]);
+    );
+  }
 
-      if (hasKilos)
-        parts.push(
-          `${Number(totalValues.weight.toFixed(3)).toLocaleString(
-            LocaleType.PT_BR,
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 3,
-            }
-          )} ${UnitType.KG}`
-        );
-      if (hasLiters)
-        parts.push(
-          `${Number(totalValues.volume.toFixed(3)).toLocaleString(
-            LocaleType.PT_BR,
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 3,
-            }
-          )} ${UnitType.L}`
-        );
-      if (hasUnits) parts.push(`${totalValues.units} ${UnitType.UN}`);
+  protected hasUnit(
+    items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
+    unitTypes: string[]
+  ) {
+    return items.some((item) => {
+      const unit = item.unit?.toUpperCase();
+      const unitOfUnitWeight = item.unitOfUnitWeight?.toUpperCase();
 
-      return parts.join(" & ");
-    }
-  
-    protected addTotalSection(
-      label: string,
-      value: string,
-      isGrandTotal = false
-    ) {
-      const font = isGrandTotal
-        ? this.COMMON_STYLES.grandTotalFont
-        : this.COMMON_STYLES.totalLabelFont;
-  
-      this.doc.setFontSize(font.size);
-      this.doc.setFont("helvetica", font.style);
-      this.doc.text(`${label}: `, this.margins.left, this.currentY);
-  
-      const labelWidth = this.doc.getTextWidth(`${label}: `);
-      this.doc.setFont(
-        "helvetica",
-        isGrandTotal ? "italic" : this.COMMON_STYLES.totalValueFont.style
+      return (
+        unitTypes.includes(unit!) ||
+        (unit === UnitType.UN &&
+          unitOfUnitWeight &&
+          unitTypes.includes(unitOfUnitWeight))
       );
-      this.doc.text(value, this.margins.left + labelWidth, this.currentY);
-  
-      this.currentY += 5;
-    }
+    });
+  }
+
+  protected formatTotalValues(
+    items: Array<{ unit?: string; unitOfUnitWeight?: string }>,
+    totalValues: { weight: number; volume: number; units: number }
+  ) {
+    const parts = [];
+
+    const hasLiters = this.hasUnit(items, [UnitType.L]);
+    const hasKilos =
+      this.hasUnit(items, [UnitType.KG, UnitType.G]) ||
+      (this.hasUnit(items, [UnitType.UN]) && !hasLiters);
+    const hasUnits =
+      this.hasUnit(items, [UnitType.UN]) &&
+      !this.hasUnit(items, [UnitType.KG, UnitType.G, UnitType.L]);
+
+    if (hasKilos)
+      parts.push(
+        `${Number(totalValues.weight.toFixed(3)).toLocaleString(
+          LocaleType.PT_BR,
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 3,
+          }
+        )} ${UnitType.KG}`
+      );
+    if (hasLiters)
+      parts.push(
+        `${Number(totalValues.volume.toFixed(3)).toLocaleString(
+          LocaleType.PT_BR,
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 3,
+          }
+        )} ${UnitType.L}`
+      );
+    if (hasUnits) parts.push(`${totalValues.units} ${UnitType.UN}`);
+
+    return parts.join(" & ");
+  }
+
+  protected addTotalSection(
+    label: string,
+    value: string,
+    isGrandTotal = false
+  ) {
+    const font = isGrandTotal
+      ? this.COMMON_STYLES.grandTotalFont
+      : this.COMMON_STYLES.totalLabelFont;
+
+    this.doc.setFontSize(font.size);
+    this.doc.setFont("helvetica", font.style);
+    this.doc.text(`${label}: `, this.margins.left, this.currentY);
+
+    const labelWidth = this.doc.getTextWidth(`${label}: `);
+    this.doc.setFont(
+      "helvetica",
+      isGrandTotal ? "italic" : this.COMMON_STYLES.totalValueFont.style
+    );
+    this.doc.text(value, this.margins.left + labelWidth, this.currentY);
+
+    this.currentY += 5;
+  }
 
   protected addTopFooter(): void {
     const pageWidth = this.doc.internal.pageSize.getWidth();
@@ -230,7 +216,7 @@ export abstract class BasePdfGenerator {
     this.doc.setTextColor(100, 100, 100); // Gray
 
     // "SmartStock" text centered at the top
-    this.doc.text('SmartStock', pageWidth / 2, topFooterY, { align: "center" });
+    this.doc.text("SmartStock", pageWidth / 2, topFooterY, { align: "center" });
   }
 
   protected addFooter(): void {

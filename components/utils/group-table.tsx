@@ -1,7 +1,7 @@
-// utils/tableGroupUtils.ts
 import React from "react";
 import { UnitType, LocaleType, GroupedTableTotalValuesProps } from "@/types"; // Ajuste o caminho conforme necessário
 import { Row, Table } from "@tanstack/react-table"; // Ajuste os imports conforme sua versão do TanStack Table
+import { normalizeQuantity } from "@/lib/unit-conversion";
 
 export function getGroupedData<TData>(
   table: Table<TData>,
@@ -34,32 +34,22 @@ export function getTotalValuesDisplayForData<TData>(data: TData[]) {
       };
 
       const quantity = original.quantity || 0;
-      const unit = original.unit;
+      const unit = original.unit as UnitType;
       const unitWeight = original.unitWeight || 0;
-      const unitOfUnitWeight = original.unitOfUnitWeight || UnitType.KG;
+      const unitOfUnitWeight = original.unitOfUnitWeight as UnitType;
 
-      let itemWeight = 0;
-      let itemVolume = 0;
-
-      if (unit === UnitType.KG) {
-        itemWeight = quantity;
-      } else if (unit === UnitType.G) {
-        itemWeight = quantity / 1000;
-      } else if (unit === UnitType.L) {
-        itemVolume = quantity;
-      } else if (unit === UnitType.UN) {
-        if (unitOfUnitWeight === UnitType.G) {
-          itemWeight = quantity * (unitWeight / 1000);
-        } else if (unitOfUnitWeight === UnitType.L) {
-          itemVolume = quantity * unitWeight;
-        } else {
-          itemWeight = quantity * unitWeight;
-        }
-      }
-
+      // 1. Normaliza o valor do item
+      const normalizedValue = normalizeQuantity(
+        quantity,
+        unit,
+        unitWeight,
+        unitOfUnitWeight
+      );
+      
+      // 2. Atualiza os totais
       return {
-        weight: total.weight + itemWeight,
-        volume: total.volume + itemVolume,
+        weight: total.weight + normalizedValue.weight,
+        volume: total.volume + normalizedValue.volume,
       };
     },
     { weight: 0, volume: 0 }

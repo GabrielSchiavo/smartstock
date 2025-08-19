@@ -6,3 +6,7 @@
 
 5 - Criar componentes de formulários cadastro e edição
 6 - Criar as tabelas e colunas para exibição
+
+
+
+*OBS.: Sistema de conversão e totalização em: base-pdf-generator.ts e group-table.tsx

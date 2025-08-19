@@ -26,7 +26,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CalculableTotalItemProps, DataTableProps, TableType } from "@/types";
+import { DataTableProps, TableType } from "@/types";
 import { BaseDataTable } from "./base-data-table";
 
 export function DataTableUsers<TData, TValue>({
@@ -149,7 +149,7 @@ export function DataTableUsers<TData, TValue>({
         <BaseDataTable
           table={table}
           columns={columns as ColumnDef<TData>[]}
-          groupedData={groupedData as Record<string, Row<CalculableTotalItemProps>[]>}
+          groupedData={groupedData as Record<string, Row<TData>[]>}
           collapsedGroups={collapsedGroups}
           toggleGroup={toggleGroup}
           showGroupTotal={false}

@@ -31,6 +31,7 @@ export const EditProductForm = ({
         if (productData) {
           if (productData) {
             setInitialValues({
+              masterProductId: "",
               name: productData.name,
               quantity: productData.quantity?.toString(),
               unit: productData.unit as UnitType,
@@ -45,6 +46,7 @@ export const EditProductForm = ({
               supplier: productData.supplier || undefined,
               receiptDate: productData.receiptDate,
               receiver: productData.receiver,
+              category: "",
               group: productData.group,
               subgroup: productData.subgroup || undefined,
               productType: productData.productType as ProductType,

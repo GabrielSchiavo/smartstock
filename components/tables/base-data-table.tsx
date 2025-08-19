@@ -22,10 +22,19 @@ import {
 import { getTotalValuesDisplayForData } from "../utils/group-table";
 import { CalculableTotalItemProps } from "@/types";
 
+// Type guard to check if data can be used for totals
+function isCalculableTotalData(data: unknown[]): data is CalculableTotalItemProps[] {
+  return data.length === 0 || (
+    !!data[0] && 
+    typeof data[0] === 'object' && 
+    data[0] !== null
+  );
+}
+
 interface BaseDataTableProps<TData> {
   table: TanstackTable<TData>;
   columns: ColumnDef<TData>[];
-  groupedData?: Record<string, Row<CalculableTotalItemProps>[]>;
+  groupedData?: Record<string, Row<TData>[]>;
   collapsedGroups: Set<string>;
   toggleGroup: (groupName: string) => void;
   showGroupTotal?: boolean;
@@ -68,10 +77,9 @@ export function BaseDataTable<TData>({
           groupedData ? (
             Object.entries(groupedData).map(([groupName, groupRows]) => {
               const isCollapsed = collapsedGroups.has(groupName);
-              const totalToShow = showGroupTotal
-                ? getTotalValuesDisplayForData(
-                    groupRows.map((row) => row.original)
-                  )
+              const rowOriginals = groupRows.map((row) => row.original);
+              const totalToShow = showGroupTotal && isCalculableTotalData(rowOriginals)
+                ? getTotalValuesDisplayForData(rowOriginals)
                 : null;
 
               return (

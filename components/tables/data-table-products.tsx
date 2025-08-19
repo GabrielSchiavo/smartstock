@@ -117,7 +117,7 @@ export function DataTableProducts<TData, TValue>({
         <BaseDataTable
           table={table}
           columns={columns as ColumnDef<TData>[]}
-          groupedData={groupedData as Record<string, Row<CalculableTotalItemProps>[]>}
+          groupedData={groupedData as Record<string, Row<TData>[]>}
           collapsedGroups={collapsedGroups}
           toggleGroup={toggleGroup}
           showGroupTotal={true}

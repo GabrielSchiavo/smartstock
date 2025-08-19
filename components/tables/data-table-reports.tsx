@@ -223,7 +223,7 @@ export function DataTableReport<TData>({
         <BaseDataTable
           table={table}
           columns={columns}
-          groupedData={groupedData as Record<string, Row<CalculableTotalItemProps>[]>}
+          groupedData={groupedData as Record<string, Row<TData>[]>}
           collapsedGroups={collapsedGroups}
           toggleGroup={toggleGroup}
           showGroupTotal={true}

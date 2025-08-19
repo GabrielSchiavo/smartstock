@@ -329,6 +329,25 @@ export const BaseProductForm = forwardRef<
             <div className="grid grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoria</FormLabel>
+                    <div className="select-container relative w-full min-w-0">
+                      <DynamicCombobox
+                        resourceType={ResourceType.CATEGORY}
+                        value={field.value ? field.value : ""}
+                        onChange={field.onChange}
+                        disabled={isPending}
+                        placeholder="Selecione uma categoria..."
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="group"
                 render={({ field }) => (
                   <FormItem>

@@ -3,6 +3,10 @@ import { ProductType, UnitType } from "@/types";
 
 export const CreateEditProductSchema = z
   .object({
+    masterProductId: z
+      .string()
+      .trim()
+      .min(1, { message: "Produto Mestre é obrigatório" }),
     name: z
       .string()
       .trim()
@@ -19,27 +23,29 @@ export const CreateEditProductSchema = z
           return !isNaN(n) && n > 0;
         },
         {
-          message: "Número inválido. Use apenas números positivos maiores que 0.",
+          message:
+            "Número inválido. Use apenas números positivos maiores que 0.",
         }
       ),
     unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
       required_error: "Você precisa selecionar uma unidade de medida.",
     }),
-unitWeight: z
-  .string()
-  .trim()
-  .max(10, { message: "Peso Unitário deve ter no máximo 10 caracteres" })
-  .refine(
-    (v) => {
-      if (v === undefined || v === "") return true;
-      const n = Number(v);
-      return !isNaN(n) && n > 0;
-    },
-    {
-      message: "Número inválido. Use apenas números positivos maiores que 0.",
-    }
-  )
-  .optional(),
+    unitWeight: z
+      .string()
+      .trim()
+      .max(10, { message: "Peso Unitário deve ter no máximo 10 caracteres" })
+      .refine(
+        (v) => {
+          if (v === undefined || v === "") return true;
+          const n = Number(v);
+          return !isNaN(n) && n > 0;
+        },
+        {
+          message:
+            "Número inválido. Use apenas números positivos maiores que 0.",
+        }
+      )
+      .optional(),
     unitOfUnitWeight: z
       .enum([UnitType.KG, UnitType.G, UnitType.L], {
         required_error: "Você precisa selecionar uma unidade de medida.",
@@ -66,6 +72,11 @@ unitWeight: z
       .trim()
       .min(2, { message: "Recebedor é obrigatório" })
       .max(30, { message: "Recebedor deve ter no máximo 30 caracteres" }),
+    category: z
+      .string()
+      .trim()
+      .min(2, { message: "Categoria é obrigatório" })
+      .max(50, { message: "Categoria deve ter no máximo 50 caracteres" }),
     group: z
       .string()
       .trim()

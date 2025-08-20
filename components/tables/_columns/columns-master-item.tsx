@@ -4,14 +4,14 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 import { ColumnMetaProps, ColumnsTableMasterItemsProps } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { EditMasterItemForm } from "@/components/stock/master-item/edit-master-item-form";
 import { deleteMasterItem } from "@/actions";
 
 // Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<MasterItem> = (
+const multiColumnFilterFn: FilterFn<MasterProduct> = (
   row,
   columnId,
   filterValue
@@ -27,7 +27,7 @@ export const columnsTableMasterItems = ({
   isSelectingAction = false,
   onSelect,
   selectedMasterProductId,
-}: ColumnsTableMasterItemsProps): ColumnDef<MasterItem>[] => [
+}: ColumnsTableMasterItemsProps): ColumnDef<MasterProduct>[] => [
   {
     id: "select",
     header: ({ table }) => (

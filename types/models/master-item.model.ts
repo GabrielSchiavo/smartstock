@@ -1,5 +1,5 @@
 import { UnitType } from "@/types";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 
 export type MasterItemResponse = {
   name: string;
@@ -17,5 +17,5 @@ export type MasterItemOperationResponse = {
   success: boolean;
   title: string;
   description?: string;
-  masterItem?: MasterItem;
+  masterProduct?: MasterProduct;
 };

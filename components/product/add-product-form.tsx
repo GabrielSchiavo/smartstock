@@ -8,7 +8,7 @@ import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 
 export const AddProductForm = ({
   onShouldInvalidate,
@@ -18,7 +18,7 @@ export const AddProductForm = ({
   const formRef =
     useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
 
-  const [masterItems, setMasterItems] = useState<MasterItem[]>([]);
+  const [masterItems, setMasterItems] = useState<MasterProduct[]>([]);
 
     // Carregue os master items no useEffect ou via server component
    useEffect(() => {

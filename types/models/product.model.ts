@@ -1,4 +1,4 @@
-import { MasterItem, Product } from "@prisma/client";
+import { MasterProduct, Product } from "@prisma/client";
 import { ProductType, UnitType } from "@/types";
 
 export type ProductResponse = {
@@ -21,7 +21,7 @@ export type ProductResponse = {
 
 // Tipo estendido para produto com informações do produto mestre
 export type ProductWithMasterItemResponse = Product & {
-  masterProduct: MasterItem;
+  masterProduct: MasterProduct;
 };
 
 export interface ProductUpdateResponse extends ProductResponse {

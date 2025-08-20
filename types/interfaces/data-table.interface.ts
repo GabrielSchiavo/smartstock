@@ -1,6 +1,6 @@
 import { Column, ColumnDef, Table } from "@tanstack/react-table";
 import { ReportType } from "@/types";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,6 +45,6 @@ export interface DataTableFunctionsProps<TData> {
 
 export interface ColumnsTableMasterItemsProps {
   isSelectingAction?: boolean;
-  onSelect?: (masterItem: MasterItem) => void;
+  onSelect?: (masterProduct: MasterProduct) => void;
   selectedMasterProductId?: string;
 }

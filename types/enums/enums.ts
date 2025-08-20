@@ -90,5 +90,5 @@ export enum BaseDataType {
 export enum TableType {
   USER = "user",
   PRODUCT = "product",
-  MASTER_ITEM = "masterItem",
+  MASTER_ITEM = "masterProduct",
 }

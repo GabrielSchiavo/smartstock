@@ -24,7 +24,7 @@ export const productRepository = {
       data.supplier = null;
     }
 
-    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterItem
+    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
     const { category, group, subgroup, ...productData } = data;
 
     await db.product.create({ data: productData });
@@ -136,7 +136,7 @@ export const productRepository = {
       data.supplier = null;
     }
 
-    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterItem
+    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
     const { category, group, subgroup, ...productData } = data;
 
     return (await db.product.update({

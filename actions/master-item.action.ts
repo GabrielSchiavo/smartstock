@@ -4,7 +4,7 @@ import { CreateEditMasterItemSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { masterItemRepository } from "@/db";
-import type { MasterItem } from "@prisma/client";
+import type { MasterProduct } from "@prisma/client";
 import { MasterItemOperationResponse } from "@/types";
 
 export const registerMasterItem = async (
@@ -79,7 +79,7 @@ export const editMasterItem = async (
       success: true,
       title: "Sucesso!",
       description: "Item Mestre atualizado com sucesso!",
-      masterItem: updatedMasterItem,
+      masterProduct: updatedMasterItem,
     };
   } catch (error) {
     console.error("Erro ao editar o item mestre:", error);
@@ -110,20 +110,20 @@ export const deleteMasterItem = async (id: number) => {
   }
 };
 
-export const getMasterItemById = async (id: number): Promise<MasterItem> => {
+export const getMasterItemById = async (id: number): Promise<MasterProduct> => {
   try {
-    const masterItem = await masterItemRepository.findById(id);
-    if (!masterItem) {
+    const masterProduct = await masterItemRepository.findById(id);
+    if (!masterProduct) {
       throw new Error("Item Mestre não encontrado");
     }
-    return masterItem;
+    return masterProduct;
   } catch (error) {
     console.error("Erro ao buscar item mestre:", error);
     throw new Error("Erro ao buscar item mestre");
   }
 };
 
-export const getMasterItems = async (): Promise<MasterItem[]> => {
+export const getMasterItems = async (): Promise<MasterProduct[]> => {
   try {
     return await masterItemRepository.findAll();
   } catch (error) {

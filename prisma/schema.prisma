@@ -119,7 +119,7 @@ model AuditLog {
   createdAt DateTime @default(now()) @db.Date
 }
 
-model MasterItem {
+model MasterProduct {
   id Int @id @default(autoincrement())
 
   name     String   @db.VarChar(150)
@@ -139,7 +139,7 @@ model MasterItem {
 model Product {
   id Int @id @default(autoincrement())
 
-  masterProduct   MasterItem @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
+  masterProduct   MasterProduct @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
   masterProductId Int
 
   name             String      @db.VarChar(150)

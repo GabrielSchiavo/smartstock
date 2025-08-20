@@ -12,14 +12,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 import { DataTableMasterItems } from "@/components/tables/data-table-master-item";
 import { columnsTableMasterItems } from "@/components/tables/_columns/columns-master-item";
 import { Input } from "@/components/ui/input";
 
 interface SelectorMasterItemProps {
-  masterItems: MasterItem[];
-  onSelect: (masterItem: MasterItem) => void;
+  masterItems: MasterProduct[];
+  onSelect: (masterProduct: MasterProduct) => void;
   selectedId?: string;
   disabled?: boolean;
 }
@@ -36,7 +36,7 @@ export function SelectorMasterItem({
     (item) => item.id.toString() === selectedId
   );
 
-  const handleSelect = (item: MasterItem) => {
+  const handleSelect = (item: MasterProduct) => {
     onSelect(item);
     setIsOpen(false);
   };

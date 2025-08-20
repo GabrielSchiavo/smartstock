@@ -37,11 +37,11 @@ import {
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 import { SelectorMasterItem } from "../stock/master-item/selector-master-item";
 
 interface ExtendedBaseProductFormProps extends BaseProductFormProps {
-  masterItems: MasterItem[];
+  masterItems: MasterProduct[];
 }
 
 export const BaseProductForm = forwardRef<
@@ -128,25 +128,25 @@ export const BaseProductForm = forwardRef<
     }, [isUnitWeightDisabled, form]);
 
     // Função para lidar com a seleção do produto mestre
-    const handleMasterItemSelect = (masterItem: MasterItem) => {
-      form.setValue("masterProductId", masterItem.id.toString(), {
+    const handleMasterItemSelect = (masterProduct: MasterProduct) => {
+      form.setValue("masterProductId", masterProduct.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      // form.setValue("name", masterItem.name, {
+      // form.setValue("name", masterProduct.name, {
       //   shouldValidate: true,
       //   shouldDirty: true,
       // });
-      form.setValue("category", masterItem.category, {
+      form.setValue("category", masterProduct.category, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("group", masterItem.group, {
+      form.setValue("group", masterProduct.group, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      if (masterItem.subgroup) {
-        form.setValue("subgroup", masterItem.subgroup, {
+      if (masterProduct.subgroup) {
+        form.setValue("subgroup", masterProduct.subgroup, {
           shouldValidate: true,
           shouldDirty: true,
         });

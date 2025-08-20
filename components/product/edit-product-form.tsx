@@ -10,7 +10,7 @@ import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
-import { MasterItem } from "@prisma/client";
+import { MasterProduct } from "@prisma/client";
 
 export const EditProductForm = ({
   rowItemId,
@@ -69,7 +69,7 @@ export const EditProductForm = ({
     loadProduct();
   }, [rowItemId]);
 
-    const [masterItems, setMasterItems] = useState<MasterItem[]>([]);
+    const [masterItems, setMasterItems] = useState<MasterProduct[]>([]);
   
       // Carregue os master items no useEffect ou via server component
      useEffect(() => {

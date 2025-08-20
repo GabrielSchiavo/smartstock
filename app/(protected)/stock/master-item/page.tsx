@@ -2,9 +2,8 @@ import { Metadata } from "next";
 import { UserType } from "@/types";
 import { RoleGate } from "@/components/auth/role-gate";
 import { ROUTES } from "@/config/routes";
-import { DataTableMasterItems } from "@/components/tables/data-table-master-item";
-import { columnsTableMasterItems } from "@/components/tables/_columns/columns-master-item";
 import { getMasterItems } from "@/actions/master-item.action";
+import { MasterItemsClient } from "@/components/stock/master-item/aster-items-client";
 
 export const metadata: Metadata = {
   title: "Item Mestre - SmartStock",
@@ -14,10 +13,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function StockFoodPage() {
+export default async function MasterProductPage() {
   const masterItems = await getMasterItems();
-  const columns = columnsTableMasterItems({});
-
+  
   return (
     <RoleGate
       isPage={true}
@@ -26,12 +24,7 @@ export default async function StockFoodPage() {
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 md:gap-6">
-            <DataTableMasterItems
-              addButton={true}
-              data={masterItems}
-              columns={columns}
-              groupBy="category"
-            />
+            <MasterItemsClient masterItems={masterItems} />
           </div>
         </div>
       </div>

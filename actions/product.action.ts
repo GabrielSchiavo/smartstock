@@ -4,8 +4,7 @@ import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { productRepository } from "@/db";
-import type { Product } from "@prisma/client";
-import { ProductCountType, ProductOperationResponse } from "@/types";
+import { ProductCountType, ProductOperationResponse, ProductWithMasterItemResponse } from "@/types";
 
 export const registerProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
@@ -26,7 +25,8 @@ export const registerProduct = async (
     await productRepository.create({
       ...productData,
       quantity: Number(quantity),
-      unitWeight: Number(unitWeight),
+      unitWeight: unitWeight ? Number(unitWeight) : null,
+      masterProductId: Number(productData.masterProductId),
     });
 
     revalidatePath("/");
@@ -74,7 +74,8 @@ export const editProduct = async (
     const updatedProduct = await productRepository.update(id, {
       ...productData,
       quantity: Number(quantity),
-      unitWeight: Number(unitWeight),
+      unitWeight: unitWeight ? Number(unitWeight) : null,
+      masterProductId: Number(productData.masterProductId),
       updatedAt: new Date(),
     });
 
@@ -114,7 +115,7 @@ export const deleteProduct = async (id: number) => {
   }
 };
 
-export const getProductById = async (id: number): Promise<Product> => {
+export const getProductById = async (id: number): Promise<ProductWithMasterItemResponse> => {
   try {
     const product = await productRepository.findById(id);
     if (!product) {
@@ -127,7 +128,7 @@ export const getProductById = async (id: number): Promise<Product> => {
   }
 };
 
-export const getProducts = async (): Promise<Product[]> => {
+export const getProducts = async (): Promise<ProductWithMasterItemResponse[]> => {
   try {
     return await productRepository.findAll();
   } catch (error) {
@@ -157,7 +158,7 @@ export async function getProductsCount(type: ProductCountType = ProductCountType
   }
 }
 
-export const getExpiredProducts = async (): Promise<Product[]> => {
+export const getExpiredProducts = async (): Promise<ProductWithMasterItemResponse[]> => {
   try {
     return await productRepository.findExpired();
   } catch (error) {
@@ -166,7 +167,7 @@ export const getExpiredProducts = async (): Promise<Product[]> => {
   }
 };
 
-export const getProductsToExpire = async (): Promise<Product[]> => {
+export const getProductsToExpire = async (): Promise<ProductWithMasterItemResponse[]> => {
   try {
     return await productRepository.findAboutToExpire();
   } catch (error) {
@@ -174,4 +175,3 @@ export const getProductsToExpire = async (): Promise<Product[]> => {
     throw error;
   }
 };
-

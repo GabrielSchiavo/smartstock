@@ -21,10 +21,7 @@ import {
 import React, { useRef, useState } from "react";
 import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
 import { DataTableReportProps, ReportType } from "@/types";
-import {
-  Maximize2Icon,
-  Minimize2Icon,
-} from "lucide-react";
+import { Maximize2Icon, Minimize2Icon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -50,7 +47,7 @@ export function DataTableReport<TData>({
   finalDate,
   reportType,
   groupBy,
-}: DataTableReportProps<TData> & { groupBy?: keyof TData }) {
+}: DataTableReportProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
     new Set()
@@ -220,21 +217,27 @@ export function DataTableReport<TData>({
             </p>
           )}
         </div>
-        <BaseDataTable
-          table={table}
-          columns={columns}
-          groupedData={groupedData as Record<string, Row<TData>[]>}
-          collapsedGroups={collapsedGroups}
-          toggleGroup={toggleGroup}
-          showGroupTotal={true}
-          showFooter={reportType !== undefined}
-          footerContent={
-            <div className="flex items-center justify-start gap-2">
-              TOTAL FINAL:
-              <span>{getTotalValuesDisplayForData(data as CalculableTotalItemProps[])}</span>
-            </div>
-          }
-        />
+        <div className="rounded-xl border overflow-hidden">
+          <BaseDataTable
+            table={table}
+            columns={columns}
+            groupedData={groupedData as Record<string, Row<TData>[]>}
+            collapsedGroups={collapsedGroups}
+            toggleGroup={toggleGroup}
+            showGroupTotal={true}
+            showFooter={reportType !== undefined}
+            footerContent={
+              <div className="flex items-center justify-start gap-2">
+                TOTAL FINAL:
+                <span>
+                  {getTotalValuesDisplayForData(
+                    data as CalculableTotalItemProps[]
+                  )}
+                </span>
+              </div>
+            }
+          />
+        </div>
       </div>
     </div>
   );

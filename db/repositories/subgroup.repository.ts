@@ -42,7 +42,9 @@ export const subgroupRepository = {
   async checkInProducts(subgroupName: string): Promise<Pick<Product, 'id'> | null> {
     return await db.product.findFirst({
       where: {
-        subgroup: subgroupName,
+        masterProduct: {
+          subgroup: subgroupName,
+        },
       },
       select: { id: true },
     })

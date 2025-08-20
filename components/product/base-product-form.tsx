@@ -37,10 +37,16 @@ import {
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
+import { MasterItem } from "@prisma/client";
+import { SelectorMasterItem } from "../stock/master-item/selector-master-item";
+
+interface ExtendedBaseProductFormProps extends BaseProductFormProps {
+  masterItems: MasterItem[];
+}
 
 export const BaseProductForm = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
-  BaseProductFormProps
+  ExtendedBaseProductFormProps
 >(
   (
     {
@@ -50,12 +56,14 @@ export const BaseProductForm = forwardRef<
       isPending,
       submitButtonText,
       loadingText,
+      masterItems,
     },
     ref
   ) => {
     const form = useForm<z.infer<typeof CreateEditProductSchema>>({
       resolver: zodResolver(CreateEditProductSchema),
       defaultValues: defaultValues || {
+        masterProductId: "",
         name: "",
         quantity: "",
         unit: undefined,
@@ -66,9 +74,10 @@ export const BaseProductForm = forwardRef<
         supplier: undefined,
         receiptDate: undefined,
         receiver: "",
-        group: "",
-        subgroup: undefined,
         productType: undefined,
+        category: "",
+        group: "",
+        subgroup: "",
       },
     });
 
@@ -76,11 +85,17 @@ export const BaseProductForm = forwardRef<
 
     const selectedType = form.watch("productType");
     const unitSelected = form.watch("unit");
+    // const masterProductId = form.watch("masterProductId");
 
     // Determina se o input deve estar desabilitado
     const isSupplierDisabled =
       !selectedType || selectedType !== ProductType.DONATED;
     const isUnitWeightDisabled = !unitSelected || unitSelected !== UnitType.UN;
+
+    // Encontra o produto mestre selecionado
+    // const selectedMasterItem = masterItems.find(
+    //   item => item.id.toString() === masterProductId
+    // );
 
     // Efeitos para limpar valores quando campos são desabilitados
     const prevRef = useRef(isSupplierDisabled);
@@ -112,10 +127,56 @@ export const BaseProductForm = forwardRef<
       prevRefUnit.current = isUnitWeightDisabled;
     }, [isUnitWeightDisabled, form]);
 
+    // Função para lidar com a seleção do produto mestre
+    const handleMasterItemSelect = (masterItem: MasterItem) => {
+      form.setValue("masterProductId", masterItem.id.toString(), {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      // form.setValue("name", masterItem.name, {
+      //   shouldValidate: true,
+      //   shouldDirty: true,
+      // });
+      form.setValue("category", masterItem.category, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      form.setValue("group", masterItem.group, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      if (masterItem.subgroup) {
+        form.setValue("subgroup", masterItem.subgroup, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+    };
+
     return (
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
           <div className="grid grid-cols-1 gap-4 items-start">
+            {/* Seletor de Produto Mestre */}
+            <FormField
+              control={form.control}
+              name="masterProductId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Produto Mestre <span className="text-red-500">*</span></FormLabel>
+                  <FormControl>
+                    <SelectorMasterItem
+                      masterItems={masterItems}
+                      onSelect={handleMasterItemSelect}
+                      selectedId={field.value}
+                      disabled={isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="name"
@@ -125,8 +186,8 @@ export const BaseProductForm = forwardRef<
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      className="default-height"
-                      placeholder="Digite um nome"
+                      className="default-height bg-muted"
+                      placeholder="Informe o nome do produto"
                       {...field}
                     />
                   </FormControl>
@@ -134,6 +195,7 @@ export const BaseProductForm = forwardRef<
                 </FormItem>
               )}
             />
+
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
@@ -187,6 +249,7 @@ export const BaseProductForm = forwardRef<
                 )}
               />
             </div>
+
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
@@ -251,6 +314,7 @@ export const BaseProductForm = forwardRef<
                 )}
               />
             </div>
+
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
@@ -288,6 +352,7 @@ export const BaseProductForm = forwardRef<
                 )}
               />
             </div>
+
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
@@ -326,65 +391,67 @@ export const BaseProductForm = forwardRef<
                 )}
               />
             </div>
+
+            {/* Campos de categoria, grupo e subgrupo - apenas leitura */}
             <div className="grid grid-cols-1 gap-4 items-start">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoria</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.CATEGORY}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione uma categoria..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="group"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Grupo</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.GROUP}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione um grupo..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subgroup"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subgrupo (Opcional)</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.SUBGROUP}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione um subgrupo..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Categoria</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          className="default-height bg-muted"
+                          placeholder="Será preenchida automaticamente"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="group"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Grupo</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          className="default-height bg-muted"
+                          placeholder="Será preenchido automaticamente"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subgroup"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subgrupo</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          className="default-height bg-muted"
+                          placeholder="Será preenchido automaticamente"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
+
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 items-start">
               <FormField
                 control={form.control}
@@ -443,7 +510,23 @@ export const BaseProductForm = forwardRef<
                 )}
               />
             </div>
+
+            {/* Exibição das informações do produto mestre selecionado
+            {selectedMasterItem && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">
+                  Produto Mestre Selecionado:
+                </h4>
+                <div className="grid grid-cols-2 gap-2 text-sm text-blue-800">
+                  <div><strong>Nome:</strong> {selectedMasterItem.name}</div>
+                  <div><strong>Categoria:</strong> {selectedMasterItem.category}</div>
+                  <div><strong>Grupo:</strong> {selectedMasterItem.group}</div>
+                  <div><strong>Subgrupo:</strong> {selectedMasterItem.subgroup || "N/A"}</div>
+                </div>
+              </div>
+            )} */}
           </div>
+          
           <DialogFooter>
             <div className="flex gap-3">
               <Button

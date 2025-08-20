@@ -27,7 +27,7 @@ export function DataTablePagination<TData>({
         {table.getFilteredRowModel().rows.length} linha(s) selecionada.
       </div>
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full sm:w-auto">
-        <div className="flex items-center space-x-2 w-full sm:w-auto">
+        <div className="flex items-center justify-center space-x-2 w-full sm:w-auto">
           <p className="text-sm font-medium whitespace-nowrap">
             Linhas por página
           </p>
@@ -52,7 +52,7 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-center space-x-4 w-full sm:w-auto">
+        <div className="flex items-center justify-center space-x-4 w-full sm:w-auto">
           <div className="text-sm font-medium whitespace-nowrap">
             Página {table.getState().pagination.pageIndex + 1} de{" "}
             {table.getPageCount()}

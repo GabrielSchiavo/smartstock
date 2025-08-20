@@ -173,7 +173,7 @@ export const generateInventoryReport = async (): Promise<
         lot: product.lot,
         validityDate: product.validityDate,
         productType: product.productType as ProductType,
-        group: product.group,
+        group: product.masterProduct.group,
         daysUntilExpiry,
         status,
       };

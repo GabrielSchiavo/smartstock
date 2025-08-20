@@ -50,10 +50,14 @@ export const categoryRepository = {
 
   async checkCategoryUsage(categoryName: string) {
     return await db.product.findFirst({
-      where: {
-        category: categoryName,
+      include: {
+        masterProduct: true,
       },
-      select: { id: true },
+      where: {
+        masterProduct: {
+          category: categoryName,
+        },
+      },
     });
   },
 };

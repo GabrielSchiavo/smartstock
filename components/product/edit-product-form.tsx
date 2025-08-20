@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition, useRef } from "react";
 import { BaseProductForm } from "@/components/product/base-product-form";
-import { editProduct, getProductById } from "@/actions";
+import { editProduct, getMasterItems, getProductById } from "@/actions";
 import { AddEditFormProps, ProductType, ToastType, UnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
@@ -10,6 +10,7 @@ import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
+import { MasterItem } from "@prisma/client";
 
 export const EditProductForm = ({
   rowItemId,
@@ -31,7 +32,7 @@ export const EditProductForm = ({
         if (productData) {
           if (productData) {
             setInitialValues({
-              masterProductId: "",
+              masterProductId: productData.masterProductId.toString(),
               name: productData.name,
               quantity: productData.quantity?.toString(),
               unit: productData.unit as UnitType,
@@ -46,9 +47,9 @@ export const EditProductForm = ({
               supplier: productData.supplier || undefined,
               receiptDate: productData.receiptDate,
               receiver: productData.receiver,
-              category: "",
-              group: productData.group,
-              subgroup: productData.subgroup || undefined,
+              category: productData.masterProduct.category,
+              group: productData.masterProduct.group,
+              subgroup: productData.masterProduct.subgroup || undefined,
               productType: productData.productType as ProductType,
             });
           }
@@ -67,6 +68,21 @@ export const EditProductForm = ({
 
     loadProduct();
   }, [rowItemId]);
+
+    const [masterItems, setMasterItems] = useState<MasterItem[]>([]);
+  
+      // Carregue os master items no useEffect ou via server component
+     useEffect(() => {
+       async function loadMasterItems() {
+         try {
+           const items = await getMasterItems();
+           setMasterItems(items);
+         } catch (error) {
+           console.error("Erro ao carregar produtos mestres:", error);
+         }
+       }
+       loadMasterItems();
+     }, []);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
     await startTransition(async () => {
@@ -111,6 +127,7 @@ export const EditProductForm = ({
   return (
     <div className="flex flex-col gap-4">
       <BaseProductForm
+      masterItems={masterItems}
         ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}

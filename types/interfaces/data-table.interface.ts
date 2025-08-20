@@ -1,19 +1,29 @@
 import { Column, ColumnDef, Table } from "@tanstack/react-table";
 import { ReportType } from "@/types";
+import { MasterItem } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   addButton: boolean;
-  groupBy?: string & keyof TData;
+  groupBy?: string;
+  selectionMode?: boolean;
 }
 
-export interface DataTableReportProps<T> {
-  columns: ColumnDef<T>[];
-  data: T[];
+export interface DataTableReportProps<TData> {
+  columns: ColumnDef<TData>[];
+  data: TData[];
+  groupBy?: string;
   initialDate?: Date;
   finalDate?: Date;
   reportType: ReportType;
+}
+
+export interface GroupedTableProps<TData> {
+  table: Table<TData>;
+  groupBy?: string;
+  collapsedGroups: Set<string>;
+  setCollapsedGroups: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 
 export interface DataTableColumnHeaderProps<TData, TValue>
@@ -31,4 +41,10 @@ export interface DataTableToolbarProps<TData> {
 
 export interface DataTableFunctionsProps<TData> {
   table: Table<TData>;
+}
+
+export interface ColumnsTableMasterItemsProps {
+  isSelectingAction?: boolean;
+  onSelect?: (masterItem: MasterItem) => void;
+  selectedMasterProductId?: string;
 }

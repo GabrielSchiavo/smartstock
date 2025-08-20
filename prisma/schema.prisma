@@ -139,8 +139,8 @@ model MasterItem {
 model Product {
   id Int @id @default(autoincrement())
 
-  masterProduct   MasterItem? @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
-  masterProductId Int?
+  masterProduct   MasterItem @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
+  masterProductId Int
 
   name             String      @db.VarChar(150)
   quantity         Float       @db.Real
@@ -153,10 +153,6 @@ model Product {
   receiver         String      @db.VarChar(150)
   supplier         String?     @db.VarChar(150)
   productType      ProductType
-
-  category String? @db.VarChar(50)
-  group    String  @db.VarChar(50)
-  subgroup String? @db.VarChar(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

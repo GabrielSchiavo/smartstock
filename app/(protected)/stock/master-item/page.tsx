@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function StockFoodPage() {
   const masterItems = await getMasterItems();
+  const columns = columnsTableMasterItems({});
 
   return (
     <RoleGate
@@ -28,7 +29,7 @@ export default async function StockFoodPage() {
             <DataTableMasterItems
               addButton={true}
               data={masterItems}
-              columns={columnsTableMasterItems}
+              columns={columns}
               groupBy="category"
             />
           </div>

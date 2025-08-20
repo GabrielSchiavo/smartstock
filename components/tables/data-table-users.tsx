@@ -15,10 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import {
-  Maximize2Icon,
-  Minimize2Icon,
-} from "lucide-react";
+import { Maximize2Icon, Minimize2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -28,6 +25,7 @@ import {
 } from "@/components/ui/tooltip";
 import { DataTableProps, TableType } from "@/types";
 import { BaseDataTable } from "./base-data-table";
+import { useGroupedTable } from "@/hooks/use-grouped-table";
 
 export function DataTableUsers<TData, TValue>({
   columns,
@@ -65,47 +63,13 @@ export function DataTableUsers<TData, TValue>({
     },
   });
 
-  // Extract row model to a separate variable for the dependency array
-  const rowModel = table.getRowModel();
-
-  const groupedData = React.useMemo(() => {
-    if (!groupBy) return null;
-
-    return rowModel.rows.reduce((acc: Record<string, Row<TData>[]>, row) => {
-      const groupValue = row.original[groupBy];
-      const groupKey = String(groupValue);
-
-      if (!acc[groupKey]) {
-        acc[groupKey] = [];
-      }
-      acc[groupKey].push(row);
-      return acc;
-    }, {});
-  }, [rowModel.rows, groupBy]);
-
-  const toggleGroup = (groupName: string) => {
-    setCollapsedGroups((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(groupName)) {
-        newSet.delete(groupName);
-      } else {
-        newSet.add(groupName);
-      }
-      return newSet;
-    });
-  };
-
-  const toggleAllGroups = () => {
-    if (!groupedData) return;
-
-    if (collapsedGroups.size === Object.keys(groupedData).length) {
-      // All groups are collapsed, so expand all
-      setCollapsedGroups(new Set());
-    } else {
-      // Collapse all groups
-      setCollapsedGroups(new Set(Object.keys(groupedData)));
-    }
-  };
+  // Agrupa os dados se groupBy for especificado
+  const { groupedData, toggleGroup, toggleAllGroups } = useGroupedTable({
+    table,
+    groupBy,
+    collapsedGroups,
+    setCollapsedGroups,
+  });
 
   return (
     <div className="flex flex-col w-full gap-4">

@@ -1,7 +1,17 @@
 import React from "react";
-import { Row, Table } from "@tanstack/react-table"; // Ajuste os imports conforme sua versão do TanStack Table
+import { Row, Table } from "@tanstack/react-table";
 import { calculateTotals, createTotalSummary } from "@/lib/calculate-totals";
 import { CalculableTotalItemProps } from "@/types";
+
+// Função auxiliar para acessar propriedades aninhadas de forma type-safe
+function getNestedProperty(obj: unknown, path: string): unknown {
+  return path.split('.').reduce((current, key) => {
+    if (current && typeof current === 'object' && key in current) {
+      return (current as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
+}
 
 export function getGroupedData<TData>(
   table: Table<TData>,
@@ -12,9 +22,18 @@ export function getGroupedData<TData>(
   if (!groupBy) return null;
 
   return rowModel.rows.reduce((acc: Record<string, Row<TData>[]>, row) => {
-    const groupValue = row.original[groupBy as keyof TData];
-    const groupKey = String(groupValue);
-
+    let groupValue: unknown;
+    
+    if (groupBy.includes('.')) {
+      // Para chaves aninhadas como "masterProduct.group"
+      groupValue = getNestedProperty(row.original, groupBy);
+    } else {
+      // Para chaves simples
+      groupValue = (row.original as Record<string, unknown>)[groupBy];
+    }
+    
+    const groupKey = String(groupValue || 'Sem grupo');
+    
     if (!acc[groupKey]) {
       acc[groupKey] = [];
     }

@@ -123,6 +123,7 @@ export function DataTableMasterItems<TData, TValue>({
           showFooter={false}
         />
       </div>
+      
       <DataTablePagination table={table} />
     </div>
   );

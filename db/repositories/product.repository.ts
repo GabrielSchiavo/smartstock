@@ -2,11 +2,11 @@ import {
   ProductCountType,
   ProductResponse,
   ProductUpdateResponse,
+  ProductWithMasterItemResponse,
   UnitType,
 } from "@/types";
 import { db } from "@/lib/db";
 import { ProductType } from "@/types";
-import { Product } from "@prisma/client";
 
 export const productRepository = {
   async create(data: ProductResponse): Promise<void> {
@@ -24,11 +24,17 @@ export const productRepository = {
       data.supplier = null;
     }
 
-    await db.product.create({ data });
+    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterItem
+    const { category, group, subgroup, ...productData } = data;
+
+    await db.product.create({ data: productData });
   },
 
-  async findAll(): Promise<Product[]> {
+  async findAll(): Promise<ProductWithMasterItemResponse[]> {
     return await db.product.findMany({
+      include: {
+        masterProduct: true,
+      },
       orderBy: { id: "asc" },
     });
   },
@@ -62,11 +68,14 @@ export const productRepository = {
     return db.product.count();
   },
 
-  async findExpired(): Promise<Product[]> {
+  async findExpired(): Promise<ProductWithMasterItemResponse[]> {
     const currentDate = new Date();
     return await db.product.findMany({
       where: {
         validityDate: { lte: currentDate }, // Incluindo o dia atual
+      },
+      include: {
+        masterProduct: true,
       },
       orderBy: {
         validityDate: "asc",
@@ -74,7 +83,7 @@ export const productRepository = {
     });
   },
 
-  async findAboutToExpire(): Promise<Product[]> {
+  async findAboutToExpire(): Promise<ProductWithMasterItemResponse[]> {
     const limitDate = new Date();
     limitDate.setDate(limitDate.getDate() + 30);
 
@@ -84,6 +93,9 @@ export const productRepository = {
           lt: limitDate,
           gt: new Date(), // Sem incluir o dia atual
         },
+      },
+      include: {
+        masterProduct: true,
       },
       orderBy: {
         validityDate: "asc",
@@ -97,13 +109,19 @@ export const productRepository = {
     });
   },
 
-  async findById(id: number): Promise<Product | null> {
-    return await db.product.findUnique({
+  async findById(id: number): Promise<ProductWithMasterItemResponse | null> {
+    return (await db.product.findUnique({
       where: { id },
-    });
+      include: {
+        masterProduct: true,
+      },
+    })) as ProductWithMasterItemResponse | null;
   },
 
-  async update(id: number, data: ProductUpdateResponse): Promise<Product> {
+  async update(
+    id: number,
+    data: ProductUpdateResponse
+  ): Promise<ProductWithMasterItemResponse> {
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
@@ -118,20 +136,35 @@ export const productRepository = {
       data.supplier = null;
     }
 
-    return await db.product.update({
+    // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterItem
+    const { category, group, subgroup, ...productData } = data;
+
+    return (await db.product.update({
       where: { id },
-      data,
-    });
+      data: productData,
+      include: {
+        masterProduct: true,
+      },
+    })) as ProductWithMasterItemResponse;
   },
 
-  async findByValidity(initialDate: Date, finalDate: Date) {
+  async findByValidity(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<ProductWithMasterItemResponse[]> {
     return db.product.findMany({
       where: { validityDate: { gte: initialDate, lte: finalDate } },
+      include: {
+        masterProduct: true,
+      },
       orderBy: { validityDate: "asc" },
     });
   },
 
-  async findDonated(initialDate: Date, finalDate: Date) {
+  async findDonated(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<ProductWithMasterItemResponse[]> {
     return db.product.findMany({
       where: {
         AND: [
@@ -139,22 +172,34 @@ export const productRepository = {
           { receiptDate: { gte: initialDate, lte: finalDate } },
         ],
       },
-      orderBy: { receiptDate: "asc" },
-    });
-  },
-
-  async findPurchased(initialDate: Date, finalDate: Date) {
-    return db.product.findMany({
-      where: {
-        productType: ProductType.PURCHASED,
-        receiptDate: { gte: initialDate, lte: finalDate },
+      include: {
+        masterProduct: true,
       },
       orderBy: { receiptDate: "asc" },
     });
   },
 
-  async findInventory() {
+  async findPurchased(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<ProductWithMasterItemResponse[]> {
     return db.product.findMany({
+      where: {
+        productType: ProductType.PURCHASED,
+        receiptDate: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        masterProduct: true,
+      },
+      orderBy: { receiptDate: "asc" },
+    });
+  },
+
+  async findInventory(): Promise<ProductWithMasterItemResponse[]> {
+    return db.product.findMany({
+      include: {
+        masterProduct: true,
+      },
       orderBy: { validityDate: "asc" },
     });
   },

@@ -2,15 +2,20 @@
 
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { MasterItem } from "@prisma/client";
-import { ColumnMetaProps } from "@/types";
+import { ColumnMetaProps, ColumnsTableMasterItemsProps } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { EditMasterItemForm } from "@/components/stock/master-item/edit-master-item-form";
 import { deleteMasterItem } from "@/actions";
 
 // Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<MasterItem> = (row, columnId, filterValue) => {
+const multiColumnFilterFn: FilterFn<MasterItem> = (
+  row,
+  columnId,
+  filterValue
+) => {
   // Concatenate the values from multiple columns into a single string
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.baseUnit} ${row.original.category} ${row.original.group} ${row.original.subgroup}`;
 
@@ -18,7 +23,11 @@ const multiColumnFilterFn: FilterFn<MasterItem> = (row, columnId, filterValue) =
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columnsTableMasterItems: ColumnDef<MasterItem>[] = [
+export const columnsTableMasterItems = ({
+  isSelectingAction = false,
+  onSelect,
+  selectedMasterProductId,
+}: ColumnsTableMasterItemsProps): ColumnDef<MasterItem>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -33,15 +42,17 @@ export const columnsTableMasterItems: ColumnDef<MasterItem>[] = [
         />
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center justify-center">
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -117,14 +128,29 @@ export const columnsTableMasterItems: ColumnDef<MasterItem>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      return (
-        <DataTableDropdown
-          entity="Item Mestre"
-          rowItemId={row.original.id as number}
-          formComponent={EditMasterItemForm}
-          deleteAction={deleteMasterItem}
-        />
-      );
+      if (isSelectingAction && onSelect) {
+        const isSelected =
+          selectedMasterProductId === row.original.id.toString();
+        return (
+          <Button
+            onClick={() => onSelect(row.original)}
+            variant={isSelected ? "outline" : "default"}
+            size="sm"
+            disabled={isSelected}
+          >
+            {isSelected ? "Selecionado" : "Selecionar"}
+          </Button>
+        );
+      } else {
+        return (
+          <DataTableDropdown
+            entity="Item Mestre"
+            rowItemId={row.original.id as number}
+            formComponent={EditMasterItemForm}
+            deleteAction={deleteMasterItem}
+          />
+        );
+      }
     },
   },
 ];

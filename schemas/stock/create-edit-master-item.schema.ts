@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { UnitType } from "@/types";
 
-export const CreateEditMasterItemSchema = z
+export const CreateEditMasterProductSchema = z
   .object({
     name: z
       .string()

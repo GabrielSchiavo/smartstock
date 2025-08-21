@@ -2,7 +2,7 @@ import {
   ProductCountType,
   ProductResponse,
   ProductUpdateResponse,
-  ProductWithMasterItemResponse,
+  ProductWithMasterProductResponse,
   UnitType,
 } from "@/types";
 import { db } from "@/lib/db";
@@ -30,7 +30,7 @@ export const productRepository = {
     await db.product.create({ data: productData });
   },
 
-  async findAll(): Promise<ProductWithMasterItemResponse[]> {
+  async findAll(): Promise<ProductWithMasterProductResponse[]> {
     return await db.product.findMany({
       include: {
         masterProduct: true,
@@ -68,7 +68,7 @@ export const productRepository = {
     return db.product.count();
   },
 
-  async findExpired(): Promise<ProductWithMasterItemResponse[]> {
+  async findExpired(): Promise<ProductWithMasterProductResponse[]> {
     const currentDate = new Date();
     return await db.product.findMany({
       where: {
@@ -83,7 +83,7 @@ export const productRepository = {
     });
   },
 
-  async findAboutToExpire(): Promise<ProductWithMasterItemResponse[]> {
+  async findAboutToExpire(): Promise<ProductWithMasterProductResponse[]> {
     const limitDate = new Date();
     limitDate.setDate(limitDate.getDate() + 30);
 
@@ -109,19 +109,19 @@ export const productRepository = {
     });
   },
 
-  async findById(id: number): Promise<ProductWithMasterItemResponse | null> {
+  async findById(id: number): Promise<ProductWithMasterProductResponse | null> {
     return (await db.product.findUnique({
       where: { id },
       include: {
         masterProduct: true,
       },
-    })) as ProductWithMasterItemResponse | null;
+    })) as ProductWithMasterProductResponse | null;
   },
 
   async update(
     id: number,
     data: ProductUpdateResponse
-  ): Promise<ProductWithMasterItemResponse> {
+  ): Promise<ProductWithMasterProductResponse> {
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
@@ -145,13 +145,13 @@ export const productRepository = {
       include: {
         masterProduct: true,
       },
-    })) as ProductWithMasterItemResponse;
+    })) as ProductWithMasterProductResponse;
   },
 
   async findByValidity(
     initialDate: Date,
     finalDate: Date
-  ): Promise<ProductWithMasterItemResponse[]> {
+  ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: { validityDate: { gte: initialDate, lte: finalDate } },
       include: {
@@ -164,7 +164,7 @@ export const productRepository = {
   async findDonated(
     initialDate: Date,
     finalDate: Date
-  ): Promise<ProductWithMasterItemResponse[]> {
+  ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
         AND: [
@@ -182,7 +182,7 @@ export const productRepository = {
   async findPurchased(
     initialDate: Date,
     finalDate: Date
-  ): Promise<ProductWithMasterItemResponse[]> {
+  ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
         productType: ProductType.PURCHASED,
@@ -195,7 +195,7 @@ export const productRepository = {
     });
   },
 
-  async findInventory(): Promise<ProductWithMasterItemResponse[]> {
+  async findInventory(): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       include: {
         masterProduct: true,

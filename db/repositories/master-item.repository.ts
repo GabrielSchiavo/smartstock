@@ -1,9 +1,9 @@
-import { MasterItemResponse, MasterItemUpdateResponse } from "@/types";
+import { MasterProductResponse, MasterProductUpdateResponse } from "@/types";
 import { db } from "@/lib/db";
 import { MasterProduct } from "@prisma/client";
 
-export const masterItemRepository = {
-  async create(data: MasterItemResponse): Promise<void> {
+export const masterProductRepository = {
+  async create(data: MasterProductResponse): Promise<void> {
     await db.masterProduct.create({ data });
   },
 
@@ -13,7 +13,7 @@ export const masterItemRepository = {
     });
   },
 
-  async countMasterItems(): Promise<number> {
+  async countMasterProducts(): Promise<number> {
     return db.masterProduct.count()
   },
 
@@ -29,7 +29,7 @@ export const masterItemRepository = {
     });
   },
 
-  async update(id: number, data: MasterItemUpdateResponse): Promise<MasterProduct> {
+  async update(id: number, data: MasterProductUpdateResponse): Promise<MasterProduct> {
     return await db.masterProduct.update({
       where: { id },
       data,

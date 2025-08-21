@@ -1,4 +1,4 @@
-import { SettingForm } from "@/components/setting/setting-form";
+import { FormSetting } from "@/components/setting/form-setting";
 import { ToolTipHelpSetting } from "@/components/setting/tool-tip-help-setting";
 import { ROUTES } from "@/config/routes";
 import { Metadata } from "next";
@@ -28,7 +28,7 @@ export default function SettingsPage() {
                   Alterações quando terminar.
                 </p>
               </div>
-              <SettingForm />
+              <FormSetting />
             </div>
           </div>
         </div>

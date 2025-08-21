@@ -1,26 +1,26 @@
 "use client";
 
 import { useRef, useTransition } from "react";
-import { BaseMasterItemForm } from "@/components/stock/master-item/base-master-item-form";
-import { registerMasterItem } from "@/actions";
-import { AddEditFormProps, ToastType } from "@/types";
+import { FormBaseMasterProduct } from "@/components/stock/master-product/form-base-master-product";
+import { registerMasterProduct } from "@/actions";
+import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
-import { CreateEditMasterItemSchema } from "@/schemas";
+import { CreateEditMasterProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 
-export const AddMasterItemForm = ({
+export const FormAddMasterProduct = ({
   onShouldInvalidate,
   onCancel,
-}: AddEditFormProps) => {
+}: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditMasterItemSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
 
-  const onSubmit = async (values: z.infer<typeof CreateEditMasterItemSchema>) => {
+  const onSubmit = async (values: z.infer<typeof CreateEditMasterProductSchema>) => {
     await startTransition(async () => {
       try {
-        const response = await registerMasterItem(values);
+        const response = await registerMasterProduct(values);
 
         if (response.success === true) {
           formRef.current?.reset();
@@ -44,7 +44,7 @@ export const AddMasterItemForm = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <BaseMasterItemForm
+      <FormBaseMasterProduct
         onSubmit={onSubmit}
         onCancel={onCancel}
         isPending={isPending}

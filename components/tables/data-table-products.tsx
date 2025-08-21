@@ -29,7 +29,7 @@ import {
 import { CalculableTotalItemProps, DataTableProps, TableType } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
-import { BaseDataTable } from "./base-data-table";
+import { BaseDataTable } from "@/components/tables/base-data-table";
 
 export function DataTableProducts<TData, TValue>({
   columns,

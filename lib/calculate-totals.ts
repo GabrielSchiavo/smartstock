@@ -1,5 +1,5 @@
 import { CalculableTotalItemProps, LocaleType, TotalValuesProps, TotalValuesWithUnitsProps, UnitType } from "@/types";
-import { normalizeValue } from "./unit-conversion";
+import { normalizeValue } from "@/lib/unit-conversion";
 
 /**
  * Calcula os totais normalizados de peso, volume e unidades para uma lista de itens

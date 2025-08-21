@@ -1,7 +1,7 @@
 import { UnitType } from "@/types";
 import { MasterProduct } from "@prisma/client";
 
-export type MasterItemResponse = {
+export type MasterProductResponse = {
   name: string;
   baseUnit: UnitType;
   category: string;
@@ -9,11 +9,11 @@ export type MasterItemResponse = {
   subgroup?: string | null;
 };
 
-export interface MasterItemUpdateResponse extends MasterItemResponse {
+export interface MasterProductUpdateResponse extends MasterProductResponse {
   updatedAt: Date;
 }
 
-export type MasterItemOperationResponse = {
+export type MasterProductOperationResponse = {
   success: boolean;
   title: string;
   description?: string;

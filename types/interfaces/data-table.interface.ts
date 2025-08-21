@@ -43,7 +43,7 @@ export interface DataTableFunctionsProps<TData> {
   table: Table<TData>;
 }
 
-export interface ColumnsTableMasterItemsProps {
+export interface ColumnsTableMasterProductsProps {
   isSelectingAction?: boolean;
   onSelect?: (masterProduct: MasterProduct) => void;
   selectedMasterProductId?: string;

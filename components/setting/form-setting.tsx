@@ -24,7 +24,7 @@ import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 import { CopyToClipboard } from "@/components/utils/copy-to-clipboard";
 
-export const SettingForm = () => {
+export const FormSetting = () => {
   const user = useCurrentUser();
 
   const { update } = useSession();

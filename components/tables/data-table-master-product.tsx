@@ -28,9 +28,9 @@ import {
 } from "@/components/ui/tooltip";
 import { DataTableProps, TableType } from "@/types";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
-import { BaseDataTable } from "./base-data-table";
+import { BaseDataTable } from "@/components/tables/base-data-table";
 
-export function DataTableMasterItems<TData, TValue>({
+export function DataTableMasterProducts<TData, TValue>({
   columns,
   data,
   addButton,

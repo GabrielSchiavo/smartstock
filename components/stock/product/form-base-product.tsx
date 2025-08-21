@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
 import {
-  BaseProductFormProps,
+  FormBaseProductProps,
   LocaleType,
   ProductType,
   ResourceType,
@@ -38,15 +38,15 @@ import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 import { MasterProduct } from "@prisma/client";
-import { SelectorMasterItem } from "../stock/master-item/selector-master-item";
+import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 
-interface ExtendedBaseProductFormProps extends BaseProductFormProps {
-  masterItems: MasterProduct[];
+interface ExtendedFormBaseProductProps extends FormBaseProductProps {
+  masterProducts: MasterProduct[];
 }
 
-export const BaseProductForm = forwardRef<
+export const FormBaseProduct = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
-  ExtendedBaseProductFormProps
+  ExtendedFormBaseProductProps
 >(
   (
     {
@@ -56,7 +56,7 @@ export const BaseProductForm = forwardRef<
       isPending,
       submitButtonText,
       loadingText,
-      masterItems,
+      masterProducts,
     },
     ref
   ) => {
@@ -93,7 +93,7 @@ export const BaseProductForm = forwardRef<
     const isUnitWeightDisabled = !unitSelected || unitSelected !== UnitType.UN;
 
     // Encontra o produto mestre selecionado
-    // const selectedMasterItem = masterItems.find(
+    // const selectedMasterProduct = masterProducts.find(
     //   item => item.id.toString() === masterProductId
     // );
 
@@ -128,7 +128,7 @@ export const BaseProductForm = forwardRef<
     }, [isUnitWeightDisabled, form]);
 
     // Função para lidar com a seleção do produto mestre
-    const handleMasterItemSelect = (masterProduct: MasterProduct) => {
+    const handleMasterProductSelect = (masterProduct: MasterProduct) => {
       form.setValue("masterProductId", masterProduct.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
@@ -165,9 +165,9 @@ export const BaseProductForm = forwardRef<
                 <FormItem>
                   <FormLabel>Produto Mestre <span className="text-red-500">*</span></FormLabel>
                   <FormControl>
-                    <SelectorMasterItem
-                      masterItems={masterItems}
-                      onSelect={handleMasterItemSelect}
+                    <SelectorMasterProduct
+                      masterProducts={masterProducts}
+                      onSelect={handleMasterProductSelect}
                       selectedId={field.value}
                       disabled={isPending}
                     />
@@ -512,16 +512,16 @@ export const BaseProductForm = forwardRef<
             </div>
 
             {/* Exibição das informações do produto mestre selecionado
-            {selectedMasterItem && (
+            {selectedMasterProduct && (
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <h4 className="font-medium text-blue-900 mb-2">
                   Produto Mestre Selecionado:
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-sm text-blue-800">
-                  <div><strong>Nome:</strong> {selectedMasterItem.name}</div>
-                  <div><strong>Categoria:</strong> {selectedMasterItem.category}</div>
-                  <div><strong>Grupo:</strong> {selectedMasterItem.group}</div>
-                  <div><strong>Subgrupo:</strong> {selectedMasterItem.subgroup || "N/A"}</div>
+                  <div><strong>Nome:</strong> {selectedMasterProduct.name}</div>
+                  <div><strong>Categoria:</strong> {selectedMasterProduct.category}</div>
+                  <div><strong>Grupo:</strong> {selectedMasterProduct.group}</div>
+                  <div><strong>Subgrupo:</strong> {selectedMasterProduct.subgroup || "N/A"}</div>
                 </div>
               </div>
             )} */}
@@ -559,4 +559,4 @@ export const BaseProductForm = forwardRef<
   }
 );
 
-BaseProductForm.displayName = "BaseProductForm";
+FormBaseProduct.displayName = "FormBaseProduct";

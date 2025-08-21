@@ -18,12 +18,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
 import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
-import { BaseUserFormProps, ToastType, UserType } from "@/types";
+import { FormBaseUserProps, ToastType, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { useSession } from "next-auth/react";
 
-export const BaseUserForm = <T extends z.ZodTypeAny>({
+export const FormBaseUser = <T extends z.ZodTypeAny>({
   schema,
   defaultValues,
   onSubmit,
@@ -33,7 +33,7 @@ export const BaseUserForm = <T extends z.ZodTypeAny>({
   loadingText,
   hidePasswordInputs = false,
   isEditForm = false,
-}: BaseUserFormProps<T>) => {
+}: FormBaseUserProps<T>) => {
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 

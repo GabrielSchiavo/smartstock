@@ -4,7 +4,7 @@ import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { productRepository } from "@/db";
-import { ProductCountType, ProductOperationResponse, ProductWithMasterItemResponse } from "@/types";
+import { ProductCountType, ProductOperationResponse, ProductWithMasterProductResponse } from "@/types";
 
 export const registerProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
@@ -115,7 +115,7 @@ export const deleteProduct = async (id: number) => {
   }
 };
 
-export const getProductById = async (id: number): Promise<ProductWithMasterItemResponse> => {
+export const getProductById = async (id: number): Promise<ProductWithMasterProductResponse> => {
   try {
     const product = await productRepository.findById(id);
     if (!product) {
@@ -128,7 +128,7 @@ export const getProductById = async (id: number): Promise<ProductWithMasterItemR
   }
 };
 
-export const getProducts = async (): Promise<ProductWithMasterItemResponse[]> => {
+export const getProducts = async (): Promise<ProductWithMasterProductResponse[]> => {
   try {
     return await productRepository.findAll();
   } catch (error) {
@@ -158,7 +158,7 @@ export async function getProductsCount(type: ProductCountType = ProductCountType
   }
 }
 
-export const getExpiredProducts = async (): Promise<ProductWithMasterItemResponse[]> => {
+export const getExpiredProducts = async (): Promise<ProductWithMasterProductResponse[]> => {
   try {
     return await productRepository.findExpired();
   } catch (error) {
@@ -167,7 +167,7 @@ export const getExpiredProducts = async (): Promise<ProductWithMasterItemRespons
   }
 };
 
-export const getProductsToExpire = async (): Promise<ProductWithMasterItemResponse[]> => {
+export const getProductsToExpire = async (): Promise<ProductWithMasterProductResponse[]> => {
   try {
     return await productRepository.findAboutToExpire();
   } catch (error) {

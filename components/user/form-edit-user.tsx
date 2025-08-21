@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BaseUserForm } from "@/components/user/base-user-form";
+import { FormBaseUser } from "@/components/user/form-base-user";
 import { editUser, getUserById } from "@/actions";
-import { AddEditFormProps, ToastType } from "@/types";
+import { FormAddEditProps, ToastType } from "@/types";
 import { UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { MessageError } from "@/components/utils/message-error";
@@ -11,11 +11,11 @@ import { EditUserSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 
-export const EditUserForm = ({
+export const FormEditUser = ({
   rowItemId,
   onShouldInvalidate,
   onCancel,
-}: AddEditFormProps) => {
+}: FormAddEditProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
     typeof EditUserSchema
@@ -67,7 +67,7 @@ export const EditUserForm = ({
   }
 
   return (
-    <BaseUserForm
+    <FormBaseUser
       schema={EditUserSchema}
       defaultValues={initialValues}
       onSubmit={(values) => editUser(rowItemId as string, values)}

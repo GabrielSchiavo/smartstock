@@ -19,7 +19,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "lucide-react";
-import { getTotalValuesDisplayForData } from "../utils/group-table";
+import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { CalculableTotalItemProps } from "@/types";
 
 // Type guard to check if data can be used for totals

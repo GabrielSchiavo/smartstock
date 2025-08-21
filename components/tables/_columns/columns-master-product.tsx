@@ -5,10 +5,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { MasterProduct } from "@prisma/client";
-import { ColumnMetaProps, ColumnsTableMasterItemsProps } from "@/types";
+import { ColumnMetaProps, ColumnsTableMasterProductsProps } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { EditMasterItemForm } from "@/components/stock/master-item/edit-master-item-form";
-import { deleteMasterItem } from "@/actions";
+import { FormEditMasterProduct } from "@/components/stock/master-product/form-edit-master-product";
+import { deleteMasterProduct } from "@/actions";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<MasterProduct> = (
@@ -23,11 +23,11 @@ const multiColumnFilterFn: FilterFn<MasterProduct> = (
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columnsTableMasterItems = ({
+export const columnsTableMasterProducts = ({
   isSelectingAction = false,
   onSelect,
   selectedMasterProductId,
-}: ColumnsTableMasterItemsProps): ColumnDef<MasterProduct>[] => [
+}: ColumnsTableMasterProductsProps): ColumnDef<MasterProduct>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -144,10 +144,10 @@ export const columnsTableMasterItems = ({
       } else {
         return (
           <DataTableDropdown
-            entity="Item Mestre"
+            entity="Produto Mestre"
             rowItemId={row.original.id as number}
-            formComponent={EditMasterItemForm}
-            deleteAction={deleteMasterItem}
+            formComponent={FormEditMasterProduct}
+            deleteAction={deleteMasterProduct}
           />
         );
       }

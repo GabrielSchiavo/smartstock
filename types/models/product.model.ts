@@ -20,7 +20,7 @@ export type ProductResponse = {
 };
 
 // Tipo estendido para produto com informações do produto mestre
-export type ProductWithMasterItemResponse = Product & {
+export type ProductWithMasterProductResponse = Product & {
   masterProduct: MasterProduct;
 };
 

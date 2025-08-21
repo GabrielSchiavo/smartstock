@@ -13,26 +13,26 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { MasterProduct } from "@prisma/client";
-import { DataTableMasterItems } from "@/components/tables/data-table-master-item";
-import { columnsTableMasterItems } from "@/components/tables/_columns/columns-master-item";
+import { DataTableMasterProducts } from "@/components/tables/data-table-master-product";
+import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-master-product";
 import { Input } from "@/components/ui/input";
 
-interface SelectorMasterItemProps {
-  masterItems: MasterProduct[];
+interface SelectorMasterProductProps {
+  masterProducts: MasterProduct[];
   onSelect: (masterProduct: MasterProduct) => void;
   selectedId?: string;
   disabled?: boolean;
 }
 
-export function SelectorMasterItem({
-  masterItems,
+export function SelectorMasterProduct({
+  masterProducts,
   onSelect,
   selectedId,
   disabled,
-}: SelectorMasterItemProps) {
+}: SelectorMasterProductProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedItem = masterItems.find(
+  const selectedItem = masterProducts.find(
     (item) => item.id.toString() === selectedId
   );
 
@@ -41,7 +41,7 @@ export function SelectorMasterItem({
     setIsOpen(false);
   };
 
-  const columns = columnsTableMasterItems({
+  const columns = columnsTableMasterProducts({
     isSelectingAction: true,
     onSelect: handleSelect,
     selectedMasterProductId: selectedId,
@@ -71,9 +71,9 @@ export function SelectorMasterItem({
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden p-1">
-          <DataTableMasterItems
+          <DataTableMasterProducts
             addButton={false}
-            data={masterItems}
+            data={masterProducts}
             columns={columns}
             groupBy="category"
           />

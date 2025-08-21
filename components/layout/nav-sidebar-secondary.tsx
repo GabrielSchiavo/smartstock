@@ -48,12 +48,12 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Item Mestre"}
-                className={`${pathname === ROUTES.PAGE_STOCK_MASTER_ITEM ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={"Produto Mestre"}
+                className={`${pathname === ROUTES.PAGE_STOCK_MASTER_PRODUCT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
-                <Link href={ROUTES.PAGE_STOCK_MASTER_ITEM}>
+                <Link href={ROUTES.PAGE_STOCK_MASTER_PRODUCT}>
                   <PackageIcon />
-                  <span>Item Mestre</span>
+                  <span>Produto Mestre</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

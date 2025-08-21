@@ -1,4 +1,4 @@
-import { CreateEditMasterItemSchema, CreateEditProductSchema } from "@/schemas";
+import { CreateEditMasterProductSchema, CreateEditProductSchema } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { ModeType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
@@ -26,17 +26,17 @@ export interface OptionProps {
   name: string;
 }
 
-export interface AddEditFormProps {
+export interface FormAddEditProps {
   rowItemId?: string | number;
   onOpenChange?: (open: boolean) => void;
   onShouldInvalidate?: (shouldInvalidate: boolean) => void;
   onCancel?: () => void;
 }
 
-export interface AddEditDialogProps extends AddEditFormProps {
+export interface AddEditDialogProps extends FormAddEditProps {
   mode: ModeType;
   entity: string;
-  formComponent: React.ComponentType<AddEditFormProps>;
+  formComponent: React.ComponentType<FormAddEditProps>;
   triggerClassName?: string;
   children?: ReactNode;
 }
@@ -48,20 +48,20 @@ export interface DeleteRegisterProps<T extends string | number> {
 }
 
 export interface DataTableDropdownProps<T extends string | number> extends DeleteRegisterProps<T> {
-  formComponent: React.ComponentType<AddEditFormProps>;
+  formComponent: React.ComponentType<FormAddEditProps>;
   entity: string;
 }
 
-export interface BaseMasterItemFormProps {
-  defaultValues?: z.infer<typeof CreateEditMasterItemSchema>;
-  onSubmit: (values: z.infer<typeof CreateEditMasterItemSchema>) => Promise<void>;
+export interface FormBaseMasterProductProps {
+  defaultValues?: z.infer<typeof CreateEditMasterProductSchema>;
+  onSubmit: (values: z.infer<typeof CreateEditMasterProductSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
   loadingText: string;
 }
 
-export interface BaseProductFormProps {
+export interface FormBaseProductProps {
   defaultValues?: z.infer<typeof CreateEditProductSchema>;
   onSubmit: (values: z.infer<typeof CreateEditProductSchema>) => Promise<void>;
   onCancel?: () => void;
@@ -70,7 +70,7 @@ export interface BaseProductFormProps {
   loadingText: string;
 }
 
-export interface BaseUserFormProps<T extends z.ZodTypeAny> {
+export interface FormBaseUserProps<T extends z.ZodTypeAny> {
   schema: T;
   defaultValues?: Partial<z.infer<T>>;
   onSubmit: (values: z.infer<T>) => Promise<{

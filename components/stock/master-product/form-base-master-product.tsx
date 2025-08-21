@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateEditMasterItemSchema } from "@/schemas";
+import { CreateEditMasterProductSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,16 +26,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  BaseMasterItemFormProps,
+  FormBaseMasterProductProps,
   ResourceType,
   UnitType,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 
-export const BaseMasterItemForm = forwardRef<
-  UseFormReturn<z.infer<typeof CreateEditMasterItemSchema>>,
-  BaseMasterItemFormProps
+export const FormBaseMasterProduct = forwardRef<
+  UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>,
+  FormBaseMasterProductProps
 >(
   (
     {
@@ -48,8 +48,8 @@ export const BaseMasterItemForm = forwardRef<
     },
     ref
   ) => {
-    const form = useForm<z.infer<typeof CreateEditMasterItemSchema>>({
-      resolver: zodResolver(CreateEditMasterItemSchema),
+    const form = useForm<z.infer<typeof CreateEditMasterProductSchema>>({
+      resolver: zodResolver(CreateEditMasterProductSchema),
       defaultValues: defaultValues || {
         name: "",
         baseUnit: undefined,
@@ -209,4 +209,4 @@ export const BaseMasterItemForm = forwardRef<
   }
 );
 
-BaseMasterItemForm.displayName = "BaseMasterItemForm";
+FormBaseMasterProduct.displayName = "FormBaseMasterProduct";

@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from "@/components/tables/_components/data-tabl
 import { User } from "@prisma/client";
 import { ColumnMetaProps, UserType } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { EditUserForm } from "@/components/user/edit-user-form";
+import { FormEditUser } from "@/components/user/form-edit-user";
 import { deleteUser } from "@/actions";
 
 // Custom filter function for multi-column searching
@@ -136,7 +136,7 @@ export const columnsTableUsers: ColumnDef<User>[] = [
         <DataTableDropdown
           entity="Usuário"
           rowItemId={row.original.id as string}
-          formComponent={EditUserForm}
+          formComponent={FormEditUser}
           deleteAction={deleteUser}
         />
       );

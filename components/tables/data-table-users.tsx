@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DataTableProps, TableType } from "@/types";
-import { BaseDataTable } from "./base-data-table";
+import { BaseDataTable } from "@/components/tables/base-data-table";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 
 export function DataTableUsers<TData, TValue>({

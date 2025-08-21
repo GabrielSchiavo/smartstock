@@ -7,15 +7,15 @@ import {
   ColumnMetaProps,
   LocaleType,
   ProductType,
-  ProductWithMasterItemResponse,
+  ProductWithMasterProductResponse,
 } from "@/types";
 import { formatDateToLocale } from "@/lib/date-utils";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { EditProductForm } from "@/components/product/edit-product-form";
+import { FormEditProduct } from "@/components/stock/product/form-edit-product";
 import { deleteProduct } from "@/actions";
 
 // Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<ProductWithMasterItemResponse> = (
+const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   row,
   columnId,
   filterValue
@@ -27,7 +27,7 @@ const multiColumnFilterFn: FilterFn<ProductWithMasterItemResponse> = (
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columnsTableProducts: ColumnDef<ProductWithMasterItemResponse>[] =
+export const columnsTableProducts: ColumnDef<ProductWithMasterProductResponse>[] =
   [
     {
       id: "select",
@@ -288,7 +288,7 @@ export const columnsTableProducts: ColumnDef<ProductWithMasterItemResponse>[] =
           <DataTableDropdown
             entity="Produto"
             rowItemId={row.original.id as number}
-            formComponent={EditProductForm}
+            formComponent={FormEditProduct}
             deleteAction={deleteProduct}
           />
         );

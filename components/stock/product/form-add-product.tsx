@@ -1,36 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { BaseProductForm } from "@/components/product/base-product-form";
-import { getMasterItems, registerProduct } from "@/actions";
-import { AddEditFormProps, ToastType } from "@/types";
+import { FormBaseProduct } from "@/components/stock/product/form-base-product";
+import { getMasterProducts, registerProduct } from "@/actions";
+import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 import { MasterProduct } from "@prisma/client";
 
-export const AddProductForm = ({
+export const FormAddProduct = ({
   onShouldInvalidate,
   onCancel,
-}: AddEditFormProps) => {
+}: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
     useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
 
-  const [masterItems, setMasterItems] = useState<MasterProduct[]>([]);
+  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
 
     // Carregue os master items no useEffect ou via server component
    useEffect(() => {
-     async function loadMasterItems() {
+     async function loadMasterProducts() {
        try {
-         const items = await getMasterItems();
-         setMasterItems(items);
+         const items = await getMasterProducts();
+         setMasterProducts(items);
        } catch (error) {
          console.error("Erro ao carregar produtos mestres:", error);
        }
      }
-     loadMasterItems();
+     loadMasterProducts();
    }, []);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
@@ -60,8 +60,8 @@ export const AddProductForm = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <BaseProductForm
-        masterItems={masterItems}
+      <FormBaseProduct
+        masterProducts={masterProducts}
         onSubmit={onSubmit}
         onCancel={onCancel}
         isPending={isPending}

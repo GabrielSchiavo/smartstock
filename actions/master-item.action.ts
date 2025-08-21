@@ -1,16 +1,16 @@
 "use server";
 
-import { CreateEditMasterItemSchema } from "@/schemas";
+import { CreateEditMasterProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { masterItemRepository } from "@/db";
+import { masterProductRepository } from "@/db";
 import type { MasterProduct } from "@prisma/client";
-import { MasterItemOperationResponse } from "@/types";
+import { MasterProductOperationResponse } from "@/types";
 
-export const registerMasterItem = async (
-  values: z.infer<typeof CreateEditMasterItemSchema>
-): Promise<MasterItemOperationResponse> => {
-  const validatedFields = CreateEditMasterItemSchema.safeParse(values);
+export const registerMasterProduct = async (
+  values: z.infer<typeof CreateEditMasterProductSchema>
+): Promise<MasterProductOperationResponse> => {
+  const validatedFields = CreateEditMasterProductSchema.safeParse(values);
 
   if (validatedFields.success === false) {
     return {
@@ -20,34 +20,34 @@ export const registerMasterItem = async (
     };
   }
 
-  const { ...masterItemData } = validatedFields.data;
+  const { ...masterProductData } = validatedFields.data;
 
   try {
-    await masterItemRepository.create({
-      ...masterItemData,
+    await masterProductRepository.create({
+      ...masterProductData,
     });
 
     revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
-      description: "Item Mestre cadastrado com sucesso.",
+      description: "Produto Mestre cadastrado com sucesso.",
     };
   } catch (error) {
-    console.error("Erro ao cadastrar item mestre:", error);
+    console.error("Erro ao cadastrar produto mestre:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Não foi possível cadastrar o item mestre.",
+      description: "Não foi possível cadastrar o produto mestre.",
     };
   }
 };
 
-export const editMasterItem = async (
+export const editMasterProduct = async (
   id: number,
-  values: z.infer<typeof CreateEditMasterItemSchema>
-): Promise<MasterItemOperationResponse> => {
-  const validatedFields = CreateEditMasterItemSchema.safeParse(values);
+  values: z.infer<typeof CreateEditMasterProductSchema>
+): Promise<MasterProductOperationResponse> => {
+  const validatedFields = CreateEditMasterProductSchema.safeParse(values);
 
   if (validatedFields.success === false) {
     return {
@@ -57,20 +57,20 @@ export const editMasterItem = async (
     };
   }
 
-  const { ...masterItemData } = validatedFields.data;
+  const { ...masterProductData } = validatedFields.data;
 
   try {
-    const existingMasterItem = await masterItemRepository.findById(id);
-    if (!existingMasterItem) {
+    const existingMasterProduct = await masterProductRepository.findById(id);
+    if (!existingMasterProduct) {
       return {
         success: false,
         title: "Erro!",
-        description: "Item Mestre não encontrado.",
+        description: "Produto Mestre não encontrado.",
       };
     }
 
-    const updatedMasterItem = await masterItemRepository.update(id, {
-      ...masterItemData,
+    const updatedMasterProduct = await masterProductRepository.update(id, {
+      ...masterProductData,
       updatedAt: new Date(),
     });
 
@@ -78,54 +78,54 @@ export const editMasterItem = async (
     return {
       success: true,
       title: "Sucesso!",
-      description: "Item Mestre atualizado com sucesso!",
-      masterProduct: updatedMasterItem,
+      description: "Produto Mestre atualizado com sucesso!",
+      masterProduct: updatedMasterProduct,
     };
   } catch (error) {
-    console.error("Erro ao editar o item mestre:", error);
+    console.error("Erro ao editar o produto mestre:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Não foi possível atualizar o item mestre.",
+      description: "Não foi possível atualizar o produto mestre.",
     };
   }
 };
 
-export const deleteMasterItem = async (id: number) => {
+export const deleteMasterProduct = async (id: number) => {
   try {
-    await masterItemRepository.delete(id);
+    await masterProductRepository.delete(id);
     revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
-      description: `Item Mestre com ID ${id} excluído com sucesso.`,
+      description: `Produto Mestre com ID ${id} excluído com sucesso.`,
     };
   } catch (error) {
-    console.error("Erro ao excluir item mestre:", error);
+    console.error("Erro ao excluir produto mestre:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Não foi possível excluir o item mestre.",
+      description: "Não foi possível excluir o produto mestre.",
     };
   }
 };
 
-export const getMasterItemById = async (id: number): Promise<MasterProduct> => {
+export const getMasterProductById = async (id: number): Promise<MasterProduct> => {
   try {
-    const masterProduct = await masterItemRepository.findById(id);
+    const masterProduct = await masterProductRepository.findById(id);
     if (!masterProduct) {
-      throw new Error("Item Mestre não encontrado");
+      throw new Error("Produto Mestre não encontrado");
     }
     return masterProduct;
   } catch (error) {
-    console.error("Erro ao buscar item mestre:", error);
-    throw new Error("Erro ao buscar item mestre");
+    console.error("Erro ao buscar produto mestre:", error);
+    throw new Error("Erro ao buscar produto mestre");
   }
 };
 
-export const getMasterItems = async (): Promise<MasterProduct[]> => {
+export const getMasterProducts = async (): Promise<MasterProduct[]> => {
   try {
-    return await masterItemRepository.findAll();
+    return await masterProductRepository.findAll();
   } catch (error) {
     console.error("Erro ao buscar item mestres:", error);
     throw error;

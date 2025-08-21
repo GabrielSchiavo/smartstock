@@ -82,10 +82,10 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 
 ## 🎞️ Galeria
 <div align="center">
-  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-dashboard.png" alt="Screenshot Dashboard"/>
-  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-stock.png" alt="Screenshot Tabela Estoque"/>
-  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-cadastre.png" alt="Screenshot Cadastro"/>
-  <img width="1000" src="./public/assets/images/screenshots/doc/screenshot-receiver.png" alt="Screenshot Relatórios"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/dashboard.png" alt="Screenshot Dashboard"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/stock.png" alt="Screenshot Tabela Estoque"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/cadastre.png" alt="Screenshot Cadastro"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/receiver.png" alt="Screenshot Relatórios"/>
 </div>
 
 ## ⚙️ Setup e Configuração

@@ -1,7 +1,7 @@
 import { RoleGate } from "@/components/auth/role-gate";
 import { Metadata } from "next";
 import { UserType } from "@/types";
-import { ReportsFormAndResultView } from "@/components/report/reports-form-and-result-view";
+import { FormReportsResultView } from "@/components/report/form-reports-result-view";
 import { ROUTES } from "@/config/routes";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function ReportsPage() {
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 md:gap-6">
-            <ReportsFormAndResultView />
+            <FormReportsResultView />
           </div>
         </div>
       </div>

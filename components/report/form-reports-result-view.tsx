@@ -43,7 +43,7 @@ import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ptBR } from "date-fns/locale";
 
-export const ReportsFormAndResultView = () => {
+export const FormReportsResultView = () => {
   const [validityReportData, setValidityReportData] = useState<
     ValidityReportResponse[]
   >([]);

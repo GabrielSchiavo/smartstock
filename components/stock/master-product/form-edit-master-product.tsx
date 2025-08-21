@@ -1,49 +1,49 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import { BaseMasterItemForm } from "@/components/stock/master-item/base-master-item-form";
-import { editMasterItem, getMasterItemById } from "@/actions";
-import { AddEditFormProps, ToastType, UnitType } from "@/types";
+import { FormBaseMasterProduct } from "@/components/stock/master-product/form-base-master-product";
+import { editMasterProduct, getMasterProductById } from "@/actions";
+import { FormAddEditProps, ToastType, UnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
-import { CreateEditMasterItemSchema } from "@/schemas";
+import { CreateEditMasterProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
 
-export const EditMasterItemForm = ({
+export const FormEditMasterProduct = ({
   rowItemId,
   onShouldInvalidate,
   onCancel,
-}: AddEditFormProps) => {
+}: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
-    typeof CreateEditMasterItemSchema
+    typeof CreateEditMasterProductSchema
   > | null>(null);
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditMasterItemSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
 
   useEffect(() => {
-    const loadMasterItem = async () => {
+    const loadMasterProduct = async () => {
       try {
-        const masterItemData = await getMasterItemById(rowItemId as number);
-        if (masterItemData) {
-          if (masterItemData) {
+        const masterProductData = await getMasterProductById(rowItemId as number);
+        if (masterProductData) {
+          if (masterProductData) {
             setInitialValues({
-              name: masterItemData.name,
-              baseUnit: masterItemData.baseUnit as UnitType,
-              category: masterItemData.category,
-              group: masterItemData.group,
-              subgroup: masterItemData.subgroup || undefined,
+              name: masterProductData.name,
+              baseUnit: masterProductData.baseUnit as UnitType,
+              category: masterProductData.category,
+              group: masterProductData.group,
+              subgroup: masterProductData.subgroup || undefined,
             });
           }
         }
       } catch (error) {
-        console.error("Erro ao carregar o item mestre:", error);
+        console.error("Erro ao carregar o produto mestre:", error);
         showToast({
           title: "Erro!",
-          description: "Não foi possível carregar os dados do item mestre.",
+          description: "Não foi possível carregar os dados do produto mestre.",
           type: ToastType.ERROR,
         });
       } finally {
@@ -51,13 +51,13 @@ export const EditMasterItemForm = ({
       }
     };
 
-    loadMasterItem();
+    loadMasterProduct();
   }, [rowItemId]);
 
-  const onSubmit = async (values: z.infer<typeof CreateEditMasterItemSchema>) => {
+  const onSubmit = async (values: z.infer<typeof CreateEditMasterProductSchema>) => {
     await startTransition(async () => {
       try {
-        const response = await editMasterItem(rowItemId as number, values);
+        const response = await editMasterProduct(rowItemId as number, values);
 
         if (response.success === true) {
           onShouldInvalidate?.(true);
@@ -96,7 +96,7 @@ export const EditMasterItemForm = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <BaseMasterItemForm
+      <FormBaseMasterProduct
         ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}

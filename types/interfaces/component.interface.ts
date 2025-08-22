@@ -1,4 +1,4 @@
-import { OptionProps } from "@/types";
+import { OptionProps, ProductWithMasterProductResponse } from "@/types";
 import { AlertType, Product } from "@prisma/client";
 import { ToastType } from "@/types";
 
@@ -68,4 +68,11 @@ export interface LogoWithTextProps {
   containerClasses?: string;
   containerImageClasses?: string;
   containerTextClasses?: string;
+}
+
+export interface SelectorOutputProps {
+  products: ProductWithMasterProductResponse[];
+  onSelect: (product: ProductWithMasterProductResponse) => void;
+  selectedId?: string;
+  disabled?: boolean;
 }

@@ -1,42 +1,48 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { getMasterProducts, registerProduct } from "@/actions";
-import { FormAddEditProps, ToastType } from "@/types";
+import { getProducts, registerOutput } from "@/actions";
+import {
+  FormAddEditProps,
+  ProductWithMasterProductResponse,
+  ToastType,
+} from "@/types";
 import { z } from "zod";
-import { CreateEditProductSchema } from "@/schemas";
+import { CreateProductOutputSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
-import { MasterProduct } from "@prisma/client";
-import { FormBaseInputProduct } from "@/components/stock/product/form-base-input-product";
+import { FormBaseOutput } from "@/components/stock/output/form-base-output";
 
-export const FormAddInput = ({
+export const FormAddOutput = ({
   onShouldInvalidate,
   onCancel,
 }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateProductOutputSchema>>>(null);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
-
+  const [products, setMasterProducts] = useState<
+    ProductWithMasterProductResponse[]
+  >([]);
   // Carregue os master items no useEffect ou via server component
   useEffect(() => {
     async function loadMasterProducts() {
       try {
-        const items = await getMasterProducts();
+        const items = await getProducts();
         setMasterProducts(items);
       } catch (error) {
-        console.error("Erro ao carregar produtos mestres:", error);
+        console.error("Erro ao carregar produtos:", error);
       }
     }
     loadMasterProducts();
   }, []);
 
-  const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
+  const onSubmit = async (
+    values: z.infer<typeof CreateProductOutputSchema>
+  ) => {
     await startTransition(async () => {
       try {
-        const response = await registerProduct(values);
+        const response = await registerOutput(values);
 
         if (response.success === true) {
           formRef.current?.reset();
@@ -60,9 +66,9 @@ export const FormAddInput = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseInputProduct
-        masterProducts={masterProducts}
+      <FormBaseOutput
         ref={formRef}
+        products={products}
         onSubmit={onSubmit}
         onCancel={onCancel}
         isPending={isPending}

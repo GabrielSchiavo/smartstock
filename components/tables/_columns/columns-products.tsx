@@ -3,16 +3,12 @@
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
-import {
-  ColumnMetaProps,
-  LocaleType,
-  ProductType,
-  ProductWithMasterProductResponse,
-} from "@/types";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { ColumnMetaProps, ColumnsTableProductsProps, LocaleType, ProductType, ProductWithMasterProductResponse } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { FormEditProduct } from "@/components/stock/product/form-edit-product";
 import { deleteProduct } from "@/actions";
+import { FormEditProduct } from "@/components/stock/product/form-edit-product";
+import { formatDateToLocale } from "@/lib/date-utils";
+import { Button } from "@/components/ui/button";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
@@ -27,8 +23,11 @@ const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columnsTableProducts: ColumnDef<ProductWithMasterProductResponse>[] =
-  [
+export const columnsTableProducts = ({
+  isSelectingAction = false,
+  onSelect,
+  selectedProductId,
+}: ColumnsTableProductsProps): ColumnDef<ProductWithMasterProductResponse>[] => [
     {
       id: "select",
       header: ({ table }) => (
@@ -281,17 +280,32 @@ export const columnsTableProducts: ColumnDef<ProductWithMasterProductResponse>[]
       } as ColumnMetaProps,
     },
     {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      if (isSelectingAction && onSelect) {
+        const isSelected =
+          selectedProductId === row.original.id.toString();
+        return (
+          <Button
+            onClick={() => onSelect(row.original)}
+            variant={isSelected ? "outline" : "default"}
+            size="sm"
+            disabled={isSelected}
+          >
+            {isSelected ? "Selecionado" : "Selecionar"}
+          </Button>
+        );
+      } else {
         return (
           <DataTableDropdown
-            entity="Produto"
+            entity="Produto Mestre"
             rowItemId={row.original.id as number}
             formComponent={FormEditProduct}
             deleteAction={deleteProduct}
           />
         );
-      },
+      }
     },
+  },
   ];

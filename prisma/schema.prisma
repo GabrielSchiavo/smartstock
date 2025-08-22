@@ -51,12 +51,6 @@ enum MovementType {
   ADJUSTMENT
 }
 
-enum MovementCategoryType {
-  PURCHASED
-  DONATED
-  TRANSFER
-}
-
 model User {
   id String @id @default(cuid())
 
@@ -174,8 +168,8 @@ model StockMovement {
   quantity         Float                 @db.Real
   unit             UnitType
   movementType     String                @db.VarChar(30)
-  movementCategory MovementCategoryType?
-  observation      String                @db.VarChar(150)
+  movementCategory String                @db.VarChar(30)
+  observation      String                @db.VarChar(200)
 
   createdAt DateTime @default(now())
 

@@ -28,23 +28,19 @@ import {
 } from "@/components/ui/select";
 import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
 import {
-  FormBaseInputProductProps,
   LocaleType,
   ModeType,
-  MovementCategoryType,
+  InputMovementCategoryType,
   ProductType,
   ResourceType,
   UnitType,
+  ExtendedFormBaseInputProductProps,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
-
-interface ExtendedFormBaseInputProductProps extends FormBaseInputProductProps {
-  masterProducts: MasterProduct[];
-}
 
 export const FormBaseInputProduct = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
@@ -430,7 +426,7 @@ export const FormBaseInputProduct = forwardRef<
             </div>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4">
-                <h1 className="text-md font-medium">Detalhes do Recebimento</h1>
+                <h1 className="text-md font-medium">Detalhes da Entrada</h1>
               </div>
               <div className="flex flex-col gap-6 border rounded-xl p-10">
                 <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
@@ -555,7 +551,7 @@ export const FormBaseInputProduct = forwardRef<
                               <FormItem className="flex items-center">
                                 <FormControl>
                                   <RadioGroupItem
-                                    value={MovementCategoryType.DONATED}
+                                    value={InputMovementCategoryType.DONATED}
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
@@ -565,7 +561,7 @@ export const FormBaseInputProduct = forwardRef<
                               <FormItem className="flex items-center">
                                 <FormControl>
                                   <RadioGroupItem
-                                    value={MovementCategoryType.PURCHASED}
+                                    value={InputMovementCategoryType.PURCHASED}
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
@@ -575,7 +571,7 @@ export const FormBaseInputProduct = forwardRef<
                               <FormItem className="flex items-center">
                                 <FormControl>
                                   <RadioGroupItem
-                                    value={MovementCategoryType.TRANSFER}
+                                    value={InputMovementCategoryType.TRANSFER}
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">

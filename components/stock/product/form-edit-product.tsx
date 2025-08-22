@@ -6,7 +6,6 @@ import { editProduct, getMasterProducts, getProductById } from "@/actions";
 import {
   FormAddEditProps,
   ModeType,
-  MovementCategoryType,
   ProductType,
   ToastType,
   UnitType,
@@ -58,7 +57,7 @@ export const FormEditProduct = ({
               group: productData.masterProduct.group,
               subgroup: productData.masterProduct.subgroup || undefined,
               productType: productData.productType as ProductType,
-              movementCategory: MovementCategoryType.TRANSFER,
+              movementCategory: "",
             });
           }
         }

@@ -12,40 +12,49 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MasterProduct } from "@prisma/client";
-import { DataTableMasterProducts } from "@/components/tables/data-table-master-product";
-import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-master-products";
 import { Input } from "@/components/ui/input";
-import { SelectorMasterProductProps } from "@/types";
+import { DataTableProducts } from "@/components/tables/data-table-products";
+import { columnsTableProducts } from "@/components/tables/_columns/columns-products";
+import { ProductWithMasterProductResponse, SelectorOutputProps } from "@/types";
 
-export function SelectorMasterProduct({
-  masterProducts,
+export function SelectorOutput({
+  products,
   onSelect,
   selectedId,
   disabled,
-}: SelectorMasterProductProps) {
+}: SelectorOutputProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedItem = masterProducts.find(
+  const selectedItem = products.find(
     (item) => item.id.toString() === selectedId
   );
 
-  const handleSelect = (item: MasterProduct) => {
+  const handleSelect = (item: ProductWithMasterProductResponse) => {
     onSelect(item);
     setIsOpen(false);
   };
 
-  const columns = columnsTableMasterProducts({
+  const columns = columnsTableProducts({
     isSelectingAction: true,
     onSelect: handleSelect,
-    selectedMasterProductId: selectedId,
+    selectedProductId: selectedId,
   });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <div className="flex w-full items-center gap-4">
-          <Input className="default-height" defaultValue={undefined} value={!selectedItem ? "" : `${selectedItem.id.toString()} - ${selectedItem.name}`} disabled={true} placeholder="Selecione um produto mestre..." />
+          <Input
+            className="default-height"
+            defaultValue={undefined}
+            value={
+              !selectedItem
+                ? ""
+                : `${selectedItem.id.toString()} - ${selectedItem.name}`
+            }
+            disabled={true}
+            placeholder="Selecione um produto..."
+          />
           <Button
             type="button"
             disabled={disabled}
@@ -58,18 +67,18 @@ export function SelectorMasterProduct({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[80vw] sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-hidden flex flex-col gap-8">
         <DialogHeader>
-          <DialogTitle>Selecionar Produto Mestre</DialogTitle>
+          <DialogTitle>Selecionar Produto</DialogTitle>
           <DialogDescription>
-            Clique em Selecionar para escolher o Produto Mestre.
+            Clique em Selecionar para escolher o Produto.
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto p-1">
-          <DataTableMasterProducts
+          <DataTableProducts
             addButton={false}
-            data={masterProducts}
+            data={products}
             columns={columns}
-            groupBy="category"
+            groupBy="masterProduct.group"
           />
         </div>
         <DialogFooter>

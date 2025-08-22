@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MovementCategoryType, ProductType, UnitType } from "@/types";
+import { InputMovementCategoryType, ProductType, UnitType } from "@/types";
 
 export const CreateEditProductSchema = z
   .object({
@@ -85,8 +85,9 @@ export const CreateEditProductSchema = z
     subgroup: z
       .string()
       .trim()
-      .min(2)
+      .min(2, { message: "Subgrupo deve ter pelo menos 2 caracteres" })
       .max(50, { message: "Subgrupo deve ter no máximo 50 caracteres" })
+      .or(z.literal(""))
       .optional(),
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       required_error: "Selecione um tipo de produto.",
@@ -100,9 +101,10 @@ export const CreateEditProductSchema = z
       .optional(),
     movementCategory: z.enum(
       [
-        MovementCategoryType.DONATED,
-        MovementCategoryType.PURCHASED,
-        MovementCategoryType.TRANSFER,
+        InputMovementCategoryType.DONATED,
+        InputMovementCategoryType.PURCHASED,
+        InputMovementCategoryType.TRANSFER,
+        ""
       ],
       {
         required_error: "Selecione o tipo de entrada.",

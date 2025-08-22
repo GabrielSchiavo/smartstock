@@ -99,7 +99,19 @@ export enum MovementType {
   ADJUSTMENT = "ADJUSTMENT",
 }
 
-export enum MovementCategoryType {
+export enum InputMovementCategoryType {
+  PURCHASED = "PURCHASED",
+  DONATED = "DONATED",
+  TRANSFER = "TRANSFER",
+}
+
+export enum OutputMovementCategoryType {
+  PURCHASED = "PURCHASED",
+  DONATED = "DONATED",
+  TRANSFER = "TRANSFER",
+}
+
+export enum AdjustmentMovementCategoryType {
   PURCHASED = "PURCHASED",
   DONATED = "DONATED",
   TRANSFER = "TRANSFER",

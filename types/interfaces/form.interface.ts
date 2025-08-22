@@ -1,9 +1,10 @@
-import { CreateEditMasterProductSchema, CreateEditProductSchema } from "@/schemas";
+import { CreateEditMasterProductSchema, CreateEditProductSchema, CreateProductOutputSchema } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { ModeType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
 import { z } from "zod";
 import { ReactNode } from "react";
+import { MasterProduct } from "@prisma/client";
 
 export interface DatePickerFormProps<T extends FieldValues> {
   field: ControllerRenderProps<T, Path<T>>;
@@ -61,6 +62,15 @@ export interface FormBaseMasterProductProps {
   loadingText: string;
 }
 
+export interface FormProductOutputProps {
+  defaultValues?: z.infer<typeof CreateProductOutputSchema>;
+  onSubmit: (values: z.infer<typeof CreateProductOutputSchema>) => Promise<void>;
+  onCancel?: () => void;
+  isPending: boolean;
+  submitButtonText: string;
+  loadingText: string;
+}
+
 export interface FormBaseInputProductProps {
   defaultValues?: z.infer<typeof CreateEditProductSchema>;
   onSubmit: (values: z.infer<typeof CreateEditProductSchema>) => Promise<void>;
@@ -85,4 +95,8 @@ export interface FormBaseUserProps<T extends z.ZodTypeAny> {
   loadingText: string;
   hidePasswordInputs: boolean;
   isEditForm: boolean;
+}
+
+export interface ExtendedFormBaseInputProductProps extends FormBaseInputProductProps {
+  masterProducts: MasterProduct[];
 }

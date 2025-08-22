@@ -7,6 +7,7 @@ export type MasterProductResponse = {
   category: string;
   group: string;
   subgroup?: string | null;
+  
 };
 
 export interface MasterProductUpdateResponse extends MasterProductResponse {

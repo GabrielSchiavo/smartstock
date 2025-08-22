@@ -5,6 +5,7 @@ export * from "./group.action";
 export * from "./login.action";
 export * from "./logout.action";
 export * from "./master-item.action";
+export * from "./movement.action";
 export * from "./new-password.action";
 export * from "./new-verification.action";
 export * from "./product.action";

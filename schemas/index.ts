@@ -12,7 +12,8 @@ export * from "./user/edit-user.schema";
 export * from "./user/settings.schema";
 
 // Stock
-export * from "./stock/create-edit-master-item.schema";
+export * from "./stock/create-edit-master-product.schema";
+export * from "./stock/create-product-output.schema";
 
 // Product
 export * from "./product/create-edit-product.schema";

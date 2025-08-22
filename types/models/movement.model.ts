@@ -1,11 +1,11 @@
-import { MovementCategoryType, MovementType, UnitType } from "@/types/enums/enums";
+import { AdjustmentMovementCategoryType, InputMovementCategoryType, MovementType, OutputMovementCategoryType, UnitType } from "@/types/enums/enums";
 
 export type MovementResponse = {
   productId: number;
   quantity: number;
   unit: UnitType;
   movementType: MovementType;
-  movementCategory: MovementCategoryType;
+  movementCategory: InputMovementCategoryType | OutputMovementCategoryType | AdjustmentMovementCategoryType | "";
   observation: string;
   createdAt: Date;
 };

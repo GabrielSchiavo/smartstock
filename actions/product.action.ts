@@ -36,7 +36,7 @@ export const registerProduct = async (
       unit: productData.unit,
       movementType: MovementType.INPUT,
       movementCategory: productData.movementCategory,
-      observation: `Entrada de ${product.name}, quantidade ${product.quantity} ${product.unit}`,
+      observation: `Produto ${product.name}: ENTRADA de ${product.quantity} ${product.unit}`,
       createdAt: new Date(),
     });
 

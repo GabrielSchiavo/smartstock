@@ -1,21 +1,15 @@
 "use client";
 
 import { DataTableMasterProducts } from "@/components/tables/data-table-master-product";
-import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-master-product";
-import { MasterProduct } from "@prisma/client";
+import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-master-products";
+import { ClientMasterProductProps } from "@/types";
 
-interface ClientMasterProductsProps {
-  masterProducts: MasterProduct[];
-}
-
-export function ClientMasterProducts({ masterProducts }: ClientMasterProductsProps) {
-  const columns = columnsTableMasterProducts({});
-
+export function ClientMasterProduct({ masterProducts }: ClientMasterProductProps) {
   return (
     <DataTableMasterProducts
       addButton={true}
       data={masterProducts}
-      columns={columns}
+      columns={columnsTableMasterProducts({})}
       groupBy="category"
     />
   );

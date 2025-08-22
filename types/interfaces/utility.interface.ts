@@ -1,4 +1,6 @@
 import { PdfUnitType, UnitType } from "@/types/enums/enums";
+import { ProductWithMasterProductResponse } from "../models/product.model";
+import { MasterProduct } from "@prisma/client";
 
 export interface PdfConfigProps {
   orientation?: "portrait" | "landscape";
@@ -63,4 +65,20 @@ export interface TotalValuesWithUnitsProps {
     unit: 'UN';
     formatted: string;
   };
+}
+
+export interface ClientProductProps {
+  products: ProductWithMasterProductResponse[];
+  addButton: boolean;
+  groupBy: string;
+}
+export interface ClientMasterProductProps {
+  masterProducts: MasterProduct[];
+}
+
+export interface SelectorMasterProductProps {
+  masterProducts: MasterProduct[];
+  onSelect: (masterProduct: MasterProduct) => void;
+  selectedId?: string;
+  disabled?: boolean;
 }

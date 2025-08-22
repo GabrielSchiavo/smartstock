@@ -2,9 +2,6 @@
 
 import * as React from "react";
 import {
-  ColumnDef,
-  Row,
-  Table as TanstackTable,
   flexRender,
 } from "@tanstack/react-table";
 import {
@@ -20,7 +17,7 @@ import {
   ChevronUpIcon,
 } from "lucide-react";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
-import { CalculableTotalItemProps } from "@/types";
+import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
 
 // Type guard to check if data can be used for totals
 function isCalculableTotalData(data: unknown[]): data is CalculableTotalItemProps[] {
@@ -29,17 +26,6 @@ function isCalculableTotalData(data: unknown[]): data is CalculableTotalItemProp
     typeof data[0] === 'object' && 
     data[0] !== null
   );
-}
-
-interface BaseDataTableProps<TData> {
-  table: TanstackTable<TData>;
-  columns: ColumnDef<TData>[];
-  groupedData?: Record<string, Row<TData>[]>;
-  collapsedGroups: Set<string>;
-  toggleGroup: (groupName: string) => void;
-  showGroupTotal?: boolean;
-  showFooter?: boolean;
-  footerContent?: React.ReactNode;
 }
 
 export function BaseDataTable<TData>({

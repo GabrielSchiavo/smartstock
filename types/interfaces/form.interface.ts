@@ -61,13 +61,14 @@ export interface FormBaseMasterProductProps {
   loadingText: string;
 }
 
-export interface FormBaseProductProps {
+export interface FormBaseInputProductProps {
   defaultValues?: z.infer<typeof CreateEditProductSchema>;
   onSubmit: (values: z.infer<typeof CreateEditProductSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
   loadingText: string;
+  mode?: ModeType;
 }
 
 export interface FormBaseUserProps<T extends z.ZodTypeAny> {

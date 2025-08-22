@@ -178,7 +178,7 @@ export const FormBaseMasterProduct = forwardRef<
             </div>
           </div>
           <DialogFooter>
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-end">
               <Button
                 disabled={isPending}
                 size="sm"

@@ -4,12 +4,12 @@ import {
   ProductUpdateResponse,
   ProductWithMasterProductResponse,
   UnitType,
+  ProductType
 } from "@/types";
 import { db } from "@/lib/db";
-import { ProductType } from "@/types";
 
 export const productRepository = {
-  async create(data: ProductResponse): Promise<void> {
+  async create(data: ProductResponse): Promise<ProductWithMasterProductResponse> {
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
@@ -20,14 +20,19 @@ export const productRepository = {
       data.unitWeight = null;
     }
     // Regra para limpar campo Fornecedor se tipo de produto não for Doado
-    if (data.productType !== ProductType.DONATED) {
-      data.supplier = null;
-    }
+    // if (data.productType !== ProductType.DONATED) {
+    //   data.supplier = null;
+    // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const { category, group, subgroup, ...productData } = data;
+    const { category, group,  subgroup, movementCategory, ...productData } = data;
 
-    await db.product.create({ data: productData });
+    return await db.product.create({
+      data: productData,
+      include: {
+        masterProduct: true,
+      },
+    }) as ProductWithMasterProductResponse;
   },
 
   async findAll(): Promise<ProductWithMasterProductResponse[]> {
@@ -132,12 +137,12 @@ export const productRepository = {
       data.unitWeight = null;
     }
     // Regra para limpar campo Fornecedor se tipo de produto não for Doado
-    if (data.productType !== ProductType.DONATED) {
-      data.supplier = null;
-    }
+    // if (data.productType !== ProductType.DONATED) {
+    //   data.supplier = null;
+    // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const { category, group, subgroup, ...productData } = data;
+    const { category, group, subgroup, movementCategory, ...productData } = data;
 
     return (await db.product.update({
       where: { id },

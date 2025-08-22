@@ -3,8 +3,8 @@
 import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { productRepository } from "@/db";
-import { ProductCountType, ProductOperationResponse, ProductWithMasterProductResponse } from "@/types";
+import { movementRepository, productRepository } from "@/db";
+import { MovementType, ProductCountType, ProductOperationResponse, ProductWithMasterProductResponse } from "@/types";
 
 export const registerProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
@@ -22,11 +22,22 @@ export const registerProduct = async (
   const { quantity, unitWeight, ...productData } = validatedFields.data;
 
   try {
-    await productRepository.create({
+    const product = await productRepository.create({
       ...productData,
       quantity: Number(quantity),
       unitWeight: unitWeight ? Number(unitWeight) : null,
       masterProductId: Number(productData.masterProductId),
+    });
+
+    // Cria o movimento de estoque após criar o produto
+    await movementRepository.createInput({
+      productId: product.id,
+      quantity: Number(quantity),
+      unit: productData.unit,
+      movementType: MovementType.INPUT,
+      movementCategory: productData.movementCategory,
+      observation: `Entrada de ${product.name}, quantidade ${product.quantity} ${product.unit}`,
+      createdAt: new Date(),
     });
 
     revalidatePath("/");

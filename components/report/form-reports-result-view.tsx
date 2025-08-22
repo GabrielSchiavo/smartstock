@@ -198,7 +198,7 @@ export const FormReportsResultView = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid gap-6 border rounded-xl p-10 w-full md:max-w-[650px]"
+            className="grid gap-6 border rounded-xl p-10 w-full md:max-w-4xl"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
               <div className="grid gap-6 grid-cols-1">

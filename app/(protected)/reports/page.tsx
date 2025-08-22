@@ -20,7 +20,15 @@ export default function ReportsPage() {
     >
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 md:gap-6">
+          <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-3">
+              <h1 className="text-lg leading-none font-semibold">
+                Gerar Relatório
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                {"Clique em 'Gerar Relatório' quando terminar."}
+              </p>
+            </div>
             <FormReportsResultView />
           </div>
         </div>

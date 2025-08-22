@@ -1,5 +1,5 @@
 import { MasterProduct, Product } from "@prisma/client";
-import { ProductType, UnitType } from "@/types";
+import { MovementCategoryType, ProductType, UnitType } from "@/types";
 
 export type ProductResponse = {
   masterProductId: number;
@@ -17,6 +17,7 @@ export type ProductResponse = {
   group: string;
   subgroup?: string | null;
   productType: ProductType;
+  movementCategory: MovementCategoryType | string;
 };
 
 // Tipo estendido para produto com informações do produto mestre

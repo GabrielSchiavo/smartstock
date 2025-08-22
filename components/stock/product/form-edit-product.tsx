@@ -1,9 +1,16 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import { FormBaseProduct } from "@/components/stock/product/form-base-product";
+import { FormBaseInputProduct } from "@/components/stock/product/form-base-input-product";
 import { editProduct, getMasterProducts, getProductById } from "@/actions";
-import { FormAddEditProps, ProductType, ToastType, UnitType } from "@/types";
+import {
+  FormAddEditProps,
+  ModeType,
+  MovementCategoryType,
+  ProductType,
+  ToastType,
+  UnitType,
+} from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
 import { CreateEditProductSchema } from "@/schemas";
@@ -51,6 +58,7 @@ export const FormEditProduct = ({
               group: productData.masterProduct.group,
               subgroup: productData.masterProduct.subgroup || undefined,
               productType: productData.productType as ProductType,
+              movementCategory: MovementCategoryType.TRANSFER,
             });
           }
         }
@@ -69,20 +77,20 @@ export const FormEditProduct = ({
     loadProduct();
   }, [rowItemId]);
 
-    const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
-  
-      // Carregue os master items no useEffect ou via server component
-     useEffect(() => {
-       async function loadMasterProducts() {
-         try {
-           const items = await getMasterProducts();
-           setMasterProducts(items);
-         } catch (error) {
-           console.error("Erro ao carregar produtos mestres:", error);
-         }
-       }
-       loadMasterProducts();
-     }, []);
+  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
+
+  // Carregue os master items no useEffect ou via server component
+  useEffect(() => {
+    async function loadMasterProducts() {
+      try {
+        const items = await getMasterProducts();
+        setMasterProducts(items);
+      } catch (error) {
+        console.error("Erro ao carregar produtos mestres:", error);
+      }
+    }
+    loadMasterProducts();
+  }, []);
 
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
     await startTransition(async () => {
@@ -126,8 +134,8 @@ export const FormEditProduct = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseProduct
-      masterProducts={masterProducts}
+      <FormBaseInputProduct
+        masterProducts={masterProducts}
         ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}
@@ -135,6 +143,7 @@ export const FormEditProduct = ({
         isPending={isPending}
         submitButtonText="Salvar"
         loadingText="Atualizando..."
+        mode={ModeType.EDIT}
       />
     </div>
   );

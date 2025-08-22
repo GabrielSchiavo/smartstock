@@ -40,18 +40,21 @@ enum AlertType {
 }
 
 enum ActionType {
-  ADJUSTMENTS // ajustes
-  RECEIPTS // entradas
-  ISSUES // saídas
   CREATE
   UPDATE
   DELETE
 }
 
-enum OutputType {
-  ADJUSTMENTS // ajustes
-  RECEIPTS // entradas
-  ISSUES // saídas
+enum MovementType {
+  INPUT
+  OUTPUT
+  ADJUSTMENT
+}
+
+enum MovementCategoryType {
+  PURCHASED
+  DONATED
+  TRANSFER
 }
 
 model User {
@@ -157,7 +160,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Notification Notification[]
+  Notification  Notification[]
   StockMovement StockMovement[]
 
   @@index([validityDate])
@@ -166,12 +169,13 @@ model Product {
 model StockMovement {
   id String @id @default(cuid())
 
-  product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId   Int
-  quantity    Float      @db.Real
-  unit        UnitType
-  movementType  OutputType
-  observation String     @db.VarChar(150)
+  product          Product               @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId        Int
+  quantity         Float                 @db.Real
+  unit             UnitType
+  movementType     String                @db.VarChar(30)
+  movementCategory MovementCategoryType?
+  observation      String                @db.VarChar(150)
 
   createdAt DateTime @default(now())
 

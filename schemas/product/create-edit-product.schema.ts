@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductType, UnitType } from "@/types";
+import { MovementCategoryType, ProductType, UnitType } from "@/types";
 
 export const CreateEditProductSchema = z
   .object({
@@ -98,6 +98,16 @@ export const CreateEditProductSchema = z
       .max(30, { message: "Fornecedor deve ter no máximo 30 caracteres" })
       .nullable()
       .optional(),
+    movementCategory: z.enum(
+      [
+        MovementCategoryType.DONATED,
+        MovementCategoryType.PURCHASED,
+        MovementCategoryType.TRANSFER,
+      ],
+      {
+        required_error: "Selecione o tipo de entrada.",
+      }
+    ),
   })
   .refine(
     (data) => !(data.productType === ProductType.DONATED && !data.supplier),

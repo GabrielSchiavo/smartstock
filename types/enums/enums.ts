@@ -92,3 +92,15 @@ export enum TableType {
   PRODUCT = "product",
   MASTER_ITEM = "masterProduct",
 }
+
+export enum MovementType {
+  INPUT = "INPUT",
+  OUTPUT = "OUTPUT",
+  ADJUSTMENT = "ADJUSTMENT",
+}
+
+export enum MovementCategoryType {
+  PURCHASED = "PURCHASED",
+  DONATED = "DONATED",
+  TRANSFER = "TRANSFER",
+}

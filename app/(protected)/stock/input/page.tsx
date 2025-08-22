@@ -23,9 +23,11 @@ export default async function StockFoodPage() {
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-3">
               <h1 className="text-lg leading-none font-semibold">
-                Cadastrar Entrada
+                <span className="flex gap-3 items-center">
+                  Cadastrar Entrada
+                </span>
               </h1>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm w-full md:max-w-md">
                 {"Clique em 'Salvar' quando terminar."}
               </p>
             </div>

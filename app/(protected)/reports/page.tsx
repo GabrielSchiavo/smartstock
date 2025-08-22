@@ -23,9 +23,9 @@ export default function ReportsPage() {
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-3">
               <h1 className="text-lg leading-none font-semibold">
-                Gerar Relatório
+                <span className="flex gap-3 items-center">Gerar Relatório</span>
               </h1>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm w-full md:max-w-md">
                 {"Clique em 'Gerar Relatório' quando terminar."}
               </p>
             </div>

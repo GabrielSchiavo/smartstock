@@ -84,92 +84,97 @@ export const FormSetting = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-6">
-          <div className="grid gap-6 grid-cols-1">
-            <div className="flex flex-row items-center justify-between gap-4 rounded-md border p-2">
-              <p className="text-sm font-medium">ID</p>
-              <CopyToClipboard
-                textToCopy={userId}
-                tooltipContent="Copiar ID"
-                className="truncate bg-muted px-3 py-1 rounded-sm text-sm cursor-pointer hover:dark:bg-zinc-500 hover:bg-zinc-300 transition-all duration-400"
-              >
-                {userId}
-              </CopyToClipboard>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col justify-center items-center"
+      >
+        <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+          <div className="flex flex-col gap-12 border rounded-xl p-10">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-row items-center justify-between gap-3 rounded-md border p-2">
+                <p className="text-sm font-medium">ID</p>
+                <CopyToClipboard
+                  textToCopy={userId}
+                  tooltipContent="Copiar ID"
+                  className="truncate bg-muted px-3 py-1 rounded-sm text-sm cursor-pointer hover:dark:bg-zinc-500 hover:bg-zinc-300 transition-all duration-400"
+                >
+                  {userId}
+                </CopyToClipboard>
+              </div>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Nome de usuário"
+                        disabled={isPending}
+                        className="default-height"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="exemplo@exemplo.com"
+                        type="email"
+                        disabled={isPending}
+                        className="default-height"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha atual</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        disabled={isPending}
+                        className="default-height"
+                        placeholder="********"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nova senha</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        disabled={isPending}
+                        className="default-height"
+                        placeholder="********"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Nome de usuário"
-                      disabled={isPending}
-                      className="default-height"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="exemplo@exemplo.com"
-                      type="email"
-                      disabled={isPending}
-                      className="default-height"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha atual</FormLabel>
-                  <FormControl>
-                    <PasswordInput
-                      disabled={isPending}
-                      className="default-height"
-                      placeholder="********"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nova senha</FormLabel>
-                  <FormControl>
-                    <PasswordInput
-                      disabled={isPending}
-                      className="default-height"
-                      placeholder="********"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
           <div className="flex justify-end">
             <Button disabled={isPending} type="submit" size="sm">

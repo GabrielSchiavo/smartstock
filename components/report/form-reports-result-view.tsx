@@ -198,113 +198,117 @@ export const FormReportsResultView = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid gap-6 border rounded-xl p-10 w-full md:max-w-4xl"
+            className="flex flex-col gap-12"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-              <div className="grid gap-6 grid-cols-1">
-                <FormField
-                  control={form.control}
-                  name="initialDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Data Inicial</FormLabel>
-                      <FormControl>
-                        <DatePickerMonthYear
-                          disabled={isDateRangeDisabled}
-                          field={field}
-                          locale={ptBR}
-                          dateFormat={LocaleType.DD_MM_YYYY}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="finalDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Data Final</FormLabel>
-                      <FormControl>
-                        <DatePickerMonthYear
-                          disabled={isDateRangeDisabled}
-                          field={field}
-                          locale={ptBR}
-                          dateFormat={LocaleType.DD_MM_YYYY}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-6">
-                <FormField
-                  control={form.control}
-                  name="reportType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex items-center">
-                        Tipo de Relatório:
-                        <ToolTipHelpReportType />
-                      </FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col"
-                        >
-                          <FormItem className="flex items-center">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={ReportType.VALIDITY}
-                                id="r1"
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal" htmlFor="r1">
-                              Validades
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={ReportType.DONATIONS}
-                                id="r2"
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal" htmlFor="r2">
-                              Doados
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={ReportType.PURCHASED}
-                                id="r3"
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal" htmlFor="r3">
-                              Comprados
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center">
-                            <FormControl>
-                              <RadioGroupItem
-                                value={ReportType.INVENTORY}
-                                id="r4"
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal" htmlFor="r4">
-                              Inventário
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="flex flex-col gap-12 border rounded-xl p-10 w-full md:min-w-4xl">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col gap-6">
+                  <FormField
+                    control={form.control}
+                    name="initialDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Data Inicial</FormLabel>
+                        <FormControl>
+                          <DatePickerMonthYear
+                            disabled={isDateRangeDisabled}
+                            field={field}
+                            locale={ptBR}
+                            dateFormat={LocaleType.DD_MM_YYYY}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="finalDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Data Final</FormLabel>
+                        <FormControl>
+                          <DatePickerMonthYear
+                            disabled={isDateRangeDisabled}
+                            field={field}
+                            locale={ptBR}
+                            dateFormat={LocaleType.DD_MM_YYYY}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col gap-6">
+                  <FormField
+                    control={form.control}
+                    name="reportType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col gap-3">
+                          <FormLabel className="flex items-center">
+                            Tipo de Relatório:
+                            <ToolTipHelpReportType />
+                          </FormLabel>
+                          <FormControl className="flex flex-col gap-3">
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col"
+                            >
+                              <FormItem className="flex items-center">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value={ReportType.VALIDITY}
+                                    id="r1"
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal" htmlFor="r1">
+                                  Validades
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value={ReportType.DONATIONS}
+                                    id="r2"
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal" htmlFor="r2">
+                                  Doados
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value={ReportType.PURCHASED}
+                                    id="r3"
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal" htmlFor="r3">
+                                  Comprados
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value={ReportType.INVENTORY}
+                                    id="r4"
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal" htmlFor="r4">
+                                  Inventário
+                                </FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex justify-end">

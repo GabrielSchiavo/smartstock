@@ -1,6 +1,6 @@
 import { PdfUnitType, UnitType } from "@/types/enums/enums";
-import { ProductWithMasterProductResponse } from "../models/product.model";
-import { MasterProduct } from "@prisma/client";
+import { ProductWithMasterProductResponse } from "@/types/models/product.model";
+import { AuditLog, MasterProduct } from "@prisma/client";
 
 export interface PdfConfigProps {
   orientation?: "portrait" | "landscape";
@@ -74,6 +74,9 @@ export interface ClientProductProps {
 }
 export interface ClientMasterProductProps {
   masterProducts: MasterProduct[];
+}
+export interface ClientHistoryProps {
+  history: AuditLog[];
 }
 
 export interface SelectorMasterProductProps {

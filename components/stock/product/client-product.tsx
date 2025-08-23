@@ -1,6 +1,6 @@
 "use client";
 
-import { columnsTableProducts } from "@/components/tables/_columns/columns-products";
+import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
 import { DataTableProducts } from "@/components/tables/data-table-products";
 import { ClientProductProps } from "@/types";
 

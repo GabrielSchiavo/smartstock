@@ -45,12 +45,6 @@ enum ActionType {
   DELETE
 }
 
-enum MovementType {
-  INPUT
-  OUTPUT
-  ADJUSTMENT
-}
-
 model User {
   id String @id @default(cuid())
 
@@ -105,13 +99,13 @@ model Notification {
 model AuditLog {
   id String @id @default(cuid())
 
-  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
-  recordId      String
-  actionType    ActionType
-  oldValue      String     @db.VarChar(50)
-  newValue      String     @db.VarChar(50)
-  changeSummary String     @db.VarChar(150)
+  user            User       @relation(fields: [userId], references: [id], onDelete: NoAction)
+  userId          String
+  recordChangedId String
+  actionType      String     @db.VarChar(30)
+  actionCategory  String     @db.VarChar(30)
+  value           String     @db.VarChar(150)
+  observation     String     @db.VarChar(200)
 
   createdAt DateTime @default(now()) @db.Date
 }
@@ -136,7 +130,7 @@ model MasterProduct {
 model Product {
   id Int @id @default(autoincrement())
 
-  masterProduct   MasterProduct @relation(fields: [masterProductId], references: [id], onDelete: Cascade)
+  masterProduct   MasterProduct @relation(fields: [masterProductId], references: [id], onDelete: NoAction)
   masterProductId Int
 
   name             String      @db.VarChar(150)
@@ -163,13 +157,13 @@ model Product {
 model StockMovement {
   id String @id @default(cuid())
 
-  product          Product               @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product          Product  @relation(fields: [productId], references: [id], onDelete: NoAction)
   productId        Int
-  quantity         Float                 @db.Real
+  quantity         Float    @db.Real
   unit             UnitType
-  movementType     String                @db.VarChar(30)
-  movementCategory String                @db.VarChar(30)
-  observation      String                @db.VarChar(200)
+  movementType     String   @db.VarChar(30)
+  movementCategory String   @db.VarChar(30)
+  observation      String   @db.VarChar(200)
 
   createdAt DateTime @default(now())
 

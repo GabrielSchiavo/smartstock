@@ -28,7 +28,7 @@ export const CreateProductOutputSchema = z.object({
       }
     ),
   productUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    required_error: "Selecione um produto",
+    message: "Selecione um produto",
   }),
 
   
@@ -47,16 +47,18 @@ export const CreateProductOutputSchema = z.object({
       }
     ),
   unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    required_error: "Você precisa selecionar uma unidade de medida.",
+    required_error: "Selecione uma unidade de medida",
   }),
   movementCategory: z.enum(
     [
-      OutputMovementCategoryType.DONATED,
-      OutputMovementCategoryType.PURCHASED,
+      OutputMovementCategoryType.CONSUMPTION,
+      OutputMovementCategoryType.DONATION,
+      OutputMovementCategoryType.RETURN,
+      OutputMovementCategoryType.SALE,
       OutputMovementCategoryType.TRANSFER,
     ],
     {
-      required_error: "Selecione o tipo de entrada.",
+      required_error: "Selecione o tipo de saída.",
     }
   ),
 });

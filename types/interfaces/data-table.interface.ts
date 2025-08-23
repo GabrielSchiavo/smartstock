@@ -65,3 +65,8 @@ export interface BaseDataTableProps<TData> {
   showFooter?: boolean;
   footerContent?: React.ReactNode;
 }
+
+export interface BaseDataTableAccordionProps<TData> {
+  table: TanstackTable<TData>;
+  columns: ColumnDef<TData>[];
+}

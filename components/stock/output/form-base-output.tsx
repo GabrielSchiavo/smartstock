@@ -274,7 +274,7 @@ export const FormBaseOutput = forwardRef<
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex flex-col gap-3">
-                        <FormLabel>Tipo de Saída:</FormLabel>
+                        <FormLabel>Tipo de Saída: <span className="text-red-500">*</span></FormLabel>
                         <FormControl className="flex flex-col gap-3">
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -284,11 +284,41 @@ export const FormBaseOutput = forwardRef<
                             <FormItem className="flex items-center">
                               <FormControl>
                                 <RadioGroupItem
-                                  value={OutputMovementCategoryType.DONATED}
+                                  value={OutputMovementCategoryType.CONSUMPTION}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Consumo
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={OutputMovementCategoryType.DONATION}
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 Doação
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={OutputMovementCategoryType.RETURN}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Devolução
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value={OutputMovementCategoryType.SALE}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Venda
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">

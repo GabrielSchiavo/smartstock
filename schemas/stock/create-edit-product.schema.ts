@@ -60,7 +60,7 @@ export const CreateEditProductSchema = z
     validityDate: z.coerce.date({
       required_error: "Selecione uma data",
       invalid_type_error: "Data inválida",
-      message: "Selecione uma data.",
+      message: "Selecione uma data",
     }),
     receiptDate: z.coerce.date({
       required_error: "Selecione uma data",
@@ -75,17 +75,17 @@ export const CreateEditProductSchema = z
     category: z
       .string()
       .trim()
-      .min(2, { message: "Categoria é obrigatório" })
+      .min(2, { message: "Selecione um produto mestre" })
       .max(50, { message: "Categoria deve ter no máximo 50 caracteres" }),
     group: z
       .string()
       .trim()
-      .min(2, { message: "Grupo é obrigatório" })
+      .min(2, { message: "Selecione um produto mestre" })
       .max(50, { message: "Grupo deve ter no máximo 50 caracteres" }),
     subgroup: z
       .string()
       .trim()
-      .min(2, { message: "Subgrupo deve ter pelo menos 2 caracteres" })
+      .min(2, { message: "Selecione um produto mestre" })
       .max(50, { message: "Subgrupo deve ter no máximo 50 caracteres" })
       .or(z.literal(""))
       .optional(),
@@ -101,8 +101,9 @@ export const CreateEditProductSchema = z
       .optional(),
     movementCategory: z.enum(
       [
-        InputMovementCategoryType.DONATED,
-        InputMovementCategoryType.PURCHASED,
+        InputMovementCategoryType.DONATION,
+        InputMovementCategoryType.PURCHASE,
+        InputMovementCategoryType.RETURN,
         InputMovementCategoryType.TRANSFER,
         ""
       ],
@@ -114,7 +115,7 @@ export const CreateEditProductSchema = z
   .refine(
     (data) => !(data.productType === ProductType.DONATED && !data.supplier),
     {
-      message: "Fornecedor é obrigatório para itens doados.",
+      message: "Fornecedor é obrigatório para produtos doados.",
       path: ["supplier"],
     }
   );

@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableProducts } from "@/components/tables/data-table-products";
-import { columnsTableProducts } from "@/components/tables/_columns/columns-products";
+import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
 import { ProductWithMasterProductResponse, SelectorOutputProps } from "@/types";
 
 export function SelectorOutput({

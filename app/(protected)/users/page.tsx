@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { DataTableUsers } from "@/components/tables/data-table-users";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { RoleGate } from "@/components/auth/role-gate";
-import { columnsTableUsers } from "@/components/tables/_columns/columns-users";
+import { columnsTableUsers } from "@/components/tables/_columns/columns-table-users";
 import { UserType } from "@/types";
 import { getUsers } from "@/actions";
 import { ROUTES } from "@/config/routes";

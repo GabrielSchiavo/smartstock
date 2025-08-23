@@ -1,7 +1,7 @@
 "use client";
 
-import { DataTableMasterProducts } from "@/components/tables/data-table-master-product";
-import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-master-products";
+import { DataTableMasterProducts } from "@/components/tables/data-table-master-products";
+import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-table-master-products";
 import { ClientMasterProductProps } from "@/types";
 
 export function ClientMasterProduct({ masterProducts }: ClientMasterProductProps) {

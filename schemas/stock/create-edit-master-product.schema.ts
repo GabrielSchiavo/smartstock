@@ -8,7 +8,7 @@ export const CreateEditMasterProductSchema = z
       .min(2, { message: "Nome é obrigatório" })
       .max(60, { message: "Nome deve ter no máximo 60 caracteres" }),
     baseUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-      required_error: "Você precisa selecionar uma unidade de medida base.",
+      required_error: "Selecione uma unidade de medida base",
     }),
     category: z
       .string()

@@ -541,7 +541,7 @@ export const FormBaseInputProduct = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex flex-col gap-3">
-                          <FormLabel>Tipo de Entrada:</FormLabel>
+                          <FormLabel>Tipo de Entrada: <span className="text-red-500">*</span></FormLabel>
                           <FormControl className="flex flex-col gap-3">
                             <RadioGroup
                               onValueChange={field.onChange}
@@ -551,7 +551,7 @@ export const FormBaseInputProduct = forwardRef<
                               <FormItem className="flex items-center">
                                 <FormControl>
                                   <RadioGroupItem
-                                    value={InputMovementCategoryType.DONATED}
+                                    value={InputMovementCategoryType.DONATION}
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
@@ -561,11 +561,21 @@ export const FormBaseInputProduct = forwardRef<
                               <FormItem className="flex items-center">
                                 <FormControl>
                                   <RadioGroupItem
-                                    value={InputMovementCategoryType.PURCHASED}
+                                    value={InputMovementCategoryType.PURCHASE}
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
                                   Compra
+                                </FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value={InputMovementCategoryType.RETURN}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  Devolução
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">

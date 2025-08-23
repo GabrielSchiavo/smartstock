@@ -31,11 +31,11 @@ export enum validityStatusType {
 }
 
 export enum PdfUnitType {
-  PT = "pt",
   MM = "mm",
+  PT = "pt", 
   CM = "cm",
   IN = "in",
-  A4 = "a4",
+  A4 = "a4"
 }
 
 export enum LocaleType {

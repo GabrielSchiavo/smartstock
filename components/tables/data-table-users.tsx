@@ -79,6 +79,7 @@ export function DataTableUsers<TData, TValue>({
           addButton={addButton}
           addButtonType={TableType.USER}
           table={table}
+          searchColumnKey="id"
         />
         {groupBy && groupedData && (
           <TooltipProvider>

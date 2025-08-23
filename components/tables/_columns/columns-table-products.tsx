@@ -10,13 +10,13 @@ import { FormEditProduct } from "@/components/stock/product/form-edit-product";
 import { formatDateToLocale } from "@/lib/date-utils";
 import { Button } from "@/components/ui/button";
 
-// Custom filter function for multi-column searching
+// Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   row,
   columnId,
   filterValue
 ) => {
-  // Concatenate the values from multiple columns into a single string
+  // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.masterProduct.category} ${row.original.masterProduct.group} ${row.original.masterProduct.subgroup} ${row.original.productType} ${row.original.supplier}`;
 
   // Perform a case-insensitive comparison
@@ -71,7 +71,6 @@ export const columnsTableProducts = ({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Nome" />
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Nome",
       } as ColumnMetaProps,
@@ -82,7 +81,6 @@ export const columnsTableProducts = ({
     //     <DataTableColumnHeader column={column} title="Quantidade" />
     //   ),
     //   cell: ({ row }) => row.original.quantity.toLocaleString(LocaleType.PT_BR),
-    //   filterFn: multiColumnFilterFn,
     //   meta: {
     //     title: "Quantidade",
     //   } as ColumnMetaProps,
@@ -92,7 +90,6 @@ export const columnsTableProducts = ({
     //   header: ({ column }) => (
     //     <DataTableColumnHeader column={column} title="Unidade" />
     //   ),
-    //   filterFn: multiColumnFilterFn,
     //   meta: {
     //     title: "Unidade",
     //   } as ColumnMetaProps,
@@ -108,7 +105,6 @@ export const columnsTableProducts = ({
           {row.original.unit}
         </span>
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Quantidade",
       } as ColumnMetaProps,
@@ -136,7 +132,6 @@ export const columnsTableProducts = ({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Lote" />
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Lote",
       } as ColumnMetaProps,
@@ -182,7 +177,6 @@ export const columnsTableProducts = ({
           );
         }
       },
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Data de Validade",
       } as ColumnMetaProps,
@@ -196,7 +190,6 @@ export const columnsTableProducts = ({
         const receiptDate = new Date(row.getValue("receiptDate"));
         return formatDateToLocale(receiptDate);
       },
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Data de Recebimento",
       } as ColumnMetaProps,
@@ -206,7 +199,6 @@ export const columnsTableProducts = ({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Recebedor" />
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Recebedor",
       } as ColumnMetaProps,
@@ -216,7 +208,6 @@ export const columnsTableProducts = ({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Categoria" />
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Categoria",
       } as ColumnMetaProps,
@@ -226,7 +217,6 @@ export const columnsTableProducts = ({
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Grupo" />
       ),
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Grupo",
       } as ColumnMetaProps,
@@ -237,7 +227,6 @@ export const columnsTableProducts = ({
         <DataTableColumnHeader column={column} title="Subgrupo" />
       ),
       cell: ({ row }) => row.original.masterProduct?.subgroup || "-",
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Subgrupo",
       } as ColumnMetaProps,
@@ -263,7 +252,6 @@ export const columnsTableProducts = ({
           );
         }
       },
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Tipo de Produto",
       } as ColumnMetaProps,
@@ -274,7 +262,6 @@ export const columnsTableProducts = ({
         <DataTableColumnHeader column={column} title="Fornecedor" />
       ),
       cell: ({ row }) => row.original.supplier || "-",
-      filterFn: multiColumnFilterFn,
       meta: {
         title: "Fornecedor",
       } as ColumnMetaProps,

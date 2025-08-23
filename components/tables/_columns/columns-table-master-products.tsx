@@ -10,13 +10,13 @@ import { DataTableDropdown } from "@/components/tables/_components/data-table-dr
 import { FormEditMasterProduct } from "@/components/stock/master-product/form-edit-master-product";
 import { deleteMasterProduct } from "@/actions";
 
-// Custom filter function for multi-column searching
+// Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<MasterProduct> = (
   row,
   columnId,
   filterValue
 ) => {
-  // Concatenate the values from multiple columns into a single string
+  // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.baseUnit} ${row.original.category} ${row.original.group} ${row.original.subgroup}`;
 
   // Perform a case-insensitive comparison
@@ -71,7 +71,6 @@ export const columnsTableMasterProducts = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nome" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Nome",
     } as ColumnMetaProps,
@@ -81,7 +80,6 @@ export const columnsTableMasterProducts = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Unidade Base" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Unidade Base",
     } as ColumnMetaProps,
@@ -91,7 +89,6 @@ export const columnsTableMasterProducts = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Categoria" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Categoria",
     } as ColumnMetaProps,
@@ -101,7 +98,6 @@ export const columnsTableMasterProducts = ({
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grupo" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Grupo",
     } as ColumnMetaProps,
@@ -119,7 +115,6 @@ export const columnsTableMasterProducts = ({
         return subgroup;
       }
     },
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Subgrupo",
     } as ColumnMetaProps,

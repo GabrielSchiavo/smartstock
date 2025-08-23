@@ -9,9 +9,13 @@ import { DataTableDropdown } from "@/components/tables/_components/data-table-dr
 import { FormEditUser } from "@/components/user/form-edit-user";
 import { deleteUser } from "@/actions";
 
-// Custom filter function for multi-column searching
-const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
-  // Concatenate the values from multiple columns into a single string
+// Função para escolher as colunas pesquisáveis
+const multiColumnFilterFn: FilterFn<User> = (
+  row,
+  columnId,
+  filterValue
+) => {
+  // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.email} ${row.original.emailVerified} ${row.original.role}`;
 
   // Perform a case-insensitive comparison
@@ -60,7 +64,6 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Nome" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Nome",
     } as ColumnMetaProps,
@@ -70,7 +73,6 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Email",
     } as ColumnMetaProps,
@@ -96,7 +98,6 @@ export const columnsTableUsers: ColumnDef<User>[] = [
         );
       }
     },
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Email Verificado",
     } as ColumnMetaProps,
@@ -122,7 +123,6 @@ export const columnsTableUsers: ColumnDef<User>[] = [
         );
       }
     },
-    filterFn: multiColumnFilterFn,
     meta: {
       title: "Nível de Acesso",
     } as ColumnMetaProps,

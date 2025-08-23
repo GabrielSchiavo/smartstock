@@ -48,7 +48,8 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
     this.addTable(headers, columnWidths, rows);
     this.addFooter();
 
-    return this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
   }
 }
 
@@ -147,7 +148,8 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    return this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
   }
 }
 
@@ -207,7 +209,8 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    return this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
   }
 }
 
@@ -315,7 +318,8 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    return this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
   }
 }
 

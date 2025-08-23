@@ -26,8 +26,8 @@ export abstract class BasePdfGenerator {
   constructor(config: PdfConfigProps = {}) {
     this.doc = new jsPDF({
       orientation: config.orientation || "portrait",
-      unit: config.unit || PdfUnitType.MM,
-      format: config.format || PdfUnitType.A4,
+      unit: (config.unit || PdfUnitType.MM) as "pt" | "mm" | "cm" | "in" | "em" | "px" | "ex" | "pc",
+      format: (config.format || PdfUnitType.A4) as string | number[],
     });
 
     this.margins = config.margins || {

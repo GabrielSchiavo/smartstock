@@ -37,6 +37,7 @@ export interface DataTableToolbarProps<TData> {
   toolTip: boolean;
   addButton: boolean;
   addButtonType?: string;
+  searchColumnKey: string;
 }
 
 export interface DataTableFunctionsProps<TData> {

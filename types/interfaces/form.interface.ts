@@ -1,4 +1,8 @@
-import { CreateEditMasterProductSchema, CreateEditProductSchema, CreateProductOutputSchema } from "@/schemas";
+import {
+  CreateEditMasterProductSchema,
+  CreateEditProductSchema,
+  CreateProductOutputSchema,
+} from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { ModeType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
@@ -48,14 +52,17 @@ export interface DeleteRegisterProps<T extends string | number> {
   onOpenChange?: (open: boolean) => void;
 }
 
-export interface DataTableDropdownProps<T extends string | number> extends DeleteRegisterProps<T> {
+export interface DataTableDropdownProps<T extends string | number>
+  extends DeleteRegisterProps<T> {
   formComponent: React.ComponentType<FormAddEditProps>;
   entity: string;
 }
 
 export interface FormBaseMasterProductProps {
   defaultValues?: z.infer<typeof CreateEditMasterProductSchema>;
-  onSubmit: (values: z.infer<typeof CreateEditMasterProductSchema>) => Promise<void>;
+  onSubmit: (
+    values: z.infer<typeof CreateEditMasterProductSchema>
+  ) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
@@ -64,11 +71,34 @@ export interface FormBaseMasterProductProps {
 
 export interface FormProductOutputProps {
   defaultValues?: z.infer<typeof CreateProductOutputSchema>;
-  onSubmit: (values: z.infer<typeof CreateProductOutputSchema>) => Promise<void>;
+  onSubmit: (
+    values: z.infer<typeof CreateProductOutputSchema>
+  ) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
   loadingText: string;
+}
+
+// Interface de resposta
+export interface FormResponse {
+  success: boolean;
+  title: string;
+  description?: string;
+}
+
+// Interface do componente com tipagem mais específica
+export interface FormBaseUserProps {
+  schema: z.ZodSchema<unknown>;
+  defaultValues?: Record<string, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit: (values: any) => Promise<FormResponse>;
+  onCancel?: () => void;
+  onSuccess?: () => void;
+  submitButtonText: string;
+  loadingText: string;
+  hidePasswordInputs?: boolean;
+  isEditForm?: boolean;
 }
 
 export interface FormBaseInputProductProps {
@@ -81,22 +111,7 @@ export interface FormBaseInputProductProps {
   mode?: ModeType;
 }
 
-export interface FormBaseUserProps<T extends z.ZodTypeAny> {
-  schema: T;
-  defaultValues?: Partial<z.infer<T>>;
-  onSubmit: (values: z.infer<T>) => Promise<{
-    success: boolean;
-    title: string;
-    description?: string;
-  }>;
-  onCancel?: () => void;
-  onSuccess?: () => void;
-  submitButtonText: string;
-  loadingText: string;
-  hidePasswordInputs: boolean;
-  isEditForm: boolean;
-}
-
-export interface ExtendedFormBaseInputProductProps extends FormBaseInputProductProps {
+export interface ExtendedFormBaseInputProductProps
+  extends FormBaseInputProductProps {
   masterProducts: MasterProduct[];
 }

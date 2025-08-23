@@ -2,53 +2,71 @@ import { z } from "zod";
 import { OutputMovementCategoryType, UnitType } from "@/types";
 
 export const CreateProductOutputSchema = z.object({
-  productId: z.string().trim().min(1, { message: "Produto é obrigatório" }),
+  productId: z.string().trim().min(1, {
+      error: "Produto é obrigatório"
+}),
   lot: z
     .string()
     .trim()
-    .min(2, { message: "Selecione um produto" })
-    .max(30, { message: "Lote deve ter no máximo 30 caracteres" }),
+    .min(2, {
+        error: "Selecione um produto"
+    })
+    .max(30, {
+        error: "Lote deve ter no máximo 30 caracteres"
+    }),
   validityDate: z
     .string()
     .trim()
-    .min(2, { message: "Selecione um produto" })
-    .max(30, { message: "Lote deve ter no máximo 30 caracteres" }),
+    .min(2, {
+        error: "Selecione um produto"
+    })
+    .max(30, {
+        error: "Lote deve ter no máximo 30 caracteres"
+    }),
   productQuantity: z
     .string()
     .trim()
-    .min(1, { message: "Selecione um produto" })
-    .max(10, { message: "Quantidade deve ter no máximo 10 caracteres" })
+    .min(1, {
+        error: "Selecione um produto"
+    })
+    .max(10, {
+        error: "Quantidade deve ter no máximo 10 caracteres"
+    })
     .refine(
       (v) => {
         const n = Number(v);
         return !isNaN(n) && n > 0;
       },
       {
-        message: "Número inválido. Use apenas números positivos maiores que 0.",
-      }
+          error: "Número inválido. Use apenas números positivos maiores que 0."
+    }
     ),
   productUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    message: "Selecione um produto",
-  }),
+      error: "Selecione um produto"
+}),
 
   
   quantity: z
     .string()
     .trim()
-    .min(1, { message: "Quantidade é obrigatória" })
-    .max(10, { message: "Quantidade deve ter no máximo 10 caracteres" })
+    .min(1, {
+        error: "Quantidade é obrigatória"
+    })
+    .max(10, {
+        error: "Quantidade deve ter no máximo 10 caracteres"
+    })
     .refine(
       (v) => {
         const n = Number(v);
         return !isNaN(n) && n > 0;
       },
       {
-        message: "Número inválido. Use apenas números positivos maiores que 0.",
-      }
+          error: "Número inválido. Use apenas números positivos maiores que 0."
+    }
     ),
   unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    required_error: "Selecione uma unidade de medida",
-  }),
+      error: (issue) => issue.input === undefined ? "Selecione uma unidade de medida" : undefined
+}),
   movementCategory: z.enum(
     [
       OutputMovementCategoryType.CONSUMPTION,
@@ -58,7 +76,7 @@ export const CreateProductOutputSchema = z.object({
       OutputMovementCategoryType.TRANSFER,
     ],
     {
-      required_error: "Selecione o tipo de saída.",
+        error: (issue) => issue.input === undefined ? "Selecione o tipo de saída." : undefined
     }
   ),
 });

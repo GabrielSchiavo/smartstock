@@ -6,34 +6,45 @@ export const CreateEditProductSchema = z
     masterProductId: z
       .string()
       .trim()
-      .min(1, { message: "Produto Mestre é obrigatório" }),
+      .min(1, {
+          error: "Produto Mestre é obrigatório"
+    }),
     name: z
       .string()
       .trim()
-      .min(2, { message: "Nome é obrigatório" })
-      .max(60, { message: "Nome deve ter no máximo 60 caracteres" }),
+      .min(2, {
+          error: "Nome é obrigatório"
+    })
+      .max(60, {
+          error: "Nome deve ter no máximo 60 caracteres"
+    }),
     quantity: z
       .string()
       .trim()
-      .min(1, { message: "Quantidade é obrigatória" })
-      .max(10, { message: "Quantidade deve ter no máximo 10 caracteres" })
+      .min(1, {
+          error: "Quantidade é obrigatória"
+    })
+      .max(10, {
+          error: "Quantidade deve ter no máximo 10 caracteres"
+    })
       .refine(
         (v) => {
           const n = Number(v);
           return !isNaN(n) && n > 0;
         },
         {
-          message:
-            "Número inválido. Use apenas números positivos maiores que 0.",
+            error: "Número inválido. Use apenas números positivos maiores que 0."
         }
       ),
     unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-      required_error: "Você precisa selecionar uma unidade de medida.",
+        error: (issue) => issue.input === undefined ? "Você precisa selecionar uma unidade de medida." : undefined
     }),
     unitWeight: z
       .string()
       .trim()
-      .max(10, { message: "Peso Unitário deve ter no máximo 10 caracteres" })
+      .max(10, {
+          error: "Peso Unitário deve ter no máximo 10 caracteres"
+    })
       .refine(
         (v) => {
           if (v === undefined || v === "") return true;
@@ -41,62 +52,81 @@ export const CreateEditProductSchema = z
           return !isNaN(n) && n > 0;
         },
         {
-          message:
-            "Número inválido. Use apenas números positivos maiores que 0.",
+            error: "Número inválido. Use apenas números positivos maiores que 0."
         }
       )
       .optional(),
     unitOfUnitWeight: z
       .enum([UnitType.KG, UnitType.G, UnitType.L], {
-        required_error: "Você precisa selecionar uma unidade de medida.",
-      })
+          error: (issue) => issue.input === undefined ? "Você precisa selecionar uma unidade de medida." : undefined
+    })
       .nullable()
       .optional(),
     lot: z
       .string()
       .trim()
-      .min(2, { message: "Lote é obrigatório" })
-      .max(30, { message: "Lote deve ter no máximo 30 caracteres" }),
-    validityDate: z.coerce.date({
-      required_error: "Selecione uma data",
-      invalid_type_error: "Data inválida",
-      message: "Selecione uma data",
+      .min(2, {
+          error: "Lote é obrigatório"
+    })
+      .max(30, {
+          error: "Lote deve ter no máximo 30 caracteres"
     }),
-    receiptDate: z.coerce.date({
-      required_error: "Selecione uma data",
-      invalid_type_error: "Data inválida",
-      message: "Selecione uma data.",
+    validityDate: z.date({
+      error: "Selecione uma data"
+    }),
+    receiptDate: z.date({
+      error: "Selecione uma data."
     }),
     receiver: z
       .string()
       .trim()
-      .min(2, { message: "Recebedor é obrigatório" })
-      .max(30, { message: "Recebedor deve ter no máximo 30 caracteres" }),
+      .min(2, {
+          error: "Recebedor é obrigatório"
+    })
+      .max(30, {
+          error: "Recebedor deve ter no máximo 30 caracteres"
+    }),
     category: z
       .string()
       .trim()
-      .min(2, { message: "Selecione um produto mestre" })
-      .max(50, { message: "Categoria deve ter no máximo 50 caracteres" }),
+      .min(2, {
+          error: "Selecione um produto mestre"
+    })
+      .max(50, {
+          error: "Categoria deve ter no máximo 50 caracteres"
+    }),
     group: z
       .string()
       .trim()
-      .min(2, { message: "Selecione um produto mestre" })
-      .max(50, { message: "Grupo deve ter no máximo 50 caracteres" }),
+      .min(2, {
+          error: "Selecione um produto mestre"
+    })
+      .max(50, {
+          error: "Grupo deve ter no máximo 50 caracteres"
+    }),
     subgroup: z
       .string()
       .trim()
-      .min(2, { message: "Selecione um produto mestre" })
-      .max(50, { message: "Subgrupo deve ter no máximo 50 caracteres" })
+      .min(2, {
+          error: "Selecione um produto mestre"
+    })
+      .max(50, {
+          error: "Subgrupo deve ter no máximo 50 caracteres"
+    })
       .or(z.literal(""))
       .optional(),
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
-      required_error: "Selecione um tipo de produto.",
+        error: (issue) => issue.input === undefined ? "Selecione um tipo de produto." : undefined
     }),
     supplier: z
       .string()
       .trim()
-      .min(2, { message: "Fornecedor é obrigatório" })
-      .max(30, { message: "Fornecedor deve ter no máximo 30 caracteres" })
+      .min(2, {
+          error: "Fornecedor é obrigatório"
+    })
+      .max(30, {
+          error: "Fornecedor deve ter no máximo 30 caracteres"
+    })
       .nullable()
       .optional(),
     movementCategory: z.enum(
@@ -108,14 +138,14 @@ export const CreateEditProductSchema = z
         ""
       ],
       {
-        required_error: "Selecione o tipo de entrada.",
-      }
+          error: (issue) => issue.input === undefined ? "Selecione o tipo de entrada." : undefined
+    }
     ),
   })
   .refine(
     (data) => !(data.productType === ProductType.DONATED && !data.supplier),
     {
-      message: "Fornecedor é obrigatório para produtos doados.",
       path: ["supplier"],
+        error: "Fornecedor é obrigatório para produtos doados."
     }
   );

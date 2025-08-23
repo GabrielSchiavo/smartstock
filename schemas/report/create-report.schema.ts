@@ -3,48 +3,50 @@ import { ReportType } from "@/types";
 
 export const CreateReportSchema = z
   .object({
-    initialDate: z.coerce.date().optional(),
-    finalDate: z.coerce.date().optional(),
+    initialDate: z.date().optional(),
+    finalDate: z.date().optional(),
     reportType: z.enum(
       [ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.INVENTORY],
-      { required_error: "Selecione o tipo de relatório." }
+      {
+        message: "Selecione o tipo de relatório."
+      }
     ),
   })
   .refine(
     (data) => !(
-      data.reportType !== ReportType.INVENTORY && 
-      data.finalDate && 
-      data.initialDate && 
+      data.reportType !== ReportType.INVENTORY &&
+      data.finalDate &&
+      data.initialDate &&
       data.finalDate < data.initialDate
     ),
     {
-      message: "A data final não pode ser menor que a data inicial.",
       path: ["finalDate"],
+      message: "A data final não pode ser menor que a data inicial."
     }
   )
   .refine(
     (data) => !(
-      data.reportType !== ReportType.INVENTORY && 
-      data.finalDate && 
-      data.initialDate && 
+      data.reportType !== ReportType.INVENTORY &&
+      data.finalDate &&
+      data.initialDate &&
       data.initialDate > data.finalDate
     ),
     {
-      message: "Data inicial não pode ser maior que data final.",
       path: ["initialDate"],
+      message: "Data inicial não pode ser maior que data final."
     }
   )
   .refine(
     (data) => !(data.reportType !== ReportType.INVENTORY && !data.initialDate),
     {
-      message: "Data Inicial é obrigatória.",
       path: ["initialDate"],
+      message: "Data Inicial é obrigatória."
     }
   )
   .refine(
     (data) => !(data.reportType !== ReportType.INVENTORY && !data.finalDate),
     {
-      message: "Data Final é obrigatória.",
       path: ["finalDate"],
+      message: "Data Final é obrigatória."
     }
   );

@@ -1,6 +1,6 @@
 {
   "name": "smartstock-v2",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -43,7 +43,7 @@
     "tailwind-merge": "^3.3.1",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
-    "zod": "^3.25.76"
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

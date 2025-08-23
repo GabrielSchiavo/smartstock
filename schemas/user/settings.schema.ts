@@ -7,13 +7,13 @@ export const SettingsSchema = z
     email: z.optional(EmailSchema),
     password: z.optional(
       z.string().refine((val) => !/\s/.test(val), {
-        message: "A senha não pode conter espaços em branco",
-      })
+          error: "A senha não pode conter espaços em branco"
+    })
     ),
     newPassword: z
       .union([
         z.string().length(0, {
-          message: "Nova senha não pode ser informada se o campo Senha atual não for preenchido",
+            error: "Nova senha não pode ser informada se o campo Senha atual não for preenchido"
         }),
         PasswordSchema,
       ])
@@ -23,14 +23,14 @@ export const SettingsSchema = z
   .refine(
     (data) => !(data.password && !data.newPassword),
     {
-      message: "Nova senha é obrigatória!",
       path: ["newPassword"],
+        error: "Nova senha é obrigatória!"
     }
   )
   .refine(
     (data) => !(data.newPassword && !data.password),
     {
-      message: "Senha atual é obrigatória!",
       path: ["password"],
+        error: "Senha atual é obrigatória!"
     }
   );

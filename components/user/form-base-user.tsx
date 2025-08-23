@@ -1,7 +1,6 @@
 "use client";
 
-import { Path, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -23,9 +22,11 @@ import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { useSession } from "next-auth/react";
 
-export const FormBaseUser = <T extends z.ZodTypeAny>({
+
+
+export const FormBaseUser = ({
   schema,
-  defaultValues,
+  defaultValues = {},
   onSubmit,
   onCancel,
   onSuccess,
@@ -33,35 +34,34 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
   loadingText,
   hidePasswordInputs = false,
   isEditForm = false,
-}: FormBaseUserProps<T>) => {
+}: FormBaseUserProps) => {
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<T>>({
-    resolver: zodResolver(schema),
+  const form = useForm({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(schema as any), // Cast para resolver incompatibilidades de versão
     defaultValues: {
       email: "",
       name: "",
       userType: undefined,
       ...(hidePasswordInputs ? {} : { password: "", confirmPassword: "" }),
       ...defaultValues,
-    } as z.infer<T>,
+    },
   });
 
-  const handleSubmit = (values: z.infer<T>) => {
+  const handleSubmit = (values: unknown) => {
     startTransition(async () => {
       try {
         const response = await onSubmit(values);
 
-        if (isEditForm === true) {
+        if (isEditForm) {
           update();
         }
 
-        if (response.success === true) {
+        if (response.success) {
           onSuccess?.();
-        }
-
-        if (response.success === false) {
+        } else {
           form.reset();
         }
 
@@ -70,16 +70,16 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
           description: response.description,
           type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
-      } catch {
+      } catch (error) {
+        console.error('Form submission error:', error);
         showToast({
           title: "Algo deu errado!",
+          description: "Erro interno do sistema. Tente novamente.",
           type: ToastType.ERROR,
         });
       }
     });
   };
-
-  type FieldName = Path<z.infer<T>>;
 
   return (
     <Form {...form}>
@@ -87,7 +87,7 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
         <div className="grid grid-cols-1 gap-4 items-start">
           <FormField
             control={form.control}
-            name={"name" as FieldName}
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nome</FormLabel>
@@ -106,7 +106,7 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
 
           <FormField
             control={form.control}
-            name={"email" as FieldName}
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -128,7 +128,7 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
             <>
               <FormField
                 control={form.control}
-                name={"password" as FieldName}
+                name="password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
@@ -147,7 +147,7 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
 
               <FormField
                 control={form.control}
-                name={"confirmPassword" as FieldName}
+                name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Confirme a senha</FormLabel>
@@ -168,7 +168,7 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
 
           <FormField
             control={form.control}
-            name={"userType" as FieldName}
+            name="userType"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="flex items-center">
@@ -224,13 +224,14 @@ export const FormBaseUser = <T extends z.ZodTypeAny>({
             )}
           />
         </div>
+        
         <DialogFooter>
           <div className="flex gap-3 justify-end">
             <Button
               disabled={isPending}
               size="sm"
               type="reset"
-              variant={"ghost"}
+              variant="ghost"
               onClick={() => {
                 form.reset();
                 onCancel?.();

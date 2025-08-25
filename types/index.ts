@@ -10,6 +10,7 @@ export * from "./enums/enums";
 
 // Types
 export * from "./models/admin.model";
+export * from "./models/audit-log.model";
 export * from "./models/category.model";
 export * from "./models/group.model";
 export * from "./models/master-product.model";

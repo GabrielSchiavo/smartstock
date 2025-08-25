@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { UserType } from "@/types";
 import { RoleGate } from "@/components/auth/role-gate";
 import { ROUTES } from "@/config/routes";
-import { getMasterProducts } from "@/actions/master-item.action";
+import { getMasterProducts } from "@/actions/master-product.action";
 import { ClientMasterProduct } from "@/components/stock/master-product/client-master-product";
 
 export const metadata: Metadata = {

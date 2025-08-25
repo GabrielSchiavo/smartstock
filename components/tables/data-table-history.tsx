@@ -41,6 +41,7 @@ export function DataTableHistory<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    getRowCanExpand: () => true,
     state: {
       sorting,
       columnFilters,
@@ -56,7 +57,7 @@ export function DataTableHistory<TData, TValue>({
           toolTip={false}
           addButton={addButton}
           table={table}
-          searchColumnKey="id"
+          searchColumnKey="createdAt"
         />
       </div>
 

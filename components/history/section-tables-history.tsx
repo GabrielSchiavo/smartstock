@@ -1,4 +1,5 @@
 import { ClientHistory } from "@/components/history/client-history";
+import { toDate } from "date-fns";
 
 export const SectionTablesHistory = ({}) => {
   return (
@@ -17,7 +18,7 @@ export const SectionTablesHistory = ({}) => {
                   recordChangedId: "545",
                   actionType: "DELETE",
                   actionCategory: "PRODUCT",
-                  createdAt: new Date(),
+                  createdAt: toDate("2025-08-22 20:11:54"),
                   observation: "EXCLUSÃO DE PRODUTO",
                   value: "10 KG"
                 },
@@ -27,7 +28,7 @@ export const SectionTablesHistory = ({}) => {
                   recordChangedId: "545",
                   actionType: "CREATE",
                   actionCategory: "USER",
-                  createdAt: new Date(),
+                  createdAt: toDate("2025-08-22 20:11:54"),
                   observation: "EXCLUSÃO DE PRODUTO",
                   value: "10 KG"
                 },

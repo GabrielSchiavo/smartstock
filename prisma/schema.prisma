@@ -107,7 +107,7 @@ model AuditLog {
   value           String     @db.VarChar(150)
   observation     String     @db.VarChar(200)
 
-  createdAt DateTime @default(now()) @db.Date
+  createdAt       DateTime   @default(now())
 }
 
 model MasterProduct {

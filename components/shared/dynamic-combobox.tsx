@@ -55,7 +55,7 @@ export function DynamicCombobox({
         getAll: getAllCategory,
         delete: deleteCategory,
         checkUsage: checkCategoryUsage,
-        resourceName: "Grupo",
+        resourceName: "Categoria",
       },
       [ResourceType.GROUP]: {
         search: searchGroup,

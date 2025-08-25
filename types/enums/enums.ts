@@ -42,6 +42,7 @@ export enum LocaleType {
   PT_BR = "pt-BR",
   EN_US = "en-US",
   UTC = "UTC",
+  SAO_PAULO = "America/Sao_Paulo",
   DD_MM_YYYY = "dd/MM/yyyy",
 }
 

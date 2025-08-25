@@ -71,3 +71,7 @@ export const getLocalizedMonthNames = (
 export function formatDateToLocale(date: Date): string {
   return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC, day: "2-digit", month: "2-digit", year: "numeric" });
 }
+
+export function formatDateTimeToLocale(date: Date): string {
+  return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.SAO_PAULO, day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}

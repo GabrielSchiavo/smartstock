@@ -3,8 +3,10 @@ import { db } from "@/lib/db";
 import { MasterProduct } from "@prisma/client";
 
 export const masterProductRepository = {
-  async create(data: MasterProductResponse): Promise<void> {
-    await db.masterProduct.create({ data });
+  async create(data: MasterProductResponse): Promise<MasterProduct> {
+    return (await db.masterProduct.create({
+      data: data,
+    })) as MasterProduct;
   },
 
   async findAll(): Promise<MasterProduct[]> {
@@ -14,7 +16,7 @@ export const masterProductRepository = {
   },
 
   async countMasterProducts(): Promise<number> {
-    return db.masterProduct.count()
+    return db.masterProduct.count();
   },
 
   async delete(id: number): Promise<void> {
@@ -29,7 +31,10 @@ export const masterProductRepository = {
     });
   },
 
-  async update(id: number, data: MasterProductUpdateResponse): Promise<MasterProduct> {
+  async update(
+    id: number,
+    data: MasterProductUpdateResponse
+  ): Promise<MasterProduct> {
     return await db.masterProduct.update({
       where: { id },
       data,

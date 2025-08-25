@@ -5,6 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { AuditLog } from "@prisma/client";
 import { ColumnMetaProps } from "@/types";
+import { Button } from "@/components/ui/button";
+import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { formatDateTimeToLocale } from "@/lib/date-utils";
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<AuditLog> = (
@@ -52,23 +55,42 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
       enableHiding: false,
     },
     {
-      accessorKey: "id",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="ID" />
-      ),
-      filterFn: multiColumnFilterFn,
-      meta: {
-        title: "ID",
-      } as ColumnMetaProps,
+      id: "expand",
+      header: "",
+      cell: ({ row }) => {
+        return (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={row.getToggleExpandedHandler()}
+            className="h-8 w-8 p-0"
+          >
+            {row.getIsExpanded() ? (
+              <ChevronDownIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </Button>
+        );
+      },
+      enableSorting: false,
+      enableHiding: false,
     },
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Data e Hora" />
       ),
+      cell: ({ row }) => {
+        const validityDate = new Date(row.getValue("createdAt"));
+        const dateString = formatDateTimeToLocale(validityDate);
+
+        return dateString;
+      },
       meta: {
         title: "Data e Hora",
       } as ColumnMetaProps,
+      filterFn: multiColumnFilterFn,
     },
     {
       accessorKey: "actionType",

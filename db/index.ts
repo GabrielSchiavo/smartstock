@@ -1,7 +1,8 @@
 export { alertRepository } from "./repositories/alert.repository";
+export { auditLogRepository } from "./repositories/audit-log.repository";
 export { categoryRepository } from "./repositories/category.repository";
 export { groupRepository } from "./repositories/group.repository";
-export { masterProductRepository } from "./repositories/master-item.repository";
+export { masterProductRepository } from "./repositories/master-product.repository";
 export { movementRepository } from "./repositories/movement.repository";
 export { passwordResetTokenRepository } from "./repositories/password-reset-token.repository";
 export { productRepository } from "./repositories/product.repository";

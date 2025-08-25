@@ -3,13 +3,20 @@
 import { CreateEditMasterProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { masterProductRepository } from "@/db";
+import { auditLogRepository, masterProductRepository } from "@/db";
 import type { MasterProduct } from "@prisma/client";
-import { MasterProductOperationResponse } from "@/types";
+import {
+  ActionCategoryType,
+  ActionType,
+  MasterProductOperationResponse,
+} from "@/types";
+import { auth } from "@/auth";
 
 export const registerMasterProduct = async (
   values: z.infer<typeof CreateEditMasterProductSchema>
 ): Promise<MasterProductOperationResponse> => {
+  const session = await auth();
+
   const validatedFields = CreateEditMasterProductSchema.safeParse(values);
 
   if (validatedFields.success === false) {
@@ -23,8 +30,18 @@ export const registerMasterProduct = async (
   const { ...masterProductData } = validatedFields.data;
 
   try {
-    await masterProductRepository.create({
+    const masterProduct = await masterProductRepository.create({
       ...masterProductData,
+    });
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: session?.user.id as string,
+      recordChangedId: masterProduct.id.toString(),
+      actionType: ActionType.CREATE,
+      actionCategory: ActionCategoryType.MASTER_PRODUCT,
+      value: masterProductData.name,
+      observation: `CRIADO Produto Mestre: '${masterProductData.name}', por '${session?.user.name}'`,
     });
 
     revalidatePath("/");
@@ -110,7 +127,9 @@ export const deleteMasterProduct = async (id: number) => {
   }
 };
 
-export const getMasterProductById = async (id: number): Promise<MasterProduct> => {
+export const getMasterProductById = async (
+  id: number
+): Promise<MasterProduct> => {
   try {
     const masterProduct = await masterProductRepository.findById(id);
     if (!masterProduct) {

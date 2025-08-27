@@ -35,15 +35,21 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
     - `Geração:` Acesso somente a geração e visualização de relatórios.
 
 - **Cadastro:**
-  - `Cadastro de produtos alimentícios:` Cadastro simples de produtos com os seguintes dados: Lote; Data de Validade; Doador; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
+  - `Cadastro de Produto Mestre:` Cadastro mestre dos produtos com informações comuns como categoria, grupo, subgrupo e unidade de medida base.
   
   - `Cadastro de Usuários:` Cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
+
+  - `Edição:` Edição de cadastros.
+  
+  - `Exclusão:` Exclusão de cadastros.
   
 - **Controle de Estoque:**
-  - `Edição:` Edição completa de produtos cadastrados.
-  
-  - `Exclusão:` Exclusão de produtos cadastrados.
+  - `Entradas:` Cadastros de entradas dos produtos a partir do Produto Mestre.
 
+  - `Saídas:` Cadastro de saídas a partir do cadastro do produto com validação de estoque disponível.
+
+  - `Ajustes:` Cadastro ajustes positivos e negativos para correção de estoque.
+  
 - **Controle de Usuários:**
     Somente o usuário administrador tem acesso ao Controle de Usuários.
 
@@ -63,11 +69,16 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
     - Inventário de todos os produtos cadastrados.
 
 - **Alertas:**
-  - `Alertas simples:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
+  - `Controle de validades:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
   
   - `Aviso:` Quando o usuário abre o sistema pela primeira vez, é disparado um aviso com o total de alertas não lidos e, quando um novo alerta é encontrado, também é disparado um aviso para o usuário.
   
   - `Lidos/Não Lidos:` Organização dos alertas em lidos e não lidos.
+
+- **Sistema de Logs:**
+  - `Geração de Logs:` Logs de interação do usuário com as principais partes do sistema como criação,  edição e exclusão de registros.
+
+- `Painel de visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
 
 - **Organização:**
    - `Dashboard:` Tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.

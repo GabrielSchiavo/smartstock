@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreVerticalIcon } from "lucide-react";
+import { MoreHorizontalIcon } from "lucide-react";
 import { DataTableDropdownProps, ModeType } from "@/types";
 import { AddEditDialog } from "@/components/shared/add-edit-dialog";
 import DeleteDialog from "@/components/shared/delete-dialog";
@@ -33,9 +33,9 @@ export function DataTableDropdown<T extends string | number>({
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button size={"sm"} variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreVerticalIcon />
+        <Button size={"sm"} variant="ghost" className="size-8! shrink-0">
+          <span className="sr-only">Abrir Menu</span>
+          <MoreHorizontalIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

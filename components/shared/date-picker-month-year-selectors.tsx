@@ -28,7 +28,7 @@ import {
   convertUTCToLocalDate,
   formatUTCDate,
   getLocalizedMonthNames,
-} from "@/lib/date-utils";
+} from "@/utils/date-utils";
 
 export function DatePickerMonthYear<T extends FieldValues>({
   field,

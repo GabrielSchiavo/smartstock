@@ -37,7 +37,7 @@ import {
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { showToast } from "@/components/utils/show-toast";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { formatDateToLocale } from "@/utils/date-utils";
 import { BaseDataTable } from "@/components/tables/base-data-table";
 
 export function DataTableReport<TData>({

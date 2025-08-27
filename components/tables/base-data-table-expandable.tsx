@@ -18,9 +18,9 @@ import {
 } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { formatDateTimeToLocale } from "@/lib/date-utils";
+import { formatDateTimeToLocale } from "@/utils/date-utils";
 
-export function BaseDataTableAccordion<TData>({
+export function BaseDataTableExpandable<TData>({
   table,
   columns,
 }: BaseDataTableAccordionProps<TData>) {

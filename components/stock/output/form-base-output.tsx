@@ -23,7 +23,7 @@ import {
   UnitType,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
-import { SelectorOutput } from "@/components/stock/output/selector-output";
+import { SelectorProduct } from "@/components/stock/product/selector-product";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -34,7 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { formatDateToLocale } from "@/utils/date-utils";
 
 interface ExtendedFormBaseInputProductProps extends FormProductOutputProps {
   products: ProductWithMasterProductResponse[];
@@ -118,7 +118,7 @@ export const FormBaseOutput = forwardRef<
                         <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <SelectorOutput
+                        <SelectorProduct
                           products={products}
                           onSelect={handleProductSelect}
                           selectedId={field.value}

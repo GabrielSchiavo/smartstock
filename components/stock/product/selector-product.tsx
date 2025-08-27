@@ -17,7 +17,7 @@ import { DataTableProducts } from "@/components/tables/data-table-products";
 import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
 import { ProductWithMasterProductResponse, SelectorOutputProps } from "@/types";
 
-export function SelectorOutput({
+export function SelectorProduct({
   products,
   onSelect,
   selectedId,

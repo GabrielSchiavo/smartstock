@@ -3,7 +3,7 @@
 import { userRepository } from "@/db";
 import { currentUser } from "@/lib/auth";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/send-mail";
+import { sendVerificationEmail } from "@/utils/send-mail";
 import { SettingsSchema } from "@/schemas";
 import {
   PasswordSettingsParams,

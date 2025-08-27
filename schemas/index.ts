@@ -13,10 +13,10 @@ export * from "./user/settings.schema";
 
 // Stock
 export * from "./stock/create-edit-master-product.schema";
-export * from "./stock/create-product-output.schema";
+export * from "./stock/create-output.schema";
 
 // Product
-export * from "./stock/create-edit-product.schema";
+export * from "./stock/create-edit-product-input.schema";
 
 // Report
 export * from "./report/create-report.schema";

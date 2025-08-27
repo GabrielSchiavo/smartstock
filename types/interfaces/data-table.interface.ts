@@ -1,5 +1,5 @@
 import { Column, ColumnDef, Row, Table,Table as TanstackTable, } from "@tanstack/react-table";
-import { ProductWithMasterProductResponse, ReportType } from "@/types";
+import { FilterModeType, ProductWithMasterProductResponse, ReportType } from "@/types";
 import { MasterProduct } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
@@ -38,6 +38,7 @@ export interface DataTableToolbarProps<TData> {
   addButton: boolean;
   addButtonType?: string;
   searchColumnKey: string;
+  filters?: DataTableFilterConfigProps[];
 }
 
 export interface DataTableFunctionsProps<TData> {
@@ -70,4 +71,21 @@ export interface BaseDataTableProps<TData> {
 export interface BaseDataTableAccordionProps<TData> {
   table: TanstackTable<TData>;
   columns: ColumnDef<TData>[];
+}
+
+export interface DataTableFilterConfigProps {
+  columnKey: string; // nome da coluna na tabela (ex: "actionType")
+  title?: string; // título do filtro (ex: "Ação")
+  options?: Array<{ label: string; value: string }>; // opções para o faceted filter
+};
+
+export interface DataTableFacetedFilterProps<TData, TValue> {
+  column?: Column<TData, TValue>
+  title?: string
+  options: {
+    label: string
+    value: string
+    icon?: React.ComponentType<{ className?: string }>
+  }[]
+  mode?: FilterModeType
 }

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { getMasterProducts, registerProduct } from "@/actions";
+import { getMasterProducts, registerInput } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 import { MasterProduct } from "@prisma/client";
-import { FormBaseInputProduct } from "@/components/stock/product/form-base-input-product";
+import { BaseFormInput } from "@/components/stock/input/base-form-input";
 
 export const FormAddInput = ({
   onShouldInvalidate,
@@ -36,7 +36,7 @@ export const FormAddInput = ({
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
     await startTransition(async () => {
       try {
-        const response = await registerProduct(values);
+        const response = await registerInput(values);
 
         if (response.success === true) {
           formRef.current?.reset();
@@ -60,7 +60,7 @@ export const FormAddInput = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseInputProduct
+      <BaseFormInput
         masterProducts={masterProducts}
         ref={formRef}
         onSubmit={onSubmit}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import { FormBaseInputProduct } from "@/components/stock/product/form-base-input-product";
+import { BaseFormInput } from "@/components/stock/input/base-form-input";
 import { editProduct, getMasterProducts, getProductById } from "@/actions";
 import {
   FormAddEditProps,
@@ -133,7 +133,7 @@ export const FormEditProduct = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseInputProduct
+      <BaseFormInput
         masterProducts={masterProducts}
         ref={formRef}
         defaultValues={initialValues}

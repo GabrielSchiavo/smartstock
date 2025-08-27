@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useTransition } from "react";
-import { FormBaseMasterProduct } from "@/components/stock/master-product/form-base-master-product";
+import { BaseFormMasterProduct } from "@/components/stock/master-product/base-form-master-product";
 import { registerMasterProduct } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
@@ -44,7 +44,7 @@ export const FormAddMasterProduct = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseMasterProduct
+      <BaseFormMasterProduct
         onSubmit={onSubmit}
         onCancel={onCancel}
         isPending={isPending}

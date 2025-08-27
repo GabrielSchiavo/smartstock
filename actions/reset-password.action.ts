@@ -2,7 +2,7 @@
 
 import { userRepository } from "@/db";
 import { generatePasswordResetToken } from "@/lib/tokens";
-import { sendPasswordResetEmail } from "@/lib/send-mail";
+import { sendPasswordResetEmail } from "@/utils/send-mail";
 import { ResetSchema } from "@/schemas";
 import { z } from "zod";
 import { ResetPasswordResponse } from "@/types";

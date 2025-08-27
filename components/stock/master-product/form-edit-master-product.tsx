@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import { FormBaseMasterProduct } from "@/components/stock/master-product/form-base-master-product";
+import { BaseFormMasterProduct } from "@/components/stock/master-product/base-form-master-product";
 import { editMasterProduct, getMasterProductById } from "@/actions";
 import { FormAddEditProps, ToastType, UnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
@@ -96,7 +96,7 @@ export const FormEditMasterProduct = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseMasterProduct
+      <BaseFormMasterProduct
         ref={formRef}
         defaultValues={initialValues}
         onSubmit={onSubmit}

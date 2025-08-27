@@ -6,7 +6,7 @@ import { AlertStyleType, AlertType, ToastType } from "@/types";
 import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { formatDateToLocale } from "@/utils/date-utils";
 
 export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
 

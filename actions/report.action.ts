@@ -12,7 +12,7 @@ import {
   ValidityReportResponse,
 } from "@/types";
 import { revalidatePath } from "next/cache";
-import { getExpiryInfo } from "@/lib/check-expiry-status";
+import { getExpiryInfo } from "@/utils/check-expiry-status";
 
 // Geradores de Relatório
 export const generateValidityReport = async (

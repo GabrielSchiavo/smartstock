@@ -5,80 +5,16 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import {
   auditLogRepository,
-  movementRepository,
   productRepository,
 } from "@/db";
 import {
   EntityType,
   ActionType,
-  MovementType,
   ProductCountType,
   ProductOperationResponse,
   ProductWithMasterProductResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
-
-export const registerProduct = async (
-  values: z.infer<typeof CreateEditProductSchema>
-): Promise<ProductOperationResponse> => {
-  const validatedFields = CreateEditProductSchema.safeParse(values);
-  const user = await currentUser();
-
-  if (validatedFields.success === false) {
-    return {
-      success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
-    };
-  }
-
-  const { quantity, unitWeight, ...productData } = validatedFields.data;
-
-  try {
-    const product = await productRepository.create({
-      ...productData,
-      quantity: Number(quantity),
-      unitWeight: unitWeight ? Number(unitWeight) : null,
-      masterProductId: Number(productData.masterProductId),
-    });
-
-    // Cria o movimento de estoque após criar o produto
-    await movementRepository.createInput({
-      productId: product.id,
-      quantity: Number(quantity),
-      unit: productData.unit,
-      movementType: MovementType.INPUT,
-      movementCategory: productData.movementCategory,
-      observation: `[MOVEMENT] Type=${MovementType.INPUT} | Category=${productData.movementCategory}} | Quantity=${quantity} | Unit=${productData.unit} | Product ID=${product.id} | Date Time='${new Date().toISOString()}'`,
-      createdAt: new Date(),
-    });
-
-    // Cria o log de entrada após criar o movimento
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: product.id.toString(),
-      actionType: ActionType.CREATE,
-      entity: EntityType.INPUT,
-      value: `${product.quantity.toString()} ${product.unit}`,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
-    });
-
-    revalidatePath("/");
-    return {
-      success: true,
-      title: "Sucesso!",
-      description: "Produto cadastrado com sucesso.",
-    };
-  } catch (error) {
-    console.error("Erro ao cadastrar produto:", error);
-    return {
-      success: false,
-      title: "Erro!",
-      description: "Não foi possível cadastrar o produto.",
-    };
-  }
-};
 
 export const editProduct = async (
   id: number,

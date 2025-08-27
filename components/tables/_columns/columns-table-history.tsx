@@ -11,7 +11,7 @@ import {
   ChevronRightIcon,
   CircleQuestionMarkIcon,
 } from "lucide-react";
-import { formatDateTimeToLocale } from "@/lib/date-utils";
+import { formatDateTimeToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
 
 // Função para escolher as colunas pesquisáveis
@@ -66,11 +66,12 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         return (
           <div className="flex justify-center">
             <Button
+              size="sm"
               variant="ghost"
-              size="icon"
               onClick={row.getToggleExpandedHandler()}
-              className="h-8 w-8 p-0"
+              className="size-8! shrink-0"
             >
+              <span className="sr-only">Expandir Linha</span>
               {row.getIsExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />}
             </Button>
           </div>

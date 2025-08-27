@@ -5,7 +5,7 @@ import { CreateUserSchema, EditUserSchema } from "@/schemas";
 import { z } from "zod";
 import { auditLogRepository, userRepository } from "@/db";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/send-mail";
+import { sendVerificationEmail } from "@/utils/send-mail";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
 import { EntityType, ActionType, UserOperationResponse } from "@/types";

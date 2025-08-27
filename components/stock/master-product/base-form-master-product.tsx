@@ -33,7 +33,7 @@ import {
 import { MoonLoader } from "react-spinners";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 
-export const FormBaseMasterProduct = forwardRef<
+export const BaseFormMasterProduct = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>,
   FormBaseMasterProductProps
 >(
@@ -209,4 +209,4 @@ export const FormBaseMasterProduct = forwardRef<
   }
 );
 
-FormBaseMasterProduct.displayName = "FormBaseMasterProduct";
+BaseFormMasterProduct.displayName = "BaseFormMasterProduct";

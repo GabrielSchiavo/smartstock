@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Table } from "@tanstack/react-table";
-import { calculateTotals, createTotalSummary } from "@/lib/calculate-totals";
+import { calculateTotals, createTotalSummary } from "@/utils/calculate-totals";
 import { CalculableTotalItemProps } from "@/types";
 
 // Função auxiliar para acessar propriedades aninhadas de forma type-safe

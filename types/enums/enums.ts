@@ -144,3 +144,8 @@ export enum EntityType {
   SUPPLIER = "SUPPLIER",
   RECEIVER = "RECEIVER",
 }
+
+export enum FilterModeType {
+  MULTIPLE = "MULTIPLE",
+  SINGLE = "SINGLE",
+}

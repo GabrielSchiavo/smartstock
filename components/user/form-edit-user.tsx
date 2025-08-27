@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FormBaseUser } from "@/components/user/form-base-user";
+import { BaseFormUser } from "@/components/user/base-form-user";
 import { editUser, getUserById } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { UserType } from "@/types";
@@ -67,7 +67,7 @@ export const FormEditUser = ({
   }
 
   return (
-    <FormBaseUser
+    <BaseFormUser
       schema={EditUserSchema}
       defaultValues={initialValues}
       onSubmit={(values) => editUser(rowItemId as string, values)}

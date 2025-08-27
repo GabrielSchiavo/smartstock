@@ -7,7 +7,7 @@ import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
 import { DEFAULT_LOGIN_REDIRECT, ROUTES } from "@/config/routes";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/send-mail";
+import { sendVerificationEmail } from "@/utils/send-mail";
 import { userRepository } from "@/db";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {

@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 
 
 
-export const FormBaseUser = ({
+export const BaseFormUser = ({
   schema,
   defaultValues = {},
   onSubmit,

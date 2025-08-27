@@ -14,10 +14,10 @@ import {
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { deleteProduct } from "@/actions";
 import { FormEditProduct } from "@/components/stock/product/form-edit-product";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { formatDateToLocale } from "@/utils/date-utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { checkExpiryStatus } from "@/lib/check-expiry-status";
+import { checkExpiryStatus } from "@/utils/check-expiry-status";
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (

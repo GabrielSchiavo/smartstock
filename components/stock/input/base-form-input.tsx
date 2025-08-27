@@ -42,7 +42,7 @@ import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 
-export const FormBaseInputProduct = forwardRef<
+export const BaseFormInput = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
   ExtendedFormBaseInputProductProps
 >(
@@ -634,4 +634,4 @@ export const FormBaseInputProduct = forwardRef<
   }
 );
 
-FormBaseInputProduct.displayName = "FormBaseInputProduct";
+BaseFormInput.displayName = "BaseFormInput";

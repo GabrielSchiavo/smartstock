@@ -5,8 +5,8 @@ import {
   ValidityStatusType,
 } from "@/types";
 import jsPDF from "jspdf";
-import { formatDateToLocale } from "@/lib/date-utils";
-import { calculateTotals, createTotalSummary } from "@/lib/calculate-totals";
+import { formatDateToLocale } from "@/utils/date-utils";
+import { calculateTotals, createTotalSummary } from "@/utils/calculate-totals";
 
 export abstract class BasePdfGenerator {
   protected doc: jsPDF;

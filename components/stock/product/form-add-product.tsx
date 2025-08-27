@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { FormBaseInputProduct } from "@/components/stock/product/form-base-input-product";
-import { getMasterProducts, registerProduct } from "@/actions";
+import { BaseFormInput } from "@/components/stock/input/base-form-input";
+import { getMasterProducts, registerInput } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateEditProductSchema } from "@/schemas";
@@ -36,7 +36,7 @@ export const FormAddProduct = ({
   const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
     await startTransition(async () => {
       try {
-        const response = await registerProduct(values);
+        const response = await registerInput(values);
 
         if (response.success === true) {
           formRef.current?.reset();
@@ -60,7 +60,7 @@ export const FormAddProduct = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseInputProduct
+      <BaseFormInput
         masterProducts={masterProducts}
         onSubmit={onSubmit}
         onCancel={onCancel}

@@ -10,7 +10,7 @@ import {
 } from "@/types";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { ProductType } from "@/types";
-import { formatDateToLocale } from "@/lib/date-utils";
+import { formatDateToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [

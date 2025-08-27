@@ -78,7 +78,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 - **Sistema de Logs:**
   - `Geração de Logs:` Logs de interação do usuário com as principais partes do sistema como criação,  edição e exclusão de registros.
 
-- `Painel de visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
+  - `Painel de visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
 
 - **Organização:**
    - `Dashboard:` Tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.

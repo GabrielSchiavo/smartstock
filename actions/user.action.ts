@@ -3,16 +3,19 @@
 import bcryptjs from "bcryptjs";
 import { CreateUserSchema, EditUserSchema } from "@/schemas";
 import { z } from "zod";
-import { userRepository } from "@/db";
+import { auditLogRepository, userRepository } from "@/db";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/send-mail";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
-import { UserOperationResponse } from "@/types";
+import { EntityType, ActionType, UserOperationResponse } from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
 ): Promise<UserOperationResponse> => {
+  const user = await currentUser();
+
   // Validação dos campos
   const validationResult = CreateUserSchema.safeParse(values);
   if (validationResult.success === false) {
@@ -55,11 +58,21 @@ export const registerUser = async (
 
     // Criação do usuário
     const hashedPassword = await bcryptjs.hash(password, 10);
-    await userRepository.create({
+    const newUser = await userRepository.create({
       name,
       email,
       password: hashedPassword,
       role: userType,
+    });
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newUser.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.USER,
+      value: newUser.name as string,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -88,8 +101,31 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 export const deleteUser = async (id: string) => {
+  const user = await currentUser();
+
   try {
+    const existingUser = await userRepository.findById(id);
+
+    if (!existingUser) {
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Usuário não encontrado.",
+      };
+    }
+
     await userRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingUser.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.USER,
+      value: existingUser.name as string,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -123,6 +159,8 @@ export const editUser = async (
   id: string,
   values: z.infer<typeof EditUserSchema>
 ): Promise<UserOperationResponse> => {
+  const user = await currentUser();
+
   // Validação dos campos
   const validationResult = EditUserSchema.safeParse(values);
   if (!validationResult.success) {
@@ -201,6 +239,16 @@ export const editUser = async (
 
     // Atualiza o usuário
     const updatedUser = await userRepository.update(id, updateData);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingUser.id,
+      actionType: ActionType.UPDATE,
+      entity: EntityType.USER,
+      value: existingUser.name as string,
+      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
 
     revalidatePath("/");
 

@@ -77,7 +77,7 @@ export function AlertButton() {
               <div className="relative">
                 <BellIcon />
                 {unreadAlertsCount > 0 && (
-                  <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums text-xs font-medium">
+                  <Badge className="absolute left-3 bottom-3 h-4 min-w-4 rounded-full px-1 tabular-nums text-xs font-medium">
                     {unreadAlertsCount > 9 ? "9+" : unreadAlertsCount}
                   </Badge>
                 )}

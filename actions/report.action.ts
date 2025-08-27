@@ -10,27 +10,9 @@ import {
   ReportResponse,
   UnitType,
   ValidityReportResponse,
-  validityStatusType,
 } from "@/types";
 import { revalidatePath } from "next/cache";
-
-// Utilitários
-const calculateExpiryStatus = (
-  validityDate: Date
-): { daysUntilExpiry: number; status: validityStatusType } => {
-  const today = new Date();
-  const timeDiff = validityDate.getTime() - today.getTime();
-  const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-  let status: validityStatusType = validityStatusType.VALID;
-  if (daysUntilExpiry <= 0) {
-    status = validityStatusType.EXPIRED;
-  } else if (daysUntilExpiry <= 30) {
-    status = validityStatusType.EXPIRING;
-  }
-
-  return { daysUntilExpiry, status };
-};
+import { getExpiryInfo } from "@/lib/check-expiry-status";
 
 // Geradores de Relatório
 export const generateValidityReport = async (
@@ -44,7 +26,7 @@ export const generateValidityReport = async (
     );
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = calculateExpiryStatus(
+      const { daysUntilExpiry, status } = getExpiryInfo(
         new Date(product.validityDate)
       );
       return {
@@ -160,7 +142,7 @@ export const generateInventoryReport = async (): Promise<
     const products = await productRepository.findInventory();
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = calculateExpiryStatus(
+      const { daysUntilExpiry, status } = getExpiryInfo(
         new Date(product.validityDate)
       );
       return {

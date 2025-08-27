@@ -1,12 +1,12 @@
 import { AuditLog, User } from "@prisma/client";
-import { ActionCategoryType, ActionType } from "../enums/enums";
+import { EntityType, ActionType } from "@/types/enums/enums";
 
 export type AuditLogResponse = {
   createdAt: Date;
   userId: string;
   recordChangedId: string;
   actionType: ActionType;
-  actionCategory: ActionCategoryType;
+  entity: EntityType;
   value: string;
   observation: string;
 };

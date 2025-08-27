@@ -8,13 +8,10 @@ import { ColumnMetaProps, UserType } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { FormEditUser } from "@/components/user/form-edit-user";
 import { deleteUser } from "@/actions";
+import { Badge } from "@/components/ui/badge";
 
 // Função para escolher as colunas pesquisáveis
-const multiColumnFilterFn: FilterFn<User> = (
-  row,
-  columnId,
-  filterValue
-) => {
+const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.email} ${row.original.emailVerified} ${row.original.role}`;
 
@@ -86,15 +83,15 @@ export const columnsTableUsers: ColumnDef<User>[] = [
       const verified = row.getValue("emailVerified");
       if (verified === null) {
         return (
-          <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
+          <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
             Não
-          </span>
+          </Badge>
         );
       } else {
         return (
-          <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">
+          <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
             Sim
-          </span>
+          </Badge>
         );
       }
     },
@@ -110,17 +107,13 @@ export const columnsTableUsers: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const role = row.getValue("role") as string;
       if (role === UserType.DEFAULT) {
-        return <span className="uppercase">Padrão</span>;
+        return <Badge variant={"outline"} className="text-sm uppercase">Padrão</Badge>;
       } else if (role === UserType.CADASTRE) {
-        return <span className="uppercase">Cadastro</span>;
+        return <Badge variant={"outline"} className="text-sm uppercase">Cadastro</Badge>;
       } else if (role === UserType.REPORT) {
-        return <span className="uppercase">Relatório</span>;
+        return <Badge variant={"outline"} className="text-sm uppercase">Relatório</Badge>;
       } else {
-        return (
-          <span className="bg-muted px-3 py-1 rounded-sm uppercase">
-            {role}
-          </span>
-        );
+        return <Badge className="text-sm bg-muted">{role}</Badge>;
       }
     },
     meta: {

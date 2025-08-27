@@ -6,11 +6,12 @@ import {
   LocaleType,
   PurchasedReportResponse,
   ValidityReportResponse,
-  validityStatusType,
+  ValidityStatusType,
 } from "@/types";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { ProductType } from "@/types";
 import { formatDateToLocale } from "@/lib/date-utils";
+import { Badge } from "@/components/ui/badge";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
   {
@@ -123,23 +124,23 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
     cell: ({ row }) => {
       const status = row.original.status;
 
-      if (status === validityStatusType.EXPIRED) {
+      if (status === ValidityStatusType.EXPIRED) {
         return (
-          <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
+          <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
             Vencido
-          </span>
+          </Badge>
         );
-      } else if (status === validityStatusType.EXPIRING) {
+      } else if (status === ValidityStatusType.EXPIRING) {
         return (
-          <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
+          <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
             Próximo do vencimento
-          </span>
+          </Badge>
         );
       } else {
         return (
-          <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">
+          <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
             Válido
-          </span>
+          </Badge>
         );
       }
     },
@@ -435,23 +436,23 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
       cell: ({ row }) => {
         const status = row.original.status;
 
-        if (status === validityStatusType.EXPIRED) {
+        if (status === ValidityStatusType.EXPIRED) {
           return (
-            <span className="bg-red-500/15 px-3 py-1 rounded-sm text-sm text-red-600 dark:text-red-500">
+            <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
               Vencido
-            </span>
+            </Badge>
           );
-        } else if (status === validityStatusType.EXPIRING) {
+        } else if (status === ValidityStatusType.EXPIRING) {
           return (
-            <span className="bg-yellow-500/15 px-3 py-1 rounded-sm text-sm text-yellow-600 dark:text-yellow-500">
+            <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
               Próximo do vencimento
-            </span>
+            </Badge>
           );
         } else {
           return (
-            <span className="bg-emerald-500/15 px-3 py-1 rounded-sm text-sm text-emerald-600 dark:text-emerald-500">
+            <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
               Válido
-            </span>
+            </Badge>
           );
         }
       },

@@ -1,13 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { subgroupRepository } from "@/db";
+import { auditLogRepository, subgroupRepository } from "@/db";
 import {
+  EntityType,
+  ActionType,
   CheckSubgroupResponse,
   SingleSubgroupResponse,
   SubgroupOperationResponse,
   SubgroupResponse,
 } from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export const getAllSubgroup = async (): Promise<SubgroupResponse> => {
   try {
@@ -54,6 +57,8 @@ export const searchSubgroup = async (
 export const createSubgroup = async (
   name: string
 ): Promise<SingleSubgroupResponse> => {
+  const user = await currentUser();
+
   // Validação de entrada
   if (!name.trim()) {
     return {
@@ -65,6 +70,17 @@ export const createSubgroup = async (
 
   try {
     const newSubgroup = await subgroupRepository.create(name);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newSubgroup.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.SUBGROUP,
+      value: newSubgroup.name,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -85,6 +101,8 @@ export const createSubgroup = async (
 export const deleteSubgroup = async (
   id: string
 ): Promise<SubgroupOperationResponse> => {
+  const user = await currentUser();
+
   try {
     const existingSubgroup = await subgroupRepository.findById(id);
 
@@ -97,6 +115,17 @@ export const deleteSubgroup = async (
     }
 
     await subgroupRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingSubgroup.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.SUBGROUP,
+      value: existingSubgroup.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,

@@ -1,4 +1,4 @@
-import { ProductType, UnitType, validityStatusType } from "@/types";
+import { ProductType, UnitType, ValidityStatusType } from "@/types";
 
 export type ReportResponse<T> = {
   data?: T[];
@@ -17,7 +17,7 @@ export type ValidityReportResponse = {
   lot: string;
   validityDate: Date;
   daysUntilExpiry: number;
-  status: validityStatusType;
+  status: ValidityStatusType;
 };
 
 export type DonationsReportResponse = {
@@ -52,7 +52,7 @@ export type InventoryReportResponse = {
   validityDate: Date;
   productType: ProductType;
   daysUntilExpiry: number;
-  status: validityStatusType;
+  status: ValidityStatusType;
   group: string;
 };
 

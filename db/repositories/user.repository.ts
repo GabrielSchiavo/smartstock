@@ -1,21 +1,21 @@
-import { db } from "@/lib/db"
-import { UserResponse, UserSettingsUpdateResponse } from "@/types"
-import { User } from "@prisma/client"
+import { db } from "@/lib/db";
+import { UserResponse, UserSettingsUpdateResponse } from "@/types";
+import { User } from "@prisma/client";
 
 export const userRepository = {
   async findByEmail(email: string) {
     try {
-      return await db.user.findUnique({ where: { email } })
+      return await db.user.findUnique({ where: { email } });
     } catch {
-      return null
+      return null;
     }
   },
 
   async findById(id: string) {
     try {
-      return await db.user.findUnique({ where: { id } })
+      return await db.user.findUnique({ where: { id } });
     } catch {
-      return null
+      return null;
     }
   },
 
@@ -23,7 +23,7 @@ export const userRepository = {
     await db.user.update({
       where: { id: userId },
       data: { password: hashedPassword },
-    })
+    });
   },
 
   async verifyEmail(userId: string, email: string): Promise<void> {
@@ -33,50 +33,53 @@ export const userRepository = {
         emailVerified: new Date(),
         email: email,
       },
-    })
+    });
   },
 
-  async create(data: UserResponse): Promise<void> {
-    await db.user.create({ data })
+  async create(data: UserResponse): Promise<User> {
+    return (await db.user.create({ data })) as User;
   },
 
   async findAll(): Promise<User[]> {
     return await db.user.findMany({
-      orderBy: { role: 'asc' },
-    })
+      orderBy: { role: "asc" },
+    });
   },
 
-  async findByEmailExcludingId(email: string, id: string): Promise<User | null> {
+  async findByEmailExcludingId(
+    email: string,
+    id: string
+  ): Promise<User | null> {
     return await db.user.findFirst({
       where: {
         email,
         NOT: { id },
       },
-    })
+    });
   },
 
   async update(id: string, data: UserResponse): Promise<User> {
     return await db.user.update({
       where: { id },
       data,
-    })
+    });
   },
 
   async delete(id: string): Promise<void> {
-    await db.user.delete({ where: { id } })
+    await db.user.delete({ where: { id } });
   },
 
   async updateSettings(userId: string, values: UserSettingsUpdateResponse) {
     return db.user.update({
       where: { id: userId },
       data: { ...values },
-    })
+    });
   },
 
   async updateEmail(userId: string, email: string) {
     return db.user.update({
       where: { id: userId },
       data: { email, emailVerified: null },
-    })
+    });
   },
-}
+};

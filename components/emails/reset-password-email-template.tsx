@@ -72,7 +72,7 @@ export const ResetPasswordEmailTemplate = ({
             </Section>
             <Text className="text-[14px] text-black leading-[24px]">
               Ou copie e cole esta URL no seu navegador:{" "}
-              <Link href={url} className="text-blue-600 no-underline">
+              <Link href={url} className="text-blue-600 no-underline break-all">
                 {url}
               </Link>
             </Text>

@@ -23,7 +23,7 @@ export default function Error({
               <h3 className="text-lg text-primary font-semibold">
                 Erro Inesperado
               </h3>
-              <p className="text-4xl font-semibold sm:text-5xl fontAlbertSans">
+              <p className="font-albert-sans text-4xl font-semibold sm:text-5xl">
                 Algo deu errado!
               </p>
               <p className="text-md text-muted-foreground">

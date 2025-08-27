@@ -1,13 +1,16 @@
 "use server";
 
-import { supplierRepository } from "@/db";
+import { auditLogRepository, supplierRepository } from "@/db";
 import { revalidatePath } from "next/cache";
-import type {
-  SupplierResponse,
-  SingleSupplierResponse,
-  CheckSupplierResponse,
-  SupplierCountResponse,
+import {
+  type SupplierResponse,
+  type SingleSupplierResponse,
+  type CheckSupplierResponse,
+  type SupplierCountResponse,
+  ActionType,
+  EntityType,
 } from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export async function getAllSupplier(): Promise<SupplierResponse> {
   try {
@@ -75,8 +78,11 @@ export async function searchSupplier(query: string): Promise<SupplierResponse> {
   }
 }
 
-export async function createSupplier(name: string): Promise<SingleSupplierResponse> {
+export async function createSupplier(
+  name: string
+): Promise<SingleSupplierResponse> {
   const trimmedName = name.trim();
+  const user = await currentUser();
 
   if (!trimmedName) {
     return {
@@ -88,6 +94,17 @@ export async function createSupplier(name: string): Promise<SingleSupplierRespon
 
   try {
     const newSupplier = await supplierRepository.create(trimmedName);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newSupplier.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.SUPPLIER,
+      value: newSupplier.name,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -106,6 +123,8 @@ export async function createSupplier(name: string): Promise<SingleSupplierRespon
 }
 
 export async function deleteSupplier(id: string): Promise<SupplierResponse> {
+  const user = await currentUser();
+  
   try {
     const existingSupplier = await supplierRepository.findById(id);
 
@@ -118,6 +137,17 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
     }
 
     await supplierRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingSupplier.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.SUPPLIER,
+      value: existingSupplier.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
 
     return {

@@ -22,7 +22,7 @@ export const LogoWithText = ({
         />
       </div>
       <div className={`${containerTextClasses}`}>
-        <span className={`${textSize} fontAlbertSans font-extralight`}>
+        <span className={`font-albert-sans ${textSize} font-extralight`}>
           <span className="font-semibold">Smart</span>stock
         </span>
       </div>

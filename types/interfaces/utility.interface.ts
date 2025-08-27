@@ -1,4 +1,4 @@
-import { PdfUnitType, UnitType } from "@/types/enums/enums";
+import { PdfUnitType, UnitType, ValidityStatusType } from "@/types/enums/enums";
 import { ProductWithMasterProductResponse } from "@/types/models/product.model";
 import { AuditLog, MasterProduct } from "@prisma/client";
 
@@ -84,4 +84,22 @@ export interface SelectorMasterProductProps {
   onSelect: (masterProduct: MasterProduct) => void;
   selectedId?: string;
   disabled?: boolean;
+}
+
+// check-expiry-status.ts
+export interface DateValidationOptions {
+  /** Se deve considerar apenas a data (ignorando horas) */
+  dateOnly?: boolean;
+  /** Número de dias para considerar como "expirando" */
+  expiringThreshold?: number;
+  /** Função personalizada para formatação da data */
+  formatDate?: (date: Date) => string;
+}
+export interface DateValidationResult {
+  daysUntilExpiry: number;
+  status: ValidityStatusType;
+  formattedDate?: string;
+  isExpired: boolean;
+  isExpiring: boolean;
+  isValid: boolean;
 }

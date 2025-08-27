@@ -3,13 +3,26 @@
 import { CreateEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { movementRepository, productRepository } from "@/db";
-import { MovementType, ProductCountType, ProductOperationResponse, ProductWithMasterProductResponse } from "@/types";
+import {
+  auditLogRepository,
+  movementRepository,
+  productRepository,
+} from "@/db";
+import {
+  EntityType,
+  ActionType,
+  MovementType,
+  ProductCountType,
+  ProductOperationResponse,
+  ProductWithMasterProductResponse,
+} from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export const registerProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
 ): Promise<ProductOperationResponse> => {
   const validatedFields = CreateEditProductSchema.safeParse(values);
+  const user = await currentUser();
 
   if (validatedFields.success === false) {
     return {
@@ -36,8 +49,19 @@ export const registerProduct = async (
       unit: productData.unit,
       movementType: MovementType.INPUT,
       movementCategory: productData.movementCategory,
-      observation: `Produto ${product.name}: ENTRADA de ${product.quantity} ${product.unit}`,
+      observation: `[MOVEMENT] Type=${MovementType.INPUT} | Category=${productData.movementCategory}} | Quantity=${quantity} | Unit=${productData.unit} | Product ID=${product.id} | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
+    });
+
+    // Cria o log de entrada após criar o movimento
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: product.id.toString(),
+      actionType: ActionType.CREATE,
+      entity: EntityType.INPUT,
+      value: `${product.quantity.toString()} ${product.unit}`,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -61,6 +85,7 @@ export const editProduct = async (
   values: z.infer<typeof CreateEditProductSchema>
 ): Promise<ProductOperationResponse> => {
   const validatedFields = CreateEditProductSchema.safeParse(values);
+  const user = await currentUser();
 
   if (validatedFields.success === false) {
     return {
@@ -90,6 +115,16 @@ export const editProduct = async (
       updatedAt: new Date(),
     });
 
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: updatedProduct.id.toString(),
+      actionType: ActionType.UPDATE,
+      entity: EntityType.PRODUCT,
+      value: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
+      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -108,8 +143,23 @@ export const editProduct = async (
 };
 
 export const deleteProduct = async (id: number) => {
+  const user = await currentUser();
+
   try {
     await productRepository.delete(id);
+
+    const product = await productRepository.findById(id)
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: id.toString(),
+      actionType: ActionType.DELETE,
+      entity: EntityType.PRODUCT,
+      value: product?.name as string,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -126,7 +176,9 @@ export const deleteProduct = async (id: number) => {
   }
 };
 
-export const getProductById = async (id: number): Promise<ProductWithMasterProductResponse> => {
+export const getProductById = async (
+  id: number
+): Promise<ProductWithMasterProductResponse> => {
   try {
     const product = await productRepository.findById(id);
     if (!product) {
@@ -139,7 +191,9 @@ export const getProductById = async (id: number): Promise<ProductWithMasterProdu
   }
 };
 
-export const getProducts = async (): Promise<ProductWithMasterProductResponse[]> => {
+export const getProducts = async (): Promise<
+  ProductWithMasterProductResponse[]
+> => {
   try {
     return await productRepository.findAll();
   } catch (error) {
@@ -148,7 +202,9 @@ export const getProducts = async (): Promise<ProductWithMasterProductResponse[]>
   }
 };
 
-export async function getProductsCount(type: ProductCountType = ProductCountType.ALL) {
+export async function getProductsCount(
+  type: ProductCountType = ProductCountType.ALL
+) {
   try {
     const count = await productRepository.countProducts(type);
 
@@ -156,7 +212,7 @@ export async function getProductsCount(type: ProductCountType = ProductCountType
       success: true,
       title: "Sucesso!",
       description: "Contagem bem-sucedida.",
-      count
+      count,
     };
   } catch (error) {
     console.error("Erro ao contar produtos (%s):", type, error);
@@ -169,7 +225,9 @@ export async function getProductsCount(type: ProductCountType = ProductCountType
   }
 }
 
-export const getExpiredProducts = async (): Promise<ProductWithMasterProductResponse[]> => {
+export const getExpiredProducts = async (): Promise<
+  ProductWithMasterProductResponse[]
+> => {
   try {
     return await productRepository.findExpired();
   } catch (error) {
@@ -178,7 +236,9 @@ export const getExpiredProducts = async (): Promise<ProductWithMasterProductResp
   }
 };
 
-export const getProductsToExpire = async (): Promise<ProductWithMasterProductResponse[]> => {
+export const getProductsToExpire = async (): Promise<
+  ProductWithMasterProductResponse[]
+> => {
   try {
     return await productRepository.findAboutToExpire();
   } catch (error) {

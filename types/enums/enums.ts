@@ -24,7 +24,7 @@ export enum ReportType {
   INVENTORY = "INVENTORY",
 }
 
-export enum validityStatusType {
+export enum ValidityStatusType {
   VALID = "VALID",
   EXPIRED = "EXPIRED",
   EXPIRING = "EXPIRING",
@@ -131,11 +131,10 @@ export enum ActionType {
   DELETE = "DELETE",
 }
 
-export enum ActionCategoryType {
+export enum EntityType {
   USER = "USER",
   MASTER_PRODUCT = "MASTER_PRODUCT",
   PRODUCT = "PRODUCT",
-  REPORT = "REPORT",
   INPUT = "INPUT",
   OUTPUT = "OUTPUT",
   ADJUSTMENT = "ADJUSTMENT",

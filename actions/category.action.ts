@@ -1,23 +1,26 @@
 "use server";
 
-import { categoryRepository } from "@/db";
+import { auditLogRepository, categoryRepository } from "@/db";
 import { revalidatePath } from "next/cache";
-import type {
-  CategoryResponse,
-  SingleCategoryResponse,
-  CheckCategoryResponse,
-  CategoryCountResponse,
+import {
+  type CategoryResponse,
+  type SingleCategoryResponse,
+  type CheckCategoryResponse,
+  type CategoryCountResponse,
+  ActionType,
+  EntityType,
 } from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export async function getAllCategory(): Promise<CategoryResponse> {
   try {
-    const categorys = await categoryRepository.findAll();
+    const categories = await categoryRepository.findAll();
 
     return {
       success: true,
       title: "Sucesso!",
       description: "Categorias carregados com sucesso.",
-      data: categorys,
+      data: categories,
     };
   } catch (error) {
     console.error("Erro ao buscar Categorias:", error);
@@ -30,7 +33,7 @@ export async function getAllCategory(): Promise<CategoryResponse> {
   }
 }
 
-export async function getCategorysCount(): Promise<CategoryCountResponse> {
+export async function getCategoriesCount(): Promise<CategoryCountResponse> {
   try {
     const count = await categoryRepository.count();
     return {
@@ -51,12 +54,12 @@ export async function searchCategory(query: string): Promise<CategoryResponse> {
   if (!query) return { success: true, data: [] };
 
   try {
-    const categorys = await categoryRepository.search(query);
+    const categories = await categoryRepository.search(query);
     return {
       success: true,
       title: "Sucesso!",
       description: "Categorias encontrados com sucesso.",
-      data: categorys,
+      data: categories,
     };
   } catch (error) {
     console.error("Erro na busca por Categorias:", error);
@@ -68,8 +71,11 @@ export async function searchCategory(query: string): Promise<CategoryResponse> {
   }
 }
 
-export async function createCategory(name: string): Promise<SingleCategoryResponse> {
+export async function createCategory(
+  name: string
+): Promise<SingleCategoryResponse> {
   const trimmedName = name.trim();
+  const user = await currentUser();
 
   if (!trimmedName) {
     return {
@@ -81,6 +87,17 @@ export async function createCategory(name: string): Promise<SingleCategoryRespon
 
   try {
     const newCategory = await categoryRepository.create(trimmedName);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newCategory.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.CATEGORY,
+      value: newCategory.name,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -99,6 +116,8 @@ export async function createCategory(name: string): Promise<SingleCategoryRespon
 }
 
 export async function deleteCategory(id: string): Promise<CategoryResponse> {
+  const user = await currentUser();
+
   try {
     const existingCategory = await categoryRepository.findById(id);
 
@@ -111,8 +130,18 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
     }
 
     await categoryRepository.delete(id);
-    revalidatePath("/");
 
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingCategory.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.CATEGORY,
+      value: existingCategory.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
+    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",

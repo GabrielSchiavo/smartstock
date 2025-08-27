@@ -2,7 +2,7 @@ import {
   CalculableTotalItemProps,
   PdfConfigProps,
   PdfUnitType,
-  validityStatusType,
+  ValidityStatusType,
 } from "@/types";
 import jsPDF from "jspdf";
 import { formatDateToLocale } from "@/lib/date-utils";
@@ -63,9 +63,9 @@ export abstract class BasePdfGenerator {
 
   protected getStatusText = (status: string): string => {
     switch (status) {
-      case validityStatusType.EXPIRED:
+      case ValidityStatusType.EXPIRED:
         return "Vencido";
-      case validityStatusType.EXPIRING:
+      case ValidityStatusType.EXPIRING:
         return "Próximo";
       default:
         return "Válido";

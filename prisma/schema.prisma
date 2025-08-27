@@ -99,15 +99,15 @@ model Notification {
 model AuditLog {
   id String @id @default(cuid())
 
-  user            User       @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user            User    @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId          String
   recordChangedId String
-  actionType      String     @db.VarChar(30)
-  actionCategory  String     @db.VarChar(30)
-  value           String     @db.VarChar(150)
-  observation     String     @db.VarChar(200)
+  actionType      String  @db.VarChar(30)
+  entity          String  @db.VarChar(30)
+  value           String? @db.VarChar(150)
+  observation     String  @db.VarChar(200)
 
-  createdAt       DateTime   @default(now())
+  createdAt DateTime @default(now())
 }
 
 model MasterProduct {

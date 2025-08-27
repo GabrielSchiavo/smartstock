@@ -10,91 +10,143 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BaseDataTableAccordionProps } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { AuditLog } from "@prisma/client";
+import {
+  ActionType,
+  AuditLogWithUserResponse,
+  BaseDataTableAccordionProps,
+  EntityType,
+} from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { formatDateTimeToLocale } from "@/lib/date-utils";
 
 export function BaseDataTableAccordion<TData>({
   table,
   columns,
 }: BaseDataTableAccordionProps<TData>) {
-  const renderExpandedContent = (data: AuditLog) => (
-    <div className="p-6 bg-muted/30 border-t">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Informações básicas */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm">Identificação</CardTitle>
+  const renderExpandedContent = (data: AuditLogWithUserResponse) => {
+    const actionColors: Record<string, string> = {
+      [ActionType.CREATE]:
+        "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-500",
+      [ActionType.UPDATE]:
+        "border-0 bg-yellow-500/15 text-yellow-600 dark:text-yellow-500",
+      [ActionType.DELETE]:
+        "border-0 bg-red-500/15 text-red-600 dark:text-red-500",
+    };
+
+    // const actionTypeText = () => {
+    //   switch (data.actionType) {
+    //     case ActionType.CREATE:
+    //       return "CRIADO";
+    //     case ActionType.UPDATE:
+    //       return "ATUALIZADO";
+    //     case ActionType.DELETE:
+    //       return "EXCLUÍDO";
+    //     default:
+    //       return data.actionType;
+    //   }
+    // };
+
+    return (
+      <div className="flex flex-col gap-6 p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Identificação */}
+          <Card className="overflow-x-auto">
+            <CardHeader className="">
+              <CardTitle className="text-sm">Identificação</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  ID do Log:
+                </span>
+                <Badge variant="outline">{data.id}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Data/Hora:
+                </span>
+                <span className="text-sm text-end text-wrap">
+                  {formatDateTimeToLocale(data.createdAt)}
+                </span>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  ID do Usuário:
+                </span>
+                <Badge variant="outline">{data.userId}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Nome do Usuário:
+                </span>
+                <span className="text-sm text-end text-wrap">
+                  {data.user.name}
+                </span>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  ID do Registro:
+                </span>
+                <Badge variant="outline">{data.recordChangedId}</Badge>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Detalhes */}
+          <Card className="overflow-x-auto">
+            <CardHeader>
+              <CardTitle className="text-sm">Detalhes</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">Ação:</span>
+                <Badge
+                  variant="outline"
+                  className={`${actionColors[data.actionType]}`}
+                >
+                  {data.actionType}
+                </Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">Entidade:</span>
+                <Badge variant="outline">{data.entity}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground text-end text-wrap">
+                  Valor:
+                </span>
+                <span
+                  className={`${
+                    data.entity === EntityType.OUTPUT &&
+                    "text-red-600 dark:text-red-500"
+                  }`}
+                >
+                  {data.entity === EntityType.OUTPUT
+                    ? `- ${data.value}`
+                    : data.entity === EntityType.INPUT
+                      ? `+ ${data.value}`
+                      : data.value}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        {/* Mensagem detalhada */}
+        <Card className="overflow-x-auto">
+          <CardHeader>
+            <CardTitle className="text-sm">Mensagem Detalhada</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">ID do Log:</span>
-              <Badge variant="outline" className="font-mono">
-                {data.id}
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                Data/Hora:
-              </span>
-              <span className="font-mono text-sm">{formatDateTimeToLocale(data.createdAt)}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                ID do Usuário:
-              </span>
-              <Badge variant="outline" className="font-mono">
-                {data.userId}
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                Nome do Usuário:
-              </span>
-              <span className="font-mono text-sm">Teste</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                ID do Registro Alterado:
-              </span>
-              <Badge variant="outline" className="font-mono">
-                {data.recordChangedId}
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm">Detalhes</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Ação:</span>
-              <Badge variant="outline" className="font-mono">
-                {data.actionType}
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Local:</span>
-              <Badge variant="outline" className="font-mono">
-                {data.actionCategory}
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Valor:</span>
-                {data.value}
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Detalhes:</span>
+            <div className="flex gap-3 justify-between items-center bg-background p-3 rounded-lg border shadow-sm">
+              <span className="font-mono text-sm text-start text-wrap">
                 {data.observation}
+              </span>
             </div>
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <Table>
@@ -134,9 +186,11 @@ export function BaseDataTableAccordion<TData>({
 
               {/* Linha expandida */}
               {row.getIsExpanded() && (
-                <TableRow>
+                <TableRow className="hover:bg-background">
                   <TableCell colSpan={columns.length} className="p-0">
-                    {renderExpandedContent(row.original as AuditLog)}
+                    {renderExpandedContent(
+                      row.original as AuditLogWithUserResponse
+                    )}
                   </TableCell>
                 </TableRow>
               )}

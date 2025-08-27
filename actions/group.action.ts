@@ -1,12 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type {
-  GroupResponse,
-  SingleGroupResponse,
-  CheckGroupResponse,
+import {
+  type GroupResponse,
+  type SingleGroupResponse,
+  type CheckGroupResponse,
+  ActionType,
+  EntityType,
 } from "@/types";
-import { groupRepository } from "@/db";
+import { auditLogRepository, groupRepository } from "@/db";
+import { currentUser } from "@/lib/auth";
 
 // Implementações
 export async function getAllGroup(): Promise<GroupResponse> {
@@ -51,6 +54,7 @@ export async function searchGroup(query: string): Promise<GroupResponse> {
 
 export async function createGroup(name: string): Promise<SingleGroupResponse> {
   const trimmedName = name.trim();
+  const user = await currentUser();
 
   if (!trimmedName) {
     return {
@@ -62,6 +66,17 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
 
   try {
     const newGroup = await groupRepository.create(trimmedName);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newGroup.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.GROUP,
+      value: newGroup.name as string,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -80,6 +95,8 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
 }
 
 export async function deleteGroup(id: string): Promise<GroupResponse> {
+  const user = await currentUser();
+
   try {
     const existingGroup = await groupRepository.findById(id);
 
@@ -92,6 +109,17 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
     }
 
     await groupRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingGroup.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.GROUP,
+      value: existingGroup.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,

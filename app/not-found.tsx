@@ -8,7 +8,7 @@ export default function NotFound() {
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-start h-screen md:px-8">
         <div className="grid gap-3 max-w-lg mx-auto text-center">
           <h3 className="text-lg text-primary font-semibold">Erro 404</h3>
-          <p className="text-4xl font-semibold sm:text-5xl fontAlbertSans">
+          <p className="font-albert-sans text-4xl font-semibold sm:text-5xl">
             Página não encontrada
           </p>
           <p className="text-md text-muted-foreground">

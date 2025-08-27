@@ -1,8 +1,10 @@
 "use server";
 
-import { movementRepository, productRepository } from "@/db";
+import { auditLogRepository, movementRepository, productRepository } from "@/db";
 import { CreateProductOutputSchema } from "@/schemas";
 import {
+  EntityType,
+  ActionType,
   MasterProductOperationResponse,
   MovementType,
   UnitType,
@@ -11,11 +13,13 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 import { getProductById } from "@/actions/product.action";
 import { convertUnit } from "@/lib/unit-conversion";
+import { currentUser } from "@/lib/auth";
 
 export const registerOutput = async (
   values: z.infer<typeof CreateProductOutputSchema>
 ): Promise<MasterProductOperationResponse> => {
   const validatedFields = CreateProductOutputSchema.safeParse(values);
+  const user = await currentUser();
 
   if (validatedFields.success === false) {
     return {
@@ -40,8 +44,9 @@ export const registerOutput = async (
     const getUnitProduct = getProductSelected.unit as UnitType;
 
     if (
-      productOutputData.unit === UnitType.UN &&
-      getUnitProduct !== UnitType.UN || productOutputData.unit !== UnitType.UN && getUnitProduct === UnitType.UN
+      (productOutputData.unit === UnitType.UN &&
+        getUnitProduct !== UnitType.UN) ||
+      (productOutputData.unit !== UnitType.UN && getUnitProduct === UnitType.UN)
     ) {
       return {
         success: false,
@@ -69,18 +74,28 @@ export const registerOutput = async (
       };
     }
 
-    await movementRepository.createOutput({
+    const movementOutput = await movementRepository.createOutput({
       ...productOutputData,
       productId: Number(productOutputData.productId),
       quantity: Number(productOutputData.quantity),
       movementType: MovementType.OUTPUT,
-      observation: `Produto ${getProductSelected.name}: SAÍDA de ${productOutputData.quantity} ${productOutputData.unit}`,
+      observation: `[MOVEMENT] Type=${MovementType.OUTPUT} | Category=${productOutputData.movementCategory}} | Quantity=${productOutputData.quantity} | Unit=${productOutputData.unit} | Product ID=${productOutputData.productId} | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
     await productRepository.updateQuantity({
       id: Number(productOutputData.productId),
       quantity: quantityResult,
+    });
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: movementOutput.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.OUTPUT,
+      value: `${productOutputData.quantity} ${productOutputData.unit}`,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${productOutputData.quantity} ${productOutputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

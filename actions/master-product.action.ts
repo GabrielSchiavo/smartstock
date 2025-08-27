@@ -6,18 +6,17 @@ import { revalidatePath } from "next/cache";
 import { auditLogRepository, masterProductRepository } from "@/db";
 import type { MasterProduct } from "@prisma/client";
 import {
-  ActionCategoryType,
+  EntityType,
   ActionType,
   MasterProductOperationResponse,
 } from "@/types";
-import { auth } from "@/auth";
+import { currentUser } from "@/lib/auth";
 
 export const registerMasterProduct = async (
   values: z.infer<typeof CreateEditMasterProductSchema>
 ): Promise<MasterProductOperationResponse> => {
-  const session = await auth();
-
   const validatedFields = CreateEditMasterProductSchema.safeParse(values);
+  const user = await currentUser();
 
   if (validatedFields.success === false) {
     return {
@@ -36,12 +35,12 @@ export const registerMasterProduct = async (
 
     await auditLogRepository.create({
       createdAt: new Date(),
-      userId: session?.user.id as string,
+      userId: user?.id as string,
       recordChangedId: masterProduct.id.toString(),
       actionType: ActionType.CREATE,
-      actionCategory: ActionCategoryType.MASTER_PRODUCT,
+      entity: EntityType.MASTER_PRODUCT,
       value: masterProductData.name,
-      observation: `CRIADO Produto Mestre: '${masterProductData.name}', por '${session?.user.name}'`,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -65,6 +64,7 @@ export const editMasterProduct = async (
   values: z.infer<typeof CreateEditMasterProductSchema>
 ): Promise<MasterProductOperationResponse> => {
   const validatedFields = CreateEditMasterProductSchema.safeParse(values);
+  const user = await currentUser();
 
   if (validatedFields.success === false) {
     return {
@@ -91,6 +91,16 @@ export const editMasterProduct = async (
       updatedAt: new Date(),
     });
 
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: updatedMasterProduct.id.toString(),
+      actionType: ActionType.UPDATE,
+      entity: EntityType.MASTER_PRODUCT,
+      value: masterProductData.name,
+      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -109,8 +119,31 @@ export const editMasterProduct = async (
 };
 
 export const deleteMasterProduct = async (id: number) => {
+  const user = await currentUser();
+
   try {
+    const existingMasterProduct = await masterProductRepository.findById(id);
+
+    if (!existingMasterProduct) {
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Produto Mestre não encontrado.",
+      };
+    }
+
     await masterProductRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingMasterProduct.id.toString(),
+      actionType: ActionType.DELETE,
+      entity: EntityType.MASTER_PRODUCT,
+      value: existingMasterProduct.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,

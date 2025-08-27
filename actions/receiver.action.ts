@@ -1,13 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { receiverRepository } from "@/db";
+import { auditLogRepository, receiverRepository } from "@/db";
 import {
   CheckReceiverResponse,
   SingleReceiverResponse,
   ReceiverOperationResponse,
   ReceiverResponse,
+  ActionType,
+  EntityType,
 } from "@/types";
+import { currentUser } from "@/lib/auth";
 
 export const getAllReceiver = async (): Promise<ReceiverResponse> => {
   try {
@@ -54,6 +57,8 @@ export const searchReceiver = async (
 export const createReceiver = async (
   name: string
 ): Promise<SingleReceiverResponse> => {
+  const user = await currentUser();
+
   if (!name.trim()) {
     return {
       success: false,
@@ -64,6 +69,17 @@ export const createReceiver = async (
 
   try {
     const newReceiver = await receiverRepository.create(name);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: newReceiver.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.RECEIVER,
+      value: newReceiver.name,
+      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,
@@ -84,6 +100,8 @@ export const createReceiver = async (
 export const deleteReceiver = async (
   id: string
 ): Promise<ReceiverOperationResponse> => {
+  const user = await currentUser();
+
   try {
     const existingReceiver = await receiverRepository.findById(id);
 
@@ -96,6 +114,17 @@ export const deleteReceiver = async (
     }
 
     await receiverRepository.delete(id);
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: existingReceiver.id,
+      actionType: ActionType.DELETE,
+      entity: EntityType.RECEIVER,
+      value: existingReceiver.name,
+      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
     revalidatePath("/");
     return {
       success: true,

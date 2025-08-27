@@ -9,6 +9,7 @@ import ToastProvider from "@/components/providers/toast-provider";
 import { Metadata, Viewport } from "next";
 import { META_THEME_COLORS, siteConfig } from "@/config/site";
 import { BASE_URL } from "@/config/routes";
+import { albertSans, geist, geistMono } from "@/config/fonts";
 
 export const metadata: Metadata = {
   title: {
@@ -74,9 +75,12 @@ export default async function RootLayout({
 
   return (
     <SessionProvider session={session}>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="pt-br" 
+      className={`${geist.variable} ${geistMono.variable} ${albertSans.variable} antialiased`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning>
         <body className={cn(
-          `bg-background overscroll-none font-sans antialiased`,
+          `bg-background overscroll-none`,
           activeThemeValue ? `theme-${activeThemeValue}` : "",
           isScaled ? "theme-scaled" : ""
         )}>

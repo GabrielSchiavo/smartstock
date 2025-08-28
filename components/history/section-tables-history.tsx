@@ -1,33 +1,26 @@
 import {
   getAuditLogsAdjustment,
-  getAuditLogsInputs,
-  getAuditLogsOutputs,
+  getAuditLogsInputOutput,
   getAuditLogsSeveral,
 } from "@/actions";
 import { ClientHistory } from "@/components/history/client-history";
+import { RoleGate } from "@/components/auth/role-gate";
+import { UserType } from "@/types";
 
 export const SectionTablesHistory = async ({}) => {
-  const auditLogsInputs = await getAuditLogsInputs();
-  const auditLogsOutputs = await getAuditLogsOutputs();
+  const auditLogsInputOutput = await getAuditLogsInputOutput();
   const auditLogsAdjustment = await getAuditLogsAdjustment();
   const auditLogsSeveral = await getAuditLogsSeveral();
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="flex flex-col gap-12 w-full md:max-w-4xl">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4">
-            <h1 className="text-md font-medium">Histórico Entradas</h1>
+            <h1 className="text-md font-medium">Histórico Entradas & Saídas</h1>
           </div>
           <div className="flex flex-col gap-6 border rounded-xl p-10">
-            <ClientHistory history={auditLogsInputs} />
-          </div>
-        </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-md font-medium">Histórico Saídas</h1>
-          </div>
-          <div className="flex flex-col gap-6 border rounded-xl p-10">
-            <ClientHistory history={auditLogsOutputs} />
+            <ClientHistory history={auditLogsInputOutput} />
           </div>
         </div>
         <div className="flex flex-col gap-6">
@@ -38,14 +31,16 @@ export const SectionTablesHistory = async ({}) => {
             <ClientHistory history={auditLogsAdjustment} />
           </div>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-md font-medium">Histórico Diverso</h1>
+        <RoleGate isPage={false} allowedRoles={[UserType.ADMIN]}>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <h1 className="text-md font-medium">Histórico Diverso</h1>
+            </div>
+            <div className="flex flex-col gap-6 border rounded-xl p-10">
+              <ClientHistory history={auditLogsSeveral} />
+            </div>
           </div>
-          <div className="flex flex-col gap-6 border rounded-xl p-10">
-            <ClientHistory history={auditLogsSeveral} />
-          </div>
-        </div>
+        </RoleGate>
       </div>
     </div>
   );

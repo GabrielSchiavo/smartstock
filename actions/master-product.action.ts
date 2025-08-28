@@ -39,8 +39,8 @@ export const registerMasterProduct = async (
       recordChangedId: masterProduct.id.toString(),
       actionType: ActionType.CREATE,
       entity: EntityType.MASTER_PRODUCT,
-      value: masterProductData.name,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: masterProductData.name,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -97,8 +97,8 @@ export const editMasterProduct = async (
       recordChangedId: updatedMasterProduct.id.toString(),
       actionType: ActionType.UPDATE,
       entity: EntityType.MASTER_PRODUCT,
-      value: masterProductData.name,
-      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: masterProductData.name,
+      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -140,8 +140,8 @@ export const deleteMasterProduct = async (id: number) => {
       recordChangedId: existingMasterProduct.id.toString(),
       actionType: ActionType.DELETE,
       entity: EntityType.MASTER_PRODUCT,
-      value: existingMasterProduct.name,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingMasterProduct.name,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

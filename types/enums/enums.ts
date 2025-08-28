@@ -116,19 +116,25 @@ export enum OutputMovementCategoryType {
   TRANSFER = "TRANSFER",
 }
 
-export enum AdjustmentMovementCategoryType {
+export enum AdjustmentType {
   POSITIVE = "POSITIVE",
   NEGATIVE = "NEGATIVE",
-  LOSS_DAMAGE = "LOSS_DAMAGE",
-  THEFT_MISPLACEMENT = "THEFT_MISPLACEMENT",
-  POSTING_ERROR = "POSTING_ERROR",
-  DUE_DATE = "DUE_DATE",
+}
+
+export enum AdjustmentMovementCategoryType {
+  GENERAL = "GENERAL", // PERDA/AVARIA
+  LOSS_DAMAGE = "LOSS_DAMAGE", // PERDA/AVARIA
+  THEFT_MISPLACEMENT = "THEFT_MISPLACEMENT", // FURTO/EXTRAVIO
+  DUE_DATE = "DUE_DATE", // VENCIMENTO
+  CORRECTION = "CORRECTION", // CORREÇÃO DE LANÇAMENTO
 }
 
 export enum ActionType {
   CREATE = "CREATE",
   UPDATE = "UPDATE",
   DELETE = "DELETE",
+  LOGIN = "LOGIN",
+  LOGOUT = "LOGOUT",
 }
 
 export enum EntityType {
@@ -137,12 +143,14 @@ export enum EntityType {
   PRODUCT = "PRODUCT",
   INPUT = "INPUT",
   OUTPUT = "OUTPUT",
-  ADJUSTMENT = "ADJUSTMENT",
+  ADJUSTMENT_POSITIVE = "ADJUSTMENT_POSITIVE",
+  ADJUSTMENT_NEGATIVE = "ADJUSTMENT_NEGATIVE",
   CATEGORY = "CATEGORY",
   GROUP = "GROUP",
   SUBGROUP = "SUBGROUP",
   SUPPLIER = "SUPPLIER",
   RECEIVER = "RECEIVER",
+  SYSTEM = "SYSTEM",
 }
 
 export enum FilterModeType {

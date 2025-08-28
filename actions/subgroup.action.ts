@@ -77,8 +77,8 @@ export const createSubgroup = async (
       recordChangedId: newSubgroup.id,
       actionType: ActionType.CREATE,
       entity: EntityType.SUBGROUP,
-      value: newSubgroup.name,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: newSubgroup.name,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -122,8 +122,8 @@ export const deleteSubgroup = async (
       recordChangedId: existingSubgroup.id,
       actionType: ActionType.DELETE,
       entity: EntityType.SUBGROUP,
-      value: existingSubgroup.name,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingSubgroup.name,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

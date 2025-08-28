@@ -32,6 +32,10 @@ export function BaseDataTableExpandable<TData>({
         "border-0 bg-yellow-500/15 text-yellow-600 dark:text-yellow-500",
       [ActionType.DELETE]:
         "border-0 bg-red-500/15 text-red-600 dark:text-red-500",
+      [ActionType.LOGIN]:
+        "border-0 bg-sky-500/15 text-sky-600 dark:text-sky-500",
+      [ActionType.LOGOUT]:
+        "border-0 bg-teal-500/15 text-teal-600 dark:text-teal-500",
     };
 
     // const actionTypeText = () => {
@@ -117,15 +121,15 @@ export function BaseDataTableExpandable<TData>({
                 </span>
                 <span
                   className={`${
-                    data.entity === EntityType.OUTPUT &&
-                    "text-red-600 dark:text-red-500"
+                    data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ?
+                    "text-red-600 dark:text-red-500" : "text-emerald-600 dark:text-emerald-500"
                   }`}
                 >
-                  {data.entity === EntityType.OUTPUT
-                    ? `- ${data.value}`
+                  {data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE
+                    ? `- ${data.changedValue}`
                     : data.entity === EntityType.INPUT
-                      ? `+ ${data.value}`
-                      : data.value}
+                      ? `+ ${data.changedValue}`
+                      : data.changedValue}
                 </span>
               </div>
             </CardContent>
@@ -139,7 +143,7 @@ export function BaseDataTableExpandable<TData>({
           <CardContent className="space-y-3">
             <div className="flex gap-3 justify-between items-center bg-background p-3 rounded-lg border shadow-sm">
               <span className="font-mono text-sm text-start text-wrap">
-                {data.observation}
+                {data.details}
               </span>
             </div>
           </CardContent>

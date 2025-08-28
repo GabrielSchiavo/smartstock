@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateProductOutputSchema } from "@/schemas";
+import { CreateOutputSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { forwardRef, useImperativeHandle } from "react";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
-  FormProductOutputProps,
+  FormOutputProps,
   OutputMovementCategoryType,
   ProductWithMasterProductResponse,
   UnitType,
@@ -36,12 +36,12 @@ import {
 } from "@/components/ui/select";
 import { formatDateToLocale } from "@/utils/date-utils";
 
-interface ExtendedFormBaseInputProductProps extends FormProductOutputProps {
+interface ExtendedFormBaseInputProductProps extends FormOutputProps {
   products: ProductWithMasterProductResponse[];
 }
 
-export const FormBaseOutput = forwardRef<
-  UseFormReturn<z.infer<typeof CreateProductOutputSchema>>,
+export const BaseFormOutput = forwardRef<
+  UseFormReturn<z.infer<typeof CreateOutputSchema>>,
   ExtendedFormBaseInputProductProps
 >(
   (
@@ -55,8 +55,8 @@ export const FormBaseOutput = forwardRef<
     },
     ref
   ) => {
-    const form = useForm<z.infer<typeof CreateProductOutputSchema>>({
-      resolver: zodResolver(CreateProductOutputSchema),
+    const form = useForm<z.infer<typeof CreateOutputSchema>>({
+      resolver: zodResolver(CreateOutputSchema),
       defaultValues: defaultValues || {
         productId: "",
         productQuantity: "",
@@ -65,6 +65,7 @@ export const FormBaseOutput = forwardRef<
         validityDate: "",
         quantity: "",
         unit: undefined,
+        movementCategory: undefined,
       },
     });
 
@@ -274,7 +275,7 @@ export const FormBaseOutput = forwardRef<
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex flex-col gap-3">
-                        <FormLabel>Tipo de Saída: <span className="text-red-500">*</span></FormLabel>
+                        <FormLabel>Categoria de Saída: <span className="text-red-500">*</span></FormLabel>
                         <FormControl className="flex flex-col gap-3">
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -361,4 +362,4 @@ export const FormBaseOutput = forwardRef<
   }
 );
 
-FormBaseOutput.displayName = "FormBaseOutput";
+BaseFormOutput.displayName = "BaseFormOutput";

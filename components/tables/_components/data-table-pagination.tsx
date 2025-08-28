@@ -38,7 +38,7 @@ export function DataTablePagination<TData>({
             }}
           >
             <SelectTrigger size="sm" className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue className="items-center content-center" placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
               <SelectGroup>

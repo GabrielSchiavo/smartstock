@@ -15,10 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import {
-  Maximize2Icon,
-  Minimize2Icon,
-} from "lucide-react";
+import { Maximize2Icon, Minimize2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -124,7 +121,7 @@ export function DataTableMasterProducts<TData, TValue>({
           showFooter={false}
         />
       </div>
-      
+
       <DataTablePagination table={table} />
     </div>
   );

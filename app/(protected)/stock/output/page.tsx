@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function StockFoodPage() {
+export default async function OutputPage() {
   return (
     <RoleGate
       isPage={true}

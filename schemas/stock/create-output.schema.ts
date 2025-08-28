@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OutputMovementCategoryType, UnitType } from "@/types";
 
-export const CreateProductOutputSchema = z.object({
+export const CreateOutputSchema = z.object({
   productId: z.string().trim().min(1, {
       error: "Produto é obrigatório"
 }),
@@ -76,7 +76,7 @@ export const CreateProductOutputSchema = z.object({
       OutputMovementCategoryType.TRANSFER,
     ],
     {
-        error: (issue) => issue.input === undefined ? "Selecione o tipo de saída." : undefined
+        error: (issue) => issue.input === undefined ? "Selecione a categoria de saída." : undefined
     }
   ),
 });

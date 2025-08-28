@@ -35,17 +35,22 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     - `Geração:` Acesso somente a geração e visualização de relatórios.
 
 - **Cadastro:**
-  - `Cadastro de produtos alimentícios:` Cadastro simples de produtos com os seguintes dados: Lote; Data de Validade; Fornecedor; Quantidade; Nome; Unidades de medida (Kg, L, G, UN...); Grupo; Subgrupo; Data de recebimento.
+  - `Cadastro de Produto Mestre:` Cadastro mestre dos produtos com informações comuns como categoria, grupo, subgrupo e unidade de medida base.
   
   - `Cadastro de Usuários:` Cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
+
+  - `Edição:` Edição de cadastros.
+  
+  - `Exclusão:` Exclusão de cadastros.
   
 - **Controle de Estoque:**
-  - `Edição:` Edição completa de produtos cadastrados.
-  
-  - `Exclusão:` Exclusão de produtos cadastrados.
+  - `Entradas:` Cadastros de entradas dos produtos a partir do Produto Mestre.
+
+  - `Saídas:` Cadastro de saídas a partir do cadastro do produto com validação de estoque disponível.
+
+  - `Ajustes:` Cadastro ajustes positivos e negativos para correção de estoque.
 
 - **Controle de Usuários:**
-    Somente o usuário administrador tem acesso ao Controle de Usuários.
 
   - `Edição:` Edição total de usuários, incluindo troca do nível de acesso.
   
@@ -63,11 +68,16 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     - Inventário de todos os produtos cadastrados.
 
 - **Alertas:**
-  - `Alertas simples:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
+  - `Controle de validades:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
   
   - `Aviso:` Quando o usuário abre o sistema pela primeira vez, é disparado um aviso com o total de alertas não lidos e, quando um novo alerta é encontrado, também é disparado um aviso para o usuário.
   
   - `Lidos/Não Lidos:` Organização dos alertas em lidos e não lidos.
+
+- **Sistema de Logs:**
+  - `Geração de Logs:` Logs de interação do usuário com as principais partes do sistema como criação,  edição e exclusão de registros.
+
+  - `Painel de visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
 
 - **Organização:**
    - `Dashboard:` Tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.
@@ -172,13 +182,13 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 ## ✅ Tecnologias Utilizadas
 * `TypeScript`
 * `Node.js - 22.17.0`
-* `React.js - 19.1.0`
-* `Next.js - 15.4.6`
+* `React.js - 19.1.1`
+* `Next.js - 15.5.2`
 * `PostgreSQL - 17.5`
-* `Prisma - 6.9.0`
+* `Prisma - 6.15.0`
 * `Auth.js - 5.0.0`
-* `Nodemailer - 6.10.1`
-* `jsPDF - 3.0.1`
-* `Zod`
-* `Tailwind CSS - 4.1`
+* `Nodemailer - 7.0.5`
+* `jsPDF - 3.0.2`
+* `Zod - 4.1.3`
+* `Tailwind CSS - 4.1.12`
 * `shadcn/ui`

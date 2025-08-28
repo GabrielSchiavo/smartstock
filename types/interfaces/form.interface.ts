@@ -1,7 +1,8 @@
 import {
+  CreateAdjustmentSchema,
   CreateEditMasterProductSchema,
-  CreateEditProductSchema,
-  CreateProductOutputSchema,
+  CreateEditProductInputSchema,
+  CreateOutputSchema,
 } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import { ModeType, ResourceType } from "@/types";
@@ -69,10 +70,21 @@ export interface FormBaseMasterProductProps {
   loadingText: string;
 }
 
-export interface FormProductOutputProps {
-  defaultValues?: z.infer<typeof CreateProductOutputSchema>;
+export interface FormOutputProps {
+  defaultValues?: z.infer<typeof CreateOutputSchema>;
   onSubmit: (
-    values: z.infer<typeof CreateProductOutputSchema>
+    values: z.infer<typeof CreateOutputSchema>
+  ) => Promise<void>;
+  onCancel?: () => void;
+  isPending: boolean;
+  submitButtonText: string;
+  loadingText: string;
+}
+
+export interface FormAdjustmentProps {
+  defaultValues?: z.infer<typeof CreateAdjustmentSchema>;
+  onSubmit: (
+    values: z.infer<typeof CreateAdjustmentSchema>
   ) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
@@ -102,8 +114,8 @@ export interface FormBaseUserProps {
 }
 
 export interface FormBaseInputProductProps {
-  defaultValues?: z.infer<typeof CreateEditProductSchema>;
-  onSubmit: (values: z.infer<typeof CreateEditProductSchema>) => Promise<void>;
+  defaultValues?: z.infer<typeof CreateEditProductInputSchema>;
+  onSubmit: (values: z.infer<typeof CreateEditProductInputSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;

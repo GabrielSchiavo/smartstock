@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateEditProductSchema } from "@/schemas";
+import { CreateEditProductInputSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -43,7 +43,7 @@ import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 
 export const BaseFormInput = forwardRef<
-  UseFormReturn<z.infer<typeof CreateEditProductSchema>>,
+  UseFormReturn<z.infer<typeof CreateEditProductInputSchema>>,
   ExtendedFormBaseInputProductProps
 >(
   (
@@ -59,8 +59,8 @@ export const BaseFormInput = forwardRef<
     },
     ref
   ) => {
-    const form = useForm<z.infer<typeof CreateEditProductSchema>>({
-      resolver: zodResolver(CreateEditProductSchema),
+    const form = useForm<z.infer<typeof CreateEditProductInputSchema>>({
+      resolver: zodResolver(CreateEditProductInputSchema),
       defaultValues: defaultValues || {
         masterProductId: "",
         name: "",
@@ -77,6 +77,7 @@ export const BaseFormInput = forwardRef<
         category: "",
         group: "",
         subgroup: "",
+        movementCategory: undefined,
       },
     });
 
@@ -541,7 +542,7 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex flex-col gap-3">
-                          <FormLabel>Tipo de Entrada: <span className="text-red-500">*</span></FormLabel>
+                          <FormLabel>Categoria de Entrada: <span className="text-red-500">*</span></FormLabel>
                           <FormControl className="flex flex-col gap-3">
                             <RadioGroup
                               onValueChange={field.onChange}

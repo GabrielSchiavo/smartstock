@@ -94,8 +94,8 @@ export async function createCategory(
       recordChangedId: newCategory.id,
       actionType: ActionType.CREATE,
       entity: EntityType.CATEGORY,
-      value: newCategory.name,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: newCategory.name,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -137,8 +137,8 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
       recordChangedId: existingCategory.id,
       actionType: ActionType.DELETE,
       entity: EntityType.CATEGORY,
-      value: existingCategory.name,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingCategory.name,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

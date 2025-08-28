@@ -14,6 +14,7 @@ export * from "./models/audit-log.model";
 export * from "./models/category.model";
 export * from "./models/group.model";
 export * from "./models/master-product.model";
+export * from "./models/movement.model";
 export * from "./models/product.model";
 export * from "./models/receiver.model";
 export * from "./models/report.model";

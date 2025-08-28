@@ -5,14 +5,18 @@ import {
   movementRepository,
   productRepository,
 } from "@/db";
-import { CreateEditProductSchema, CreateProductOutputSchema } from "@/schemas";
+import {
+  CreateAdjustmentSchema,
+  CreateEditProductInputSchema,
+  CreateOutputSchema,
+} from "@/schemas";
 import {
   EntityType,
   ActionType,
-  MasterProductOperationResponse,
   MovementType,
   UnitType,
-  ProductOperationResponse,
+  MovementOperationResponse,
+  AdjustmentType,
 } from "@/types";
 import { revalidatePath } from "next/cache";
 import z from "zod";
@@ -21,9 +25,9 @@ import { convertUnit } from "@/utils/unit-conversion";
 import { currentUser } from "@/lib/auth";
 
 export const registerInput = async (
-  values: z.infer<typeof CreateEditProductSchema>
-): Promise<ProductOperationResponse> => {
-  const validatedFields = CreateEditProductSchema.safeParse(values);
+  values: z.infer<typeof CreateEditProductInputSchema>
+): Promise<MovementOperationResponse> => {
+  const validatedFields = CreateEditProductInputSchema.safeParse(values);
   const user = await currentUser();
 
   if (validatedFields.success === false) {
@@ -51,7 +55,7 @@ export const registerInput = async (
       unit: productData.unit,
       movementType: MovementType.INPUT,
       movementCategory: productData.movementCategory,
-      observation: `[MOVEMENT] Type=${MovementType.INPUT} | Category=${productData.movementCategory}} | Quantity=${quantity} | Unit=${productData.unit} | Product ID=${product.id} | Date Time='${new Date().toISOString()}'`,
+      details: `[MOVEMENT] Type=${MovementType.INPUT} | Category=${productData.movementCategory}} | Quantity=${quantity} | Unit=${productData.unit} | Product ID=${product.id} | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
@@ -62,8 +66,8 @@ export const registerInput = async (
       recordChangedId: product.id.toString(),
       actionType: ActionType.CREATE,
       entity: EntityType.INPUT,
-      value: `${product.quantity.toString()} ${product.unit}`,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: `${product.quantity.toString()} ${product.unit}`,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -83,9 +87,103 @@ export const registerInput = async (
 };
 
 export const registerOutput = async (
-  values: z.infer<typeof CreateProductOutputSchema>
-): Promise<MasterProductOperationResponse> => {
-  const validatedFields = CreateProductOutputSchema.safeParse(values);
+  values: z.infer<typeof CreateOutputSchema>
+): Promise<MovementOperationResponse> => {
+  const validatedFields = CreateOutputSchema.safeParse(values);
+  const user = await currentUser();
+
+  if (validatedFields.success === false) {
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Campos inválidos.",
+    };
+  }
+
+  const { productQuantity, productUnit, lot, validityDate, ...outputData } =
+    validatedFields.data;
+
+  try {
+    const getProductSelected = await getProductById(
+      Number(outputData.productId)
+    );
+    const getUnitProduct = getProductSelected.unit as UnitType;
+
+    if (
+      (outputData.unit === UnitType.UN && getUnitProduct !== UnitType.UN) ||
+      (outputData.unit !== UnitType.UN && getUnitProduct === UnitType.UN)
+    ) {
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Unidade de saída inválida.",
+      };
+    }
+
+    const quantityConverted =
+      outputData.unit === UnitType.UN && getUnitProduct === UnitType.UN
+        ? Number(outputData.quantity)
+        : convertUnit(
+            Number(outputData.quantity),
+            outputData.unit as UnitType,
+            getUnitProduct
+          );
+
+    // Calcula o resultado final após a saída
+    const quantityResult = getProductSelected.quantity - quantityConverted;
+
+    if (quantityResult < 0) {
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Não há estoque suficiente para realizar a saída.",
+      };
+    }
+
+    const movementOutput = await movementRepository.createOutput({
+      ...outputData,
+      productId: Number(outputData.productId),
+      quantity: Number(outputData.quantity),
+      movementType: MovementType.OUTPUT,
+      details: `[MOVEMENT] Type=${MovementType.OUTPUT} | Category=${outputData.movementCategory}} | Quantity=${outputData.quantity} | Unit=${outputData.unit} | Product ID=${outputData.productId} | Date Time='${new Date().toISOString()}'`,
+      createdAt: new Date(),
+    });
+
+    await productRepository.updateQuantity({
+      id: Number(outputData.productId),
+      quantity: quantityResult,
+    });
+
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: user?.id as string,
+      recordChangedId: movementOutput.id,
+      actionType: ActionType.CREATE,
+      entity: EntityType.OUTPUT,
+      changedValue: `${outputData.quantity} ${outputData.unit}`,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${outputData.quantity} ${outputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    });
+
+    revalidatePath("/");
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Saída cadastrada com sucesso.",
+    };
+  } catch (error) {
+    console.error("Erro ao cadastrar saída:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível cadastrar a saída.",
+    };
+  }
+};
+
+export const registerAdjustment = async (
+  values: z.infer<typeof CreateAdjustmentSchema>
+): Promise<MovementOperationResponse> => {
+  const validatedFields = CreateAdjustmentSchema.safeParse(values);
   const user = await currentUser();
 
   if (validatedFields.success === false) {
@@ -101,82 +199,92 @@ export const registerOutput = async (
     productUnit,
     lot,
     validityDate,
-    ...productOutputData
+    adjustmentType,
+    ...adjustmentData
   } = validatedFields.data;
+
+  const adjustmentTypeValue = validatedFields.data.adjustmentType;
 
   try {
     const getProductSelected = await getProductById(
-      Number(productOutputData.productId)
+      Number(adjustmentData.productId)
     );
     const getUnitProduct = getProductSelected.unit as UnitType;
 
     if (
-      (productOutputData.unit === UnitType.UN &&
-        getUnitProduct !== UnitType.UN) ||
-      (productOutputData.unit !== UnitType.UN && getUnitProduct === UnitType.UN)
+      (adjustmentData.unit === UnitType.UN && getUnitProduct !== UnitType.UN) ||
+      (adjustmentData.unit !== UnitType.UN && getUnitProduct === UnitType.UN)
     ) {
       return {
         success: false,
         title: "Erro!",
-        description: "Unidade de saída inválida.",
+        description: "Unidade de ajuste inválida.",
       };
     }
 
     const quantityConverted =
-      productOutputData.unit === UnitType.UN && getUnitProduct === UnitType.UN
-        ? Number(productOutputData.quantity)
+      adjustmentData.unit === UnitType.UN && getUnitProduct === UnitType.UN
+        ? Number(adjustmentData.quantity)
         : convertUnit(
-            Number(productOutputData.quantity),
-            productOutputData.unit as UnitType,
+            Number(adjustmentData.quantity),
+            adjustmentData.unit as UnitType,
             getUnitProduct
           );
 
-    const quantityResult = getProductSelected.quantity - quantityConverted;
+    // Calcula o resultado final após o ajuste
+    const quantityResult =
+      adjustmentTypeValue === AdjustmentType.NEGATIVE
+        ? getProductSelected.quantity - quantityConverted
+        : getProductSelected.quantity + quantityConverted;
 
     if (quantityResult < 0) {
       return {
         success: false,
         title: "Erro!",
-        description: "Não há estoque suficiente para realizar a saída.",
+        description: "Não há estoque suficiente para realizar o ajuste.",
       };
     }
 
-    const movementOutput = await movementRepository.createOutput({
-      ...productOutputData,
-      productId: Number(productOutputData.productId),
-      quantity: Number(productOutputData.quantity),
-      movementType: MovementType.OUTPUT,
-      observation: `[MOVEMENT] Type=${MovementType.OUTPUT} | Category=${productOutputData.movementCategory}} | Quantity=${productOutputData.quantity} | Unit=${productOutputData.unit} | Product ID=${productOutputData.productId} | Date Time='${new Date().toISOString()}'`,
+    const adjustmentMovementType = adjustmentTypeValue === AdjustmentType.NEGATIVE ? MovementType.ADJUSTMENT_NEGATIVE : MovementType.ADJUSTMENT_POSITIVE;
+
+    const movementAdjustment = await movementRepository.createOutput({
+      ...adjustmentData,
+      productId: Number(adjustmentData.productId),
+      quantity: Number(adjustmentData.quantity),
+      movementType: adjustmentMovementType,
+      details: `[MOVEMENT] Type=${adjustmentMovementType} | Category=${adjustmentData.movementCategory}} | Quantity=${adjustmentData.quantity} | Unit=${adjustmentData.unit} | Product ID=${adjustmentData.productId} | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
     await productRepository.updateQuantity({
-      id: Number(productOutputData.productId),
+      id: Number(adjustmentData.productId),
       quantity: quantityResult,
     });
+
+    const adjustmentEntityType = adjustmentTypeValue === AdjustmentType.NEGATIVE ? EntityType.ADJUSTMENT_NEGATIVE : EntityType.ADJUSTMENT_POSITIVE;
 
     await auditLogRepository.create({
       createdAt: new Date(),
       userId: user?.id as string,
-      recordChangedId: movementOutput.id,
+      recordChangedId: movementAdjustment.id,
       actionType: ActionType.CREATE,
-      entity: EntityType.OUTPUT,
-      value: `${productOutputData.quantity} ${productOutputData.unit}`,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${productOutputData.quantity} ${productOutputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      entity: adjustmentEntityType,
+      changedValue: `${adjustmentData.quantity} ${adjustmentData.unit}`,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${adjustmentEntityType}' | Record Changed ID='${movementAdjustment?.id.toString()}' | Changed Value='${adjustmentData.quantity} ${adjustmentData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
-      description: "Saída cadastrada com sucesso.",
+      description: "Ajuste cadastrado com sucesso.",
     };
   } catch (error) {
-    console.error("Erro ao cadastrar saída:", error);
+    console.error("Erro ao cadastrar ajuste:", error);
     return {
       success: false,
       title: "Erro!",
-      description: "Não foi possível cadastrar a saída.",
+      description: "Não foi possível cadastrar o ajuste.",
     };
   }
 };

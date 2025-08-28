@@ -7,8 +7,8 @@ export type AuditLogResponse = {
   recordChangedId: string;
   actionType: ActionType;
   entity: EntityType;
-  value: string;
-  observation: string;
+  changedValue: string;
+  details: string;
 };
 
 export type AuditLogWithUserResponse = AuditLog & {

@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
-  CircleQuestionMarkIcon,
 } from "lucide-react";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
@@ -119,18 +118,27 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
             );
           case ActionType.DELETE:
             return (
-              <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-yellow-500">
+              <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
                 EXCLUÍDO
+              </Badge>
+            );
+          case ActionType.LOGIN:
+            return (
+              <Badge className="text-sm bg-sky-500/15 text-sky-600 dark:text-sky-500">
+                LOGIN
+              </Badge>
+            );
+          case ActionType.LOGOUT:
+            return (
+              <Badge className="text-sm bg-teal-500/15 text-teal-600 dark:text-teal-500">
+                LOGOUT
               </Badge>
             );
           default:
             return (
-              <div className="flex items-center justify-center">
-                <span className="flex w-fit gap-1.5 items-center justify-center px-2 py-1 rounded-sm text-xs border">
-                  <CircleQuestionMarkIcon className="size-4! shrink-0" />
-                  {value as string}
-                </span>
-              </div>
+              <Badge className="text-sm bg-zinc-500/15 text-zinc-600 dark:text-zinc-500">
+                {value as string}
+              </Badge>
             );
         }
       },
@@ -147,30 +155,90 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         const value = row.getValue("entity");
 
         switch (value) {
-          case EntityType.ADJUSTMENT:
-            return <Badge variant={"outline"} className="text-sm">AJUSTE</Badge>;
+          case EntityType.ADJUSTMENT_POSITIVE:
+            return (
+              <Badge variant={"outline"} className="text-sm text-emerald-600 dark:text-emerald-500">
+                AJUSTE POSITIVO
+              </Badge>
+            );
+          case EntityType.ADJUSTMENT_NEGATIVE:
+            return (
+              <Badge variant={"outline"} className="text-sm text-red-600 dark:text-red-500">
+                AJUSTE NEGATIVO
+              </Badge>
+            );
           case EntityType.CATEGORY:
-            return <Badge variant={"outline"} className="text-sm">CATEGORIA</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                CATEGORIA
+              </Badge>
+            );
           case EntityType.GROUP:
-            return <Badge variant={"outline"} className="text-sm">GRUPO</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                GRUPO
+              </Badge>
+            );
           case EntityType.INPUT:
-            return <Badge variant={"outline"} className="text-sm">ENTRADA</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm text-emerald-600 dark:text-emerald-500">
+                ENTRADA
+              </Badge>
+            );
           case EntityType.MASTER_PRODUCT:
-            return <Badge variant={"outline"} className="text-sm">PRODUTO MESTRE</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                PRODUTO MESTRE
+              </Badge>
+            );
           case EntityType.OUTPUT:
-            return <Badge variant={"outline"} className="text-sm">SAÍDA</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm text-red-600 dark:text-red-500">
+                SAÍDA
+              </Badge>
+            );
           case EntityType.PRODUCT:
-            return <Badge variant={"outline"} className="text-sm">PRODUTO</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                PRODUTO
+              </Badge>
+            );
           case EntityType.RECEIVER:
-            return <Badge variant={"outline"} className="text-sm">RECEBEDOR</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                RECEBEDOR
+              </Badge>
+            );
           case EntityType.SUBGROUP:
-            return <Badge variant={"outline"} className="text-sm">SUBGRUPO</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                SUBGRUPO
+              </Badge>
+            );
           case EntityType.SUPPLIER:
-            return <Badge variant={"outline"} className="text-sm">FORNECEDOR</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                FORNECEDOR
+              </Badge>
+            );
           case EntityType.USER:
-            return <Badge variant={"outline"} className="text-sm">USUÁRIO</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                USUÁRIO
+              </Badge>
+            );
+          case EntityType.SYSTEM:
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                SISTEMA
+              </Badge>
+            );
           default:
-            return <Badge variant={"outline"} className="text-sm">{value as string}</Badge>;
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                {value as string}
+              </Badge>
+            );
         }
       },
       meta: {

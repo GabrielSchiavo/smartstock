@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { InputMovementCategoryType, ProductType, UnitType } from "@/types";
 
-export const CreateEditProductSchema = z
+export const CreateEditProductInputSchema = z
   .object({
     masterProductId: z
       .string()
@@ -138,7 +138,7 @@ export const CreateEditProductSchema = z
         ""
       ],
       {
-          error: (issue) => issue.input === undefined ? "Selecione o tipo de entrada." : undefined
+          error: (issue) => issue.input === undefined ? "Selecione a categoria de entrada." : undefined
     }
     ),
   })

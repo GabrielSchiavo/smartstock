@@ -1,4 +1,5 @@
 import { AdjustmentMovementCategoryType, InputMovementCategoryType, MovementType, OutputMovementCategoryType, UnitType } from "@/types/enums/enums";
+import { Product } from "@prisma/client";
 
 export type MovementResponse = {
   productId: number;
@@ -6,6 +7,13 @@ export type MovementResponse = {
   unit: UnitType;
   movementType: MovementType;
   movementCategory: InputMovementCategoryType | OutputMovementCategoryType | AdjustmentMovementCategoryType | "";
-  observation: string;
+  details: string;
   createdAt: Date;
+};
+
+export type MovementOperationResponse = {
+  success: boolean;
+  title: string;
+  description?: string;
+  product?: Product;
 };

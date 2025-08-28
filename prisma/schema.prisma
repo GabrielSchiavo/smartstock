@@ -104,8 +104,8 @@ model AuditLog {
   recordChangedId String
   actionType      String  @db.VarChar(30)
   entity          String  @db.VarChar(30)
-  value           String? @db.VarChar(150)
-  observation     String  @db.VarChar(200)
+  changedValue    String? @db.VarChar(150)
+  details         String  @db.VarChar(200)
 
   createdAt DateTime @default(now())
 }
@@ -163,7 +163,7 @@ model StockMovement {
   unit             UnitType
   movementType     String   @db.VarChar(30)
   movementCategory String   @db.VarChar(30)
-  observation      String   @db.VarChar(200)
+  details          String   @db.VarChar(200)
 
   createdAt DateTime @default(now())
 

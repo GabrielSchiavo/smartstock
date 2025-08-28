@@ -52,17 +52,17 @@ export interface TotalValuesProps {
 export interface TotalValuesWithUnitsProps {
   weight: {
     value: number;
-    unit: 'KG';
+    unit: UnitType.KG;
     formatted: string;
   };
   volume: {
     value: number;
-    unit: 'L';
+    unit: UnitType.L;
     formatted: string;
   };
   units: {
     value: number;
-    unit: 'UN';
+    unit: UnitType.UN;
     formatted: string;
   };
 }

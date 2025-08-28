@@ -76,8 +76,8 @@ export const createReceiver = async (
       recordChangedId: newReceiver.id,
       actionType: ActionType.CREATE,
       entity: EntityType.RECEIVER,
-      value: newReceiver.name,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: newReceiver.name,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -121,8 +121,8 @@ export const deleteReceiver = async (
       recordChangedId: existingReceiver.id,
       actionType: ActionType.DELETE,
       entity: EntityType.RECEIVER,
-      value: existingReceiver.name,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingReceiver.name,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

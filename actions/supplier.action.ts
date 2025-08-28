@@ -101,8 +101,8 @@ export async function createSupplier(
       recordChangedId: newSupplier.id,
       actionType: ActionType.CREATE,
       entity: EntityType.SUPPLIER,
-      value: newSupplier.name,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: newSupplier.name,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -144,8 +144,8 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
       recordChangedId: existingSupplier.id,
       actionType: ActionType.DELETE,
       entity: EntityType.SUPPLIER,
-      value: existingSupplier.name,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingSupplier.name,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

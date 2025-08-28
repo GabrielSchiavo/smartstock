@@ -30,6 +30,15 @@ export const getAuditLogsOutputs = async (): Promise<AuditLogWithUserResponse[]>
   }
 };
 
+export const getAuditLogsInputOutput = async (): Promise<AuditLogWithUserResponse[]> => {
+  try {
+    return await auditLogRepository.findInputOutput();
+  } catch (error) {
+    console.error("Erro ao buscar logs:", error);
+    throw error;
+  }
+};
+
 export const getAuditLogsAdjustment = async (): Promise<AuditLogWithUserResponse[]> => {
   try {
     return await auditLogRepository.findAdjustment();
@@ -42,6 +51,15 @@ export const getAuditLogsAdjustment = async (): Promise<AuditLogWithUserResponse
 export const getAuditLogsSeveral = async (): Promise<AuditLogWithUserResponse[]> => {
   try {
     return await auditLogRepository.findSeveral();
+  } catch (error) {
+    console.error("Erro ao buscar logs:", error);
+    throw error;
+  }
+};
+
+export const getAuditLogsSystem = async (): Promise<AuditLogWithUserResponse[]> => {
+  try {
+    return await auditLogRepository.findSystem();
   } catch (error) {
     console.error("Erro ao buscar logs:", error);
     throw error;

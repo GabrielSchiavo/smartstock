@@ -66,8 +66,12 @@ export function DataTableHistory<TData, TValue>({
   ];
   const entities = [
     {
-      value: EntityType.ADJUSTMENT,
-      label: "Ajuste",
+      value: EntityType.ADJUSTMENT_POSITIVE,
+      label: "Ajuste Positivo",
+    },
+    {
+      value: EntityType.ADJUSTMENT_NEGATIVE,
+      label: "Ajuste Negativo",
     },
     {
       value: EntityType.CATEGORY,
@@ -111,9 +115,9 @@ export function DataTableHistory<TData, TValue>({
     },
   ];
   const filters = [
-  { columnKey: "actionType", title: "Ação", options: actions },
-  { columnKey: "entity", title: "Entidade", options: entities },
-];
+    { columnKey: "actionType", title: "Ação", options: actions },
+    { columnKey: "entity", title: "Entidade", options: entities },
+  ];
 
   return (
     <div className="flex flex-col w-full gap-4">
@@ -123,7 +127,7 @@ export function DataTableHistory<TData, TValue>({
           addButton={addButton}
           table={table}
           searchColumnKey="createdAt"
-            filters={filters}
+          filters={filters}
         />
       </div>
 

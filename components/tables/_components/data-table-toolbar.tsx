@@ -9,7 +9,7 @@ import { AddEditDialog } from "@/components/shared/add-edit-dialog";
 import { FormAddProduct } from "@/components/stock/product/form-add-product";
 import { FormAddUser } from "@/components/user/form-add-user";
 import { FormAddMasterProduct } from "@/components/stock/master-product/form-add-master-product";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableFacetedFilter } from "@/components/tables/_components/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 
@@ -28,11 +28,11 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between gap-4 sm:gap-6 w-full">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap justify-center">
         <DataTableSearchBox table={table} searchColumnKey={searchColumnKey} />
 
         {filters.length > 0 && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {filters.map((f) => {
               const column = table.getColumn?.(f.columnKey);
               if (!column) return null;

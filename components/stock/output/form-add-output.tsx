@@ -8,10 +8,10 @@ import {
   ToastType,
 } from "@/types";
 import { z } from "zod";
-import { CreateProductOutputSchema } from "@/schemas";
+import { CreateOutputSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
-import { FormBaseOutput } from "@/components/stock/output/form-base-output";
+import { BaseFormOutput } from "@/components/stock/output/base-form-output";
 
 export const FormAddOutput = ({
   onShouldInvalidate,
@@ -19,7 +19,7 @@ export const FormAddOutput = ({
 }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateProductOutputSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateOutputSchema>>>(null);
 
   const [products, setMasterProducts] = useState<
     ProductWithMasterProductResponse[]
@@ -38,7 +38,7 @@ export const FormAddOutput = ({
   }, []);
 
   const onSubmit = async (
-    values: z.infer<typeof CreateProductOutputSchema>
+    values: z.infer<typeof CreateOutputSchema>
   ) => {
     await startTransition(async () => {
       try {
@@ -66,7 +66,7 @@ export const FormAddOutput = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormBaseOutput
+      <BaseFormOutput
         ref={formRef}
         products={products}
         onSubmit={onSubmit}

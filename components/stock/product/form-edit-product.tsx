@@ -12,7 +12,7 @@ import {
 } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
-import { CreateEditProductSchema } from "@/schemas";
+import { CreateEditProductInputSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
@@ -26,10 +26,10 @@ export const FormEditProduct = ({
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
-    typeof CreateEditProductSchema
+    typeof CreateEditProductInputSchema
   > | null>(null);
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditProductSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateEditProductInputSchema>>>(null);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -91,7 +91,7 @@ export const FormEditProduct = ({
     loadMasterProducts();
   }, []);
 
-  const onSubmit = async (values: z.infer<typeof CreateEditProductSchema>) => {
+  const onSubmit = async (values: z.infer<typeof CreateEditProductInputSchema>) => {
     await startTransition(async () => {
       try {
         const response = await editProduct(rowItemId as number, values);

@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateEditProductSchema } from "@/schemas";
+import { CreateEditProductInputSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import {
@@ -18,9 +18,9 @@ import { currentUser } from "@/lib/auth";
 
 export const editProduct = async (
   id: number,
-  values: z.infer<typeof CreateEditProductSchema>
+  values: z.infer<typeof CreateEditProductInputSchema>
 ): Promise<ProductOperationResponse> => {
-  const validatedFields = CreateEditProductSchema.safeParse(values);
+  const validatedFields = CreateEditProductInputSchema.safeParse(values);
   const user = await currentUser();
 
   if (validatedFields.success === false) {
@@ -57,8 +57,8 @@ export const editProduct = async (
       recordChangedId: updatedProduct.id.toString(),
       actionType: ActionType.UPDATE,
       entity: EntityType.PRODUCT,
-      value: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
-      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
+      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -92,8 +92,8 @@ export const deleteProduct = async (id: number) => {
       recordChangedId: id.toString(),
       actionType: ActionType.DELETE,
       entity: EntityType.PRODUCT,
-      value: product?.name as string,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: product?.name as string,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

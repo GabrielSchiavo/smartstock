@@ -77,17 +77,17 @@ export const addUnitsForDisplay = (
   return {
     weight: {
       value: totals.weight,
-      unit: 'KG',
+      unit: UnitType.KG,
       formatted: `${formatNumber(totals.weight, weightDecimals)} KG`
     },
     volume: {
       value: totals.volume,
-      unit: 'L',
+      unit: UnitType.L,
       formatted: `${formatNumber(totals.volume, volumeDecimals)} L`
     },
     units: {
       value: totals.units,
-      unit: 'UN',
+      unit: UnitType.UN,
       formatted: `${formatNumber(totals.units, unitsDecimals)} UN`
     }
   };

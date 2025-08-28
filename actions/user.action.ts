@@ -71,8 +71,8 @@ export const registerUser = async (
       recordChangedId: newUser.id,
       actionType: ActionType.CREATE,
       entity: EntityType.USER,
-      value: newUser.name as string,
-      observation: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: newUser.name as string,
+      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -122,8 +122,8 @@ export const deleteUser = async (id: string) => {
       recordChangedId: existingUser.id,
       actionType: ActionType.DELETE,
       entity: EntityType.USER,
-      value: existingUser.name as string,
-      observation: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingUser.name as string,
+      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");
@@ -246,8 +246,8 @@ export const editUser = async (
       recordChangedId: existingUser.id,
       actionType: ActionType.UPDATE,
       entity: EntityType.USER,
-      value: existingUser.name as string,
-      observation: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      changedValue: existingUser.name as string,
+      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
     });
 
     revalidatePath("/");

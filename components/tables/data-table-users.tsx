@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DataTableProps, TableType } from "@/types";
+import { DataTableProps, TableType, UserType } from "@/types";
 import { BaseDataTable } from "@/components/tables/base-data-table";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 
@@ -71,6 +71,28 @@ export function DataTableUsers<TData, TValue>({
     setCollapsedGroups,
   });
 
+  const accessLevels = [
+    {
+      value: UserType.ADMIN,
+      label: "Admin",
+    },
+    {
+      value: UserType.CADASTRE,
+      label: "Cadastro",
+    },
+    {
+      value: UserType.DEFAULT,
+      label: "Padrão",
+    },
+    {
+      value: UserType.REPORT,
+      label: "Relatório",
+    },
+  ];
+  const filters = [
+    { columnKey: "role", title: "Nível de Acesso", options: accessLevels },
+  ];
+
   return (
     <div className="flex flex-col w-full gap-4">
       <div className="flex gap-2 items-center justify-between">
@@ -80,6 +102,7 @@ export function DataTableUsers<TData, TValue>({
           addButtonType={TableType.USER}
           table={table}
           searchColumnKey="id"
+          filters={filters}
         />
         {groupBy && groupedData && (
           <TooltipProvider>

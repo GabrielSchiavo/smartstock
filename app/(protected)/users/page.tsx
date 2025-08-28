@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function UserRegistrationPage() {
+export default async function UserPage() {
   const users = await getUsers();
 
   return (

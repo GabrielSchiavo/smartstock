@@ -44,11 +44,29 @@ export const auditLogRepository = {
       },
     });
   },
-  
+
   async findAdjustment(): Promise<AuditLogWithUserResponse[]> {
     return await db.auditLog.findMany({
       where: {
-        entity: EntityType.ADJUSTMENT,
+        entity: {
+          in: [EntityType.ADJUSTMENT_POSITIVE, EntityType.ADJUSTMENT_NEGATIVE],
+        },
+      },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  },
+
+  async findInputOutput(): Promise<AuditLogWithUserResponse[]> {
+    return await db.auditLog.findMany({
+      where: {
+        entity: {
+          in: [EntityType.INPUT, EntityType.OUTPUT],
+        },
       },
       include: {
         user: true,
@@ -64,9 +82,28 @@ export const auditLogRepository = {
       where: {
         NOT: {
           entity: {
-            in: [EntityType.INPUT, EntityType.OUTPUT, EntityType.ADJUSTMENT],
+            in: [
+              EntityType.INPUT,
+              EntityType.OUTPUT,
+              EntityType.ADJUSTMENT_POSITIVE,
+              EntityType.ADJUSTMENT_NEGATIVE,
+            ],
           },
         },
+      },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  },
+
+  async findSystem(): Promise<AuditLogWithUserResponse[]> {
+    return await db.auditLog.findMany({
+      where: {
+        entity: EntityType.SYSTEM,
       },
       include: {
         user: true,

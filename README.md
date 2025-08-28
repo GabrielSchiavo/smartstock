@@ -33,28 +33,28 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     - `Padrão:` Acesso a cadastro e geração de relatórios.
     - `Cadastro:` Acesso somente ao cadastro de produtos.
     - `Geração:` Acesso somente a geração e visualização de relatórios.
-
-- **Cadastro:**
-  - `Cadastro de Produto Mestre:` Cadastro mestre dos produtos com informações comuns como categoria, grupo, subgrupo e unidade de medida base.
-  
-  - `Cadastro de Usuários:` Cadastro de usuários somente com: Nome, Email, Função/Área, Nível de Acesso.
-
-  - `Edição:` Edição de cadastros.
-  
-  - `Exclusão:` Exclusão de cadastros.
   
 - **Controle de Estoque:**
-  - `Entradas:` Cadastros de entradas dos produtos a partir do Produto Mestre.
+  - `Produto Mestre:` Cadastro mestre dos produtos com informações comuns como categoria, grupo, subgrupo e unidade de medida base.
+
+  - `Entradas:` Cadastros de entradas dos produtos a partir de um Produto Mestre.
 
   - `Saídas:` Cadastro de saídas a partir do cadastro do produto com validação de estoque disponível.
 
   - `Ajustes:` Cadastro ajustes positivos e negativos para correção de estoque.
+ 
+  - `Edição:` Edição total de produtos mestres e edição parcial de produtos.
+  
+  - `Exclusão:` Exclusão de produtos e produtos mestres.
+
+- `Visualização:` Os registros de produtos mestres são organizados em tabela com agrupamento por categorias. Visualização completa de todos os produtos cadastrados em uma única tabela com agrupamento por categorias.
 
 - **Controle de Usuários:**
+  - `Cadastro:` Cadastro de usuários somente com: Nome, Email, Nível de Acesso.
 
   - `Edição:` Edição total de usuários, incluindo troca do nível de acesso.
   
-  - `Exclusão:` Exclusão de usuários antigos.
+  - `Exclusão:` Exclusão de usuários.
   
 - **Geração de Relatórios:**
   - `Visualização:` Os relatórios são gerados dentro do sistema, onde é possível visualizar ou gerar novos.
@@ -77,14 +77,14 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 - **Sistema de Logs:**
   - `Geração de Logs:` Logs de interação do usuário com as principais partes do sistema como criação,  edição e exclusão de registros.
 
-  - `Painel de visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
+  - `Visualização:` Painel para visualização de todos os logs gerados pelo sistema separados por Entradas, Saídas,  Ajustes e Diversos.
 
 - **Organização:**
    - `Dashboard:` Tela inicial em formato Dashboard, onde pode ser visualizado total de estoque, produtos próximos do vencimento e alertas.
 
    - `Pesquisa e filtros:` É possível pesquisar ou filtrar por algum registro específico presente nas tabelas, facilitando a busca por registros específicos.
   
-   - `Separação:` Os registros são separados por grupo, onde os registros deste grupo são organizados por lote e data de validade.
+   - `Separação:` Os registros são separados por grupo ou categoria, onde os registros deste grupo são organizados por lote e data de validade.
   
 - **Dispositivos Móveis:**
    - `Otimização:` O sistema é totalmente otimizado para permitir uso em dispositivos móveis.

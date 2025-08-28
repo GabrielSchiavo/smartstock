@@ -1,5 +1,5 @@
 import { FormSetting } from "@/components/setting/form-setting";
-import { ToolTipHelpSetting } from "@/components/setting/tool-tip-help-setting";
+import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 import { ROUTES } from "@/config/routes";
 import { Metadata } from "next";
 
@@ -20,12 +20,20 @@ export default function SettingsPage() {
             <h1 className="text-lg leading-none font-semibold">
               <span className="flex gap-3 items-center">
                 Editar Configurações da Conta
-                <ToolTipHelpSetting />
+                <ToolTipHelp>
+                  <TooltipItem>
+                    <p className="text-sm">
+                      <span className="font-semibold">Alterar Senha</span> -
+                      Para alterar sua senha informe a senha atual e a nova
+                      senha que deseja usar.
+                    </p>
+                  </TooltipItem>
+                </ToolTipHelp>
               </span>
             </h1>
             <p className="text-muted-foreground text-sm w-full md:max-w-md">
               {
-                "Edite as informações da sua conta aqui. Clique em 'Salvar' Alterações quando terminar."
+                "Edite as informações da sua conta. Clique em 'Salvar' quando terminar."
               }
             </p>
           </div>

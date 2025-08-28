@@ -29,7 +29,6 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreateReportSchema } from "@/schemas";
 import { columnsTableReportDonations } from "@/components/tables/_columns/columns-table-reports";
-import { ToolTipHelpReportType } from "@/components/report/tool-tip-help-report-type";
 import {
   DonationsReportResponse,
   InventoryReportResponse,
@@ -42,6 +41,7 @@ import {
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ptBR } from "date-fns/locale";
+import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 
 export const FormReportsResultView = () => {
   const [validityReportData, setValidityReportData] = useState<
@@ -194,120 +194,187 @@ export const FormReportsResultView = () => {
 
   return (
     <div className="grid gap-12">
-      <div className="flex justify-center">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-12"
-          >
-            <div className="flex flex-col gap-12 border rounded-xl p-10 w-full md:min-w-4xl">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex flex-col gap-6">
-                  <FormField
-                    control={form.control}
-                    name="initialDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Data Inicial</FormLabel>
-                        <FormControl>
-                          <DatePickerMonthYear
-                            disabled={isDateRangeDisabled}
-                            field={field}
-                            locale={ptBR}
-                            dateFormat={LocaleType.DD_MM_YYYY}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="finalDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Data Final</FormLabel>
-                        <FormControl>
-                          <DatePickerMonthYear
-                            disabled={isDateRangeDisabled}
-                            field={field}
-                            locale={ptBR}
-                            dateFormat={LocaleType.DD_MM_YYYY}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-6">
-                  <FormField
-                    control={form.control}
-                    name="reportType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex flex-col gap-3">
-                          <FormLabel className="flex items-center">
-                            Tipo de Relatório:
-                            <ToolTipHelpReportType />
-                          </FormLabel>
-                          <FormControl className="flex flex-col gap-3">
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col"
-                            >
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.VALIDITY}
-                                    id="r1"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal" htmlFor="r1">
-                                  Validades
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.DONATIONS}
-                                    id="r2"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal" htmlFor="r2">
-                                  Doados
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.PURCHASED}
-                                    id="r3"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal" htmlFor="r3">
-                                  Comprados
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.INVENTORY}
-                                    id="r4"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal" htmlFor="r4">
-                                  Inventário
-                                </FormLabel>
-                              </FormItem>
-                            </RadioGroup>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col justify-center items-center"
+        >
+          <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-md font-medium">Detalhes do Relatório</h1>
+              </div>
+
+              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                  <div className="flex flex-col gap-6">
+                    <FormField
+                      control={form.control}
+                      name="initialDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Data Inicial</FormLabel>
+                          <FormControl>
+                            <DatePickerMonthYear
+                              disabled={isDateRangeDisabled}
+                              field={field}
+                              locale={ptBR}
+                              dateFormat={LocaleType.DD_MM_YYYY}
+                            />
                           </FormControl>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="finalDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Data Final</FormLabel>
+                          <FormControl>
+                            <DatePickerMonthYear
+                              disabled={isDateRangeDisabled}
+                              field={field}
+                              locale={ptBR}
+                              dateFormat={LocaleType.DD_MM_YYYY}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <FormField
+                      control={form.control}
+                      name="reportType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="flex flex-col gap-3">
+                            <FormLabel className="flex items-center">
+                              Tipo de Relatório:
+                              <ToolTipHelp>
+                                <TooltipItem>
+                                  <p className="text-sm">
+                                    <span className="font-semibold">OBS</span> -
+                                    Os Relatórios são gerados a partir das Datas
+                                    de Recebimento e Validade.
+                                  </p>
+                                </TooltipItem>
+                                <TooltipItem>
+                                  <p className="text-sm">
+                                    <span className="font-semibold">
+                                      Validades
+                                    </span>{" "}
+                                    - Gera um relatório de um determinado
+                                    período com todos os produtos com Validade,
+                                    Lote, Quantidade, status e Dias para Vencer
+                                  </p>
+                                </TooltipItem>
+                                <TooltipItem>
+                                  <p className="text-sm">
+                                    <span className="font-semibold">
+                                      Doados
+                                    </span>{" "}
+                                    - Gera um relatório de um determinado
+                                    período com todos os produtos doados com
+                                    Quantidade, Fornecedor e Data de Recebimento
+                                  </p>
+                                </TooltipItem>
+                                <TooltipItem>
+                                  <p className="text-sm">
+                                    <span className="font-semibold">
+                                      Comprados
+                                    </span>{" "}
+                                    - Gera um relatório de um determinado
+                                    período com todos os produtos comprados com
+                                    Quantidade e Data de Recebimento
+                                  </p>
+                                </TooltipItem>
+                                <TooltipItem>
+                                  <p className="text-sm">
+                                    <span className="font-semibold">
+                                      Inventário
+                                    </span>{" "}
+                                    - Gera um relatório de todos os produtos
+                                    cadastrados no sistema, independente de
+                                    período, contém Validade, Quantidade, Lote,
+                                    Tipo, Dias para Vencer e Status
+                                  </p>
+                                </TooltipItem>
+                              </ToolTipHelp>
+                            </FormLabel>
+                            <FormControl className="flex flex-col gap-3">
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col"
+                              >
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.VALIDITY}
+                                      id="r1"
+                                    />
+                                  </FormControl>
+                                  <FormLabel
+                                    className="font-normal"
+                                    htmlFor="r1"
+                                  >
+                                    Validades
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.DONATIONS}
+                                      id="r2"
+                                    />
+                                  </FormControl>
+                                  <FormLabel
+                                    className="font-normal"
+                                    htmlFor="r2"
+                                  >
+                                    Doados
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.PURCHASED}
+                                      id="r3"
+                                    />
+                                  </FormControl>
+                                  <FormLabel
+                                    className="font-normal"
+                                    htmlFor="r3"
+                                  >
+                                    Comprados
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.INVENTORY}
+                                      id="r4"
+                                    />
+                                  </FormControl>
+                                  <FormLabel
+                                    className="font-normal"
+                                    htmlFor="r4"
+                                  >
+                                    Inventário
+                                  </FormLabel>
+                                </FormItem>
+                              </RadioGroup>
+                            </FormControl>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -323,9 +390,9 @@ export const FormReportsResultView = () => {
                 )}
               </Button>
             </div>
-          </form>
-        </Form>
-      </div>
+          </div>
+        </form>
+      </Form>
       <div>
         {noData && dates && (
           <div className="p-6 border rounded-md">

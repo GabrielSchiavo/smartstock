@@ -28,7 +28,7 @@ export default async function OutputPage() {
                 </span>
               </h1>
               <p className="text-muted-foreground text-sm w-full md:max-w-md">
-                {"Clique em 'Salvar' quando terminar."}
+                {"Cadastre as saídas do estoque. Clique em 'Salvar' quando terminar."}
               </p>
             </div>
             <FormAddOutput />

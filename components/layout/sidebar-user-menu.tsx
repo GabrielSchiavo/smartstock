@@ -17,14 +17,30 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { UserType } from "@/types";
 
 export function SidebarUserMenu() {
   const { isMobile } = useSidebar();
   const user = useCurrentUser();
+
+  const userRoleText = () => {
+    switch (user?.role) {
+      case UserType.ADMIN:
+        return "ADMIN";
+      case UserType.CADASTRE:
+        return "CADASTRO";
+      case UserType.DEFAULT:
+        return "PADRÃO";
+      case UserType.REPORT:
+        return "RELATÓRIO";
+      default:
+        return user?.role;
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -38,13 +54,13 @@ export function SidebarUserMenu() {
               <Avatar className="h-8 w-8 rounded-lg grayscale">
                 <AvatarImage src={user?.image || ""} />
                 <AvatarFallback className="rounded-lg">
-                    <UserIcon className="text-foreground p-0.5" />
+                  <UserIcon className="text-foreground p-0.5" />
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user?.role}
+                  {userRoleText()}
                 </span>
               </div>
               <EllipsisVerticalIcon className="ml-auto size-4" />
@@ -61,13 +77,13 @@ export function SidebarUserMenu() {
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user?.image || ""} />
                   <AvatarFallback className="rounded-lg">
-                      <UserIcon className="text-foreground p-0.5" />
+                    <UserIcon className="text-foreground p-0.5" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user?.role}
+                    {userRoleText()}
                   </span>
                 </div>
               </div>

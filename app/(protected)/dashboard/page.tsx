@@ -1,6 +1,6 @@
 import { RoleGate } from "@/components/auth/role-gate";
-import { SectionCards } from "@/components/dashboard/section-cards";
-import { SectionDataTables } from "@/components/dashboard/section-data-tables";
+import { SectionCardsDashboard } from "@/components/dashboard/section-cards-dashboard";
+import { SectionTablesDashboard } from "@/components/dashboard/section-tables-dashboard";
 import { ROUTES } from "@/config/routes";
 import { UserType } from "@/types";
 
@@ -19,13 +19,13 @@ const DashboardPage = () => {
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 md:gap-6">
-          <SectionCards />
+        <div className="flex flex-col gap-12">
+          <SectionCardsDashboard />
           <RoleGate
             isPage={true}
             allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE]}
           >
-            <SectionDataTables />
+            <SectionTablesDashboard />
           </RoleGate>
         </div>
       </div>

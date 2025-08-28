@@ -79,7 +79,7 @@ export const FormSetting = () => {
     });
   };
 
-  // Copiar ID para área de tranferência
+  // Copiar ID para área de transferência
   const userId = user?.id as string;
 
   return (
@@ -89,9 +89,15 @@ export const FormSetting = () => {
         className="flex flex-col justify-center items-center"
       >
         <div className="flex flex-col gap-12 w-full md:max-w-4xl">
-          <div className="flex flex-col gap-12 border rounded-xl p-10">
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-row items-center justify-between gap-3 rounded-md border p-2">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <h1 className="text-md font-medium">
+                Detalhes da Conta
+              </h1>
+            </div>
+
+            <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+              <div className="flex flex-row items-center justify-between gap-3 rounded-lg border p-2">
                 <p className="text-sm font-medium">ID</p>
                 <CopyToClipboard
                   textToCopy={userId}
@@ -176,6 +182,7 @@ export const FormSetting = () => {
               />
             </div>
           </div>
+
           <div className="flex justify-end">
             <Button disabled={isPending} type="submit" size="sm">
               {isPending ? (

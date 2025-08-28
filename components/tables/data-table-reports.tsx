@@ -19,7 +19,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useRef, useState } from "react";
-import { ToolTipHelpReport } from "@/components/report/tool-tip-help-report";
 import { DataTableReportProps, ReportType } from "@/types";
 import { Maximize2Icon, Minimize2Icon } from "lucide-react";
 import {
@@ -39,6 +38,7 @@ import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { showToast } from "@/components/utils/show-toast";
 import { formatDateToLocale } from "@/utils/date-utils";
 import { BaseDataTable } from "@/components/tables/base-data-table";
+import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 
 export function DataTableReport<TData>({
   columns,
@@ -152,7 +152,15 @@ export function DataTableReport<TData>({
   return (
     <div className="grid gap-4 w-full">
       <div className="flex items-center justify-end gap-6 w-full">
-        <ToolTipHelpReport />
+        <ToolTipHelp>
+          <TooltipItem>
+            <p className="text-sm">
+              <span className="font-semibold">Ordenação</span> - Use a opção{" "}
+              <span className="font-semibold italic">Imprimir</span> para salvar
+              o relatório com a ordenação de registros personalizada.
+            </p>
+          </TooltipItem>
+        </ToolTipHelp>
         {groupBy && groupedData && (
           <TooltipProvider>
             <Tooltip>

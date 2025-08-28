@@ -9,15 +9,15 @@ import {
 import { ProductCountType } from "@/types";
 import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, TruckIcon } from "lucide-react";
 
-export async function SectionCards() {
+export async function SectionCardsDashboard() {
   const productsCount = (await getProductsCount()).count;
   const productsToExpireCount = (await getProductsCount(ProductCountType.ABOUT_TO_EXPIRE)).count;
   const productsExpiredCount = (await getProductsCount(ProductCountType.EXPIRED)).count;
   const suppliersCount = (await getSuppliersCount()).count;
 
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card grid grid-cols-1 gap-4 *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-      <Card className="bg-transparent!">
+    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card grid grid-cols-1 gap-6 *:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+      <Card className="bg-background! rounded-xl shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Cadastrados
@@ -35,7 +35,7 @@ export async function SectionCards() {
           </div>
         </CardFooter>
       </Card>
-      <Card className="bg-transparent!">
+      <Card className="bg-background! rounded-xl shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos à vencer
@@ -53,7 +53,7 @@ export async function SectionCards() {
           </div>
         </CardFooter>
       </Card>
-      <Card className="bg-transparent!">
+      <Card className="bg-background! rounded-xl shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Vencidos
@@ -71,7 +71,7 @@ export async function SectionCards() {
           </div>
         </CardFooter>
       </Card>
-      <Card className="bg-transparent!">
+      <Card className="bg-background! rounded-xl shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-md font-medium text-muted-foreground">Fornecedores</CardTitle>
           <TruckIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />

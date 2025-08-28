@@ -52,7 +52,7 @@ export const pageTitles: Record<string, string> = {
   [ROUTES.PAGE_STOCK_OUT]: "Saídas",
   [ROUTES.PAGE_STOCK_ADJUSTMENT]: "Ajustes",
   [ROUTES.PAGE_REPORTS]: "Relatórios",
-  [ROUTES.PAGE_USERS]: "Gerenciar Usuários",
+  [ROUTES.PAGE_USERS]: "Usuários",
   [ROUTES.PAGE_HISTORY]: "Histórico",
   [ROUTES.PAGE_SETTINGS]: "Configurações",
 };

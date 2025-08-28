@@ -28,7 +28,7 @@ export default async function HistoryPage() {
                 </span>
               </h1>
               <p className="text-muted-foreground text-sm w-full md:max-w-md">
-                {"Visualize o histórico completo de alterações do sistema."}
+                {"Visualize o histórico completo das alterações no sistema."}
               </p>
             </div>
             <SectionTablesHistory />

@@ -3,7 +3,6 @@
 import { DataTableViewOptions } from "@/components/tables/_components/data-table-view-options";
 
 import { DataTableSearchBox } from "@/components/tables/_components/data-table-search-box";
-import { DataTableToolTipHelp } from "@/components/tables/_components/data-table-tool-tip-help";
 import { DataTableToolbarProps, ModeType, TableType } from "@/types";
 import { AddEditDialog } from "@/components/shared/add-edit-dialog";
 import { FormAddProduct } from "@/components/stock/product/form-add-product";
@@ -12,6 +11,7 @@ import { FormAddMasterProduct } from "@/components/stock/master-product/form-add
 import { DataTableFacetedFilter } from "@/components/tables/_components/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
+import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 
 export function DataTableToolbar<TData>({
   table,
@@ -60,7 +60,31 @@ export function DataTableToolbar<TData>({
           </div>
         )}
 
-        {toolTip ? <DataTableToolTipHelp /> : null}
+        {toolTip ? (
+          <ToolTipHelp>
+            <TooltipItem>
+              <span className="min-w-4 min-h-4 rounded-sm bg-emerald-600 dark:bg-emerald-500"></span>
+              <p className="text-sm">
+                <span className="font-semibold">Dentro da Validade</span> -
+                Produto apto para uso/venda.
+              </p>
+            </TooltipItem>
+            <TooltipItem>
+              <span className="min-w-4 min-h-4 rounded-sm bg-yellow-600 dark:bg-yellow-500"></span>
+              <p className="text-sm">
+                <span className="font-semibold">Próximo do Vencimento</span> -
+                Validade expira em até 30 dias.
+              </p>
+            </TooltipItem>
+            <TooltipItem>
+              <span className="min-w-4 min-h-4 rounded-sm border-accent-foreground bg-red-600 dark:bg-red-500"></span>
+              <p className="text-sm">
+                <span className="font-semibold">Vencido</span> - Produto fora do
+                prazo de validade.
+              </p>
+            </TooltipItem>
+          </ToolTipHelp>
+        ) : null}
       </div>
       <DataTableViewOptions table={table} />
       {addButton === true && addButtonType === TableType.USER ? (

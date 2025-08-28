@@ -38,19 +38,6 @@ export function BaseDataTableExpandable<TData>({
         "border-0 bg-teal-500/15 text-teal-600 dark:text-teal-500",
     };
 
-    // const actionTypeText = () => {
-    //   switch (data.actionType) {
-    //     case ActionType.CREATE:
-    //       return "CRIADO";
-    //     case ActionType.UPDATE:
-    //       return "ATUALIZADO";
-    //     case ActionType.DELETE:
-    //       return "EXCLUÍDO";
-    //     default:
-    //       return data.actionType;
-    //   }
-    // };
-
     return (
       <div className="flex flex-col gap-6 p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -141,7 +128,7 @@ export function BaseDataTableExpandable<TData>({
             <CardTitle className="text-sm">Mensagem Detalhada</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex gap-3 justify-between items-center bg-background p-3 rounded-lg border shadow-sm">
+            <div className="flex gap-3 justify-between items-center bg-background p-3 rounded-lg border shadow">
               <span className="font-mono text-sm text-start text-wrap">
                 {data.details}
               </span>

@@ -18,7 +18,7 @@ export function HeaderMain() {
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <SidebarTrigger className="" />
+              <SidebarTrigger />
             </TooltipTrigger>
             <TooltipContent>
               <p>Abrir/Fechar Menu</p>

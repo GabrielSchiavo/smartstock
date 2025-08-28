@@ -16,13 +16,11 @@ import { useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { DialogFooter } from "@/components/ui/dialog";
-import { ToolTipHelpUser } from "@/components/user/tool-tip-help-user";
 import { FormBaseUserProps, ToastType, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { useSession } from "next-auth/react";
-
-
+import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 
 export const BaseFormUser = ({
   schema,
@@ -71,7 +69,7 @@ export const BaseFormUser = ({
           type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
       } catch (error) {
-        console.error('Form submission error:', error);
+        console.error("Form submission error:", error);
         showToast({
           title: "Algo deu errado!",
           description: "Erro interno do sistema. Tente novamente.",
@@ -173,7 +171,32 @@ export const BaseFormUser = ({
               <FormItem>
                 <FormLabel className="flex items-center">
                   Tipo de usuário:
-                  <ToolTipHelpUser />
+                  <ToolTipHelp>
+                    <TooltipItem>
+                      <p className="text-sm">
+                        <span className="font-semibold">Admin</span> - acesso
+                        total ao sistema e gerenciamento de usuários.
+                      </p>
+                    </TooltipItem>
+                    <TooltipItem>
+                      <p className="text-sm">
+                        <span className="font-semibold">Padrão</span> - acesso
+                        somente a gerenciamento de produtos e relatórios.
+                      </p>
+                    </TooltipItem>
+                    <TooltipItem>
+                      <p className="text-sm">
+                        <span className="font-semibold">Cadastro</span> - acesso
+                        somente a gerenciamento de produtos.
+                      </p>
+                    </TooltipItem>
+                    <TooltipItem>
+                      <p className="text-sm">
+                        <span className="font-semibold">Relatório</span> -
+                        acesso somente a gerenciamento de relatórios.
+                      </p>
+                    </TooltipItem>
+                  </ToolTipHelp>
                 </FormLabel>
                 <FormControl>
                   <RadioGroup
@@ -224,7 +247,7 @@ export const BaseFormUser = ({
             )}
           />
         </div>
-        
+
         <DialogFooter>
           <div className="flex gap-3 justify-end">
             <Button

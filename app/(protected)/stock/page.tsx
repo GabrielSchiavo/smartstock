@@ -23,8 +23,22 @@ export default async function StockFoodPage() {
     >
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
-          <div className="flex flex-col gap-4 md:gap-6">
-            <ClientProduct products={products} addButton={false} groupBy="masterProduct.group" />
+          <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-3">
+              <h1 className="text-lg leading-none font-semibold">
+                <span className="flex gap-3 items-center">
+                  Visualizar Estoque
+                </span>
+              </h1>
+              <p className="text-muted-foreground text-sm w-full md:max-w-md">
+                {"Visualize e gerencie o estoque completo."}
+              </p>
+            </div>
+            <ClientProduct
+              products={products}
+              addButton={false}
+              groupBy="masterProduct.group"
+            />
           </div>
         </div>
       </div>

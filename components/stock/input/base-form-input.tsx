@@ -163,7 +163,7 @@ export const BaseFormInput = forwardRef<
                   Detalhes do Produto Mestre
                 </h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10">
+              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
                 <FormField
                   control={form.control}
                   name="masterProductId"
@@ -247,7 +247,7 @@ export const BaseFormInput = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes do Produto</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10">
+              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
                 <FormField
                   control={form.control}
                   name="name"
@@ -429,7 +429,7 @@ export const BaseFormInput = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes da Entrada</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10">
+              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
                 <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
                   <FormField
                     control={form.control}

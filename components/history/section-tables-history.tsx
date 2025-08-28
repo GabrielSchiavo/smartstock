@@ -19,7 +19,7 @@ export const SectionTablesHistory = async ({}) => {
           <div className="flex flex-col gap-4">
             <h1 className="text-md font-medium">Histórico Entradas & Saídas</h1>
           </div>
-          <div className="flex flex-col gap-6 border rounded-xl p-10">
+          <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
             <ClientHistory history={auditLogsInputOutput} />
           </div>
         </div>
@@ -27,7 +27,7 @@ export const SectionTablesHistory = async ({}) => {
           <div className="flex flex-col gap-4">
             <h1 className="text-md font-medium">Histórico Ajustes</h1>
           </div>
-          <div className="flex flex-col gap-6 border rounded-xl p-10">
+          <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
             <ClientHistory history={auditLogsAdjustment} />
           </div>
         </div>
@@ -36,7 +36,7 @@ export const SectionTablesHistory = async ({}) => {
             <div className="flex flex-col gap-4">
               <h1 className="text-md font-medium">Histórico Diverso</h1>
             </div>
-            <div className="flex flex-col gap-6 border rounded-xl p-10">
+            <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
               <ClientHistory history={auditLogsSeveral} />
             </div>
           </div>

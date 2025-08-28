@@ -92,7 +92,7 @@ export function AlertButton() {
       <SheetContent className="h-full!">
         <SheetHeader>
           <SheetTitle>Alertas</SheetTitle>
-          <SheetDescription>Veja todos os alertas aqui.</SheetDescription>
+          <SheetDescription>Visualize e gerencie todos os alertas do sistema.</SheetDescription>
         </SheetHeader>
         <ScrollArea className="overflow-auto">
           <div className="grid flex-1 auto-rows-min gap-6 px-6">

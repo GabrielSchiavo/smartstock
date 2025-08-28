@@ -45,19 +45,19 @@ export function NavSidebarTertiary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Gerenciar Usuários"}
+                tooltip={"Usuários"}
                 className={`${pathname === ROUTES.PAGE_USERS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
                 <Link href={ROUTES.PAGE_USERS}>
                   <UserCogIcon />
-                  <span>Gerenciar Usuários</span>
+                  <span>Usuários</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Histórico de Alterações"}
+                tooltip={"Histórico"}
                 className={`${pathname === ROUTES.PAGE_HISTORY ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
               >
                 <Link href={ROUTES.PAGE_HISTORY}>

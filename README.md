@@ -47,7 +47,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
   
   - `Exclusão:` Exclusão de produtos e produtos mestres.
 
-- `Visualização:` Os registros de produtos mestres são organizados em tabela com agrupamento por categorias. Visualização completa de todos os produtos cadastrados em uma única tabela com agrupamento por categorias.
+  - `Visualização:` Os registros de produtos mestres são organizados em tabela com agrupamento por categorias. Visualização completa de todos os produtos cadastrados em uma única tabela com agrupamento por categorias.
 
 - **Controle de Usuários:**
   - `Cadastro:` Cadastro de usuários somente com: Nome, Email, Nível de Acesso.

@@ -3,6 +3,8 @@ import { UserType } from "@/types";
 import { RoleGate } from "@/components/auth/role-gate";
 import { ROUTES } from "@/config/routes";
 import { FormAddInput } from "@/components/stock/input/form-add-input";
+import { SectionTablesInputs } from "@/components/stock/input/section-table-inputs";
+import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Entradas - SmartStock",
@@ -13,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function InputPage() {
+
   return (
     <RoleGate
       isPage={true}
@@ -32,6 +35,8 @@ export default async function InputPage() {
               </p>
             </div>
             <FormAddInput />
+            <Separator />
+            <SectionTablesInputs />
           </div>
         </div>
       </div>

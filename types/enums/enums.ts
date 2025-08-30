@@ -163,3 +163,8 @@ export enum FilterModeType {
   MULTIPLE = "MULTIPLE",
   SINGLE = "SINGLE",
 }
+
+export enum DataExpandableType {
+  AUDIT_LOG = "AUDIT_LOG",
+  STOCK_MOVEMENT = "STOCK_MOVEMENT",
+}

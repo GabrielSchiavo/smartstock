@@ -3,27 +3,33 @@
 import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
-import { AuditLog } from "@prisma/client";
-import { EntityType, ActionType, ColumnMetaProps } from "@/types";
+import { StockMovement } from "@prisma/client";
+import {
+  ColumnMetaProps,
+  MovementType,
+  InputMovementCategoryType,
+  OutputMovementCategoryType,
+  AdjustmentMovementCategoryType,
+} from "@/types";
 import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
 
 // Função para escolher as colunas pesquisáveis
-const multiColumnFilterFn: FilterFn<AuditLog> = (
+const multiColumnFilterFn: FilterFn<StockMovement> = (
   row,
   columnId,
   filterValue
 ) => {
   // Concatenate the values from multiple columns into a single string for search columns
-  const searchableRowContent = `${row.original.id} ${row.original.createdAt} ${row.original.actionType} ${row.original.entity}`;
+  const searchableRowContent = `${row.original.id} ${row.original.createdAt} ${row.original.movementType} ${row.original.movementCategory}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
 
-export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
+export const columnsTableStockMovements = ({}): ColumnDef<StockMovement>[] => {
   return [
     {
       id: "select",
@@ -93,42 +99,48 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
       filterFn: multiColumnFilterFn,
     },
     {
-      accessorKey: "actionType",
+      accessorKey: "movementType",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Ação" />
+        <DataTableColumnHeader column={column} title="Movimentação" />
       ),
       cell: ({ row }) => {
-        const value = row.getValue("actionType");
+        const value = row.getValue("movementType");
 
         switch (value) {
-          case ActionType.CREATE:
+          case MovementType.INPUT:
             return (
-              <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
-                CRIADO
+              <Badge
+                variant={"outline"}
+                className="text-sm text-emerald-600 dark:text-emerald-500"
+              >
+                ENTRADA
               </Badge>
             );
-          case ActionType.UPDATE:
+          case MovementType.OUTPUT:
             return (
-              <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
-                ATUALIZADO
+              <Badge
+                variant={"outline"}
+                className="text-sm text-red-600 dark:text-red-500"
+              >
+                SAÍDA
               </Badge>
             );
-          case ActionType.DELETE:
+          case MovementType.ADJUSTMENT_POSITIVE:
             return (
-              <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
-                EXCLUÍDO
+              <Badge
+                variant={"outline"}
+                className="text-sm text-emerald-600 dark:text-emerald-500"
+              >
+                AJUSTE POSITIVO
               </Badge>
             );
-          case ActionType.LOGIN:
+          case MovementType.ADJUSTMENT_NEGATIVE:
             return (
-              <Badge className="text-sm bg-sky-500/15 text-sky-600 dark:text-sky-500">
-                LOGIN
-              </Badge>
-            );
-          case ActionType.LOGOUT:
-            return (
-              <Badge className="text-sm bg-teal-500/15 text-teal-600 dark:text-teal-500">
-                LOGOUT
+              <Badge
+                variant={"outline"}
+                className="text-sm text-red-600 dark:text-red-500"
+              >
+                AJUSTE NEGATIVO
               </Badge>
             );
           default:
@@ -140,106 +152,85 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         }
       },
       meta: {
-        title: "Ação",
+        title: "Movimentação",
       } as ColumnMetaProps,
     },
     {
-      accessorKey: "entity",
+      accessorKey: "movementCategory",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Entidade" />
+        <DataTableColumnHeader column={column} title="Categoria" />
       ),
       cell: ({ row }) => {
-        const value = row.getValue("entity");
+        const value = row.getValue("movementCategory");
 
         switch (value) {
-          case EntityType.ADJUSTMENT_POSITIVE:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-emerald-600 dark:text-emerald-500"
-              >
-                AJUSTE POSITIVO
-              </Badge>
-            );
-          case EntityType.ADJUSTMENT_NEGATIVE:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-red-600 dark:text-red-500"
-              >
-                AJUSTE NEGATIVO
-              </Badge>
-            );
-          case EntityType.CATEGORY:
+          case InputMovementCategoryType.DONATION ||
+            OutputMovementCategoryType.DONATION:
             return (
               <Badge variant={"outline"} className="text-sm">
-                CATEGORIA
+                DOAÇÃO
               </Badge>
             );
-          case EntityType.GROUP:
+          case InputMovementCategoryType.PURCHASE:
             return (
               <Badge variant={"outline"} className="text-sm">
-                GRUPO
+                COMPRA
               </Badge>
             );
-          case EntityType.INPUT:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-emerald-600 dark:text-emerald-500"
-              >
-                ENTRADA
-              </Badge>
-            );
-          case EntityType.MASTER_PRODUCT:
+          case InputMovementCategoryType.RETURN ||
+            OutputMovementCategoryType.RETURN:
             return (
               <Badge variant={"outline"} className="text-sm">
-                PRODUTO MESTRE
+                RETORNO
               </Badge>
             );
-          case EntityType.OUTPUT:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-red-600 dark:text-red-500"
-              >
-                SAÍDA
-              </Badge>
-            );
-          case EntityType.PRODUCT:
+          case InputMovementCategoryType.TRANSFER ||
+            OutputMovementCategoryType.TRANSFER:
             return (
               <Badge variant={"outline"} className="text-sm">
-                PRODUTO
+                TRANSFERÊNCIA
               </Badge>
             );
-          case EntityType.RECEIVER:
+          case OutputMovementCategoryType.CONSUMPTION:
             return (
               <Badge variant={"outline"} className="text-sm">
-                RECEBEDOR
+                CONSUMO
               </Badge>
             );
-          case EntityType.SUBGROUP:
+          case OutputMovementCategoryType.SALE:
             return (
               <Badge variant={"outline"} className="text-sm">
-                SUBGRUPO
+                VENDA
               </Badge>
             );
-          case EntityType.SUPPLIER:
+          case AdjustmentMovementCategoryType.CORRECTION:
             return (
               <Badge variant={"outline"} className="text-sm">
-                FORNECEDOR
+                CORREÇÃO
               </Badge>
             );
-          case EntityType.USER:
+          case AdjustmentMovementCategoryType.DUE_DATE:
             return (
               <Badge variant={"outline"} className="text-sm">
-                USUÁRIO
+                VENCIMENTO
               </Badge>
             );
-          case EntityType.SYSTEM:
+          case AdjustmentMovementCategoryType.GENERAL:
             return (
               <Badge variant={"outline"} className="text-sm">
-                SISTEMA
+                GERAL
+              </Badge>
+            );
+          case AdjustmentMovementCategoryType.LOSS_DAMAGE:
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                PERDA/AVARIA
+              </Badge>
+            );
+          case AdjustmentMovementCategoryType.THEFT_MISPLACEMENT:
+            return (
+              <Badge variant={"outline"} className="text-sm">
+                FURTO/EXTRAVIO
               </Badge>
             );
           default:
@@ -251,7 +242,7 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         }
       },
       meta: {
-        title: "Entidade",
+        title: "Categoria",
       } as ColumnMetaProps,
     },
   ];

@@ -45,7 +45,7 @@ export const auditLogRepository = {
     });
   },
 
-  async findAdjustment(): Promise<AuditLogWithUserResponse[]> {
+  async findAdjustments(): Promise<AuditLogWithUserResponse[]> {
     return await db.auditLog.findMany({
       where: {
         entity: {

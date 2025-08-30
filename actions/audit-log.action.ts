@@ -41,7 +41,7 @@ export const getAuditLogsInputOutput = async (): Promise<AuditLogWithUserRespons
 
 export const getAuditLogsAdjustment = async (): Promise<AuditLogWithUserResponse[]> => {
   try {
-    return await auditLogRepository.findAdjustment();
+    return await auditLogRepository.findAdjustments();
   } catch (error) {
     console.error("Erro ao buscar logs:", error);
     throw error;

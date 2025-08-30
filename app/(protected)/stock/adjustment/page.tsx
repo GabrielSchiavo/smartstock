@@ -3,6 +3,8 @@ import { UserType } from "@/types";
 import { RoleGate } from "@/components/auth/role-gate";
 import { ROUTES } from "@/config/routes";
 import { FormAddAdjustment } from "@/components/stock/adjustment/form-add-adjustment";
+import { SectionTablesAdjustments } from "@/components/stock/adjustment/section-table-outputs";
+import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Ajustes - SmartStock",
@@ -28,10 +30,14 @@ export default async function AdjustmentPage() {
                 </span>
               </h1>
               <p className="text-muted-foreground text-sm w-full md:max-w-md">
-                {"Faça ajustes positivos ou negativos no estoque. Clique em 'Salvar' quando terminar."}
+                {
+                  "Faça ajustes positivos ou negativos no estoque. Clique em 'Salvar' quando terminar."
+                }
               </p>
             </div>
             <FormAddAdjustment />
+            <Separator />
+            <SectionTablesAdjustments />
           </div>
         </div>
       </div>

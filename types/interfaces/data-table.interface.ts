@@ -1,5 +1,5 @@
 import { Column, ColumnDef, Row, Table,Table as TanstackTable, } from "@tanstack/react-table";
-import { FilterModeType, ProductWithMasterProductResponse, ReportType } from "@/types";
+import { DataExpandableType, FilterModeType, ProductWithMasterProductResponse, ReportType, StockMovementWithProductResponse } from "@/types";
 import { AuditLog, MasterProduct, User } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
@@ -68,9 +68,10 @@ export interface BaseDataTableProps<TData> {
   footerContent?: React.ReactNode;
 }
 
-export interface BaseDataTableAccordionProps<TData> {
+export interface BaseDataTableExpandableProps<TData> {
   table: TanstackTable<TData>;
   columns: ColumnDef<TData>[];
+  dataExpandableType: DataExpandableType;
 }
 
 export interface DataTableFilterConfigProps {
@@ -103,4 +104,7 @@ export interface ClientDataTableHistoryProps {
 }
 export interface ClientDataTableUserProps {
   users: User[];
+}
+export interface ClientDataTableStockMovementProps {
+  movements: StockMovementWithProductResponse[];
 }

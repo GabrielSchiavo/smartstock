@@ -14,10 +14,10 @@ import {
 } from "@tanstack/react-table";
 import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import { ActionType, DataExpandableType, DataTableProps, EntityType } from "@/types";
+import { AdjustmentMovementCategoryType, DataExpandableType, DataTableProps, InputMovementCategoryType, MovementType, OutputMovementCategoryType } from "@/types";
 import { BaseDataTableExpandable } from "@/components/tables/base-data-table-expandable";
 
-export function DataTableHistory<TData, TValue>({
+export function DataTableStockMovements<TData, TValue>({
   columns,
   data,
   addButton,
@@ -50,73 +50,73 @@ export function DataTableHistory<TData, TValue>({
     },
   });
 
-  const actions = [
+  const movements = [
     {
-      value: ActionType.CREATE,
-      label: "Criado",
-    },
-    {
-      value: ActionType.UPDATE,
-      label: "Atualizado",
-    },
-    {
-      value: ActionType.DELETE,
-      label: "Excluído",
-    },
-  ];
-  const entities = [
-    {
-      value: EntityType.ADJUSTMENT_POSITIVE,
-      label: "Ajuste Positivo",
-    },
-    {
-      value: EntityType.ADJUSTMENT_NEGATIVE,
-      label: "Ajuste Negativo",
-    },
-    {
-      value: EntityType.CATEGORY,
-      label: "Categoria",
-    },
-    {
-      value: EntityType.GROUP,
-      label: "Grupo",
-    },
-    {
-      value: EntityType.INPUT,
+      value: MovementType.INPUT,
       label: "Entrada",
     },
     {
-      value: EntityType.MASTER_PRODUCT,
-      label: "Produto Mestre",
-    },
-    {
-      value: EntityType.OUTPUT,
+      value: MovementType.OUTPUT,
       label: "Saída",
     },
     {
-      value: EntityType.PRODUCT,
-      label: "Produto",
+      value: MovementType.ADJUSTMENT_POSITIVE,
+      label: "Ajuste Positivo",
     },
     {
-      value: EntityType.RECEIVER,
-      label: "Recebedor",
-    },
-    {
-      value: EntityType.SUBGROUP,
-      label: "Subgrupo",
-    },
-    {
-      value: EntityType.SUPPLIER,
-      label: "Fornecedor",
-    },
-    {
-      value: EntityType.USER,
-      label: "Usuário",
+      value: MovementType.ADJUSTMENT_NEGATIVE,
+      label: "Ajuste Negativo",
     },
   ];
+  const categories = [
+    {
+      value: InputMovementCategoryType.DONATION || OutputMovementCategoryType.DONATION,
+      label: "Doação",
+    },
+    {
+      value: InputMovementCategoryType.PURCHASE,
+      label: "Compra",
+    },
+    {
+      value: InputMovementCategoryType.TRANSFER || OutputMovementCategoryType.TRANSFER,
+      label: "Transferência",
+    },
+    {
+      value: InputMovementCategoryType.RETURN || OutputMovementCategoryType.RETURN,
+      label: "Retorno",
+    },
+    {
+      value: OutputMovementCategoryType.CONSUMPTION,
+      label: "Consumo",
+    },
+    {
+      value: OutputMovementCategoryType.SALE,
+      label: "Venda",
+    },
+    {
+      value: AdjustmentMovementCategoryType.CORRECTION,
+      label: "Correção",
+    },
+    {
+      value: AdjustmentMovementCategoryType.DUE_DATE,
+      label: "Vencimento",
+    },
+    {
+      value: AdjustmentMovementCategoryType.GENERAL,
+      label: "Geral",
+    },
+    {
+      value: AdjustmentMovementCategoryType.LOSS_DAMAGE,
+      label: "Perda/Dano",
+    },
+    {
+      value: AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
+      label: "Furto/Extravio",
+    },    
+  ];
   const filters = [
-    { columnKey: "actionType", title: "Ação", options: actions },
-    { columnKey: "entity", title: "Entidade", options: entities },
+    { columnKey: "movementType", title: "Movimentação", options: movements },
+    { columnKey: "movementCategory", title: "Categoria", options: categories },
   ];
 
   return (
@@ -135,7 +135,7 @@ export function DataTableHistory<TData, TValue>({
         <BaseDataTableExpandable
           table={table}
           columns={columns as ColumnDef<TData>[]}
-          dataExpandableType={DataExpandableType.AUDIT_LOG}
+          dataExpandableType={DataExpandableType.STOCK_MOVEMENT}
         />
       </div>
 

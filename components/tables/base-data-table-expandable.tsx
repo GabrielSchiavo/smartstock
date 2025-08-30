@@ -13,8 +13,11 @@ import {
 import {
   ActionType,
   AuditLogWithUserResponse,
-  BaseDataTableAccordionProps,
+  BaseDataTableExpandableProps,
+  DataExpandableType,
   EntityType,
+  MovementType,
+  StockMovementWithProductResponse,
 } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,8 +26,9 @@ import { formatDateTimeToLocale } from "@/utils/date-utils";
 export function BaseDataTableExpandable<TData>({
   table,
   columns,
-}: BaseDataTableAccordionProps<TData>) {
-  const renderExpandedContent = (data: AuditLogWithUserResponse) => {
+  dataExpandableType,
+}: BaseDataTableExpandableProps<TData>) {
+  const renderAuditLogsExpandedContent = (data: AuditLogWithUserResponse) => {
     const actionColors: Record<string, string> = {
       [ActionType.CREATE]:
         "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-500",
@@ -108,15 +112,128 @@ export function BaseDataTableExpandable<TData>({
                 </span>
                 <span
                   className={`${
-                    data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ?
-                    "text-red-600 dark:text-red-500" : "text-emerald-600 dark:text-emerald-500"
+                    data.entity === EntityType.OUTPUT ||
+                    data.entity === EntityType.ADJUSTMENT_NEGATIVE
+                      ? "text-red-600 dark:text-red-500"
+                      : "text-emerald-600 dark:text-emerald-500"
                   }`}
                 >
-                  {data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE
+                  {data.entity === EntityType.OUTPUT ||
+                  data.entity === EntityType.ADJUSTMENT_NEGATIVE
                     ? `- ${data.changedValue}`
                     : data.entity === EntityType.INPUT
                       ? `+ ${data.changedValue}`
                       : data.changedValue}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        {/* Mensagem detalhada */}
+        <Card className="overflow-x-auto">
+          <CardHeader>
+            <CardTitle className="text-sm">Mensagem Detalhada</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex gap-3 justify-between items-center bg-background p-3 rounded-lg border shadow">
+              <span className="font-mono text-sm text-start text-wrap">
+                {data.details}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  const renderStockMovementsExpandedContent = (
+    data: StockMovementWithProductResponse
+  ) => {
+    const movementColors: Record<string, string> = {
+      [MovementType.INPUT]:
+        "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-500",
+      [MovementType.OUTPUT]:
+        "border-0 bg-red-500/15 text-red-600 dark:text-red-500",
+    };
+
+    return (
+      <div className="flex flex-col gap-6 p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Identificação */}
+          <Card className="overflow-x-auto">
+            <CardHeader className="">
+              <CardTitle className="text-sm">Identificação</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  ID da Movimentação:
+                </span>
+                <Badge variant="outline">{data.id}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Data/Hora:
+                </span>
+                <span className="text-sm text-end text-wrap">
+                  {formatDateTimeToLocale(data.createdAt)}
+                </span>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  ID do Produto:
+                </span>
+                <Badge variant="outline">{data.productId}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Nome do Produto:
+                </span>
+                <span className="text-sm text-end text-wrap">
+                  {data.product.name}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Detalhes */}
+          <Card className="overflow-x-auto">
+            <CardHeader>
+              <CardTitle className="text-sm">Detalhes</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">Tipo:</span>
+                <Badge
+                  variant="outline"
+                  className={`${movementColors[data.movementType]}`}
+                >
+                  {data.movementType}
+                </Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Categoria:
+                </span>
+                <Badge variant="outline">{data.movementCategory}</Badge>
+              </div>
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground text-end text-wrap">
+                  Valor:
+                </span>
+                <span
+                  className={`${
+                    data.movementType === EntityType.OUTPUT ||
+                    data.movementType === EntityType.ADJUSTMENT_NEGATIVE
+                      ? "text-red-600 dark:text-red-500"
+                      : "text-emerald-600 dark:text-emerald-500"
+                  }`}
+                >
+                  {data.movementType === EntityType.OUTPUT ||
+                  data.movementType === EntityType.ADJUSTMENT_NEGATIVE
+                    ? `- ${data.quantity} ${data.unit}`
+                    : data.movementType === EntityType.INPUT
+                      ? `+ ${data.quantity} ${data.unit}`
+                      : `${data.quantity} ${data.unit}`}
                 </span>
               </div>
             </CardContent>
@@ -179,9 +296,13 @@ export function BaseDataTableExpandable<TData>({
               {row.getIsExpanded() && (
                 <TableRow className="hover:bg-background">
                   <TableCell colSpan={columns.length} className="p-0">
-                    {renderExpandedContent(
-                      row.original as AuditLogWithUserResponse
-                    )}
+                    {dataExpandableType === DataExpandableType.AUDIT_LOG
+                      ? renderAuditLogsExpandedContent(
+                          row.original as AuditLogWithUserResponse
+                        )
+                      : renderStockMovementsExpandedContent(
+                          row.original as StockMovementWithProductResponse
+                        )}
                   </TableCell>
                 </TableRow>
               )}

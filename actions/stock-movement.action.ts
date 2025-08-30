@@ -2,7 +2,7 @@
 
 import {
   auditLogRepository,
-  movementRepository,
+  stockMovementRepository,
   productRepository,
 } from "@/db";
 import {
@@ -15,8 +15,9 @@ import {
   ActionType,
   MovementType,
   UnitType,
-  MovementOperationResponse,
+  StockMovementOperationResponse,
   AdjustmentType,
+  StockMovementWithProductResponse,
 } from "@/types";
 import { revalidatePath } from "next/cache";
 import z from "zod";
@@ -26,7 +27,7 @@ import { currentUser } from "@/lib/auth";
 
 export const registerInput = async (
   values: z.infer<typeof CreateInputEditProductSchema>
-): Promise<MovementOperationResponse> => {
+): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateInputEditProductSchema.safeParse(values);
   const user = await currentUser();
 
@@ -49,13 +50,13 @@ export const registerInput = async (
     });
 
     // Cria o movimento de estoque após criar o produto
-    await movementRepository.createInput({
+    await stockMovementRepository.createInput({
       productId: product.id,
       quantity: Number(quantity),
       unit: productData.unit,
       movementType: MovementType.INPUT,
       movementCategory: productData.movementCategory,
-      details: `[MOVEMENT] Type=${MovementType.INPUT} | Category=${productData.movementCategory}} | Quantity=${quantity} | Unit=${productData.unit} | Product ID=${product.id} | Date Time='${new Date().toISOString()}'`,
+      details: `[MOVEMENT] Type='${MovementType.INPUT}' | Category='${productData.movementCategory}' | Quantity='${quantity}' | Unit='${productData.unit}' | Product ID='${product.id}' | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
@@ -88,7 +89,7 @@ export const registerInput = async (
 
 export const registerOutput = async (
   values: z.infer<typeof CreateOutputSchema>
-): Promise<MovementOperationResponse> => {
+): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateOutputSchema.safeParse(values);
   const user = await currentUser();
 
@@ -140,12 +141,12 @@ export const registerOutput = async (
       };
     }
 
-    const movementOutput = await movementRepository.createOutput({
+    const movementOutput = await stockMovementRepository.createOutput({
       ...outputData,
       productId: Number(outputData.productId),
       quantity: Number(outputData.quantity),
       movementType: MovementType.OUTPUT,
-      details: `[MOVEMENT] Type=${MovementType.OUTPUT} | Category=${outputData.movementCategory}} | Quantity=${outputData.quantity} | Unit=${outputData.unit} | Product ID=${outputData.productId} | Date Time='${new Date().toISOString()}'`,
+      details: `[MOVEMENT] Type='${MovementType.OUTPUT}' | Category='${outputData.movementCategory}' | Quantity='${outputData.quantity}' | Unit='${outputData.unit}' | Product ID='${outputData.productId}' | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
@@ -182,7 +183,7 @@ export const registerOutput = async (
 
 export const registerAdjustment = async (
   values: z.infer<typeof CreateAdjustmentSchema>
-): Promise<MovementOperationResponse> => {
+): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateAdjustmentSchema.safeParse(values);
   const user = await currentUser();
 
@@ -247,12 +248,12 @@ export const registerAdjustment = async (
 
     const adjustmentMovementType = adjustmentTypeValue === AdjustmentType.NEGATIVE ? MovementType.ADJUSTMENT_NEGATIVE : MovementType.ADJUSTMENT_POSITIVE;
 
-    const movementAdjustment = await movementRepository.createOutput({
+    const movementAdjustment = await stockMovementRepository.createOutput({
       ...adjustmentData,
       productId: Number(adjustmentData.productId),
       quantity: Number(adjustmentData.quantity),
       movementType: adjustmentMovementType,
-      details: `[MOVEMENT] Type=${adjustmentMovementType} | Category=${adjustmentData.movementCategory}} | Quantity=${adjustmentData.quantity} | Unit=${adjustmentData.unit} | Product ID=${adjustmentData.productId} | Date Time='${new Date().toISOString()}'`,
+      details: `[MOVEMENT] Type='${adjustmentMovementType}' | Category='${adjustmentData.movementCategory}' | Quantity='${adjustmentData.quantity}' | Unit='${adjustmentData.unit}' | Product ID='${adjustmentData.productId}' | Date Time='${new Date().toISOString()}'`,
       createdAt: new Date(),
     });
 
@@ -286,5 +287,32 @@ export const registerAdjustment = async (
       title: "Erro!",
       description: "Não foi possível cadastrar o ajuste.",
     };
+  }
+};
+
+export const getStockMovementInputs = async (): Promise<StockMovementWithProductResponse[]> => {
+  try {
+    return await stockMovementRepository.findInputs();
+  } catch (error) {
+    console.error("Erro ao buscar logs:", error);
+    throw error;
+  }
+};
+
+export const getStockMovementOutputs = async (): Promise<StockMovementWithProductResponse[]> => {
+  try {
+    return await stockMovementRepository.findOutputs();
+  } catch (error) {
+    console.error("Erro ao buscar logs:", error);
+    throw error;
+  }
+};
+
+export const getStockMovementAdjustments = async (): Promise<StockMovementWithProductResponse[]> => {
+  try {
+    return await stockMovementRepository.findAdjustments();
+  } catch (error) {
+    console.error("Erro ao buscar logs:", error);
+    throw error;
   }
 };

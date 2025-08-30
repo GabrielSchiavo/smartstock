@@ -140,7 +140,7 @@ export async function checkGroupUsage(
   groupName: string
 ): Promise<CheckGroupResponse> {
   try {
-    const productWithGroup = await groupRepository.checkInProducts(groupName);
+    const productWithGroup = await groupRepository.checkInMasterProducts(groupName);
 
     return {
       isUsed: !!productWithGroup,

@@ -1,6 +1,6 @@
 import { MasterProductResponse, MasterProductUpdateResponse } from "@/types";
 import { db } from "@/lib/db";
-import { MasterProduct } from "@prisma/client";
+import { MasterProduct, Product } from "@prisma/client";
 
 export const masterProductRepository = {
   async create(data: MasterProductResponse): Promise<MasterProduct> {
@@ -38,6 +38,17 @@ export const masterProductRepository = {
     return await db.masterProduct.update({
       where: { id },
       data,
+    });
+  },
+
+  async checkInProducts(
+    masterProductId: number
+  ): Promise<Pick<Product, "id"> | null> {
+    return await db.product.findFirst({
+      where: {
+        masterProductId: masterProductId,
+      },
+      select: { id: true },
     });
   },
 };

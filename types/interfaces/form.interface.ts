@@ -1,7 +1,7 @@
 import {
   CreateAdjustmentSchema,
   CreateEditMasterProductSchema,
-  CreateEditProductInputSchema,
+  CreateInputEditProductSchema,
   CreateOutputSchema,
 } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
@@ -114,8 +114,8 @@ export interface FormBaseUserProps {
 }
 
 export interface FormBaseInputProductProps {
-  defaultValues?: z.infer<typeof CreateEditProductInputSchema>;
-  onSubmit: (values: z.infer<typeof CreateEditProductInputSchema>) => Promise<void>;
+  defaultValues?: z.infer<typeof CreateInputEditProductSchema>;
+  onSubmit: (values: z.infer<typeof CreateInputEditProductSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;

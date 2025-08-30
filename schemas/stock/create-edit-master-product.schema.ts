@@ -1,5 +1,5 @@
+import { BaseUnitType } from "@/types";
 import { z } from "zod";
-import { UnitType } from "@/types";
 
 export const CreateEditMasterProductSchema = z
   .object({
@@ -11,7 +11,7 @@ export const CreateEditMasterProductSchema = z
       .max(60, {
           error: "Nome deve ter no máximo 60 caracteres"
     }),
-    baseUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
+    baseUnit: z.enum([BaseUnitType.KG, BaseUnitType.UN, BaseUnitType.L], {
         error: (issue) => issue.input === undefined ? "Selecione uma unidade de medida base" : undefined
     }),
     category: z

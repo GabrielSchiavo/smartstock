@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { getMasterProducts, registerInput } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { z } from "zod";
-import { CreateEditProductInputSchema } from "@/schemas";
+import { CreateInputEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 import { MasterProduct } from "@prisma/client";
@@ -16,7 +16,7 @@ export const FormAddInput = ({
 }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditProductInputSchema>>>(null);
+    useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>>(null);
 
   const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
 
@@ -33,7 +33,7 @@ export const FormAddInput = ({
     loadMasterProducts();
   }, []);
 
-  const onSubmit = async (values: z.infer<typeof CreateEditProductInputSchema>) => {
+  const onSubmit = async (values: z.infer<typeof CreateInputEditProductSchema>) => {
     await startTransition(async () => {
       try {
         const response = await registerInput(values);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateEditProductInputSchema } from "@/schemas";
+import { CreateInputEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { DialogFooter } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -43,7 +42,7 @@ import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 
 export const BaseFormInput = forwardRef<
-  UseFormReturn<z.infer<typeof CreateEditProductInputSchema>>,
+  UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>,
   ExtendedFormBaseInputProductProps
 >(
   (
@@ -59,8 +58,8 @@ export const BaseFormInput = forwardRef<
     },
     ref
   ) => {
-    const form = useForm<z.infer<typeof CreateEditProductInputSchema>>({
-      resolver: zodResolver(CreateEditProductInputSchema),
+    const form = useForm<z.infer<typeof CreateInputEditProductSchema>>({
+      resolver: zodResolver(CreateInputEditProductSchema),
       defaultValues: defaultValues || {
         masterProductId: "",
         name: "",
@@ -542,7 +541,10 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <div className="flex flex-col gap-3">
-                          <FormLabel>Categoria de Entrada: <span className="text-red-500">*</span></FormLabel>
+                          <FormLabel>
+                            Categoria de Entrada:{" "}
+                            <span className="text-red-500">*</span>
+                          </FormLabel>
                           <FormControl className="flex flex-col gap-3">
                             <RadioGroup
                               onValueChange={field.onChange}
@@ -600,34 +602,32 @@ export const BaseFormInput = forwardRef<
               </div>
             </div>
 
-            <DialogFooter>
-              <div className="flex gap-3 justify-end">
-                {isEditMode && (
-                  <Button
-                    disabled={isPending}
-                    size="sm"
-                    type="reset"
-                    variant={"ghost"}
-                    onClick={() => {
-                      form.reset();
-                      onCancel?.();
-                    }}
-                  >
-                    Cancelar
-                  </Button>
-                )}
-                <Button disabled={isPending} type="submit" size="sm">
-                  {isPending ? (
-                    <span className="flex items-center gap-3">
-                      <MoonLoader size={16} color="#ffffff" />
-                      {loadingText}
-                    </span>
-                  ) : (
-                    submitButtonText
-                  )}
+            <div className="flex gap-3 justify-end">
+              {isEditMode && (
+                <Button
+                  disabled={isPending}
+                  size="sm"
+                  type="reset"
+                  variant={"ghost"}
+                  onClick={() => {
+                    form.reset();
+                    onCancel?.();
+                  }}
+                >
+                  Cancelar
                 </Button>
-              </div>
-            </DialogFooter>
+              )}
+              <Button disabled={isPending} type="submit" size="sm">
+                {isPending ? (
+                  <span className="flex items-center gap-3">
+                    <MoonLoader size={16} color="#ffffff" />
+                    {loadingText}
+                  </span>
+                ) : (
+                  submitButtonText
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

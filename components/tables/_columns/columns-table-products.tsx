@@ -14,7 +14,7 @@ import {
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { deleteProduct } from "@/actions";
 import { FormEditProduct } from "@/components/stock/product/form-edit-product";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { checkExpiryStatus } from "@/utils/check-expiry-status";
@@ -26,7 +26,7 @@ const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   filterValue
 ) => {
   // Concatenate the values from multiple columns into a single string for search columns
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.masterProduct.category} ${row.original.masterProduct.group} ${row.original.masterProduct.subgroup} ${row.original.productType} ${row.original.supplier}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.masterProduct.name} ${row.original.masterProduct.category} ${row.original.masterProduct.group} ${row.original.masterProduct.subgroup} ${row.original.productType} ${row.original.supplier}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -151,7 +151,7 @@ export const columnsTableProducts = ({
     cell: ({ row }) => {
       const validityResult = checkExpiryStatus(row.getValue("validityDate"), {
         dateOnly: true,
-        formatDate: formatDateToLocale,
+        formatDate: formatDateOnlyToLocale,
       });
 
       const { status, formattedDate } = validityResult;
@@ -191,7 +191,7 @@ export const columnsTableProducts = ({
     ),
     cell: ({ row }) => {
       const receiptDate = new Date(row.getValue("receiptDate"));
-      return formatDateToLocale(receiptDate);
+      return formatDateOnlyToLocale(receiptDate);
     },
     meta: {
       title: "Data de Recebimento",
@@ -204,6 +204,15 @@ export const columnsTableProducts = ({
     ),
     meta: {
       title: "Recebedor",
+    } as ColumnMetaProps,
+  },
+  {
+    accessorKey: "masterProduct.name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Produto Mestre" />
+    ),
+    meta: {
+      title: "Produto Mestre",
     } as ColumnMetaProps,
   },
   {
@@ -267,7 +276,7 @@ export const columnsTableProducts = ({
   },
   {
     id: "actions",
-    enableHiding: false,
+    header: () => null,
     cell: ({ row }) => {
       if (isSelectingAction && onSelect) {
         const isSelected = selectedProductId === row.original.id.toString();
@@ -292,5 +301,7 @@ export const columnsTableProducts = ({
         );
       }
     },
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

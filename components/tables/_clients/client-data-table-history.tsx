@@ -2,9 +2,9 @@
 
 import { DataTableHistory } from "@/components/tables/data-table-history";
 import { columnsTableHistory } from "@/components/tables/_columns/columns-table-history";
-import { ClientHistoryProps } from "@/types";
+import { ClientDataTableHistoryProps } from "@/types";
 
-export function ClientHistory({ history }: ClientHistoryProps) {
+export function ClientDataTableHistory({ history }: ClientDataTableHistoryProps) {
   return (
     <DataTableHistory
       columns={columnsTableHistory({})}

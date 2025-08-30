@@ -9,12 +9,12 @@ export * from "./auth/new-password.schema";
 // User
 export * from "./user/create-user.schema";
 export * from "./user/edit-user.schema";
-export * from "./user/settings.schema";
+export * from "./setting/settings.schema";
 
 // Stock
 export * from "./stock/create-adjustment.schema";
 export * from "./stock/create-edit-master-product.schema";
-export * from "./stock/create-edit-product-input.schema";
+export * from "./stock/create-input-edit-product.schema";
 export * from "./stock/create-output.schema";
 
 // Report

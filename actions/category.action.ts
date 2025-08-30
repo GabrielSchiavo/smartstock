@@ -162,7 +162,7 @@ export async function checkCategoryUsage(
 ): Promise<CheckCategoryResponse> {
   try {
     const productWithCategory =
-      await categoryRepository.checkCategoryUsage(categoryName);
+      await categoryRepository.checkInMasterProducts(categoryName);
 
     return {
       isUsed: !!productWithCategory,

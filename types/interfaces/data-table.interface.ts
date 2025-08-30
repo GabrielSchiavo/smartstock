@@ -1,6 +1,6 @@
 import { Column, ColumnDef, Row, Table,Table as TanstackTable, } from "@tanstack/react-table";
 import { FilterModeType, ProductWithMasterProductResponse, ReportType } from "@/types";
-import { MasterProduct } from "@prisma/client";
+import { AuditLog, MasterProduct, User } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -88,4 +88,19 @@ export interface DataTableFacetedFilterProps<TData, TValue> {
     icon?: React.ComponentType<{ className?: string }>
   }[]
   mode?: FilterModeType
+}
+
+export interface ClientDataTableProductProps {
+  products: ProductWithMasterProductResponse[];
+  addButton: boolean;
+  groupBy: string;
+}
+export interface ClientDataTableMasterProductProps {
+  masterProducts: MasterProduct[];
+}
+export interface ClientDataTableHistoryProps {
+  history: AuditLog[];
+}
+export interface ClientDataTableUserProps {
+  users: User[];
 }

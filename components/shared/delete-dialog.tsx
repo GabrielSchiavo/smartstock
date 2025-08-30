@@ -40,6 +40,14 @@ export default function DeleteDialog<T extends string | number>({
         setOpen(false);
         if (onOpenChange) onOpenChange(false);
       }
+      if (response.isUsed) {
+        showToast({
+          title: "Aviso!",
+          description: `Este Produto Mestre está em uso e não pode ser excluído.`,
+          type: ToastType.WARNING,
+        });
+        return;
+      }
 
       showToast({
         title: response.title,
@@ -76,7 +84,8 @@ export default function DeleteDialog<T extends string | number>({
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o cadastro.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+            cadastro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>

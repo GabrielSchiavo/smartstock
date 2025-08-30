@@ -5,6 +5,12 @@ export enum UserType {
   REPORT = "REPORT",
 }
 
+export enum BaseUnitType {
+  KG = "KG",
+  UN = "UN",
+  L = "L",
+}
+
 export enum UnitType {
   KG = "KG",
   G = "G",

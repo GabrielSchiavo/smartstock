@@ -3,7 +3,7 @@ import {
   getAuditLogsInputOutput,
   getAuditLogsSeveral,
 } from "@/actions";
-import { ClientHistory } from "@/components/history/client-history";
+import { ClientDataTableHistory } from "@/components/tables/_clients/client-data-table-history";
 import { RoleGate } from "@/components/auth/role-gate";
 import { UserType } from "@/types";
 
@@ -20,7 +20,7 @@ export const SectionTablesHistory = async ({}) => {
             <h1 className="text-md font-medium">Histórico Entradas & Saídas</h1>
           </div>
           <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-            <ClientHistory history={auditLogsInputOutput} />
+            <ClientDataTableHistory history={auditLogsInputOutput} />
           </div>
         </div>
         <div className="flex flex-col gap-6">
@@ -28,7 +28,7 @@ export const SectionTablesHistory = async ({}) => {
             <h1 className="text-md font-medium">Histórico Ajustes</h1>
           </div>
           <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-            <ClientHistory history={auditLogsAdjustment} />
+            <ClientDataTableHistory history={auditLogsAdjustment} />
           </div>
         </div>
         <RoleGate isPage={false} allowedRoles={[UserType.ADMIN]}>
@@ -37,7 +37,7 @@ export const SectionTablesHistory = async ({}) => {
               <h1 className="text-md font-medium">Histórico Diverso</h1>
             </div>
             <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-              <ClientHistory history={auditLogsSeveral} />
+              <ClientDataTableHistory history={auditLogsSeveral} />
             </div>
           </div>
         </RoleGate>

@@ -123,12 +123,23 @@ export const deleteMasterProduct = async (id: number) => {
 
   try {
     const existingMasterProduct = await masterProductRepository.findById(id);
+    const productWithMasterProduct =
+      await masterProductRepository.checkInProducts(id);
 
     if (!existingMasterProduct) {
       return {
         success: false,
         title: "Erro!",
         description: "Produto Mestre não encontrado.",
+      };
+    }
+    if (!!productWithMasterProduct) {
+      return {
+        isUsed: !!productWithMasterProduct,
+        success: false,
+        title: "Aviso!",
+        description:
+          "Este produto mestre está associado a um ou mais produtos.",
       };
     }
 
@@ -153,6 +164,7 @@ export const deleteMasterProduct = async (id: number) => {
   } catch (error) {
     console.error("Erro ao excluir produto mestre:", error);
     return {
+      isUsed: true,
       success: false,
       title: "Erro!",
       description: "Não foi possível excluir o produto mestre.",

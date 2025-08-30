@@ -1,9 +1,9 @@
-import { UnitType } from "@/types";
+import { BaseUnitType } from "@/types";
 import { MasterProduct } from "@prisma/client";
 
 export type MasterProductResponse = {
   name: string;
-  baseUnit: UnitType;
+  baseUnit: BaseUnitType;
   category: string;
   group: string;
   subgroup?: string | null;
@@ -19,4 +19,5 @@ export type MasterProductOperationResponse = {
   title: string;
   description?: string;
   masterProduct?: MasterProduct;
+  isUsed?: boolean
 };

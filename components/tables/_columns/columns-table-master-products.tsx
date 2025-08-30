@@ -121,7 +121,7 @@ export const columnsTableMasterProducts = ({
   },
   {
     id: "actions",
-    enableHiding: false,
+    header: () => null,
     cell: ({ row }) => {
       if (isSelectingAction && onSelect) {
         const isSelected =
@@ -147,5 +147,7 @@ export const columnsTableMasterProducts = ({
         );
       }
     },
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

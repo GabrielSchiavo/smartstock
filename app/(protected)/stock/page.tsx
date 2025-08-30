@@ -3,7 +3,7 @@ import { UserType } from "@/types";
 import { getProducts } from "@/actions";
 import { RoleGate } from "@/components/auth/role-gate";
 import { ROUTES } from "@/config/routes";
-import { ClientProduct } from "@/components/stock/product/client-product";
+import { ClientDataTableProduct } from "@/components/tables/_clients/client-data-table-product";
 
 export const metadata: Metadata = {
   title: "Estoque - SmartStock",
@@ -34,7 +34,7 @@ export default async function StockFoodPage() {
                 {"Visualize e gerencie o estoque completo."}
               </p>
             </div>
-            <ClientProduct
+            <ClientDataTableProduct
               products={products}
               addButton={false}
               groupBy="masterProduct.group"

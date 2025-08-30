@@ -170,7 +170,7 @@ export async function checkSupplierUsage(
 ): Promise<CheckSupplierResponse> {
   try {
     const productWithSupplier =
-      await supplierRepository.checkSupplierUsage(supplierName);
+      await supplierRepository.checkInProducts(supplierName);
 
     return {
       isUsed: !!productWithSupplier,

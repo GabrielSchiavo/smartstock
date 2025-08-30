@@ -6,7 +6,7 @@ import { AlertStyleType, AlertType, ToastType } from "@/types";
 import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 
 export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
 
@@ -58,7 +58,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
   };
 
   const getAlertDate = () => {
-    return formatDateToLocale(new Date(alert.createdAt));
+    return formatDateOnlyToLocale(new Date(alert.createdAt));
   };
 
   const alertVariant = alert.isRead

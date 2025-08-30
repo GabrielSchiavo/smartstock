@@ -1,5 +1,5 @@
 import { getExpiredProducts, getProductsToExpire } from "@/actions";
-import { ClientProduct } from "@/components/stock/product/client-product";
+import { ClientDataTableProduct } from "@/components/tables/_clients/client-data-table-product";
 
 export async function SectionTablesDashboard() {
   const productsToExpire = await getProductsToExpire();
@@ -14,7 +14,7 @@ export async function SectionTablesDashboard() {
               <h1 className="text-md font-medium">Produtos à vencer</h1>
             </div>
             <div className="flex flex-col gap-6">
-              <ClientProduct
+              <ClientDataTableProduct
                 products={productsToExpire}
                 addButton={false}
                 groupBy=""
@@ -26,7 +26,7 @@ export async function SectionTablesDashboard() {
               <h1 className="text-md font-medium">Produtos vencidos</h1>
             </div>
             <div className="flex flex-col gap-6">
-              <ClientProduct
+              <ClientDataTableProduct
                 products={expiredProducts}
                 addButton={false}
                 groupBy=""

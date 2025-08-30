@@ -7,7 +7,7 @@ import {
 } from "@/db";
 import {
   CreateAdjustmentSchema,
-  CreateEditProductInputSchema,
+  CreateInputEditProductSchema,
   CreateOutputSchema,
 } from "@/schemas";
 import {
@@ -25,9 +25,9 @@ import { convertUnit } from "@/utils/unit-conversion";
 import { currentUser } from "@/lib/auth";
 
 export const registerInput = async (
-  values: z.infer<typeof CreateEditProductInputSchema>
+  values: z.infer<typeof CreateInputEditProductSchema>
 ): Promise<MovementOperationResponse> => {
-  const validatedFields = CreateEditProductInputSchema.safeParse(values);
+  const validatedFields = CreateInputEditProductSchema.safeParse(values);
   const user = await currentUser();
 
   if (validatedFields.success === false) {

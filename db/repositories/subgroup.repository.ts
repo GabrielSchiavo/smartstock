@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { Product, Subgroup } from "@prisma/client"
+import { MasterProduct, Subgroup } from "@prisma/client"
 
 export const subgroupRepository = {
   async findAll(take = 100): Promise<Subgroup[]> {
@@ -39,12 +39,10 @@ export const subgroupRepository = {
     })
   },
 
-  async checkInProducts(subgroupName: string): Promise<Pick<Product, 'id'> | null> {
-    return await db.product.findFirst({
+  async checkInMasterProducts(subgroupName: string): Promise<Pick<MasterProduct, 'id'> | null> {
+    return await db.masterProduct.findFirst({
       where: {
-        masterProduct: {
           subgroup: subgroupName,
-        },
       },
       select: { id: true },
     })

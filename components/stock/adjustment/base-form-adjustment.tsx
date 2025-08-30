@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
-import { DialogFooter } from "@/components/ui/dialog";
 import {
   FormAdjustmentProps,
   AdjustmentMovementCategoryType,
@@ -35,7 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 
 interface ExtendedFormBaseInputProductProps extends FormAdjustmentProps {
   products: ProductWithMasterProductResponse[];
@@ -75,7 +74,7 @@ export const BaseFormAdjustment = forwardRef<
 
     // Função para lidar com a seleção do produto mestre
     const handleProductSelect = (product: ProductWithMasterProductResponse) => {
-      const formattedValidityDate = formatDateToLocale(product.validityDate);
+      const formattedValidityDate = formatDateOnlyToLocale(product.validityDate);
 
       form.setValue("productId", product.id.toString(), {
         shouldValidate: true,
@@ -432,20 +431,18 @@ export const BaseFormAdjustment = forwardRef<
                 </div>
               </div>
             </div>
-            <DialogFooter>
-              <div className="flex gap-3 justify-end">
-                <Button disabled={isPending} type="submit" size="sm">
-                  {isPending ? (
-                    <span className="flex items-center gap-3">
-                      <MoonLoader size={16} color="#ffffff" />
-                      {loadingText}
-                    </span>
-                  ) : (
-                    submitButtonText
-                  )}
-                </Button>
-              </div>
-            </DialogFooter>
+            <div className="flex gap-3 justify-end">
+              <Button disabled={isPending} type="submit" size="sm">
+                {isPending ? (
+                  <span className="flex items-center gap-3">
+                    <MoonLoader size={16} color="#ffffff" />
+                    {loadingText}
+                  </span>
+                ) : (
+                  submitButtonText
+                )}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

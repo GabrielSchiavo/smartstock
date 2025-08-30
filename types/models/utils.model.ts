@@ -44,4 +44,5 @@ export type DeleteActionResponse = {
   success: boolean;
   title: string;
   description: string;
+  isUsed?: boolean
 };

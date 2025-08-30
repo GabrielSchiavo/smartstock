@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { Product } from "@prisma/client";
 
 export const supplierRepository = {
   async findAll(take = 100) {
@@ -48,7 +49,9 @@ export const supplierRepository = {
     });
   },
 
-  async checkSupplierUsage(supplierName: string) {
+  async checkInProducts(
+    supplierName: string
+  ): Promise<Pick<Product, "id"> | null> {
     return await db.product.findFirst({
       where: {
         supplier: supplierName,

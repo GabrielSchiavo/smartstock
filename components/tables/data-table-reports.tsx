@@ -36,7 +36,7 @@ import {
 import { useGroupedTable } from "@/hooks/use-grouped-table";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { showToast } from "@/components/utils/show-toast";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { BaseDataTable } from "@/components/tables/base-data-table";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 
@@ -220,8 +220,8 @@ export function DataTableReport<TData>({
           </h1>
           {initialDate && finalDate && (
             <p className="text-md">
-              Período: {formatDateToLocale(new Date(initialDate))} a{" "}
-              {formatDateToLocale(new Date(finalDate))}
+              Período: {formatDateOnlyToLocale(new Date(initialDate))} a{" "}
+              {formatDateOnlyToLocale(new Date(finalDate))}
             </p>
           )}
         </div>

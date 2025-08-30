@@ -35,14 +35,14 @@ export function AddEditDialog({
   const config = {
     [ModeType.ADD]: {
       title: `Cadastrar ${entity}`,
-      description: `Clique em Salvar quando terminar.`,
+      description: `Clique em 'Salvar' quando terminar.`,
       icon: PlusIcon,
       triggerText: `Cadastrar`,
       variant: "default" as const,
     },
     [ModeType.EDIT]: {
       title: `Editar ${entity}`,
-      description: `Clique em Salvar quando terminar.`,
+      description: `Clique em 'Salvar' quando terminar.`,
       icon: PencilIcon,
       triggerText: "Editar",
       variant: "ghost" as const,
@@ -66,7 +66,7 @@ export function AddEditDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[550px] sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-auto">
+      <DialogContent className="flex flex-col gap-6 sm:max-w-4xl sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-auto">
         <DialogHeader>
           <DialogTitle>{config.title}</DialogTitle>
           <DialogDescription>{config.description}</DialogDescription>

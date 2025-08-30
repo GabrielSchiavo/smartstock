@@ -5,7 +5,7 @@ import {
   ValidityStatusType,
 } from "@/types";
 import jsPDF from "jspdf";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { calculateTotals, createTotalSummary } from "@/utils/calculate-totals";
 
 export abstract class BasePdfGenerator {
@@ -59,7 +59,7 @@ export abstract class BasePdfGenerator {
 
   // Helper functions
   protected formatDate = (dateString: string) =>
-    formatDateToLocale(new Date(dateString));
+    formatDateOnlyToLocale(new Date(dateString));
 
   protected getStatusText = (status: string): string => {
     switch (status) {

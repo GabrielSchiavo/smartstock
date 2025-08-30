@@ -10,7 +10,7 @@ import {
 } from "@/types";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { ProductType } from "@/types";
-import { formatDateToLocale } from "@/utils/date-utils";
+import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
 
 export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
@@ -87,7 +87,7 @@ export const columnsTableReportValidity: ColumnDef<ValidityReportResponse>[] = [
     ),
     cell: ({ row }) => {
       const validityDate = row.original.validityDate;
-      return formatDateToLocale(validityDate);
+      return formatDateOnlyToLocale(validityDate);
     },
     meta: {
       title: "Data de Validade",
@@ -225,7 +225,7 @@ export const columnsTableReportDonations: ColumnDef<DonationsReportResponse>[] =
       ),
       cell: ({ row }) => {
         const receiptDate = row.original.receiptDate;
-        return formatDateToLocale(receiptDate);
+        return formatDateOnlyToLocale(receiptDate);
       },
       meta: {
         title: "Data de Recebimento",
@@ -299,7 +299,7 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
       ),
       cell: ({ row }) => {
         const receiptDate = row.original.receiptDate;
-        return formatDateToLocale(receiptDate);
+        return formatDateOnlyToLocale(receiptDate);
       },
       meta: {
         title: "Data de Recebimento",
@@ -382,7 +382,7 @@ export const columnsTableReportInventory: ColumnDef<InventoryReportResponse>[] =
       ),
       cell: ({ row }) => {
         const validityDate = row.original.validityDate;
-        return formatDateToLocale(validityDate);
+        return formatDateOnlyToLocale(validityDate);
       },
       meta: {
         title: "Data de Validade",

@@ -147,7 +147,7 @@ export const checkSubgroupUsage = async (
 ): Promise<CheckSubgroupResponse> => {
   try {
     const productWithSubgroup =
-      await subgroupRepository.checkInProducts(subgroupName);
+      await subgroupRepository.checkInMasterProducts(subgroupName);
 
     return {
       isUsed: !!productWithSubgroup,

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { MasterProduct } from "@prisma/client";
 
 export const categoryRepository = {
   async findAll(take = 100) {
@@ -48,16 +49,14 @@ export const categoryRepository = {
     });
   },
 
-  async checkCategoryUsage(categoryName: string) {
-    return await db.product.findFirst({
-      include: {
-        masterProduct: true,
-      },
+  async checkInMasterProducts(
+    categoryName: string
+  ): Promise<Pick<MasterProduct, "id"> | null> {
+    return await db.masterProduct.findFirst({
       where: {
-        masterProduct: {
-          category: categoryName,
-        },
+        category: categoryName,
       },
+      select: { id: true },
     });
   },
 };

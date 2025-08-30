@@ -14,13 +14,13 @@ export const checkExpiryStatus = (
   const {
     dateOnly = false, // Se true, ignora horário e considera apenas a data (00:00:00)
     expiringThreshold = 30, // Número de dias antes da expiração para considerar como "expirando" 
-    formatDate = (date: Date) => date.toLocaleDateString() // Função para formatar a data no resultado
+    formatDate = (date: Date) => date.toDateString()
   } = options;
   
   // Normalizar datas
   const targetDate = new Date(validityDate);
   const currentDate = new Date();
-  
+
   // Validar se a data é válida
   if (isNaN(targetDate.getTime())) {
     throw new Error(`Data inválida: ${validityDate}`);
@@ -28,10 +28,10 @@ export const checkExpiryStatus = (
   
   // Se dateOnly for true, zerar horários
   if (dateOnly) {
-    targetDate.setHours(0, 0, 0, 0);
-    currentDate.setHours(0, 0, 0, 0);
+    targetDate.setUTCHours(0, 0, 0, 0);
+    currentDate.setUTCHours(0, 0, 0, 0);
   }
-  
+
   // Calcular dias até expiração
   const timeDiff = targetDate.getTime() - currentDate.getTime();
   const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // converte a diferença de tempo para DIAS

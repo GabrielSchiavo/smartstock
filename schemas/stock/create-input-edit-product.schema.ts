@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { InputMovementCategoryType, ProductType, UnitType } from "@/types";
 
-export const CreateEditProductInputSchema = z
+export const CreateInputEditProductSchema = z
   .object({
     masterProductId: z
       .string()

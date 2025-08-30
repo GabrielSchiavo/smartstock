@@ -15,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { forwardRef, useImperativeHandle } from "react";
-import { DialogFooter } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -25,11 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  FormBaseMasterProductProps,
-  ResourceType,
-  UnitType,
-} from "@/types";
+import { FormBaseMasterProductProps, ResourceType, UnitType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 
@@ -63,121 +58,128 @@ export const BaseFormMasterProduct = forwardRef<
 
     return (
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-8">
-          <div className="grid grid-cols-1 gap-4 items-start">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      className="default-height"
-                      placeholder="Digite um nome"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid sm:grid-cols-1 grid-cols-1 gap-4 items-start">
-              <FormField
-                control={form.control}
-                name="baseUnit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Unidade Base</FormLabel>
-                    <div className="select-container">
-                      <Select
-                        disabled={isPending}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger size="sm">
-                            <SelectValue placeholder="Selecione a unidade" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Unidades</SelectLabel>
-                            <SelectItem value={UnitType.KG}>KG</SelectItem>
-                            <SelectItem value={UnitType.G}>G</SelectItem>
-                            <SelectItem value={UnitType.L}>L</SelectItem>
-                            <SelectItem value={UnitType.UN}>UN.</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col justify-center items-center"
+        >
+          <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-md font-medium">
+                  Detalhes do Produto Mestre
+                </h1>
+              </div>
+              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nome</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPending}
+                          className="default-height"
+                          placeholder="Digite um nome"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="grid sm:grid-cols-1 grid-cols-1 gap-6 items-start">
+                  <FormField
+                    control={form.control}
+                    name="baseUnit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Unidade Base</FormLabel>
+                        <div className="select-container">
+                          <Select
+                            disabled={isPending}
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger size="sm">
+                                <SelectValue placeholder="Selecione a unidade" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Unidades</SelectLabel>
+                                <SelectItem value={UnitType.KG}>KG</SelectItem>
+                                <SelectItem value={UnitType.UN}>UN.</SelectItem>
+                                <SelectItem value={UnitType.L}>L</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Categoria</FormLabel>
+                      <div className="select-container relative w-full min-w-0">
+                        <DynamicCombobox
+                          resourceType={ResourceType.CATEGORY}
+                          value={field.value ? field.value : ""}
+                          onChange={field.onChange}
+                          disabled={isPending}
+                          placeholder="Selecione uma Categoria..."
+                        />
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="group"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Grupo</FormLabel>
+                      <div className="select-container relative w-full min-w-0">
+                        <DynamicCombobox
+                          resourceType={ResourceType.GROUP}
+                          value={field.value ? field.value : ""}
+                          onChange={field.onChange}
+                          disabled={isPending}
+                          placeholder="Selecione um Grupo..."
+                        />
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="subgroup"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Subgrupo (Opcional)</FormLabel>
+                      <div className="select-container relative w-full min-w-0">
+                        <DynamicCombobox
+                          resourceType={ResourceType.SUBGROUP}
+                          value={field.value ? field.value : ""}
+                          onChange={field.onChange}
+                          disabled={isPending}
+                          placeholder="Selecione um Subgrupo..."
+                        />
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-4 items-start">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoria</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.CATEGORY}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione uma Categoria..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="group"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Grupo</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.GROUP}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione um Grupo..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="subgroup"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subgrupo (Opcional)</FormLabel>
-                    <div className="select-container relative w-full min-w-0">
-                      <DynamicCombobox
-                        resourceType={ResourceType.SUBGROUP}
-                        value={field.value ? field.value : ""}
-                        onChange={field.onChange}
-                        disabled={isPending}
-                        placeholder="Selecione um Subgrupo..."
-                      />
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <DialogFooter>
             <div className="flex gap-3 justify-end">
               <Button
                 disabled={isPending}
@@ -202,7 +204,7 @@ export const BaseFormMasterProduct = forwardRef<
                 )}
               </Button>
             </div>
-          </DialogFooter>
+          </div>
         </form>
       </Form>
     );

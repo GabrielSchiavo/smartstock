@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition, useRef } from "react";
 import { BaseFormMasterProduct } from "@/components/stock/master-product/base-form-master-product";
 import { editMasterProduct, getMasterProductById } from "@/actions";
-import { FormAddEditProps, ToastType, UnitType } from "@/types";
+import { FormAddEditProps, ToastType, BaseUnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
 import { MoonLoader } from "react-spinners";
 import { CreateEditMasterProductSchema } from "@/schemas";
@@ -32,7 +32,7 @@ export const FormEditMasterProduct = ({
           if (masterProductData) {
             setInitialValues({
               name: masterProductData.name,
-              baseUnit: masterProductData.baseUnit as UnitType,
+              baseUnit: masterProductData.baseUnit as BaseUnitType,
               category: masterProductData.category,
               group: masterProductData.group,
               subgroup: masterProductData.subgroup || undefined,

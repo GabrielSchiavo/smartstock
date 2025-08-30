@@ -114,6 +114,14 @@ export const deleteUser = async (id: string) => {
       };
     }
 
+    if (id === user?.id) {
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Você não pode excluir seu próprio usuário.",
+      };
+    }
+
     await userRepository.delete(id);
 
     await auditLogRepository.create({

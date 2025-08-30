@@ -29,6 +29,12 @@ enum UnitType {
   UN
 }
 
+enum BaseUnitType {
+  KG
+  UN
+  L
+}
+
 enum ProductType {
   DONATED
   PURCHASED
@@ -99,7 +105,7 @@ model Notification {
 model AuditLog {
   id String @id @default(cuid())
 
-  user            User    @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String
   recordChangedId String
   actionType      String  @db.VarChar(30)
@@ -114,7 +120,7 @@ model MasterProduct {
   id Int @id @default(autoincrement())
 
   name     String   @db.VarChar(150)
-  baseUnit UnitType
+  baseUnit BaseUnitType
   category String   @db.VarChar(50)
   group    String   @db.VarChar(50)
   subgroup String?  @db.VarChar(50)
@@ -157,7 +163,7 @@ model Product {
 model StockMovement {
   id String @id @default(cuid())
 
-  product          Product  @relation(fields: [productId], references: [id], onDelete: NoAction)
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId        Int
   quantity         Float    @db.Real
   unit             UnitType

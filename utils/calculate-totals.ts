@@ -1,4 +1,4 @@
-import { CalculableTotalItemProps, LocaleType, TotalValuesProps, TotalValuesWithUnitsProps, UnitType } from "@/types";
+import { CalculableTotalItemProps, LocaleType, TotalValuesProps, TotalValuesWithUnitsProps, BaseUnitType, UnitType } from "@/types";
 import { normalizeValue } from "@/utils/unit-conversion";
 
 /**
@@ -77,17 +77,17 @@ export const addUnitsForDisplay = (
   return {
     weight: {
       value: totals.weight,
-      unit: UnitType.KG,
+      unit: BaseUnitType.KG,
       formatted: `${formatNumber(totals.weight, weightDecimals)} KG`
     },
     volume: {
       value: totals.volume,
-      unit: UnitType.L,
+      unit: BaseUnitType.L,
       formatted: `${formatNumber(totals.volume, volumeDecimals)} L`
     },
     units: {
       value: totals.units,
-      unit: UnitType.UN,
+      unit: BaseUnitType.UN,
       formatted: `${formatNumber(totals.units, unitsDecimals)} UN`
     }
   };

@@ -2,9 +2,9 @@
 
 import { DataTableMasterProducts } from "@/components/tables/data-table-master-products";
 import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-table-master-products";
-import { ClientMasterProductProps } from "@/types";
+import { ClientDataTableMasterProductProps } from "@/types";
 
-export function ClientMasterProduct({ masterProducts }: ClientMasterProductProps) {
+export function ClientDataTableMasterProduct({ masterProducts }: ClientDataTableMasterProductProps) {
   return (
     <DataTableMasterProducts
       addButton={true}

@@ -2,9 +2,9 @@
 
 import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
 import { DataTableProducts } from "@/components/tables/data-table-products";
-import { ClientProductProps } from "@/types";
+import { ClientDataTableProductProps } from "@/types";
 
-export function ClientProduct({ products, addButton, groupBy }: ClientProductProps) {
+export function ClientDataTableProduct({ products, addButton, groupBy }: ClientDataTableProductProps) {
   return (
     <DataTableProducts
       addButton={addButton}

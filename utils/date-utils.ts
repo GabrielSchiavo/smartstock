@@ -68,7 +68,7 @@ export const getLocalizedMonthNames = (
  * @param date Data a ser formatada
  * @returns String formatada no padrão DD/MM/YYYY
  */
-export function formatDateToLocale(date: Date): string {
+export function formatDateOnlyToLocale(date: Date): string {
   return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC, day: "2-digit", month: "2-digit", year: "numeric" });
 }
 

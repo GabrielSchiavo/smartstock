@@ -1,6 +1,6 @@
 "use server";
 
-import { CreateEditProductInputSchema } from "@/schemas";
+import { CreateInputEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import {
@@ -18,9 +18,9 @@ import { currentUser } from "@/lib/auth";
 
 export const editProduct = async (
   id: number,
-  values: z.infer<typeof CreateEditProductInputSchema>
+  values: z.infer<typeof CreateInputEditProductSchema>
 ): Promise<ProductOperationResponse> => {
-  const validatedFields = CreateEditProductInputSchema.safeParse(values);
+  const validatedFields = CreateInputEditProductSchema.safeParse(values);
   const user = await currentUser();
 
   if (validatedFields.success === false) {

@@ -1,6 +1,5 @@
-import { PdfUnitType, UnitType, ValidityStatusType } from "@/types/enums/enums";
-import { ProductWithMasterProductResponse } from "@/types/models/product.model";
-import { AuditLog, MasterProduct } from "@prisma/client";
+import { PdfUnitType, BaseUnitType, UnitType, ValidityStatusType } from "@/types/enums/enums";
+import { MasterProduct } from "@prisma/client";
 
 export interface PdfConfigProps {
   orientation?: "portrait" | "landscape";
@@ -52,31 +51,19 @@ export interface TotalValuesProps {
 export interface TotalValuesWithUnitsProps {
   weight: {
     value: number;
-    unit: UnitType.KG;
+    unit: BaseUnitType.KG;
     formatted: string;
   };
   volume: {
     value: number;
-    unit: UnitType.L;
+    unit: BaseUnitType.L;
     formatted: string;
   };
   units: {
     value: number;
-    unit: UnitType.UN;
+    unit: BaseUnitType.UN;
     formatted: string;
   };
-}
-
-export interface ClientProductProps {
-  products: ProductWithMasterProductResponse[];
-  addButton: boolean;
-  groupBy: string;
-}
-export interface ClientMasterProductProps {
-  masterProducts: MasterProduct[];
-}
-export interface ClientHistoryProps {
-  history: AuditLog[];
 }
 
 export interface SelectorMasterProductProps {

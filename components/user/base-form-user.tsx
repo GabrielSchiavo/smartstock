@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
-import { DialogFooter } from "@/components/ui/dialog";
 import { FormBaseUserProps, ToastType, UserType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
@@ -81,61 +80,28 @@ export const BaseFormUser = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="grid gap-8">
-        <div className="grid grid-cols-1 gap-4 items-start">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nome</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    disabled={isPending}
-                    className="default-height"
-                    placeholder="Nome do usuário"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    disabled={isPending}
-                    className="default-height"
-                    placeholder="exemplo@exemplo.com"
-                    type="email"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {!hidePasswordInputs && (
-            <>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="flex flex-col justify-center items-center"
+      >
+        <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <h1 className="text-md font-medium">Detalhes do Usuário</h1>
+            </div>
+            <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
               <FormField
                 control={form.control}
-                name="password"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Senha</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <PasswordInput
+                      <Input
+                        {...field}
                         disabled={isPending}
                         className="default-height"
-                        placeholder="********"
-                        {...field}
+                        placeholder="Nome do usuário"
                       />
                     </FormControl>
                     <FormMessage />
@@ -145,110 +111,155 @@ export const BaseFormUser = ({
 
               <FormField
                 control={form.control}
-                name="confirmPassword"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirme a senha</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <PasswordInput
+                      <Input
+                        {...field}
                         disabled={isPending}
                         className="default-height"
-                        placeholder="********"
-                        {...field}
+                        placeholder="exemplo@exemplo.com"
+                        type="email"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </>
-          )}
 
-          <FormField
-            control={form.control}
-            name="userType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center">
-                  Tipo de usuário:
-                  <ToolTipHelp>
-                    <TooltipItem>
-                      <p className="text-sm">
-                        <span className="font-semibold">Admin</span> - acesso
-                        total ao sistema e gerenciamento de usuários.
-                      </p>
-                    </TooltipItem>
-                    <TooltipItem>
-                      <p className="text-sm">
-                        <span className="font-semibold">Padrão</span> - acesso
-                        somente a gerenciamento de produtos e relatórios.
-                      </p>
-                    </TooltipItem>
-                    <TooltipItem>
-                      <p className="text-sm">
-                        <span className="font-semibold">Cadastro</span> - acesso
-                        somente a gerenciamento de produtos.
-                      </p>
-                    </TooltipItem>
-                    <TooltipItem>
-                      <p className="text-sm">
-                        <span className="font-semibold">Relatório</span> -
-                        acesso somente a gerenciamento de relatórios.
-                      </p>
-                    </TooltipItem>
-                  </ToolTipHelp>
-                </FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col"
-                  >
-                    <FormItem className="flex items-center">
-                      <FormControl>
-                        <RadioGroupItem
-                          value={UserType.ADMIN}
-                          checked={field.value === UserType.ADMIN}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Admin</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center">
-                      <FormControl>
-                        <RadioGroupItem
-                          value={UserType.DEFAULT}
-                          checked={field.value === UserType.DEFAULT}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Padrão</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center">
-                      <FormControl>
-                        <RadioGroupItem
-                          value={UserType.CADASTRE}
-                          checked={field.value === UserType.CADASTRE}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Cadastro</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center">
-                      <FormControl>
-                        <RadioGroupItem
-                          value={UserType.REPORT}
-                          checked={field.value === UserType.REPORT}
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Relatório</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+              {!hidePasswordInputs && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Senha</FormLabel>
+                        <FormControl>
+                          <PasswordInput
+                            disabled={isPending}
+                            className="default-height"
+                            placeholder="********"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-        <DialogFooter>
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirme a senha</FormLabel>
+                        <FormControl>
+                          <PasswordInput
+                            disabled={isPending}
+                            className="default-height"
+                            placeholder="********"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+
+              <FormField
+                control={form.control}
+                name="userType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center">
+                      Tipo de usuário:
+                      <ToolTipHelp>
+                        <TooltipItem>
+                          <p className="text-sm">
+                            <span className="font-semibold">Admin</span> -
+                            acesso total ao sistema e gerenciamento de usuários.
+                          </p>
+                        </TooltipItem>
+                        <TooltipItem>
+                          <p className="text-sm">
+                            <span className="font-semibold">Padrão</span> -
+                            acesso somente a gerenciamento de produtos e
+                            relatórios.
+                          </p>
+                        </TooltipItem>
+                        <TooltipItem>
+                          <p className="text-sm">
+                            <span className="font-semibold">Cadastro</span> -
+                            acesso somente a gerenciamento de produtos.
+                          </p>
+                        </TooltipItem>
+                        <TooltipItem>
+                          <p className="text-sm">
+                            <span className="font-semibold">Relatório</span> -
+                            acesso somente a gerenciamento de relatórios.
+                          </p>
+                        </TooltipItem>
+                      </ToolTipHelp>
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col"
+                      >
+                        <FormItem className="flex items-center">
+                          <FormControl>
+                            <RadioGroupItem
+                              value={UserType.ADMIN}
+                              checked={field.value === UserType.ADMIN}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">Admin</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center">
+                          <FormControl>
+                            <RadioGroupItem
+                              value={UserType.DEFAULT}
+                              checked={field.value === UserType.DEFAULT}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">Padrão</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center">
+                          <FormControl>
+                            <RadioGroupItem
+                              value={UserType.CADASTRE}
+                              checked={field.value === UserType.CADASTRE}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Cadastro
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center">
+                          <FormControl>
+                            <RadioGroupItem
+                              value={UserType.REPORT}
+                              checked={field.value === UserType.REPORT}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Relatório
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
           <div className="flex gap-3 justify-end">
             <Button
               disabled={isPending}
@@ -273,7 +284,7 @@ export const BaseFormUser = ({
               )}
             </Button>
           </div>
-        </DialogFooter>
+        </div>
       </form>
     </Form>
   );

@@ -1,11 +1,10 @@
 import { Metadata } from "next";
-import { DataTableUsers } from "@/components/tables/data-table-users";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { RoleGate } from "@/components/auth/role-gate";
-import { columnsTableUsers } from "@/components/tables/_columns/columns-table-users";
 import { UserType } from "@/types";
 import { getUsers } from "@/actions";
 import { ROUTES } from "@/config/routes";
+import { ClientDataTableUser } from "@/components/tables/_clients/client-data-table-user";
 
 export const metadata: Metadata = {
   title: "Gerenciar Usuários - SmartStock",
@@ -30,15 +29,13 @@ export default async function UserPage() {
                 </span>
               </h1>
               <p className="text-muted-foreground text-sm w-full md:max-w-md">
-                {"Visualize e gerencie todos os usuários. Clique em 'Cadastrar' para cadastrar um novo usuário."}
+                {
+                  "Visualize e gerencie todos os usuários. Clique em 'Cadastrar' para cadastrar um novo usuário."
+                }
               </p>
               <MessageSuccess message="Você tem permissão para acessar este conteúdo!" />
             </div>
-            <DataTableUsers
-              addButton={true}
-              data={users}
-              columns={columnsTableUsers}
-            />
+            <ClientDataTableUser users={users} />
           </div>
         </div>
       </div>

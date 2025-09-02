@@ -18,6 +18,7 @@ import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { checkExpiryStatus } from "@/utils/check-expiry-status";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
@@ -249,16 +250,12 @@ export const columnsTableProducts = ({
       <DataTableColumnHeader column={column} title="Tipo de Produto" />
     ),
     cell: ({ row }) => {
-      const verified = row.getValue("productType");
-      if (verified === ProductType.DONATED) {
-        return (
-          <Badge variant={"outline"} className="text-sm">
-            DOADO
-          </Badge>
-        );
-      } else {
-        return <Badge className="text-sm bg-muted">COMPRADO</Badge>;
-      }
+      const value = row.getValue("productType");
+      return (
+        <Badge variant={"outline"} className="text-sm">
+          {formatEnumValueDisplay(value as ProductType, "uppercase")}
+        </Badge>
+      );
     },
     meta: {
       title: "Tipo de Produto",

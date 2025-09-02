@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { ReportDataResponse, ReportType } from "@/types";
-import { FormReport } from "./form-report";
-import { ClientDataTableReport } from "../tables/_clients/client-data-table-report";
-import { Separator } from "../ui/separator";
+import { FormReport } from "@/components/report/form-report";
+import { ClientDataTableReport } from "@/components/tables/_clients/client-data-table-report";
+import { Separator } from "@/components/ui/separator";
 
 export const SectionFormTableReport = () => {
   const [reportResults, setReportResults] = useState<{
@@ -25,7 +25,7 @@ export const SectionFormTableReport = () => {
     <div className="grid gap-12">
       <FormReport onReportGenerated={handleReportGenerated} />
 
-      <Separator />
+      <Separator className="-mx-6 w-auto!" />
 
       {reportResults && (
         <ClientDataTableReport

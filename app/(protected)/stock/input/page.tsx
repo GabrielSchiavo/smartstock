@@ -35,7 +35,7 @@ export default async function InputPage() {
               </p>
             </div>
             <FormAddInput />
-            <Separator />
+            <Separator className="-mx-6 w-auto!" />
             <SectionTablesInputs />
           </div>
         </div>

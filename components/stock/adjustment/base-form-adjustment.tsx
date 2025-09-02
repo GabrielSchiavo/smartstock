@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 interface ExtendedFormBaseInputProductProps extends FormAdjustmentProps {
   products: ProductWithMasterProductResponse[];
@@ -332,7 +333,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Geral
+                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.GENERAL, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -344,7 +345,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Correção
+                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.CORRECTION, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -356,7 +357,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Perda/Avaria
+                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.LOSS_DAMAGE, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -368,7 +369,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Furto/Extravio
+                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.THEFT_MISPLACEMENT, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -380,7 +381,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Vencimento
+                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.DUE_DATE, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                               </RadioGroup>
@@ -411,7 +412,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Positivo
+                                    {formatEnumValueDisplay(AdjustmentType.POSITIVE, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -421,7 +422,7 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    Negativo
+                                    {formatEnumValueDisplay(AdjustmentType.NEGATIVE, "capitalize")}
                                   </FormLabel>
                                 </FormItem>
                               </RadioGroup>

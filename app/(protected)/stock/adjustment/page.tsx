@@ -36,7 +36,7 @@ export default async function AdjustmentPage() {
               </p>
             </div>
             <FormAddAdjustment />
-            <Separator />
+            <Separator className="-mx-6 w-auto!" />
             <SectionTablesAdjustments />
           </div>
         </div>

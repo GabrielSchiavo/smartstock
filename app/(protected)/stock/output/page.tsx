@@ -34,7 +34,7 @@ export default async function OutputPage() {
               </p>
             </div>
             <FormAddOutput />
-            <Separator />
+            <Separator className="-mx-6 w-auto!" />
             <SectionTablesOutputs />
           </div>
         </div>

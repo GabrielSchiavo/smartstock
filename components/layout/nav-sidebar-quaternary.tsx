@@ -24,7 +24,7 @@ export function NavSidebarQuaternary() {
       <SidebarGroupContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarThemeSelector></SidebarThemeSelector>
+            <SidebarThemeSelector />
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton

@@ -14,6 +14,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
 import { MoonLoader } from "react-spinners";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 // Type guard to check if data can be used for totals
 function isCalculableTotalData(
@@ -91,7 +92,7 @@ export function BaseDataTable<TData>({
                               <ChevronUpIcon className="h-4 w-4" />
                             )}
                             <span className="truncate max-w-[200px]">
-                              {groupName}
+                              {formatEnumValueDisplay(groupName, "capitalize")}
                             </span>
                           </div>
                           {showGroupTotal && totalToShow && (

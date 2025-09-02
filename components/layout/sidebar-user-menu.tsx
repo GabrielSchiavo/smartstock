@@ -22,25 +22,11 @@ import {
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserType } from "@/types";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function SidebarUserMenu() {
   const { isMobile } = useSidebar();
   const user = useCurrentUser();
-
-  const userRoleText = () => {
-    switch (user?.role) {
-      case UserType.ADMIN:
-        return "ADMIN";
-      case UserType.CADASTRE:
-        return "CADASTRO";
-      case UserType.DEFAULT:
-        return "PADRÃO";
-      case UserType.REPORT:
-        return "RELATÓRIO";
-      default:
-        return user?.role;
-    }
-  };
 
   return (
     <SidebarMenu>
@@ -60,7 +46,7 @@ export function SidebarUserMenu() {
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.name}</span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {userRoleText()}
+                  {formatEnumValueDisplay(user?.role as UserType, "uppercase")}
                 </span>
               </div>
               <EllipsisVerticalIcon className="ml-auto size-4" />
@@ -83,7 +69,7 @@ export function SidebarUserMenu() {
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.name}</span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {userRoleText()}
+                    {formatEnumValueDisplay(user?.role as UserType, "uppercase")}
                   </span>
                 </div>
               </div>

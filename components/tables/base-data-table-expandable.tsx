@@ -113,12 +113,7 @@ export function BaseDataTableExpandable<TData>({
                   Valor:
                 </span>
                 <span
-                  className={`${
-                    data.entity === EntityType.OUTPUT ||
-                    data.entity === EntityType.ADJUSTMENT_NEGATIVE
-                      ? "text-red-600 dark:text-red-500"
-                      : "text-emerald-600 dark:text-emerald-500"
-                  }`}
+                  className={`${data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "text-red-600 dark:text-red-500" : data.entity === EntityType.INPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE ? "text-emerald-600 dark:text-emerald-500" : ""}`}
                 >
                   {data.entity === EntityType.OUTPUT ||
                   data.entity === EntityType.ADJUSTMENT_NEGATIVE
@@ -223,12 +218,7 @@ export function BaseDataTableExpandable<TData>({
                   Valor:
                 </span>
                 <span
-                  className={`${
-                    data.movementType === EntityType.OUTPUT ||
-                    data.movementType === EntityType.ADJUSTMENT_NEGATIVE
-                      ? "text-red-600 dark:text-red-500"
-                      : "text-emerald-600 dark:text-emerald-500"
-                  }`}
+                  className={`${data.movementType === EntityType.OUTPUT || data.movementType === EntityType.ADJUSTMENT_NEGATIVE ? "text-red-600 dark:text-red-500" : data.movementType === EntityType.INPUT || data.movementType === EntityType.ADJUSTMENT_POSITIVE ? "text-emerald-600 dark:text-emerald-500" : ""}`}
                 >
                   {data.movementType === EntityType.OUTPUT ||
                   data.movementType === EntityType.ADJUSTMENT_NEGATIVE

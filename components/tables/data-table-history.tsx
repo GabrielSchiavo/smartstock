@@ -16,6 +16,7 @@ import { DataTableToolbar } from "@/components/tables/_components/data-table-too
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
 import { ActionType, DataExpandableType, DataTableProps, EntityType } from "@/types";
 import { BaseDataTableExpandable } from "@/components/tables/base-data-table-expandable";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function DataTableHistory<TData, TValue>({
   columns,
@@ -53,65 +54,65 @@ export function DataTableHistory<TData, TValue>({
   const actions = [
     {
       value: ActionType.CREATE,
-      label: "Criado",
+      label: formatEnumValueDisplay(ActionType.CREATE, "capitalize"),
     },
     {
       value: ActionType.UPDATE,
-      label: "Atualizado",
+      label: formatEnumValueDisplay(ActionType.UPDATE, "capitalize"),
     },
     {
       value: ActionType.DELETE,
-      label: "Excluído",
+      label: formatEnumValueDisplay(ActionType.DELETE, "capitalize"),
     },
   ];
   const entities = [
     {
       value: EntityType.ADJUSTMENT_POSITIVE,
-      label: "Ajuste Positivo",
+      label: formatEnumValueDisplay(EntityType.ADJUSTMENT_POSITIVE, "capitalize"),
     },
     {
       value: EntityType.ADJUSTMENT_NEGATIVE,
-      label: "Ajuste Negativo",
+      label: formatEnumValueDisplay(EntityType.ADJUSTMENT_NEGATIVE, "capitalize"),
     },
     {
       value: EntityType.CATEGORY,
-      label: "Categoria",
+      label: formatEnumValueDisplay(EntityType.CATEGORY, "capitalize"),
     },
     {
       value: EntityType.GROUP,
-      label: "Grupo",
+      label: formatEnumValueDisplay(EntityType.GROUP, "capitalize"),
     },
     {
       value: EntityType.INPUT,
-      label: "Entrada",
+      label: formatEnumValueDisplay(EntityType.INPUT, "capitalize"),
     },
     {
       value: EntityType.MASTER_PRODUCT,
-      label: "Produto Mestre",
+      label: formatEnumValueDisplay(EntityType.MASTER_PRODUCT, "capitalize"),
     },
     {
       value: EntityType.OUTPUT,
-      label: "Saída",
+      label: formatEnumValueDisplay(EntityType.OUTPUT, "capitalize"),
     },
     {
       value: EntityType.PRODUCT,
-      label: "Produto",
+      label: formatEnumValueDisplay(EntityType.PRODUCT, "capitalize"),
     },
     {
       value: EntityType.RECEIVER,
-      label: "Recebedor",
+      label: formatEnumValueDisplay(EntityType.RECEIVER, "capitalize"),
     },
     {
       value: EntityType.SUBGROUP,
-      label: "Subgrupo",
+      label: formatEnumValueDisplay(EntityType.SUBGROUP, "capitalize"),
     },
     {
       value: EntityType.SUPPLIER,
-      label: "Fornecedor",
+      label: formatEnumValueDisplay(EntityType.SUPPLIER, "capitalize"),
     },
     {
       value: EntityType.USER,
-      label: "Usuário",
+      label: formatEnumValueDisplay(EntityType.USER, "capitalize"),
     },
   ];
   const filters = [

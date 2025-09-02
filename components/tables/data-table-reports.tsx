@@ -43,6 +43,7 @@ import { showToast } from "@/components/utils/show-toast";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { BaseDataTable } from "@/components/tables/base-data-table";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function DataTableReport<TData>({
   columns,
@@ -146,23 +147,7 @@ export function DataTableReport<TData>({
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `relatorio-${
-        reportType === ReportType.VALIDITY
-          ? "validade"
-          : reportType === ReportType.DONATIONS
-            ? "doacoes"
-            : reportType === ReportType.PURCHASED
-              ? "comprados"
-              : reportType === ReportType.INVENTORY
-                ? "inventario"
-                : reportType === ReportType.INPUTS
-                  ? "entradas"
-                  : reportType === ReportType.OUTPUTS
-                    ? "saidas"
-                    : reportType === ReportType.ADJUSTMENTS
-                      ? "ajustes"
-                      : "semnome"
-      }-${new Date().toISOString()}.pdf`;
+      a.download = `relatorio-${formatEnumValueDisplay(reportType, "lowercase")}-${new Date().toISOString()}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -240,22 +225,7 @@ export function DataTableReport<TData>({
       >
         <div className="showForPrint space-y-3 mb-6">
           <h1 className="text-2xl font-semibold">
-            Relatório de{" "}
-            {reportType === ReportType.VALIDITY
-              ? "Validade de Produtos"
-              : reportType === ReportType.DONATIONS
-                ? "Doações"
-                : reportType === ReportType.PURCHASED
-                  ? "Compras"
-                  : reportType === ReportType.INVENTORY
-                    ? "Inventário"
-                    : reportType === ReportType.INPUTS
-                      ? "Entradas"
-                      : reportType === ReportType.OUTPUTS
-                        ? "Saídas"
-                        : reportType === ReportType.ADJUSTMENTS
-                          ? "Ajustes"
-                          : "Indefinido"}
+            Relatório de {" "}{formatEnumValueDisplay(reportType, "capitalize")}
           </h1>
           {initialDate && finalDate && (
             <p className="text-md">

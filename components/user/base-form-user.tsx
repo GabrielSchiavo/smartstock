@@ -20,6 +20,7 @@ import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { useSession } from "next-auth/react";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export const BaseFormUser = ({
   schema,
@@ -219,7 +220,7 @@ export const BaseFormUser = ({
                               checked={field.value === UserType.ADMIN}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">Admin</FormLabel>
+                          <FormLabel className="font-normal">{formatEnumValueDisplay(UserType.ADMIN, "capitalize")}</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
                           <FormControl>
@@ -228,7 +229,7 @@ export const BaseFormUser = ({
                               checked={field.value === UserType.DEFAULT}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">Padrão</FormLabel>
+                          <FormLabel className="font-normal">{formatEnumValueDisplay(UserType.DEFAULT, "capitalize")}</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
                           <FormControl>
@@ -238,7 +239,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            Cadastro
+                            {formatEnumValueDisplay(UserType.CADASTRE, "capitalize")}
                           </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
@@ -249,7 +250,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            Relatório
+                            {formatEnumValueDisplay(UserType.REPORT, "capitalize")}
                           </FormLabel>
                         </FormItem>
                       </RadioGroup>

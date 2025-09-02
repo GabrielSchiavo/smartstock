@@ -26,6 +26,7 @@ import {
 import { DataTableProps, TableType, UserType } from "@/types";
 import { BaseDataTable } from "@/components/tables/base-data-table";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function DataTableUsers<TData, TValue>({
   columns,
@@ -74,19 +75,19 @@ export function DataTableUsers<TData, TValue>({
   const accessLevels = [
     {
       value: UserType.ADMIN,
-      label: "Admin",
+      label: formatEnumValueDisplay(UserType.ADMIN, "capitalize"),
     },
     {
       value: UserType.CADASTRE,
-      label: "Cadastro",
+      label: formatEnumValueDisplay(UserType.CADASTRE, "capitalize"),
     },
     {
       value: UserType.DEFAULT,
-      label: "Padrão",
+      label: formatEnumValueDisplay(UserType.DEFAULT, "capitalize"),
     },
     {
       value: UserType.REPORT,
-      label: "Relatório",
+      label: formatEnumValueDisplay(UserType.REPORT, "capitalize"),
     },
   ];
   const filters = [

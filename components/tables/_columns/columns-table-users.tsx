@@ -4,11 +4,12 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
 import { User } from "@prisma/client";
-import { ColumnMetaProps, UserType } from "@/types";
+import { ColumnMetaProps } from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { FormEditUser } from "@/components/user/form-edit-user";
 import { deleteUser } from "@/actions";
 import { Badge } from "@/components/ui/badge";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<User> = (row, columnId, filterValue) => {
@@ -128,27 +129,12 @@ export function columnsTableUsers(currentUserId?: string): ColumnDef<User>[] {
       ),
       cell: ({ row }) => {
         const role = row.getValue("role") as string;
-        if (role === UserType.DEFAULT) {
-          return (
-            <Badge variant={"outline"} className="text-sm uppercase">
-              Padrão
-            </Badge>
-          );
-        } else if (role === UserType.CADASTRE) {
-          return (
-            <Badge variant={"outline"} className="text-sm uppercase">
-              Cadastro
-            </Badge>
-          );
-        } else if (role === UserType.REPORT) {
-          return (
-            <Badge variant={"outline"} className="text-sm uppercase">
-              Relatório
-            </Badge>
-          );
-        } else {
-          return <Badge className="text-sm bg-muted">{role}</Badge>;
-        }
+
+        return (
+          <Badge variant={"outline"} className="text-sm uppercase">
+            {formatEnumValueDisplay(role, "capitalize")}
+          </Badge>
+        );
       },
       meta: {
         title: "Nível de Acesso",

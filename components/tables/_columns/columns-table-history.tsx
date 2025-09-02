@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
 import { Badge } from "@/components/ui/badge";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<AuditLog> = (
@@ -104,37 +105,37 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
           case ActionType.CREATE:
             return (
               <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
-                CRIADO
+                {formatEnumValueDisplay(ActionType.CREATE, "uppercase")}
               </Badge>
             );
           case ActionType.UPDATE:
             return (
               <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
-                ATUALIZADO
+                {formatEnumValueDisplay(ActionType.UPDATE, "uppercase")}
               </Badge>
             );
           case ActionType.DELETE:
             return (
               <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
-                EXCLUÍDO
+                {formatEnumValueDisplay(ActionType.DELETE, "uppercase")}
               </Badge>
             );
           case ActionType.LOGIN:
             return (
               <Badge className="text-sm bg-sky-500/15 text-sky-600 dark:text-sky-500">
-                LOGIN
+                {formatEnumValueDisplay(ActionType.LOGIN, "uppercase")}
               </Badge>
             );
           case ActionType.LOGOUT:
             return (
               <Badge className="text-sm bg-teal-500/15 text-teal-600 dark:text-teal-500">
-                LOGOUT
+                {formatEnumValueDisplay(ActionType.LOGOUT, "uppercase")}
               </Badge>
             );
           default:
             return (
               <Badge className="text-sm bg-zinc-500/15 text-zinc-600 dark:text-zinc-500">
-                {value as string}
+                {formatEnumValueDisplay(value as string, "uppercase")}
               </Badge>
             );
         }
@@ -151,104 +152,11 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
       cell: ({ row }) => {
         const value = row.getValue("entity");
 
-        switch (value) {
-          case EntityType.ADJUSTMENT_POSITIVE:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-emerald-600 dark:text-emerald-500"
-              >
-                AJUSTE POSITIVO
-              </Badge>
-            );
-          case EntityType.ADJUSTMENT_NEGATIVE:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-red-600 dark:text-red-500"
-              >
-                AJUSTE NEGATIVO
-              </Badge>
-            );
-          case EntityType.CATEGORY:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                CATEGORIA
-              </Badge>
-            );
-          case EntityType.GROUP:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                GRUPO
-              </Badge>
-            );
-          case EntityType.INPUT:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-emerald-600 dark:text-emerald-500"
-              >
-                ENTRADA
-              </Badge>
-            );
-          case EntityType.MASTER_PRODUCT:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                PRODUTO MESTRE
-              </Badge>
-            );
-          case EntityType.OUTPUT:
-            return (
-              <Badge
-                variant={"outline"}
-                className="text-sm text-red-600 dark:text-red-500"
-              >
-                SAÍDA
-              </Badge>
-            );
-          case EntityType.PRODUCT:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                PRODUTO
-              </Badge>
-            );
-          case EntityType.RECEIVER:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                RECEBEDOR
-              </Badge>
-            );
-          case EntityType.SUBGROUP:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                SUBGRUPO
-              </Badge>
-            );
-          case EntityType.SUPPLIER:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                FORNECEDOR
-              </Badge>
-            );
-          case EntityType.USER:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                USUÁRIO
-              </Badge>
-            );
-          case EntityType.SYSTEM:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                SISTEMA
-              </Badge>
-            );
-          default:
-            return (
-              <Badge variant={"outline"} className="text-sm">
-                {value as string}
-              </Badge>
-            );
-        }
+        return (
+          <Badge variant={"outline"} className={`text-sm ${value === EntityType.ADJUSTMENT_POSITIVE || value === EntityType.INPUT ? "text-emerald-600 dark:text-emerald-500" : value === EntityType.ADJUSTMENT_NEGATIVE || value === EntityType.OUTPUT ? "text-red-600 dark:text-red-500" : ""}`}>
+            {formatEnumValueDisplay(value as string, "uppercase")}
+          </Badge>
+        );
       },
       meta: {
         title: "Entidade",

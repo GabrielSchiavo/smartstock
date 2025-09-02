@@ -7,8 +7,8 @@ import {
   UnitType,
   ValidityReportResponse,
 } from "@/types";
-import { ProductType } from "@/types";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
@@ -37,6 +37,7 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [10, 100, 30, 30, 40, 30, 30, 20];
 
+    // Add items table
     const rows = this.data.map((item) => [
       item.id.toString(),
       item.name,
@@ -81,12 +82,13 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    // Group data by supplier
-    const suppliersMap = new Map<string, DonationsReportResponse[]>();
+    // Grouping table rows
+    const dataGrouping = new Map<string, DonationsReportResponse[]>();
     this.data.forEach((item) => {
-      const supplierItems = suppliersMap.get(item.supplier) || [];
-      supplierItems.push(item);
-      suppliersMap.set(item.supplier, supplierItems);
+      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
     });
 
     const headers = [
@@ -99,10 +101,10 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
-    for (const [supplier, items] of suppliersMap) {
+    for (const [supplier, items] of dataGrouping) {
       this.checkPageBreak(50);
 
-      // Add supplier header
+      // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(
@@ -190,6 +192,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [10, 120, 30, 30, 50];
 
+    // Add items table
     const rows = this.data.map((item) => [
       item.id.toString(),
       item.name,
@@ -232,30 +235,20 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
-  private groupByGroup(items: InventoryReportResponse[]) {
-    const groupsMap = new Map<string, InventoryReportResponse[]>();
-
-    items.forEach((item) => {
-      const groupName = item.group || "Sem Grupo";
-      const groupItems = groupsMap.get(groupName) || [];
-      groupItems.push(item);
-      groupsMap.set(groupName, groupItems);
-    });
-
-    return groupsMap;
-  }
-
   public async generate(): Promise<Uint8Array> {
     this.addTitle("Relatório de Inventário");
     this.addSubtitle(
       `Data de geração: ${this.formatDate(new Date().toISOString())}`
     );
 
-    // Group data by group
-    const groupsMap = this.groupByGroup(this.data);
-    const sortedGroups = Array.from(groupsMap.entries()).sort((a, b) =>
-      a[0].localeCompare(b[0])
-    );
+    // Grouping table rows
+    const dataGrouping = new Map<string, InventoryReportResponse[]>();
+    this.data.forEach((item) => {
+      const key = formatEnumValueDisplay(item.group, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
+    });
 
     const headers = [
       "ID",
@@ -270,10 +263,10 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [10, 100, 20, 20, 30, 30, 20, 30, 20];
 
-    for (const [groupName, groupItems] of sortedGroups) {
+    for (const [groupName, groupItems] of dataGrouping) {
       this.checkPageBreak(40);
 
-      // Group header
+      // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(`Grupo: ${groupName}`, this.margins.left, this.currentY);
@@ -287,7 +280,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
         `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
         item.lot,
         this.formatDate(item.validityDate.toString()),
-        item.productType === ProductType.PURCHASED ? "Comprado" : "Doado",
+        formatEnumValueDisplay(item.productType, "capitalize"),
         item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
         this.getStatusText(item.status),
       ]);
@@ -349,12 +342,13 @@ export class InputsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    // Group data by movementCategory
-    const groupByMap = new Map<string, StockMovementReportResponse[]>();
+    // Grouping table rows
+    const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const groupByItems = groupByMap.get(item.movementCategory) || [];
-      groupByItems.push(item);
-      groupByMap.set(item.movementCategory, groupByItems);
+      const key = formatEnumValueDisplay(item.movementCategory, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
     });
 
     const headers = [
@@ -366,10 +360,10 @@ export class InputsPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [50, 50, 50, 50, 50];
 
-    for (const [movementCategory, items] of groupByMap) {
+    for (const [movementCategory, items] of dataGrouping) {
       this.checkPageBreak(50);
 
-      // Add movementCategory header
+      // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(
@@ -383,8 +377,8 @@ export class InputsPdfGenerator extends BasePdfGenerator {
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        item.movementType,
-        item.movementCategory,
+        formatEnumValueDisplay(item.movementType, "uppercase"),
+        formatEnumValueDisplay(item.movementCategory, "uppercase"),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 
@@ -447,12 +441,13 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    // Group data by movementCategory
-    const groupByMap = new Map<string, StockMovementReportResponse[]>();
+    // Grouping table rows
+    const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const groupByItems = groupByMap.get(item.movementCategory) || [];
-      groupByItems.push(item);
-      groupByMap.set(item.movementCategory, groupByItems);
+      const key = formatEnumValueDisplay(item.movementCategory, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
     });
 
     const headers = [
@@ -464,10 +459,10 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [50, 50, 50, 50, 50];
 
-    for (const [movementCategory, items] of groupByMap) {
+    for (const [movementCategory, items] of dataGrouping) {
       this.checkPageBreak(50);
 
-      // Add movementCategory header
+      // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(
@@ -481,8 +476,8 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        item.movementType,
-        item.movementCategory,
+        formatEnumValueDisplay(item.movementType, "uppercase"),
+        formatEnumValueDisplay(item.movementCategory, "uppercase"),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 
@@ -545,12 +540,13 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
-    // Group data by movementType
-    const groupByMap = new Map<string, StockMovementReportResponse[]>();
+    // Grouping table rows
+    const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const groupByItems = groupByMap.get(item.movementType) || [];
-      groupByItems.push(item);
-      groupByMap.set(item.movementType, groupByItems);
+      const key = formatEnumValueDisplay(item.movementType, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
     });
 
     const headers = [
@@ -562,10 +558,10 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
     ];
     const columnWidths = [50, 50, 50, 50, 50];
 
-    for (const [movementType, items] of groupByMap) {
+    for (const [movementType, items] of dataGrouping) {
       this.checkPageBreak(50);
 
-      // Add movementType header
+      // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
       this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(
@@ -579,8 +575,8 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        item.movementType,
-        item.movementCategory,
+        formatEnumValueDisplay(item.movementType, "uppercase"),
+        formatEnumValueDisplay(item.movementCategory, "uppercase"),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 

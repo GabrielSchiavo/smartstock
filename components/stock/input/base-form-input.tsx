@@ -40,6 +40,7 @@ import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export const BaseFormInput = forwardRef<
   UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>,
@@ -488,7 +489,7 @@ export const BaseFormInput = forwardRef<
                                   <RadioGroupItem value={ProductType.DONATED} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Doado
+                                  {formatEnumValueDisplay(ProductType.DONATED, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -498,7 +499,7 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Comprado
+                                  {formatEnumValueDisplay(ProductType.PURCHASED, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -560,7 +561,7 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Doação
+                                  {formatEnumValueDisplay(InputMovementCategoryType.DONATION, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -570,7 +571,7 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Compra
+                                  {formatEnumValueDisplay(InputMovementCategoryType.PURCHASE, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -580,7 +581,7 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Devolução
+                                  {formatEnumValueDisplay(InputMovementCategoryType.RETURN, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -590,7 +591,7 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  Transferência
+                                  {formatEnumValueDisplay(InputMovementCategoryType.TRANSFER, "capitalize")}
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>

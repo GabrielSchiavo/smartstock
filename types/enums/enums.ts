@@ -23,7 +23,7 @@ export enum ProductType {
   PURCHASED = "PURCHASED",
 }
 
-export enum ReportType {
+export enum ReportType { 
   VALIDITY = "VALIDITY",
   DONATIONS = "DONATIONS",
   PURCHASED = "PURCHASED",
@@ -132,12 +132,12 @@ export enum AdjustmentType {
   NEGATIVE = "NEGATIVE",
 }
 
-export enum AdjustmentMovementCategoryType {
-  GENERAL = "GENERAL", // PERDA/AVARIA
-  LOSS_DAMAGE = "LOSS_DAMAGE", // PERDA/AVARIA
-  THEFT_MISPLACEMENT = "THEFT_MISPLACEMENT", // FURTO/EXTRAVIO
-  DUE_DATE = "DUE_DATE", // VENCIMENTO
-  CORRECTION = "CORRECTION", // CORREÇÃO DE LANÇAMENTO
+export enum AdjustmentMovementCategoryType { 
+  GENERAL = "GENERAL", 
+  LOSS_DAMAGE = "LOSS_DAMAGE", 
+  THEFT_MISPLACEMENT = "THEFT_MISPLACEMENT", 
+  DUE_DATE = "DUE_DATE",
+  CORRECTION = "CORRECTION", 
 }
 
 export enum ActionType {

@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 interface ExtendedFormBaseInputProductProps extends FormOutputProps {
   products: ProductWithMasterProductResponse[];
@@ -293,7 +294,7 @@ export const BaseFormOutput = forwardRef<
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Consumo
+                                {formatEnumValueDisplay(OutputMovementCategoryType.CONSUMPTION, "capitalize")}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
@@ -303,7 +304,7 @@ export const BaseFormOutput = forwardRef<
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Doação
+                                {formatEnumValueDisplay(OutputMovementCategoryType.DONATION, "capitalize")}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
@@ -313,7 +314,7 @@ export const BaseFormOutput = forwardRef<
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Devolução
+                                {formatEnumValueDisplay(OutputMovementCategoryType.RETURN, "capitalize")}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
@@ -323,7 +324,7 @@ export const BaseFormOutput = forwardRef<
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Venda
+                                {formatEnumValueDisplay(OutputMovementCategoryType.SALE, "capitalize")}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
@@ -333,7 +334,7 @@ export const BaseFormOutput = forwardRef<
                                 />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Transferência
+                                {formatEnumValueDisplay(OutputMovementCategoryType.TRANSFER, "capitalize")}
                               </FormLabel>
                             </FormItem>
                           </RadioGroup>

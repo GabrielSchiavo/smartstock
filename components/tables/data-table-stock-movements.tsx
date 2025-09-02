@@ -16,6 +16,7 @@ import { DataTableToolbar } from "@/components/tables/_components/data-table-too
 import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
 import { AdjustmentMovementCategoryType, DataExpandableType, DataTableProps, InputMovementCategoryType, MovementType, OutputMovementCategoryType } from "@/types";
 import { BaseDataTableExpandable } from "@/components/tables/base-data-table-expandable";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function DataTableStockMovements<TData, TValue>({
   columns,
@@ -53,65 +54,65 @@ export function DataTableStockMovements<TData, TValue>({
   const movements = [
     {
       value: MovementType.INPUT,
-      label: "Entrada",
+      label: formatEnumValueDisplay(MovementType.INPUT, "capitalize"),
     },
     {
       value: MovementType.OUTPUT,
-      label: "Saída",
+      label: formatEnumValueDisplay(MovementType.OUTPUT, "capitalize"),
     },
     {
       value: MovementType.ADJUSTMENT_POSITIVE,
-      label: "Ajuste Positivo",
+      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_POSITIVE, "capitalize"),
     },
     {
       value: MovementType.ADJUSTMENT_NEGATIVE,
-      label: "Ajuste Negativo",
+      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_NEGATIVE, "capitalize"),
     },
   ];
   const categories = [
     {
       value: InputMovementCategoryType.DONATION || OutputMovementCategoryType.DONATION,
-      label: "Doação",
+      label: formatEnumValueDisplay(InputMovementCategoryType.DONATION, "capitalize"),
     },
     {
       value: InputMovementCategoryType.PURCHASE,
-      label: "Compra",
+      label: formatEnumValueDisplay(InputMovementCategoryType.PURCHASE, "capitalize"),
     },
     {
       value: InputMovementCategoryType.TRANSFER || OutputMovementCategoryType.TRANSFER,
-      label: "Transferência",
+      label: formatEnumValueDisplay(InputMovementCategoryType.TRANSFER, "capitalize"),
     },
     {
       value: InputMovementCategoryType.RETURN || OutputMovementCategoryType.RETURN,
-      label: "Retorno",
+      label: formatEnumValueDisplay(InputMovementCategoryType.RETURN, "capitalize"),
     },
     {
       value: OutputMovementCategoryType.CONSUMPTION,
-      label: "Consumo",
+      label: formatEnumValueDisplay(OutputMovementCategoryType.CONSUMPTION, "capitalize"),
     },
     {
       value: OutputMovementCategoryType.SALE,
-      label: "Venda",
+      label: formatEnumValueDisplay(OutputMovementCategoryType.SALE, "capitalize"),
     },
     {
       value: AdjustmentMovementCategoryType.CORRECTION,
-      label: "Correção",
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.CORRECTION, "capitalize"),
     },
     {
       value: AdjustmentMovementCategoryType.DUE_DATE,
-      label: "Vencimento",
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.DUE_DATE, "capitalize"),
     },
     {
       value: AdjustmentMovementCategoryType.GENERAL,
-      label: "Geral",
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.GENERAL, "capitalize"),
     },
     {
       value: AdjustmentMovementCategoryType.LOSS_DAMAGE,
-      label: "Perda/Dano",
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.LOSS_DAMAGE, "capitalize"),
     },
     {
       value: AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
-      label: "Furto/Extravio",
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.THEFT_MISPLACEMENT, "capitalize"),
     },    
   ];
   const filters = [

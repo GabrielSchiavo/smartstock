@@ -106,7 +106,7 @@ export function AlertButton() {
                   <span className="text-muted-foreground italic text-sm">
                     Não lidos
                   </span>
-                  <Separator />
+                  <Separator className="-mx-6 w-auto!" />
                 </div>
                 {alerts.filter((alert) => !alert.isRead).length > 0 ? (
                   alerts
@@ -128,7 +128,7 @@ export function AlertButton() {
                   <span className="text-muted-foreground italic text-sm">
                     Lidos
                   </span>
-                  <Separator />
+                  <Separator className="-mx-6 w-auto!" />
                 </div>
                 {alerts.filter((alert) => alert.isRead).length > 0 ? (
                   alerts

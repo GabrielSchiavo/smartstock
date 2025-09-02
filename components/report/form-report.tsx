@@ -36,6 +36,7 @@ import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ptBR } from "date-fns/locale";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
+import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
   const [isPending, startTransition] = useTransition();
@@ -271,70 +272,76 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               defaultValue={field.value}
                               className="flex flex-col"
                             >
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem value={ReportType.VALIDITY} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Validades
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.DONATIONS}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Doados
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.PURCHASED}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Comprados
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.INVENTORY}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Inventário
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem value={ReportType.INPUTS} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Entradas
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem value={ReportType.OUTPUTS} />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Saídas
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center">
-                                <FormControl>
-                                  <RadioGroupItem
-                                    value={ReportType.ADJUSTMENTS}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Ajustes
-                                </FormLabel>
-                              </FormItem>
+                              <div className="grid sm:grid-cols-2 grid-cols-1 gap-3 items-start">
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.VALIDITY}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.VALIDITY, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.DONATIONS}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.DONATIONS, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.PURCHASED}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.PURCHASED, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.INVENTORY}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.INVENTORY, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem value={ReportType.INPUTS} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.INPUTS, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.OUTPUTS}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.OUTPUTS, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.ADJUSTMENTS}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(ReportType.ADJUSTMENTS, "capitalize")}
+                                  </FormLabel>
+                                </FormItem>
+                              </div>
                             </RadioGroup>
                           </FormControl>
                         </div>

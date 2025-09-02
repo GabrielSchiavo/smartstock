@@ -1,6 +1,6 @@
 {
   "name": "smartstock-v2",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -25,12 +25,12 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "flag-icons": "^7.5.0",
     "jspdf": "^3.0.2",
     "lucide-react": "^0.542.0",
     "moment": "^2.30.1",
     "next": "^15.5.2",
     "next-auth": "^5.0.0-beta.29",
-    "next-intl": "^4.3.5",
     "next-themes": "^0.4.6",
     "nodemailer": "^7.0.5",
     "radix-ui": "^1.4.3",

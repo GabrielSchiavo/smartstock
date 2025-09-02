@@ -1,8 +1,8 @@
 import { RoleGate } from "@/components/auth/role-gate";
 import { Metadata } from "next";
 import { UserType } from "@/types";
-import { FormReportsResultView } from "@/components/report/form-reports-result-view";
 import { ROUTES } from "@/config/routes";
+import { SectionFormTableReport } from "@/components/report/section-table-report";
 
 export const metadata: Metadata = {
   title: "Relatórios - SmartStock",
@@ -29,7 +29,7 @@ export default function ReportsPage() {
                 {"Clique em 'Gerar Relatório' quando terminar."}
               </p>
             </div>
-            <FormReportsResultView />
+            <SectionFormTableReport />
           </div>
         </div>
       </div>

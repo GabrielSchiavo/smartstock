@@ -13,55 +13,64 @@ import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
 import { BaseFormOutput } from "@/components/stock/output/base-form-output";
 
-export const FormAddOutput = ({
-  onShouldInvalidate,
-  onCancel,
-}: FormAddEditProps) => {
+export const FormAddOutput = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
-  const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateOutputSchema>>>(null);
+  const formRef = useRef<UseFormReturn<z.infer<typeof CreateOutputSchema>> | null>(null);
 
-  const [products, setMasterProducts] = useState<
-    ProductWithMasterProductResponse[]
-  >([]);
-  // Carregue os master items no useEffect ou via server component
-  useEffect(() => {
-    async function loadMasterProducts() {
-      try {
-        const items = await getProducts();
+  const [products, setMasterProducts] = useState<ProductWithMasterProductResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // função reutilizável de carregar produtos
+  const loadProductsSelector = async () => {
+    try {
+      const items = await getProducts();
+      // marca como transição para não bloquear a UI
+      startTransition(() => {
         setMasterProducts(items);
-      } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
-      }
+        setIsLoading(false);
+      });
+    } catch (error) {
+      setIsLoading(false);
+      showToast({
+        title: "Erro!",
+        description: "Não foi possível carregar os produtos",
+        type: ToastType.ERROR,
+      });
+      console.error("Erro! Não foi possível carregar os produtos:", error);
     }
-    loadMasterProducts();
+  };
+
+  useEffect(() => {
+    loadProductsSelector();
   }, []);
 
-  const onSubmit = async (
-    values: z.infer<typeof CreateOutputSchema>
-  ) => {
-    await startTransition(async () => {
-      try {
-        const response = await registerOutput(values);
+  const onSubmit = async (values: z.infer<typeof CreateOutputSchema>) => {
+    try {
+      // chame a action do servidor e aguarde o resultado
+      const response = await registerOutput(values);
 
-        if (response.success === true) {
-          formRef.current?.reset();
+      if (response.success === true) {
+        formRef.current?.reset();
 
-          onShouldInvalidate?.(true);
-        }
+        // sinaliza para o pai se aplicado
+        onShouldInvalidate?.(true);
 
-        showToast({
-          title: response.title,
-          description: response.description,
-          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
-        });
-      } catch {
-        showToast({
-          title: "Algo deu errado!",
-          type: ToastType.ERROR,
-        });
+        // garante que o cliente recarregue a lista de produtos imediatamente
+        await loadProductsSelector();
       }
-    });
+
+      showToast({
+        title: response.title,
+        description: response.description,
+        type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+      });
+    } catch (error) {
+      console.error("Erro ao submeter saída:", error);
+      showToast({
+        title: "Algo deu errado!",
+        type: ToastType.ERROR,
+      });
+    }
   };
 
   return (
@@ -69,6 +78,7 @@ export const FormAddOutput = ({
       <BaseFormOutput
         ref={formRef}
         products={products}
+        isLoading={isLoading}
         onSubmit={onSubmit}
         onCancel={onCancel}
         isPending={isPending}

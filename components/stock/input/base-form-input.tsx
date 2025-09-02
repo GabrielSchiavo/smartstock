@@ -54,6 +54,7 @@ export const BaseFormInput = forwardRef<
       submitButtonText,
       loadingText,
       masterProducts,
+      isLoading = false,
       mode = ModeType.ADD,
     },
     ref
@@ -178,6 +179,7 @@ export const BaseFormInput = forwardRef<
                           onSelect={handleMasterProductSelect}
                           selectedId={field.value}
                           disabled={isPending}
+                          isLoading={isLoading}
                         />
                       </FormControl>
                       <FormMessage />

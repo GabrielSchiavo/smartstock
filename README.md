@@ -65,12 +65,19 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
     - Produtos por data de validade;
     - Produtos doados;
     - Produtos comprados;
-    - Inventário de todos os produtos cadastrados.
+    - Inventário de todos os produtos cadastrados;
+    - Entradas de todos as entradas;
+    - Saídas de todos as saídas;
+    - Ajustes de todos os ajustes.
 
 - **Alertas:**
-  - `Controle de validades:` Alerta de produtos prestes a vencer e vencidos. O sistema verifica os alertas quando o usuário abre o sistema e também verifica de forma automática a cada hora.
+  - `Funcionamento:` O sistema verifica os alertas quando é aberto e de forma automática a 30 minutos.
   
-  - `Aviso:` Quando o usuário abre o sistema pela primeira vez, é disparado um aviso com o total de alertas não lidos e, quando um novo alerta é encontrado, também é disparado um aviso para o usuário.
+  - `Controle de validades:` Alerta de produtos prestes a vencer e vencidos.
+  
+  - `Quantidade em estoque:` Alerta de produtos com estoque zerado.
+  
+  - `Aviso:` Quando o sistema pela primeira vez, é disparado um aviso com o total de alertas não lidos e, quando um novo alerta é encontrado, também é disparado um aviso.
   
   - `Lidos/Não Lidos:` Organização dos alertas em lidos e não lidos.
 
@@ -101,7 +108,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 ## ⚙️ Setup e Configuração
 ### ⚠️ Pré-requisitos:
 
-- **Node.js** >= 22.17.0
+- **Node.js** >= 20
 - **Docker**
 - **Docker Compose**
 
@@ -181,7 +188,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 
 ## ✅ Tecnologias Utilizadas
 * `TypeScript`
-* `Node.js - 22.17.0`
+* `Node.js - 22.19.0`
 * `React.js - 19.1.1`
 * `Next.js - 15.5.2`
 * `PostgreSQL - 17.5`

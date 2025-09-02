@@ -70,9 +70,10 @@ export interface LogoWithTextProps {
   containerTextClasses?: string;
 }
 
-export interface SelectorOutputProps {
+export interface SelectorProductProps {
   products: ProductWithMasterProductResponse[];
   onSelect: (product: ProductWithMasterProductResponse) => void;
   selectedId?: string;
   disabled?: boolean;
+  isLoading: boolean;
 }

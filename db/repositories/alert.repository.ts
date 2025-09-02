@@ -1,17 +1,19 @@
-// alert.repository.ts
 import { db } from "@/lib/db";
+import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 import { AlertType } from "@prisma/client";
 
 export const alertRepository = {
   async findExpiringProducts() {
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
-    const thirtyDaysFromNow = new Date();
-    thirtyDaysFromNow.setUTCHours(0, 0, 0, 0);
-    thirtyDaysFromNow.setDate(today.getDate() + 30);
+    const thirtyDaysFromNow = new Date(today);
+    thirtyDaysFromNow.setDate(today.getDate() + daysDefaultUntilExpiry);
 
     return await db.product.findMany({
       where: {
+        // quantity: {
+        //   gt: 0, // só produtos com quantidade acima de zero
+        // },
         OR: [
           {
             validityDate: {
@@ -25,6 +27,14 @@ export const alertRepository = {
             },
           },
         ],
+      },
+    });
+  },
+
+  async findOutStockProducts() {
+    return await db.product.findMany({
+      where: {
+        quantity: 0,
       },
     });
   },
@@ -68,10 +78,10 @@ export const alertRepository = {
   async getAll() {
     return await db.notification.findMany({
       include: { product: true },
-    orderBy: [
-      { type: 'asc' },       // EXPIRED vem antes de EXPIRING (ordem alfabética inversa)
-      { createdAt: 'desc' }    // Mais recentes primeiro
-    ],
+      orderBy: [
+        { type: "asc" }, // EXPIRED vem antes de EXPIRING (ordem alfabética inversa)
+        { createdAt: "desc" }, // Mais recentes primeiro
+      ],
     });
   },
 

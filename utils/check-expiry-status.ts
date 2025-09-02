@@ -7,13 +7,16 @@ import { DateValidationOptions, DateValidationResult, ValidityStatusType } from 
  * @param options - Configurações opcionais
  * @returns Informações sobre o status da data
  */
+// const para armazenar os dias padrão para expiração de um produto
+export const daysDefaultUntilExpiry = 30;
+
 export const checkExpiryStatus = (
   validityDate: Date | string,
   options: DateValidationOptions = {}
 ): DateValidationResult => {
   const {
     dateOnly = false, // Se true, ignora horário e considera apenas a data (00:00:00)
-    expiringThreshold = 30, // Número de dias antes da expiração para considerar como "expirando" 
+    expiringThreshold = daysDefaultUntilExpiry, // Número de dias antes da expiração para considerar como "expirando" 
     formatDate = (date: Date) => date.toDateString()
   } = options;
   
@@ -91,7 +94,7 @@ export const getExpiryInfo = (
  * function validateDocument(doc) {
  *   try {
  *     const validation = checkExpiryStatus(doc.expiryDate, { 
- *       expiringThreshold: 30 
+ *       expiringThreshold: daysDefaultUntilExpiry 
  *     });
  *     
  *     if (validation.isExpired) {

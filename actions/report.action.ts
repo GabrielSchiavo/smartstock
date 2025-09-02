@@ -1,6 +1,6 @@
 "use server";
 
-import { productRepository } from "@/db";
+import { productRepository, stockMovementRepository } from "@/db";
 import { ROUTES } from "@/config/routes";
 import {
   DonationsReportResponse,
@@ -8,6 +8,7 @@ import {
   ProductType,
   PurchasedReportResponse,
   ReportResponse,
+  StockMovementReportResponse,
   UnitType,
   ValidityReportResponse,
 } from "@/types";
@@ -135,9 +136,7 @@ export const generatePurchasedReport = async (
   }
 };
 
-export const generateInventoryReport = async (): Promise<
-  ReportResponse<InventoryReportResponse>
-> => {
+export const generateInventoryReport = async (): Promise<ReportResponse<InventoryReportResponse>> => {
   try {
     const products = await productRepository.findInventory();
 
@@ -174,6 +173,120 @@ export const generateInventoryReport = async (): Promise<
       success: false,
       title: "Erro!",
       description: "Não foi possível gerar o relatório de inventário.",
+    };
+  }
+};
+
+export const generateInputsReport = async (
+  initialDate: Date,
+  finalDate: Date
+): Promise<ReportResponse<StockMovementReportResponse>> => {
+  try {
+    const inputs = await stockMovementRepository.findInputsByDate(
+      initialDate,
+      finalDate
+    );
+
+    const reportData = inputs.map((data) => ({
+      id: data.id,
+      productId: data.productId,
+      quantity: data.quantity,
+      unit: data.unit as UnitType,
+      movementType: data.movementType,
+      movementCategory: data.movementCategory,
+      details: data.details,
+      createdAt: data.createdAt,
+    }));
+
+    revalidatePath(ROUTES.PAGE_REPORTS);
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de entradas gerado com sucesso.",
+      data: reportData,
+    };
+  } catch (error) {
+    console.error("Erro ao gerar relatório de entradas:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de entradas.",
+    };
+  }
+};
+
+export const generateOutputsReport = async (
+  initialDate: Date,
+  finalDate: Date
+): Promise<ReportResponse<StockMovementReportResponse>> => {
+  try {
+    const inputs = await stockMovementRepository.findOutputsByDate(
+      initialDate,
+      finalDate
+    );
+
+    const reportData = inputs.map((data) => ({
+      id: data.id,
+      productId: data.productId,
+      quantity: data.quantity,
+      unit: data.unit as UnitType,
+      movementType: data.movementType,
+      movementCategory: data.movementCategory,
+      details: data.details,
+      createdAt: data.createdAt,
+    }));
+
+    revalidatePath(ROUTES.PAGE_REPORTS);
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de saídas gerado com sucesso.",
+      data: reportData,
+    };
+  } catch (error) {
+    console.error("Erro ao gerar relatório de saídas:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de saídas.",
+    };
+  }
+};
+
+export const generateAdjustmentsReport = async (
+  initialDate: Date,
+  finalDate: Date
+): Promise<ReportResponse<StockMovementReportResponse>> => {
+  try {
+    const inputs = await stockMovementRepository.findAdjustmentsByDate(
+      initialDate,
+      finalDate
+    );
+
+    const reportData = inputs.map((data) => ({
+      id: data.id,
+      productId: data.productId,
+      quantity: data.quantity,
+      unit: data.unit as UnitType,
+      movementType: data.movementType,
+      movementCategory: data.movementCategory,
+      details: data.details,
+      createdAt: data.createdAt,
+    }));
+
+    revalidatePath(ROUTES.PAGE_REPORTS);
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de ajustes gerado com sucesso.",
+      data: reportData,
+    };
+  } catch (error) {
+    console.error("Erro ao gerar relatório de ajustes:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de ajustes.",
     };
   }
 };

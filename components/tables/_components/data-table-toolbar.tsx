@@ -12,6 +12,7 @@ import { DataTableFacetedFilter } from "@/components/tables/_components/data-tab
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
+import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 
 export function DataTableToolbar<TData>({
   table,
@@ -73,7 +74,7 @@ export function DataTableToolbar<TData>({
               <span className="min-w-4 min-h-4 rounded-sm bg-yellow-600 dark:bg-yellow-500"></span>
               <p className="text-sm">
                 <span className="font-semibold">Próximo do Vencimento</span> -
-                Validade expira em até 30 dias.
+                Validade expira em até {daysDefaultUntilExpiry} dias.
               </p>
             </TooltipItem>
             <TooltipItem>

@@ -10,58 +10,69 @@ import { showToast } from "@/components/utils/show-toast";
 import { MasterProduct } from "@prisma/client";
 import { BaseFormInput } from "@/components/stock/input/base-form-input";
 
-export const FormAddInput = ({
-  onShouldInvalidate,
-  onCancel,
-}: FormAddEditProps) => {
+export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
-  const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>>(null);
+  const formRef = useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>> | null>(null);
 
   const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Carregue os master items no useEffect ou via server component
-  useEffect(() => {
-    async function loadMasterProducts() {
-      try {
-        const items = await getMasterProducts();
+  // função reutilizável de carregar produtos mestres
+  const loadMasterProductsSelector = async () => {
+    try {
+      const items = await getMasterProducts();
+      // colocar a atualização de estado dentro de startTransition para não bloquear a UI
+      startTransition(() => {
         setMasterProducts(items);
-      } catch (error) {
-        console.error("Erro ao carregar produtos mestres:", error);
-      }
+        setIsLoading(false);
+      });
+    } catch (error) {
+      setIsLoading(false);
+      showToast({
+        title: "Erro!",
+        description: "Não foi possível carregar os produtos mestre",
+        type: ToastType.ERROR,
+      });
+      console.error("Erro! Não foi possível carregar os produtos mestre:", error);
     }
-    loadMasterProducts();
+  };
+
+  useEffect(() => {
+    loadMasterProductsSelector();
   }, []);
 
   const onSubmit = async (values: z.infer<typeof CreateInputEditProductSchema>) => {
-    await startTransition(async () => {
-      try {
-        const response = await registerInput(values);
+    try {
+      const response = await registerInput(values);
 
-        if (response.success === true) {
-          formRef.current?.reset();
+      if (response.success === true) {
+        formRef.current?.reset();
 
-          onShouldInvalidate?.(true);
-        }
+        onShouldInvalidate?.(true);
 
-        showToast({
-          title: response.title,
-          description: response.description,
-          type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
-        });
-      } catch {
-        showToast({
-          title: "Algo deu errado!",
-          type: ToastType.ERROR,
-        });
+        // refetch imediato dos produtos mestre para atualizar a UI do cliente
+        await loadMasterProductsSelector();
       }
-    });
+
+      showToast({
+        title: response.title,
+        description: response.description,
+        type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
+      });
+    } catch (err) {
+      console.error("Erro ao submeter entrada:", err);
+      showToast({
+        title: "Algo deu errado!",
+        type: ToastType.ERROR,
+      });
+    }
   };
 
   return (
     <div className="flex flex-col gap-4">
       <BaseFormInput
         masterProducts={masterProducts}
+        isLoading={isLoading}
         ref={formRef}
         onSubmit={onSubmit}
         onCancel={onCancel}

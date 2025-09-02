@@ -7,6 +7,7 @@ import {
   ProductType,
 } from "@/types";
 import { db } from "@/lib/db";
+import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 
 export const productRepository = {
   async create(
@@ -60,7 +61,7 @@ export const productRepository = {
 
     if (type === ProductCountType.ABOUT_TO_EXPIRE) {
       const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 30);
+      limitDate.setDate(limitDate.getDate() + daysDefaultUntilExpiry);
 
       return db.product.count({
         where: {
@@ -93,7 +94,7 @@ export const productRepository = {
 
   async findAboutToExpire(): Promise<ProductWithMasterProductResponse[]> {
     const limitDate = new Date();
-    limitDate.setDate(limitDate.getDate() + 30);
+    limitDate.setDate(limitDate.getDate() + daysDefaultUntilExpiry);
 
     return await db.product.findMany({
       where: {

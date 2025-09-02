@@ -42,6 +42,22 @@ export const stockMovementRepository = {
     });
   },
 
+  async findInputsByDate(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<StockMovementWithProductResponse[]> {
+    return db.stockMovement.findMany({
+      where: {
+        movementType: EntityType.INPUT,
+        createdAt: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        product: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  },
+
   async findOutputs(): Promise<StockMovementWithProductResponse[]> {
     const today = new Date();
 
@@ -59,6 +75,22 @@ export const stockMovementRepository = {
       orderBy: {
         createdAt: "desc",
       },
+    });
+  },
+
+  async findOutputsByDate(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<StockMovementWithProductResponse[]> {
+    return db.stockMovement.findMany({
+      where: {
+        movementType: EntityType.OUTPUT,
+        createdAt: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        product: true,
+      },
+      orderBy: { createdAt: "desc" },
     });
   },
 
@@ -80,6 +112,24 @@ export const stockMovementRepository = {
       orderBy: {
         createdAt: "desc",
       },
+    });
+  },
+
+  async findAdjustmentsByDate(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<StockMovementWithProductResponse[]> {
+    return db.stockMovement.findMany({
+      where: {
+        movementType: {
+          in: [EntityType.ADJUSTMENT_POSITIVE, EntityType.ADJUSTMENT_NEGATIVE],
+        },
+        createdAt: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        product: true,
+      },
+      orderBy: { createdAt: "desc" },
     });
   },
 };

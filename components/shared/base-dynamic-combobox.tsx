@@ -46,6 +46,7 @@ export function BaseDynamicCombobox({
           className="w-full justify-between"
           disabled={disabled}
           size={"sm"}
+          type="button"
         >
           {displayValue}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -75,6 +76,7 @@ export function BaseDynamicCombobox({
                         onClick={handleCreateNew}
                         className="flex items-center w-full p-2 gap-2 text-sm text-muted-foreground hover:bg-accent justify-start"
                         disabled={isPending}
+                        type="button"
                       >
                         <PlusIcon className="h-4 w-4" />
                         Criar{" "}
@@ -117,6 +119,7 @@ export function BaseDynamicCombobox({
                           className="p-1.5! h-fit opacity-0 group-hover:opacity-100 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
                           disabled={isPending}
                           title={`Excluir ${resourceName}`}
+                          type="button"
                         >
                           <Trash2Icon className="text-destructive h-4 w-4" />
                         </Button>

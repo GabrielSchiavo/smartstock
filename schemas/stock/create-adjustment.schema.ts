@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { AdjustmentMovementCategoryType, AdjustmentType, UnitType } from "@/types";
+import {
+  AdjustmentMovementCategoryType,
+  AdjustmentType,
+  UnitType,
+} from "@/types";
 
 export const CreateAdjustmentSchema = z.object({
   productId: z.string().trim().min(1, {
@@ -77,17 +81,13 @@ export const CreateAdjustmentSchema = z.object({
     ],
     {
       error: (issue) =>
-        issue.input === undefined ? "Selecione a categoria de ajuste." : undefined,
+        issue.input === undefined
+          ? "Selecione a categoria de ajuste."
+          : undefined,
     }
   ),
-  adjustmentType: z.enum(
-    [
-      AdjustmentType.POSITIVE,
-      AdjustmentType.NEGATIVE,
-    ],
-    {
-      error: (issue) =>
-        issue.input === undefined ? "Selecione o tipo de ajuste." : undefined,
-    }
-  ),
+  adjustmentType: z.enum([AdjustmentType.POSITIVE, AdjustmentType.NEGATIVE], {
+    error: (issue) =>
+      issue.input === undefined ? "Selecione o tipo de ajuste." : undefined,
+  }),
 });

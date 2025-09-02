@@ -43,6 +43,7 @@ enum ProductType {
 enum AlertType {
   EXPIRED
   EXPIRING
+  OUT_STOCK
 }
 
 enum ActionType {

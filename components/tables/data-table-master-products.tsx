@@ -32,6 +32,7 @@ export function DataTableMasterProducts<TData, TValue>({
   data,
   addButton,
   groupBy,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -119,6 +120,7 @@ export function DataTableMasterProducts<TData, TValue>({
           toggleGroup={toggleGroup}
           showGroupTotal={false}
           showFooter={false}
+          isLoading={isLoading}
         />
       </div>
 

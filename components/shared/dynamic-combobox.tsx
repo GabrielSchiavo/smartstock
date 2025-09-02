@@ -23,7 +23,7 @@ import {
   checkSubgroupUsage,
 } from "@/actions";
 import { DynamicComboboxProps, ResourceType } from "@/types";
-import { BaseDynamicCombobox } from "@/components/shared/base-combobox";
+import { BaseDynamicCombobox } from "@/components/shared/base-dynamic-combobox";
 import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
 import { useEffect, useMemo } from "react";
 import { checkCategoryUsage, createCategory, deleteCategory, getAllCategory, searchCategory } from "@/actions/category.action";

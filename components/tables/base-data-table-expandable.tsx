@@ -22,11 +22,13 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
+import { MoonLoader } from "react-spinners";
 
 export function BaseDataTableExpandable<TData>({
   table,
   columns,
   dataExpandableType,
+  isLoading = false,
 }: BaseDataTableExpandableProps<TData>) {
   const renderAuditLogsExpandedContent = (data: AuditLogWithUserResponse) => {
     const actionColors: Record<string, string> = {
@@ -308,10 +310,21 @@ export function BaseDataTableExpandable<TData>({
               )}
             </React.Fragment>
           ))
+        ) : isLoading ? (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              <div className="flex items-center justify-center">
+                <span className="flex items-center text-muted-foreground gap-3">
+                  <MoonLoader size={22} color="#71717b" />
+                  {"Carregando registros..."}
+                </span>
+              </div>
+            </TableCell>
+          </TableRow>
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              Nenhum resultado.
+              Nenhum resultado encontrado.
             </TableCell>
           </TableRow>
         )}

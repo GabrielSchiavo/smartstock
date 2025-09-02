@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ProductCountType } from "@/types";
+import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, TruckIcon } from "lucide-react";
 
 export async function SectionCardsDashboard() {
@@ -49,7 +50,7 @@ export async function SectionCardsDashboard() {
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-md  text-muted-foreground">
           <div className="line-clamp-1 flex gap-2">
-            Produtos à vencer em 30 dias
+            {`Produtos à vencer em ${daysDefaultUntilExpiry} dias`}
           </div>
         </CardFooter>
       </Card>

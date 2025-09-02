@@ -23,6 +23,7 @@ export function SelectorMasterProduct({
   onSelect,
   selectedId,
   disabled,
+  isLoading = false,
 }: SelectorMasterProductProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -70,6 +71,7 @@ export function SelectorMasterProduct({
             data={masterProducts}
             columns={columns}
             groupBy="category"
+            isLoading={isLoading}
           />
         </div>
         <DialogFooter>

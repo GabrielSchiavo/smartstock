@@ -6,7 +6,7 @@ export const CreateReportSchema = z
     initialDate: z.date().optional(),
     finalDate: z.date().optional(),
     reportType: z.enum(
-      [ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.INVENTORY],
+      [ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.INVENTORY, ReportType.INPUTS, ReportType.OUTPUTS, ReportType.ADJUSTMENTS],
       {
         message: "Selecione o tipo de relatório."
       }

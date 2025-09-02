@@ -7,6 +7,7 @@ import { toggleAlertReadStatus } from "@/actions";
 import { AlertProps } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
+import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 
 export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
 
@@ -30,7 +31,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
             <span className="font-bold">
               ID {alert.product.id} {alert.product.name}
             </span>{" "}
-            está a 30 dias do vencimento. Por favor, verifique e tome as medidas
+            está a {daysDefaultUntilExpiry} dias do vencimento. Por favor, verifique e tome as medidas
             necessárias.
           </>
         );
@@ -45,6 +46,17 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
             medidas necessárias.
           </>
         );
+      case AlertType.OUT_STOCK:
+        return (
+          <>
+            O produto{" "}
+            <span className="font-bold">
+              ID {alert.product.id} {alert.product.name}
+            </span>{" "}
+            está com estoque zerado. Por favor, verifique e tome as
+            medidas necessárias.
+          </>
+        );
     }
   };
 
@@ -54,6 +66,8 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
         return `Aviso! Produto próximo da validade`;
       case AlertType.EXPIRED:
         return `Alerta! Produto atingiu a validade`;
+      case AlertType.OUT_STOCK:
+        return `Alerta! Produto com estoque zerado`;
     }
   };
 
@@ -63,7 +77,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
 
   const alertVariant = alert.isRead
     ? AlertStyleType.READ
-    : alert.type === AlertType.EXPIRED
+    : alert.type === AlertType.EXPIRED || alert.type === AlertType.OUT_STOCK
       ? AlertStyleType.DESTRUCTIVE
       : AlertStyleType.DEFAULT;
 
@@ -75,7 +89,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
           variant={alertVariant}
           className="hover:border-foreground cursor-pointer text-start rounded-xl"
         >
-          {alert.type === AlertType.EXPIRED ? (
+          {alert.type === AlertType.EXPIRED || alert.type === AlertType.OUT_STOCK ? (
             <TriangleAlertIcon />
           ) : (
             <CircleAlertIcon />

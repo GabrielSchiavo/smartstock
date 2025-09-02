@@ -5,6 +5,7 @@ export const LoginSchema = z.object({
   email: EmailSchema,
   password: z
     .string()
+    .trim()
     .min(1, {
         error: "Senha é obrigatória"
     })

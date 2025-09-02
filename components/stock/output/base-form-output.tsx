@@ -51,6 +51,7 @@ export const BaseFormOutput = forwardRef<
       submitButtonText,
       loadingText,
       products,
+      isLoading
     },
     ref
   ) => {
@@ -123,6 +124,7 @@ export const BaseFormOutput = forwardRef<
                           onSelect={handleProductSelect}
                           selectedId={field.value}
                           disabled={isPending}
+                          isLoading={isLoading}
                         />
                       </FormControl>
                       <FormMessage />

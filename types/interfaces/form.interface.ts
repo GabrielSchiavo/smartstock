@@ -5,7 +5,7 @@ import {
   CreateOutputSchema,
 } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { ModeType, ResourceType } from "@/types";
+import { ModeType, ReportDataResponse, ReportType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
 import { z } from "zod";
 import { ReactNode } from "react";
@@ -53,10 +53,12 @@ export interface DeleteRegisterProps<T extends string | number> {
   onOpenChange?: (open: boolean) => void;
 }
 
-export interface DataTableDropdownProps<T extends string | number>
-  extends DeleteRegisterProps<T> {
-  formComponent: React.ComponentType<FormAddEditProps>;
-  entity: string;
+export interface FormReportsProps {
+  onReportGenerated: (data: {
+    reportType: ReportType;
+    reportData: ReportDataResponse;
+    dates?: { initialDate?: Date; finalDate?: Date };
+  }) => void;
 }
 
 export interface FormBaseMasterProductProps {
@@ -79,6 +81,7 @@ export interface FormOutputProps {
   isPending: boolean;
   submitButtonText: string;
   loadingText: string;
+  isLoading: boolean;
 }
 
 export interface FormAdjustmentProps {
@@ -90,6 +93,7 @@ export interface FormAdjustmentProps {
   isPending: boolean;
   submitButtonText: string;
   loadingText: string;
+  isLoading: boolean;
 }
 
 // Interface de resposta
@@ -121,6 +125,7 @@ export interface FormBaseInputProductProps {
   submitButtonText: string;
   loadingText: string;
   mode?: ModeType;
+  isLoading?: boolean;
 }
 
 export interface ExtendedFormBaseInputProductProps

@@ -36,6 +36,7 @@ export function DataTableProducts<TData, TValue>({
   data,
   addButton,
   groupBy,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -129,6 +130,7 @@ export function DataTableProducts<TData, TValue>({
               <span>{getTotalValuesDisplayForData(data as CalculableTotalItemProps[])}</span>
             </div>
           }
+          isLoading={isLoading}
         />
       </div>
       <DataTablePagination table={table} />

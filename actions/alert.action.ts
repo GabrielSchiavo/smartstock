@@ -5,9 +5,10 @@ import { alertRepository } from "@/db";
 import { AlertType } from "@/types";
 
 export async function checkProductAlerts() {
-  const products = await alertRepository.findExpiringProducts();
+  const productsExpiring = await alertRepository.findExpiringProducts();
+  const productsOutOfStock = await alertRepository.findOutStockProducts();
 
-  for (const product of products) {
+  for (const product of productsExpiring) {
     const alertType =
       product.validityDate < new Date()
         ? AlertType.EXPIRED
@@ -22,6 +23,20 @@ export async function checkProductAlerts() {
       await alertRepository.create(product.id, alertType);
     }
   }
+
+  for (const product of productsOutOfStock) {
+    const alertType = AlertType.OUT_STOCK;
+
+    const existingAlert = await alertRepository.findExisting(
+      product.id,
+      alertType
+    );
+
+    if (!existingAlert) {
+      await alertRepository.create(product.id, alertType);
+    }
+  }
+
   
   revalidatePath("/");
 }

@@ -1,9 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  flexRender,
-} from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
 import {
   Table,
   TableBody,
@@ -12,19 +10,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
+import { MoonLoader } from "react-spinners";
 
 // Type guard to check if data can be used for totals
-function isCalculableTotalData(data: unknown[]): data is CalculableTotalItemProps[] {
-  return data.length === 0 || (
-    !!data[0] && 
-    typeof data[0] === 'object' && 
-    data[0] !== null
+function isCalculableTotalData(
+  data: unknown[]
+): data is CalculableTotalItemProps[] {
+  return (
+    data.length === 0 ||
+    (!!data[0] && typeof data[0] === "object" && data[0] !== null)
   );
 }
 
@@ -37,6 +34,7 @@ export function BaseDataTable<TData>({
   showGroupTotal = false,
   showFooter = false,
   footerContent,
+  isLoading = false,
 }: BaseDataTableProps<TData>) {
   const rowModel = table.getRowModel();
 
@@ -64,9 +62,10 @@ export function BaseDataTable<TData>({
             Object.entries(groupedData).map(([groupName, groupRows]) => {
               const isCollapsed = collapsedGroups.has(groupName);
               const rowOriginals = groupRows.map((row) => row.original);
-              const totalToShow = showGroupTotal && isCalculableTotalData(rowOriginals)
-                ? getTotalValuesDisplayForData(rowOriginals)
-                : null;
+              const totalToShow =
+                showGroupTotal && isCalculableTotalData(rowOriginals)
+                  ? getTotalValuesDisplayForData(rowOriginals)
+                  : null;
 
               return (
                 <React.Fragment key={groupName}>
@@ -98,9 +97,7 @@ export function BaseDataTable<TData>({
                           {showGroupTotal && totalToShow && (
                             <span className="flex items-center font-normal text-muted-foreground gap-2">
                               Total:
-                              <span className="font-medium">
-                                {totalToShow}
-                              </span>
+                              <span className="font-medium">{totalToShow}</span>
                             </span>
                           )}
                         </div>
@@ -140,22 +137,27 @@ export function BaseDataTable<TData>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
             ))
           )
+        ) : isLoading ? (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              <div className="flex items-center justify-center">
+                <span className="flex items-center text-muted-foreground gap-3">
+                  <MoonLoader size={22} color="#71717b" />
+                  {"Carregando registros..."}
+                </span>
+              </div>
+            </TableCell>
+          </TableRow>
         ) : (
           <TableRow>
-            <TableCell
-              colSpan={columns.length}
-              className="h-24 text-center"
-            >
-              Nenhum resultado.
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              Nenhum resultado encontrado.
             </TableCell>
           </TableRow>
         )}

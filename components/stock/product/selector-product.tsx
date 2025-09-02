@@ -15,14 +15,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableProducts } from "@/components/tables/data-table-products";
 import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
-import { ProductWithMasterProductResponse, SelectorOutputProps } from "@/types";
+import {
+  ProductWithMasterProductResponse,
+  SelectorProductProps,
+} from "@/types";
 
 export function SelectorProduct({
   products,
   onSelect,
   selectedId,
   disabled,
-}: SelectorOutputProps) {
+  isLoading = false,
+}: SelectorProductProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const selectedItem = products.find(
@@ -79,6 +83,7 @@ export function SelectorProduct({
             data={products}
             columns={columns}
             groupBy="masterProduct.group"
+            isLoading={isLoading}
           />
         </div>
         <DialogFooter>

@@ -28,6 +28,10 @@ export enum ReportType {
   DONATIONS = "DONATIONS",
   PURCHASED = "PURCHASED",
   INVENTORY = "INVENTORY",
+
+  INPUTS = "INPUTS",
+  OUTPUTS = "OUTPUTS",
+  ADJUSTMENTS = "ADJUSTMENTS",
 }
 
 export enum ValidityStatusType {
@@ -38,10 +42,10 @@ export enum ValidityStatusType {
 
 export enum PdfUnitType {
   MM = "mm",
-  PT = "pt", 
+  PT = "pt",
   CM = "cm",
   IN = "in",
-  A4 = "a4"
+  A4 = "a4",
 }
 
 export enum LocaleType {
@@ -55,6 +59,7 @@ export enum LocaleType {
 export enum AlertType {
   EXPIRED = "EXPIRED",
   EXPIRING = "EXPIRING",
+  OUT_STOCK = "OUT_STOCK",
 }
 
 export enum AlertStyleType {

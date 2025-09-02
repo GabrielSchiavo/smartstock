@@ -1,5 +1,20 @@
-import { Column, ColumnDef, Row, Table,Table as TanstackTable, } from "@tanstack/react-table";
-import { DataExpandableType, FilterModeType, ProductWithMasterProductResponse, ReportType, StockMovementWithProductResponse } from "@/types";
+import {
+  Column,
+  ColumnDef,
+  Row,
+  Table,
+  Table as TanstackTable,
+} from "@tanstack/react-table";
+import {
+  DataExpandableType,
+  DeleteRegisterProps,
+  FilterModeType,
+  FormAddEditProps,
+  ProductWithMasterProductResponse,
+  ReportDataResponse,
+  ReportType,
+  StockMovementWithProductResponse,
+} from "@/types";
 import { AuditLog, MasterProduct, User } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
@@ -8,6 +23,7 @@ export interface DataTableProps<TData, TValue> {
   addButton: boolean;
   groupBy?: string;
   selectionMode?: boolean;
+  isLoading?: boolean;
 }
 
 export interface DataTableReportProps<TData> {
@@ -66,29 +82,37 @@ export interface BaseDataTableProps<TData> {
   showGroupTotal?: boolean;
   showFooter?: boolean;
   footerContent?: React.ReactNode;
+  isLoading?: boolean;
 }
 
 export interface BaseDataTableExpandableProps<TData> {
   table: TanstackTable<TData>;
   columns: ColumnDef<TData>[];
   dataExpandableType: DataExpandableType;
+  isLoading?: boolean;
 }
 
 export interface DataTableFilterConfigProps {
   columnKey: string; // nome da coluna na tabela (ex: "actionType")
   title?: string; // título do filtro (ex: "Ação")
   options?: Array<{ label: string; value: string }>; // opções para o faceted filter
-};
+}
 
 export interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
-  title?: string
+  column?: Column<TData, TValue>;
+  title?: string;
   options: {
-    label: string
-    value: string
-    icon?: React.ComponentType<{ className?: string }>
-  }[]
-  mode?: FilterModeType
+    label: string;
+    value: string;
+    icon?: React.ComponentType<{ className?: string }>;
+  }[];
+  mode?: FilterModeType;
+}
+
+export interface DataTableDropdownProps<T extends string | number>
+  extends DeleteRegisterProps<T> {
+  formComponent: React.ComponentType<FormAddEditProps>;
+  entity: string;
 }
 
 export interface ClientDataTableProductProps {
@@ -107,4 +131,13 @@ export interface ClientDataTableUserProps {
 }
 export interface ClientDataTableStockMovementProps {
   movements: StockMovementWithProductResponse[];
+}
+
+export interface ClientDataTableReportProps {
+  reportType: ReportType;
+  reportData: ReportDataResponse;
+  dates?: {
+    initialDate?: Date;
+    finalDate?: Date;
+  };
 }

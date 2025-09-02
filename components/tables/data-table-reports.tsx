@@ -7,6 +7,7 @@ import {
   DonationsReportResponse,
   InventoryReportResponse,
   PurchasedReportResponse,
+  StockMovementReportResponse,
   ToastType,
   ValidityReportResponse,
 } from "@/types";
@@ -28,8 +29,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  generateAdjustmentsPdf,
   generateDonationsPdf,
+  generateInputsPdf,
   generateInventoryPdf,
+  generateOutputsPdf,
   generatePurchasedPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
@@ -101,6 +105,27 @@ export function DataTableReport<TData>({
         case ReportType.INVENTORY:
           pdf = await generateInventoryPdf(data as InventoryReportResponse[]);
           break;
+        case ReportType.INPUTS:
+          pdf = await generateInputsPdf(
+            data as StockMovementReportResponse[],
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
+          );
+          break;
+        case ReportType.OUTPUTS:
+          pdf = await generateOutputsPdf(
+            data as StockMovementReportResponse[],
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
+          );
+          break;
+        case ReportType.ADJUSTMENTS:
+          pdf = await generateAdjustmentsPdf(
+            data as StockMovementReportResponse[],
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
+          );
+          break;
         default:
           throw showToast({
             title: "Erro!",
@@ -130,7 +155,13 @@ export function DataTableReport<TData>({
               ? "comprados"
               : reportType === ReportType.INVENTORY
                 ? "inventario"
-                : "semnome"
+                : reportType === ReportType.INPUTS
+                  ? "entradas"
+                  : reportType === ReportType.OUTPUTS
+                    ? "saidas"
+                    : reportType === ReportType.ADJUSTMENTS
+                      ? "ajustes"
+                      : "semnome"
       }-${new Date().toISOString()}.pdf`;
       document.body.appendChild(a);
       a.click();
@@ -213,10 +244,18 @@ export function DataTableReport<TData>({
             {reportType === ReportType.VALIDITY
               ? "Validade de Produtos"
               : reportType === ReportType.DONATIONS
-                ? "Produtos Doados"
+                ? "Doações"
                 : reportType === ReportType.PURCHASED
-                  ? "Produtos Comprados"
-                  : "Inventário"}
+                  ? "Compras"
+                  : reportType === ReportType.INVENTORY
+                    ? "Inventário"
+                    : reportType === ReportType.INPUTS
+                      ? "Entradas"
+                      : reportType === ReportType.OUTPUTS
+                        ? "Saídas"
+                        : reportType === ReportType.ADJUSTMENTS
+                          ? "Ajustes"
+                          : "Indefinido"}
           </h1>
           {initialDate && finalDate && (
             <p className="text-md">

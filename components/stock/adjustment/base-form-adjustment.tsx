@@ -52,6 +52,7 @@ export const BaseFormAdjustment = forwardRef<
       submitButtonText,
       loadingText,
       products,
+      isLoading,
     },
     ref
   ) => {
@@ -74,7 +75,9 @@ export const BaseFormAdjustment = forwardRef<
 
     // Função para lidar com a seleção do produto mestre
     const handleProductSelect = (product: ProductWithMasterProductResponse) => {
-      const formattedValidityDate = formatDateOnlyToLocale(product.validityDate);
+      const formattedValidityDate = formatDateOnlyToLocale(
+        product.validityDate
+      );
 
       form.setValue("productId", product.id.toString(), {
         shouldValidate: true,
@@ -155,6 +158,7 @@ export const BaseFormAdjustment = forwardRef<
                           products={products}
                           onSelect={handleProductSelect}
                           selectedId={field.value}
+                          isLoading={isLoading}
                         />
                       </FormControl>
                       <FormMessage />

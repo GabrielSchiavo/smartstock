@@ -71,6 +71,7 @@ export interface SelectorMasterProductProps {
   onSelect: (masterProduct: MasterProduct) => void;
   selectedId?: string;
   disabled?: boolean;
+  isLoading: boolean;
 }
 
 // check-expiry-status.ts

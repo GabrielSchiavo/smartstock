@@ -56,6 +56,24 @@ export type InventoryReportResponse = {
   group: string;
 };
 
+export type StockMovementReportResponse = {
+  id: string;
+  productId: number;
+  quantity: number;
+  unit: UnitType;
+  movementType: string;
+  movementCategory: string;
+  details: string;
+  createdAt: Date;
+};
+
+export type ReportDataResponse =
+  | ValidityReportResponse[]
+  | DonationsReportResponse[]
+  | PurchasedReportResponse[]
+  | InventoryReportResponse[]
+  | StockMovementReportResponse[];
+
 export type DateRangeParams = {
   initialDate: Date;
   finalDate: Date;

@@ -8,7 +8,7 @@ import { ToastType } from "@/types";
 export function useAlertWatcher(
   onNewAlert?: () => void,
   initialUnreadCount = 0,
-  interval = 60 * 30 * 1000 // intervalo de 30 minutos em milissegundos
+  interval = 60 * 30 * 1000 // intervalo de 30 minutos em milissegundos para atualização dos alertas
 ) {
   const prevCount = useRef<number>(initialUnreadCount);
   const hasInitialized = useRef<boolean>(false);

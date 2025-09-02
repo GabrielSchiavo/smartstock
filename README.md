@@ -196,7 +196,6 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
 * `Auth.js - 5.0.0`
 * `Nodemailer - 7.0.5`
 * `jsPDF - 3.0.2`
-* `next-intl - 4.3.5`
 * `Zod - 4.1.3`
 * `Tailwind CSS - 4.1.12`
 * `shadcn/ui`

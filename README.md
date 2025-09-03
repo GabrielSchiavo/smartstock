@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="250" src="./public/assets/images/brand/combo-mark-full.png" alt="Logo SmartStock"/>
+    <img width="300" src="./public/assets/images/brand/combo-mark-full.png" alt="Logo SmartStock"/>
 </div>
 
 <div align="center">

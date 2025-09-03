@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition, useRef } from "react";
 import { BaseFormInput } from "@/components/stock/input/base-form-input";
 import { editProduct, getMasterProducts, getProductById } from "@/actions";
 import {
+  BaseUnitType,
   FormAddEditProps,
   ModeType,
   ProductType,
@@ -56,6 +57,7 @@ export const FormEditProduct = ({
               category: productData.masterProduct.category,
               group: productData.masterProduct.group,
               subgroup: productData.masterProduct.subgroup || undefined,
+              baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
               movementCategory: "",
             });

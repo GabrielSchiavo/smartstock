@@ -34,6 +34,7 @@ import {
   ResourceType,
   UnitType,
   ExtendedFormBaseInputProductProps,
+  BaseUnitType,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
@@ -78,6 +79,7 @@ export const BaseFormInput = forwardRef<
         category: "",
         group: "",
         subgroup: "",
+        baseUnit: "" as BaseUnitType,
         movementCategory: undefined,
       },
     });
@@ -145,6 +147,12 @@ export const BaseFormInput = forwardRef<
       });
       if (masterProduct.subgroup) {
         form.setValue("subgroup", masterProduct.subgroup, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+      if (masterProduct.baseUnit) {
+        form.setValue("baseUnit", masterProduct.baseUnit as BaseUnitType, {
           shouldValidate: true,
           shouldDirty: true,
         });
@@ -234,6 +242,27 @@ export const BaseFormInput = forwardRef<
                           <Input
                             disabled={true}
                             className="default-height bg-muted"
+                            placeholder="Será preenchido automaticamente"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid sm:grid-cols-3 grid-cols-1 gap-6 items-start">
+                  <FormField
+                    control={form.control}
+                    name="baseUnit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Unidade Base</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={true}
+                            type="text"
+                            className="default-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />

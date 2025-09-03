@@ -37,6 +37,7 @@ export const productRepository = {
       "category",
       "group",
       "subgroup",
+      "baseUnit",
       "movementCategory"
     );
 
@@ -165,6 +166,7 @@ export const productRepository = {
       "category",
       "group",
       "subgroup",
+      "baseUnit",
       "movementCategory"
     );
 

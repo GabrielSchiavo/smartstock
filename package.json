@@ -1,6 +1,6 @@
 {
-  "name": "smartstock-v2",
-  "version": "2.8.3",
+  "name": "smartstock",
+  "version": "2.8.4",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

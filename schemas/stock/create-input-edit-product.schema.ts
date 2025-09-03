@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { InputMovementCategoryType, ProductType, UnitType } from "@/types";
+import { BaseUnitType, InputMovementCategoryType, ProductType, UnitType } from "@/types";
 
 export const CreateInputEditProductSchema = z
   .object({
@@ -118,6 +118,9 @@ export const CreateInputEditProductSchema = z
       })
       .or(z.literal(""))
       .optional(),
+    baseUnit: z.enum([BaseUnitType.KG, BaseUnitType.L, BaseUnitType.UN], {
+      error: "Selecione um produto",
+    }),
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       error: (issue) =>
         issue.input === undefined ? "Selecione um tipo de produto." : undefined,

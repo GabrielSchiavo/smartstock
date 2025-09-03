@@ -1,5 +1,5 @@
 import { MasterProduct, Product } from "@prisma/client";
-import { AdjustmentMovementCategoryType, InputMovementCategoryType, OutputMovementCategoryType, ProductType, UnitType } from "@/types";
+import { AdjustmentMovementCategoryType, BaseUnitType, InputMovementCategoryType, OutputMovementCategoryType, ProductType, UnitType } from "@/types";
 
 export type ProductResponse = {
   masterProductId: number;
@@ -16,6 +16,7 @@ export type ProductResponse = {
   category: string;
   group: string;
   subgroup?: string | null;
+  baseUnit: BaseUnitType;
   productType: ProductType;
   movementCategory: InputMovementCategoryType | OutputMovementCategoryType | AdjustmentMovementCategoryType | "";
 };

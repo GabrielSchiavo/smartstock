@@ -3,10 +3,7 @@
 import { CreateInputEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import {
-  auditLogRepository,
-  productRepository,
-} from "@/db";
+import { auditLogRepository, productRepository } from "@/db";
 import {
   EntityType,
   ActionType,
@@ -15,6 +12,7 @@ import {
   ProductWithMasterProductResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const editProduct = async (
   id: number,
@@ -43,22 +41,33 @@ export const editProduct = async (
       };
     }
 
-    const updatedProduct = await productRepository.update(id, {
-      ...productData,
-      quantity: Number(quantity),
-      unitWeight: unitWeight ? Number(unitWeight) : null,
-      masterProductId: Number(productData.masterProductId),
-      updatedAt: new Date(),
-    });
+    const updatedProduct = await db.$transaction(async (tx) => {
+      const updatedProduct = await productRepository.update(
+        id,
+        {
+          ...productData,
+          quantity: Number(quantity),
+          unitWeight: unitWeight ? Number(unitWeight) : null,
+          masterProductId: Number(productData.masterProductId),
+          updatedAt: new Date(),
+        },
+        tx
+      );
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: updatedProduct.id.toString(),
-      actionType: ActionType.UPDATE,
-      entity: EntityType.PRODUCT,
-      changedValue: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
-      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: updatedProduct.id.toString(),
+          actionType: ActionType.UPDATE,
+          entity: EntityType.PRODUCT,
+          changedValue: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return updatedProduct;
     });
 
     revalidatePath("/");
@@ -82,18 +91,23 @@ export const deleteProduct = async (id: number) => {
   const user = await currentUser();
 
   try {
-    await productRepository.delete(id);
+    const product = await productRepository.findById(id);
 
-    const product = await productRepository.findById(id)
+    await db.$transaction(async (tx) => {
+      await productRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: id.toString(),
-      actionType: ActionType.DELETE,
-      entity: EntityType.PRODUCT,
-      changedValue: product?.name as string,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: id.toString(),
+          actionType: ActionType.DELETE,
+          entity: EntityType.PRODUCT,
+          changedValue: product?.name as string,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
     revalidatePath("/");

@@ -74,7 +74,7 @@ export function DataTableMasterProducts<TData, TValue>({
 
   return (
     <div className="flex flex-col w-full gap-4">
-      <div className="flex gap-2 items-center justify-between">
+      <div className="flex gap-4 sm:gap-6 items-center justify-between">
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
@@ -88,14 +88,14 @@ export function DataTableMasterProducts<TData, TValue>({
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={toggleAllGroups}
-                  className="ml-auto"
+                  className="size-8! shrink-0 ml-auto"
                 >
                   {collapsedGroups.size === Object.keys(groupedData).length ? (
-                    <Maximize2Icon />
+                    <Maximize2Icon className="size-4 shrink-0" />
                   ) : (
-                    <Minimize2Icon />
+                    <Minimize2Icon className="size-4 shrink-0" />
                   )}
                 </Button>
               </TooltipTrigger>

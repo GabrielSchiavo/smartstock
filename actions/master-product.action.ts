@@ -11,6 +11,7 @@ import {
   MasterProductOperationResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const registerMasterProduct = async (
   values: z.infer<typeof CreateEditMasterProductSchema>
@@ -29,18 +30,28 @@ export const registerMasterProduct = async (
   const { ...masterProductData } = validatedFields.data;
 
   try {
-    const masterProduct = await masterProductRepository.create({
-      ...masterProductData,
-    });
+    await db.$transaction(async (tx) => {
+      const masterProduct = await masterProductRepository.create(
+        {
+          ...masterProductData,
+        },
+        tx
+      );
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: masterProduct.id.toString(),
-      actionType: ActionType.CREATE,
-      entity: EntityType.MASTER_PRODUCT,
-      changedValue: masterProductData.name,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: masterProduct.id.toString(),
+          actionType: ActionType.CREATE,
+          entity: EntityType.MASTER_PRODUCT,
+          changedValue: masterProductData.name,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return masterProduct;
     });
 
     revalidatePath("/");
@@ -86,19 +97,30 @@ export const editMasterProduct = async (
       };
     }
 
-    const updatedMasterProduct = await masterProductRepository.update(id, {
-      ...masterProductData,
-      updatedAt: new Date(),
-    });
+    const updatedMasterProduct = await db.$transaction(async (tx) => {
+      const updatedMasterProduct = await masterProductRepository.update(
+        id,
+        {
+          ...masterProductData,
+          updatedAt: new Date(),
+        },
+        tx
+      );
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: updatedMasterProduct.id.toString(),
-      actionType: ActionType.UPDATE,
-      entity: EntityType.MASTER_PRODUCT,
-      changedValue: masterProductData.name,
-      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: updatedMasterProduct.id.toString(),
+          actionType: ActionType.UPDATE,
+          entity: EntityType.MASTER_PRODUCT,
+          changedValue: masterProductData.name,
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return updatedMasterProduct;
     });
 
     revalidatePath("/");
@@ -143,16 +165,21 @@ export const deleteMasterProduct = async (id: number) => {
       };
     }
 
-    await masterProductRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await masterProductRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingMasterProduct.id.toString(),
-      actionType: ActionType.DELETE,
-      entity: EntityType.MASTER_PRODUCT,
-      changedValue: existingMasterProduct.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingMasterProduct.id.toString(),
+          actionType: ActionType.DELETE,
+          entity: EntityType.MASTER_PRODUCT,
+          changedValue: existingMasterProduct.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
     revalidatePath("/");

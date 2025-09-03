@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { Product, Receiver } from "@prisma/client"
+import { Prisma, Product, Receiver } from "@prisma/client"
 
 export const receiverRepository = {
   async findAll(take = 100): Promise<Receiver[]> {
@@ -21,8 +21,10 @@ export const receiverRepository = {
     })
   },
 
-  async create(name: string): Promise<Receiver> {
-    return await db.receiver.create({
+  async create(name: string, tx?: Prisma.TransactionClient): Promise<Receiver> {
+    const client = tx ?? db;
+
+    return await client.receiver.create({
       data: { name },
     })
   },
@@ -33,8 +35,10 @@ export const receiverRepository = {
     })
   },
 
-  async delete(id: string): Promise<void> {
-    await db.receiver.delete({
+  async delete(id: string,tx?: Prisma.TransactionClient): Promise<void> {
+    const client = tx ?? db;
+
+    await client.receiver.delete({
       where: { id },
     })
   },

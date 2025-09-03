@@ -1,5 +1,5 @@
 import { db } from "@/lib/db"
-import { Group, MasterProduct } from "@prisma/client"
+import { Group, MasterProduct, Prisma } from "@prisma/client"
 
 export const groupRepository = {
   async findAll(take = 100): Promise<Group[]> {
@@ -21,8 +21,10 @@ export const groupRepository = {
     })
   },
 
-  async create(name: string): Promise<Group> {
-    return await db.group.create({
+  async create(name: string, tx?: Prisma.TransactionClient): Promise<Group> {
+    const client = tx ?? db;
+
+    return await client.group.create({
       data: { name },
     })
   },
@@ -33,8 +35,10 @@ export const groupRepository = {
     })
   },
 
-  async delete(id: string): Promise<void> {
-    await db.group.delete({
+  async delete(id: string, tx?: Prisma.TransactionClient): Promise<void> {
+    const client = tx ?? db;
+
+    await client.group.delete({
       where: { id },
     })
   },

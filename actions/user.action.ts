@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
 import { EntityType, ActionType, UserOperationResponse } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
@@ -58,21 +59,32 @@ export const registerUser = async (
 
     // Criação do usuário
     const hashedPassword = await bcryptjs.hash(password, 10);
-    const newUser = await userRepository.create({
-      name,
-      email,
-      password: hashedPassword,
-      role: userType,
-    });
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newUser.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.USER,
-      changedValue: newUser.name as string,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+    await db.$transaction(async (tx) => {
+      const newUser = await userRepository.create(
+        {
+          name,
+          email,
+          password: hashedPassword,
+          role: userType,
+        },
+        tx
+      );
+
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newUser.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.USER,
+          changedValue: newUser.name as string,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newUser;
     });
 
     revalidatePath("/");
@@ -122,16 +134,21 @@ export const deleteUser = async (id: string) => {
       };
     }
 
-    await userRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await userRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingUser.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.USER,
-      changedValue: existingUser.name as string,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingUser.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.USER,
+          changedValue: existingUser.name as string,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
     revalidatePath("/");
@@ -245,17 +262,24 @@ export const editUser = async (
       requiresVerification = true;
     }
 
-    // Atualiza o usuário
-    const updatedUser = await userRepository.update(id, updateData);
+    const updatedUser = await db.$transaction(async (tx) => {
+      // Atualiza o usuário
+      const updatedUser = await userRepository.update(id, updateData, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingUser.id,
-      actionType: ActionType.UPDATE,
-      entity: EntityType.USER,
-      changedValue: existingUser.name as string,
-      details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingUser.id,
+          actionType: ActionType.UPDATE,
+          entity: EntityType.USER,
+          changedValue: existingUser.name as string,
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return updatedUser;
     });
 
     revalidatePath("/");

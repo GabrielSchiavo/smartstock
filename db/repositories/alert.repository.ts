@@ -79,8 +79,8 @@ export const alertRepository = {
     return await db.notification.findMany({
       include: { product: true },
       orderBy: [
-        { type: "asc" }, // EXPIRED vem antes de EXPIRING (ordem alfabética inversa)
         { createdAt: "desc" }, // Mais recentes primeiro
+        { type: "asc" },
       ],
     });
   },

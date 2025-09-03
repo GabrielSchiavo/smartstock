@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import {
   type GroupResponse,
   type SingleGroupResponse,
@@ -10,6 +9,7 @@ import {
 } from "@/types";
 import { auditLogRepository, groupRepository } from "@/db";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 // Implementações
 export async function getAllGroup(): Promise<GroupResponse> {
@@ -65,19 +65,25 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
   }
 
   try {
-    const newGroup = await groupRepository.create(trimmedName);
+    const newGroup = await db.$transaction(async (tx) => {
+      const newGroup = await groupRepository.create(trimmedName, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newGroup.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.GROUP,
-      changedValue: newGroup.name as string,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newGroup.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.GROUP,
+          changedValue: newGroup.name as string,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newGroup;
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
@@ -108,19 +114,23 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
       };
     }
 
-    await groupRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await groupRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingGroup.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.GROUP,
-      changedValue: existingGroup.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingGroup.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.GROUP,
+          changedValue: existingGroup.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
@@ -140,7 +150,8 @@ export async function checkGroupUsage(
   groupName: string
 ): Promise<CheckGroupResponse> {
   try {
-    const productWithGroup = await groupRepository.checkInMasterProducts(groupName);
+    const productWithGroup =
+      await groupRepository.checkInMasterProducts(groupName);
 
     return {
       isUsed: !!productWithGroup,

@@ -87,9 +87,9 @@ export function BaseDataTable<TData>({
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-2">
                             {isCollapsed ? (
-                              <ChevronDownIcon className="h-4 w-4" />
+                              <ChevronDownIcon className="size-4 shrink-0" />
                             ) : (
-                              <ChevronUpIcon className="h-4 w-4" />
+                              <ChevronUpIcon className="size-4 shrink-0" />
                             )}
                             <span className="truncate max-w-[200px]">
                               {formatEnumValueDisplay(groupName, "capitalize")}

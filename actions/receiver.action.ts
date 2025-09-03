@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { auditLogRepository, receiverRepository } from "@/db";
 import {
   CheckReceiverResponse,
@@ -11,6 +10,7 @@ import {
   EntityType,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const getAllReceiver = async (): Promise<ReceiverResponse> => {
   try {
@@ -68,19 +68,25 @@ export const createReceiver = async (
   }
 
   try {
-    const newReceiver = await receiverRepository.create(name);
+    const newReceiver = await db.$transaction(async (tx) => {
+      const newReceiver = await receiverRepository.create(name, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newReceiver.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.RECEIVER,
-      changedValue: newReceiver.name,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newReceiver.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.RECEIVER,
+          changedValue: newReceiver.name,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newReceiver;
     });
 
-    revalidatePath("/");
     return {
       success: true,
       data: newReceiver,
@@ -113,19 +119,23 @@ export const deleteReceiver = async (
       };
     }
 
-    await receiverRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await receiverRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingReceiver.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.RECEIVER,
-      changedValue: existingReceiver.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingReceiver.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.RECEIVER,
+          changedValue: existingReceiver.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",

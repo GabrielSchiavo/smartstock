@@ -63,13 +63,13 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         return (
           <div className="flex justify-center">
             <Button
-              size="sm"
+              size="icon"
               variant="ghost"
               onClick={row.getToggleExpandedHandler()}
               className="size-8! shrink-0"
             >
-              <span className="sr-only">Expandir Linha</span>
-              {row.getIsExpanded() ? <ChevronDownIcon /> : <ChevronRightIcon />}
+              <span className="sr-only">Expandir/Recolher Linha</span>
+              {row.getIsExpanded() ? <ChevronDownIcon className="size-4 shrink-0" /> : <ChevronRightIcon className="size-4 shrink-0" />}
             </Button>
           </div>
         );

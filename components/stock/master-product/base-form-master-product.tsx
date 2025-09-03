@@ -127,7 +127,6 @@ export const BaseFormMasterProduct = forwardRef<
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Categoria</FormLabel>
-                      <div className="select-container relative w-full min-w-0">
                         <DynamicCombobox
                           resourceType={ResourceType.CATEGORY}
                           value={field.value ? field.value : ""}
@@ -135,7 +134,6 @@ export const BaseFormMasterProduct = forwardRef<
                           disabled={isPending}
                           placeholder="Selecione uma Categoria..."
                         />
-                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -146,7 +144,6 @@ export const BaseFormMasterProduct = forwardRef<
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Grupo</FormLabel>
-                      <div className="select-container relative w-full min-w-0">
                         <DynamicCombobox
                           resourceType={ResourceType.GROUP}
                           value={field.value ? field.value : ""}
@@ -154,7 +151,6 @@ export const BaseFormMasterProduct = forwardRef<
                           disabled={isPending}
                           placeholder="Selecione um Grupo..."
                         />
-                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -165,7 +161,6 @@ export const BaseFormMasterProduct = forwardRef<
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Subgrupo (Opcional)</FormLabel>
-                      <div className="select-container relative w-full min-w-0">
                         <DynamicCombobox
                           resourceType={ResourceType.SUBGROUP}
                           value={field.value ? field.value : ""}
@@ -173,7 +168,6 @@ export const BaseFormMasterProduct = forwardRef<
                           disabled={isPending}
                           placeholder="Selecione um Subgrupo..."
                         />
-                      </div>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { UserResponse, UserSettingsUpdateResponse } from "@/types";
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 export const userRepository = {
   async findByEmail(email: string) {
@@ -36,8 +36,10 @@ export const userRepository = {
     });
   },
 
-  async create(data: UserResponse): Promise<User> {
-    return (await db.user.create({ data })) as User;
+  async create(data: UserResponse, tx?: Prisma.TransactionClient): Promise<User> {
+    const client = tx ?? db;
+
+    return (await client.user.create({ data })) as User;
   },
 
   async findAll(): Promise<User[]> {
@@ -58,15 +60,19 @@ export const userRepository = {
     });
   },
 
-  async update(id: string, data: UserResponse): Promise<User> {
-    return await db.user.update({
+  async update(id: string, data: UserResponse, tx?: Prisma.TransactionClient): Promise<User> {
+    const client = tx ?? db;
+
+    return await client.user.update({
       where: { id },
       data,
     });
   },
 
-  async delete(id: string): Promise<void> {
-    await db.user.delete({ where: { id } });
+  async delete(id: string, tx?: Prisma.TransactionClient): Promise<void> {
+    const client = tx ?? db;
+
+    await client.user.delete({ where: { id } });
   },
 
   async updateSettings(userId: string, values: UserSettingsUpdateResponse) {

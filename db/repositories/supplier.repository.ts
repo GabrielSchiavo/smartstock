@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 
 export const supplierRepository = {
   async findAll(take = 100) {
@@ -31,14 +31,18 @@ export const supplierRepository = {
     });
   },
 
-  async create(name: string) {
-    return await db.supplier.create({
+  async create(name: string, tx?: Prisma.TransactionClient) {
+    const client = tx ?? db;
+
+    return await client.supplier.create({
       data: { name },
     });
   },
 
-  async delete(id: string) {
-    return await db.supplier.delete({
+  async delete(id: string, tx?: Prisma.TransactionClient) {
+    const client = tx ?? db;
+
+    return await client.supplier.delete({
       where: { id },
     });
   },

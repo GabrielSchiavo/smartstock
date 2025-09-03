@@ -4,10 +4,16 @@ import {
   AuditLogResponse,
   AuditLogWithUserResponse,
 } from "@/types";
+import { Prisma } from "@prisma/client";
 
 export const auditLogRepository = {
-  async create(data: AuditLogResponse): Promise<void> {
-    await db.auditLog.create({ data, include: { user: true } });
+  async create(
+    data: AuditLogResponse,
+    tx?: Prisma.TransactionClient
+  ): Promise<void> {
+    const client = tx ?? db;
+
+    await client.auditLog.create({ data, include: { user: true } });
   },
 
   async findAll(): Promise<AuditLogWithUserResponse[]> {

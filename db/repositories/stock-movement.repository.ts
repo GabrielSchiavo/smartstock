@@ -4,19 +4,43 @@ import {
   StockMovementResponse,
   StockMovementWithProductResponse,
 } from "@/types/models/stock-movement.model";
-import { StockMovement } from "@prisma/client";
+import { Prisma, StockMovement } from "@prisma/client";
 import { endOfDay, startOfDay } from "date-fns";
 
 export const stockMovementRepository = {
-  async createInput(data: StockMovementResponse): Promise<StockMovement> {
-    return (await db.stockMovement.create({ data })) as StockMovement;
+  async createInput(
+    data: StockMovementResponse,
+    tx?: Prisma.TransactionClient
+  ): Promise<StockMovement> {
+    const client = tx ?? db;
+
+    return (await client.stockMovement.create({ data })) as StockMovement;
   },
 
-  async createOutput(data: StockMovementResponse): Promise<StockMovement> {
+  async createOutput(
+    data: StockMovementResponse,
+    tx?: Prisma.TransactionClient
+  ): Promise<StockMovement> {
     const { ...movementOutputData } = data;
+    const client = tx ?? db;
 
-    return (await db.stockMovement.create({
+    return (await client.stockMovement.create({
       data: movementOutputData,
+      include: {
+        product: true,
+      },
+    })) as StockMovement;
+  },
+
+  async createAdjustment(
+    data: StockMovementResponse,
+    tx?: Prisma.TransactionClient
+  ): Promise<StockMovement> {
+    const { ...movementAdjustmentData } = data;
+    const client = tx ?? db;
+
+    return (await client.stockMovement.create({
+      data: movementAdjustmentData,
       include: {
         product: true,
       },

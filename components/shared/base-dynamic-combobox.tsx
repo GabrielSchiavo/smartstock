@@ -12,7 +12,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  PlusIcon,
+  Trash2Icon,
+  XIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MoonLoader } from "react-spinners";
 import { BaseDynamicComboboxProps } from "@/types";
@@ -36,6 +42,17 @@ export function BaseDynamicCombobox({
   className,
   resourceName,
 }: BaseDynamicComboboxProps) {
+  const hasValue = value && value.trim() !== "";
+
+  const handleClear = () => {
+    // Chama handleSelect com um objeto vazio/null para limpar
+    handleSelect({ id: "", name: "" });
+    // Limpa o input também
+    setInputValue("");
+    // Fecha o popover
+    setOpen(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="truncate">
@@ -49,7 +66,32 @@ export function BaseDynamicCombobox({
           type="button"
         >
           {displayValue}
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+          {hasValue && handleClear && (
+            <span
+              className="inline-flex items-center justify-center size-8 shrink-0 -me-2 hover:bg-accent-foreground/5! rounded-md cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!disabled) {
+                  handleClear();
+                }
+              }}
+              aria-label="Limpar seleção"
+              role="button"
+              tabIndex={disabled ? -1 : 0}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !disabled) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleClear();
+                }
+              }}
+            >
+              <XIcon className="size-4 shrink-0 opacity-50" />
+            </span>
+          )}
+          {!hasValue && (
+            <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50 pointer-events-none" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 max-w-[90vw]">

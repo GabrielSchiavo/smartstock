@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { MasterProduct } from "@prisma/client";
+import { MasterProduct, Prisma } from "@prisma/client";
 
 export const categoryRepository = {
   async findAll(take = 100) {
@@ -31,14 +31,18 @@ export const categoryRepository = {
     });
   },
 
-  async create(name: string) {
-    return await db.category.create({
+  async create(name: string, tx?: Prisma.TransactionClient) {
+    const client = tx ?? db;
+
+    return await client.category.create({
       data: { name },
     });
   },
 
-  async delete(id: string) {
-    return await db.category.delete({
+  async delete(id: string, tx?: Prisma.TransactionClient) {
+    const client = tx ?? db;
+
+    return await client.category.delete({
       where: { id },
     });
   },

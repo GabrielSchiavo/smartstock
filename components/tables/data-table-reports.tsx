@@ -167,7 +167,7 @@ export function DataTableReport<TData>({
 
   return (
     <div className="grid gap-4 w-full">
-      <div className="flex items-center justify-end gap-6 w-full">
+      <div className="flex items-center justify-end gap-4 sm:gap-6 w-full">
         <ToolTipHelp>
           <TooltipItem>
             <p className="text-sm">
@@ -181,11 +181,16 @@ export function DataTableReport<TData>({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="sm" onClick={toggleAllGroups}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleAllGroups}
+                  className="size-8! shrink-0 ml-auto"
+                >
                   {collapsedGroups.size === Object.keys(groupedData).length ? (
-                    <Maximize2Icon className="h-4 w-4" />
+                    <Maximize2Icon className="size-4 shrink-0" />
                   ) : (
-                    <Minimize2Icon className="h-4 w-4" />
+                    <Minimize2Icon className="size-4 shrink-0" />
                   )}
                 </Button>
               </TooltipTrigger>

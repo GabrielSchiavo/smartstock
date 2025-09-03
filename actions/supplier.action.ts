@@ -11,6 +11,7 @@ import {
   EntityType,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export async function getAllSupplier(): Promise<SupplierResponse> {
   try {
@@ -54,9 +55,9 @@ export async function searchSupplier(query: string): Promise<SupplierResponse> {
   if (!query) return { success: true, data: [] };
 
   try {
-    const testRecord = await supplierRepository.findByName("Anônimo");
+    const defaultRecord = await supplierRepository.findByName("Anônimo");
 
-    if (!testRecord) {
+    if (!defaultRecord) {
       await supplierRepository.create("Anônimo");
       revalidatePath("/");
     }
@@ -93,19 +94,25 @@ export async function createSupplier(
   }
 
   try {
-    const newSupplier = await supplierRepository.create(trimmedName);
+    const newSupplier = await db.$transaction(async (tx) => {
+      const newSupplier = await supplierRepository.create(trimmedName, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newSupplier.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.SUPPLIER,
-      changedValue: newSupplier.name,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newSupplier.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.SUPPLIER,
+          changedValue: newSupplier.name,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newSupplier;
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
@@ -124,7 +131,7 @@ export async function createSupplier(
 
 export async function deleteSupplier(id: string): Promise<SupplierResponse> {
   const user = await currentUser();
-  
+
   try {
     const existingSupplier = await supplierRepository.findById(id);
 
@@ -136,19 +143,22 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
       };
     }
 
-    await supplierRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await supplierRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingSupplier.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.SUPPLIER,
-      changedValue: existingSupplier.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingSupplier.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.SUPPLIER,
+          changedValue: existingSupplier.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
-
-    revalidatePath("/");
 
     return {
       success: true,

@@ -26,12 +26,12 @@ export function ToolTipHelp({ children }: ToolTipHelpProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            size={"icon"}
-            variant={"ghost"}
+            size="icon"
+            variant="ghost"
             className="size-8! shrink-0"
           >
             <span className="sr-only">Ajuda</span>
-            <HelpCircleIcon className="shrink-0" />
+            <HelpCircleIcon className="size-4 shrink-0" />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" align="center" className="max-w-[300px] flex flex-col gap-3 p-3">

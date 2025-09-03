@@ -22,15 +22,15 @@ export function PasswordInput({ className, ...props }: PasswordInputProps) {
       <Button
         type="button"
         variant="ghost"
-        size="sm"
-        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+        size="icon"
+        className="absolute right-0 top-0 items-center justify-center size-8 shrink-0 hover:bg-accent-foreground/5!"
         onClick={() => setShowPassword(!showPassword)}
         aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
       >
         {showPassword ? (
-          <EyeOffIcon className="ml-auto h-4 w-4 opacity-50" />
+          <EyeOffIcon className="size-4 shrink-0 opacity-50" />
         ) : (
-          <EyeIcon className="ml-auto h-4 w-4 opacity-50" />
+          <EyeIcon className="size-4 shrink-0 opacity-50" />
         )}
       </Button>
     </div>

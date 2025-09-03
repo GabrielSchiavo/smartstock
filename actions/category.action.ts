@@ -1,7 +1,6 @@
 "use server";
 
 import { auditLogRepository, categoryRepository } from "@/db";
-import { revalidatePath } from "next/cache";
 import {
   type CategoryResponse,
   type SingleCategoryResponse,
@@ -11,6 +10,7 @@ import {
   EntityType,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export async function getAllCategory(): Promise<CategoryResponse> {
   try {
@@ -86,19 +86,25 @@ export async function createCategory(
   }
 
   try {
-    const newCategory = await categoryRepository.create(trimmedName);
+    const newCategory = await db.$transaction(async (tx) => {
+      const newCategory = await categoryRepository.create(trimmedName, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newCategory.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.CATEGORY,
-      changedValue: newCategory.name,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newCategory.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.CATEGORY,
+          changedValue: newCategory.name,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newCategory;
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",
@@ -129,19 +135,23 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
       };
     }
 
-    await categoryRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await categoryRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingCategory.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.CATEGORY,
-      changedValue: existingCategory.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingCategory.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.CATEGORY,
+          changedValue: existingCategory.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",

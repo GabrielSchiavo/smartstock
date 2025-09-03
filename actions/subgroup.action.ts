@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { auditLogRepository, subgroupRepository } from "@/db";
 import {
   EntityType,
@@ -11,6 +10,7 @@ import {
   SubgroupResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const getAllSubgroup = async (): Promise<SubgroupResponse> => {
   try {
@@ -69,19 +69,25 @@ export const createSubgroup = async (
   }
 
   try {
-    const newSubgroup = await subgroupRepository.create(name);
+    const newSubgroup = await db.$transaction(async (tx) => {
+      const newSubgroup = await subgroupRepository.create(name, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: newSubgroup.id,
-      actionType: ActionType.CREATE,
-      entity: EntityType.SUBGROUP,
-      changedValue: newSubgroup.name,
-      details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: newSubgroup.id,
+          actionType: ActionType.CREATE,
+          entity: EntityType.SUBGROUP,
+          changedValue: newSubgroup.name,
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
+
+      return newSubgroup;
     });
 
-    revalidatePath("/");
     return {
       success: true,
       data: newSubgroup,
@@ -114,19 +120,23 @@ export const deleteSubgroup = async (
       };
     }
 
-    await subgroupRepository.delete(id);
+    await db.$transaction(async (tx) => {
+      await subgroupRepository.delete(id, tx);
 
-    await auditLogRepository.create({
-      createdAt: new Date(),
-      userId: user?.id as string,
-      recordChangedId: existingSubgroup.id,
-      actionType: ActionType.DELETE,
-      entity: EntityType.SUBGROUP,
-      changedValue: existingSubgroup.name,
-      details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+      await auditLogRepository.create(
+        {
+          createdAt: new Date(),
+          userId: user?.id as string,
+          recordChangedId: existingSubgroup.id,
+          actionType: ActionType.DELETE,
+          entity: EntityType.SUBGROUP,
+          changedValue: existingSubgroup.name,
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+        },
+        tx
+      );
     });
 
-    revalidatePath("/");
     return {
       success: true,
       title: "Sucesso!",

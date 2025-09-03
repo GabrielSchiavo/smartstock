@@ -1,10 +1,10 @@
 <div align="center">
-    <img width="300" src="./public/assets/images/brand/combo-mark-full.png" alt="Logo SmartStock"/>
+    <img width="250" src="./public/assets/images/brand/combo-mark-full.png" alt="Logo SmartStock"/>
 </div>
 
 <div align="center">
 
-# SmartStock V2 - Gestão de Estoque
+# SmartStock - Gestão de Estoque
 
 </div>
 
@@ -16,7 +16,7 @@
 
 <div align="center">
 
-SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido com novos recursos e refatorações.
+SmartStock é um sistema web com o principal objetivo de controlar de forma eficiente o estoque de produtos, principalmente produtos alimentícios.
 
 </div>
 
@@ -102,7 +102,7 @@ SmartStock V2 é a nova versão do sistema de gestão de estoque desenvolvido co
   <img width="1000" src="./public/assets/images/screenshots/doc/dashboard.png" alt="Screenshot Dashboard"/>
   <img width="1000" src="./public/assets/images/screenshots/doc/stock.png" alt="Screenshot Tabela Estoque"/>
   <img width="1000" src="./public/assets/images/screenshots/doc/cadastre.png" alt="Screenshot Cadastro"/>
-  <img width="1000" src="./public/assets/images/screenshots/doc/receiver.png" alt="Screenshot Relatórios"/>
+  <img width="1000" src="./public/assets/images/screenshots/doc/report.png" alt="Screenshot Relatórios"/>
 </div>
 
 ## ⚙️ Setup e Configuração

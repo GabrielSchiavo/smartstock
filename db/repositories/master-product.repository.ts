@@ -1,10 +1,12 @@
 import { MasterProductResponse, MasterProductUpdateResponse } from "@/types";
 import { db } from "@/lib/db";
-import { MasterProduct, Product } from "@prisma/client";
+import { MasterProduct, Prisma, Product } from "@prisma/client";
 
 export const masterProductRepository = {
-  async create(data: MasterProductResponse): Promise<MasterProduct> {
-    return (await db.masterProduct.create({
+  async create(data: MasterProductResponse, tx?: Prisma.TransactionClient): Promise<MasterProduct> {
+    const client = tx ?? db;
+
+    return (await client.masterProduct.create({
       data: data,
     })) as MasterProduct;
   },
@@ -19,8 +21,10 @@ export const masterProductRepository = {
     return db.masterProduct.count();
   },
 
-  async delete(id: number): Promise<void> {
-    await db.masterProduct.delete({
+  async delete(id: number, tx?: Prisma.TransactionClient): Promise<void> {
+    const client = tx ?? db;
+
+    await client.masterProduct.delete({
       where: { id },
     });
   },
@@ -33,9 +37,12 @@ export const masterProductRepository = {
 
   async update(
     id: number,
-    data: MasterProductUpdateResponse
+    data: MasterProductUpdateResponse,
+    tx?: Prisma.TransactionClient
   ): Promise<MasterProduct> {
-    return await db.masterProduct.update({
+    const client = tx ?? db;
+
+    return await client.masterProduct.update({
       where: { id },
       data,
     });

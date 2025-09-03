@@ -112,7 +112,7 @@ model AuditLog {
   actionType      String  @db.VarChar(30)
   entity          String  @db.VarChar(30)
   changedValue    String? @db.VarChar(150)
-  details         String  @db.VarChar(200)
+  details         String  @db.Text
 
   createdAt DateTime @default(now())
 }
@@ -170,7 +170,7 @@ model StockMovement {
   unit             UnitType
   movementType     String   @db.VarChar(30)
   movementCategory String   @db.VarChar(30)
-  details          String   @db.VarChar(200)
+  details          String   @db.Text
 
   createdAt DateTime @default(now())
 

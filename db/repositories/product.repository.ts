@@ -8,11 +8,15 @@ import {
 } from "@/types";
 import { db } from "@/lib/db";
 import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
+import { omit } from "@/lib/omit";
+import { Prisma } from "@prisma/client";
 
 export const productRepository = {
   async create(
-    data: ProductResponse
+    data: ProductResponse,
+    tx?: Prisma.TransactionClient
   ): Promise<ProductWithMasterProductResponse> {
+    const client = tx ?? db;
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
@@ -28,10 +32,15 @@ export const productRepository = {
     // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const { category, group, subgroup, movementCategory, ...productData } =
-      data;
+    const productData = omit(
+      data,
+      "category",
+      "group",
+      "subgroup",
+      "movementCategory"
+    );
 
-    return (await db.product.create({
+    return (await client.product.create({
       data: productData,
       include: {
         masterProduct: true,
@@ -112,8 +121,10 @@ export const productRepository = {
     });
   },
 
-  async delete(id: number): Promise<void> {
-    await db.product.delete({
+  async delete(id: number, tx?: Prisma.TransactionClient): Promise<void> {
+    const client = tx ?? db;
+
+    await client.product.delete({
       where: { id },
     });
   },
@@ -129,8 +140,11 @@ export const productRepository = {
 
   async update(
     id: number,
-    data: ProductUpdateResponse
+    data: ProductUpdateResponse,
+    tx?: Prisma.TransactionClient
   ): Promise<ProductWithMasterProductResponse> {
+    const client = tx ?? db;
+
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
     if (data.unit !== UnitType.UN) {
       data.unitWeight = null;
@@ -146,10 +160,15 @@ export const productRepository = {
     // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const { category, group, subgroup, movementCategory, ...productData } =
-      data;
+    const productData = omit(
+      data,
+      "category",
+      "group",
+      "subgroup",
+      "movementCategory"
+    );
 
-    return (await db.product.update({
+    return (await client.product.update({
       where: { id },
       data: productData,
       include: {
@@ -158,14 +177,19 @@ export const productRepository = {
     })) as ProductWithMasterProductResponse;
   },
 
-  async updateQuantity({
-    id,
-    quantity,
-  }: {
-    id: number;
-    quantity: number;
-  }): Promise<ProductWithMasterProductResponse> {
-    return (await db.product.update({
+  async updateQuantity(
+    {
+      id,
+      quantity,
+    }: {
+      id: number;
+      quantity: number;
+    },
+    tx?: Prisma.TransactionClient
+  ): Promise<ProductWithMasterProductResponse> {
+    const client = tx ?? db;
+
+    return (await client.product.update({
       where: { id },
       data: { quantity },
       include: {

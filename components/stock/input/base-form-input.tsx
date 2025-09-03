@@ -439,7 +439,6 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Recebedor</FormLabel>
-                        <div className="select-container relative w-full min-w-0">
                           <DynamicCombobox
                             resourceType={ResourceType.RECEIVER}
                             value={field.value ? field.value : ""}
@@ -447,7 +446,6 @@ export const BaseFormInput = forwardRef<
                             disabled={isPending || isEditMode}
                             placeholder="Selecione um recebedor..."
                           />
-                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -516,7 +514,6 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Fornecedor (Opcional)</FormLabel>
-                        <div className="select-container relative w-full min-w-0">
                           <DynamicCombobox
                             resourceType={ResourceType.SUPPLIER}
                             value={field.value ? field.value : ""}
@@ -530,7 +527,6 @@ export const BaseFormInput = forwardRef<
                                 : "Selecione um fornecedor"
                             }
                           />
-                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

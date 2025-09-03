@@ -108,7 +108,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 ## ⚙️ Setup e Configuração
 ### ⚠️ Pré-requisitos:
 
-- **Node.js** >= 20
+- **Node.js** >= 22
 - **Docker**
 - **Docker Compose**
 
@@ -194,8 +194,8 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 * `PostgreSQL - 17.5`
 * `Prisma - 6.15.0`
 * `Auth.js - 5.0.0`
-* `Nodemailer - 7.0.5`
+* `Nodemailer - 7.0.6`
 * `jsPDF - 3.0.2`
-* `Zod - 4.1.3`
+* `Zod - 4.1.5`
 * `Tailwind CSS - 4.1.12`
 * `shadcn/ui`

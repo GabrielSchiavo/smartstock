@@ -1,5 +1,5 @@
-import { MasterProduct, Product } from "@prisma/client";
-import { AdjustmentMovementCategoryType, BaseUnitType, InputMovementCategoryType, OutputMovementCategoryType, ProductType, UnitType } from "@/types";
+import { Product, Receiver, Supplier } from "@prisma/client";
+import { AdjustmentMovementCategoryType, BaseUnitType, InputMovementCategoryType, MasterProductWithCategoryGroupSubgroupResponse, OutputMovementCategoryType, ProductType, UnitType } from "@/types";
 
 export type ProductResponse = {
   masterProductId: number;
@@ -10,9 +10,9 @@ export type ProductResponse = {
   unitOfUnitWeight?: UnitType | null;
   lot: string;
   validityDate: Date;
-  supplier?: string | null;
+  supplierId?: string | null;
   receiptDate: Date;
-  receiver: string;
+  receiverId: string;
   category: string;
   group: string;
   subgroup?: string | null;
@@ -23,7 +23,9 @@ export type ProductResponse = {
 
 // Tipo estendido para produto com informações do produto mestre
 export type ProductWithMasterProductResponse = Product & {
-  masterProduct: MasterProduct;
+  receiver: Receiver;
+  supplier?: Supplier | null;
+  masterProduct: MasterProductWithCategoryGroupSubgroupResponse;
 };
 
 export interface ProductUpdateResponse extends ProductResponse {

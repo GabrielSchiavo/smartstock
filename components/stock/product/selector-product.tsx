@@ -82,7 +82,7 @@ export function SelectorProduct({
             addButton={false}
             data={products}
             columns={columns}
-            groupBy="masterProduct.group"
+            groupBy="masterProduct.group.name"
             isLoading={isLoading}
           />
         </div>

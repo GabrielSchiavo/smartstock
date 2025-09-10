@@ -81,9 +81,9 @@ CREATE TABLE "public"."MasterProduct" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(150) NOT NULL,
     "baseUnit" "public"."BaseUnitType" NOT NULL,
-    "category" VARCHAR(50) NOT NULL,
-    "group" VARCHAR(50) NOT NULL,
-    "subgroup" VARCHAR(50),
+    "categoryId" TEXT NOT NULL,
+    "groupId" TEXT NOT NULL,
+    "subgroupId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -102,8 +102,8 @@ CREATE TABLE "public"."Product" (
     "lot" VARCHAR(50) NOT NULL,
     "validityDate" DATE NOT NULL,
     "receiptDate" DATE NOT NULL,
-    "receiver" VARCHAR(150) NOT NULL,
-    "supplier" VARCHAR(150),
+    "receiverId" TEXT NOT NULL,
+    "supplierId" TEXT,
     "productType" "public"."ProductType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -228,7 +228,22 @@ ALTER TABLE "public"."Notification" ADD CONSTRAINT "Notification_productId_fkey"
 ALTER TABLE "public"."AuditLog" ADD CONSTRAINT "AuditLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "public"."MasterProduct" ADD CONSTRAINT "MasterProduct_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "public"."Category"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."MasterProduct" ADD CONSTRAINT "MasterProduct_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "public"."Group"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."MasterProduct" ADD CONSTRAINT "MasterProduct_subgroupId_fkey" FOREIGN KEY ("subgroupId") REFERENCES "public"."Subgroup"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "public"."Product" ADD CONSTRAINT "Product_masterProductId_fkey" FOREIGN KEY ("masterProductId") REFERENCES "public"."MasterProduct"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Product" ADD CONSTRAINT "Product_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "public"."Receiver"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Product" ADD CONSTRAINT "Product_supplierId_fkey" FOREIGN KEY ("supplierId") REFERENCES "public"."Supplier"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."StockMovement" ADD CONSTRAINT "StockMovement_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -3,7 +3,9 @@ import {
   DonationsReportResponse,
   InventoryReportResponse,
   PurchasedReportResponse,
+  ReceiversReportResponse,
   StockMovementReportResponse,
+  SuppliersReportResponse,
   UnitType,
   ValidityReportResponse,
 } from "@/types";
@@ -183,26 +185,65 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
       `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
     );
 
+    // Grouping table rows
+    const dataGrouping = new Map<string, PurchasedReportResponse[]>();
+    this.data.forEach((item) => {
+      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
+    });
+
     const headers = [
       "ID",
       "Produto",
       "Quantidade",
       "Peso Uni.",
+      "Fornecedor",
       "Data de Receb.",
     ];
-    const columnWidths = [10, 120, 30, 30, 50];
+    const columnWidths = [10, 120, 30, 30, 50, 40];
 
-    // Add items table
-    const rows = this.data.map((item) => [
-      item.id.toString(),
-      item.name,
-      `${item.quantity} ${item.unit}`,
-      `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
-      this.formatDate(item.receiptDate.toString()),
-    ]);
+    for (const [supplier, items] of dataGrouping) {
+      this.checkPageBreak(50);
 
-    this.addTable(headers, columnWidths, rows);
+      // Add grouping header
+      this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
+      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(
+        `Fornecedor: ${supplier}`,
+        this.margins.left,
+        this.currentY
+      );
+      this.currentY += 10;
 
+      // Add items table
+      const rows = items.map((item) => [
+        item.id.toString(),
+        item.name,
+        `${item.quantity} ${item.unit}`,
+        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        item.supplier,
+        this.formatDate(item.receiptDate.toString()),
+      ]);
+
+      this.addTable(headers, columnWidths, rows);
+
+      this.addHorizontalLine(this.currentY);
+      this.currentY += 5;
+
+      // Add supplier total
+      const total = this.calculateTotals(items);
+      const formatted = this.formatTotalValues(total);
+      this.addTotalSection("TOTAL", formatted);
+
+      this.currentY -= 2;
+      this.addHorizontalLine(this.currentY);
+
+      this.currentY += 15;
+    }
+
+    // Add grand total
     this.checkPageBreak(20);
     this.addHorizontalLine(this.currentY);
     this.currentY += 5;
@@ -226,6 +267,208 @@ export const generatePurchasedPdf = async (
   finalDate: string
 ): Promise<Uint8Array> => {
   const generator = new PurchasedPdfGenerator(data, initialDate, finalDate);
+  return generator.generate();
+};
+
+// Receivers PDF Generator
+export class ReceiversPdfGenerator extends BasePdfGenerator {
+  constructor(
+    private data: ReceiversReportResponse[],
+    private initialDate: string,
+    private finalDate: string
+  ) {
+    super(BasePdfGenerator.PDF_CONFIG);
+  }
+
+  public async generate(): Promise<Uint8Array> {
+    this.addTitle("Relatório de Recebedores");
+    this.addSubtitle(
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+    );
+
+    // Grouping table rows
+    const dataGrouping = new Map<string, ReceiversReportResponse[]>();
+    this.data.forEach((item) => {
+      const key = formatEnumValueDisplay(item.receiver, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
+    });
+
+    const headers = [
+      "ID",
+      "Produto",
+      "Quantidade",
+      "Peso Uni.",
+      "Recebedor",
+      "Data de Receb.",
+    ];
+    const columnWidths = [10, 120, 30, 30, 50, 40];
+
+    for (const [supplier, items] of dataGrouping) {
+      this.checkPageBreak(50);
+
+      // Add grouping header
+      this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
+      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(
+        `Fornecedor: ${supplier}`,
+        this.margins.left,
+        this.currentY
+      );
+      this.currentY += 10;
+
+      // Add items table
+      const rows = items.map((item) => [
+        item.id.toString(),
+        item.name,
+        `${item.quantity} ${item.unit}`,
+        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        item.receiver,
+        this.formatDate(item.receiptDate.toString()),
+      ]);
+
+      this.addTable(headers, columnWidths, rows);
+
+      this.addHorizontalLine(this.currentY);
+      this.currentY += 5;
+
+      // Add supplier total
+      const total = this.calculateTotals(items);
+      const formatted = this.formatTotalValues(total);
+      this.addTotalSection("TOTAL", formatted);
+
+      this.currentY -= 2;
+      this.addHorizontalLine(this.currentY);
+
+      this.currentY += 15;
+    }
+
+    // Add grand total
+    this.checkPageBreak(20);
+    this.addHorizontalLine(this.currentY);
+    this.currentY += 5;
+
+    const mainTotal = this.calculateTotals(this.data);
+    const mainTotalFormatted = this.formatTotalValues(mainTotal);
+    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+
+    this.currentY -= 2;
+    this.addHorizontalLine(this.currentY);
+
+    this.addFooter();
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
+  }
+}
+
+export const generateReceiversPdf = async (
+  data: ReceiversReportResponse[],
+  initialDate: string,
+  finalDate: string
+): Promise<Uint8Array> => {
+  const generator = new ReceiversPdfGenerator(data, initialDate, finalDate);
+  return generator.generate();
+};
+
+// Suppliers PDF Generator
+export class SuppliersPdfGenerator extends BasePdfGenerator {
+  constructor(
+    private data: SuppliersReportResponse[],
+    private initialDate: string,
+    private finalDate: string
+  ) {
+    super(BasePdfGenerator.PDF_CONFIG);
+  }
+
+  public async generate(): Promise<Uint8Array> {
+    this.addTitle("Relatório de Fornecedores");
+    this.addSubtitle(
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+    );
+
+    // Grouping table rows
+    const dataGrouping = new Map<string, SuppliersReportResponse[]>();
+    this.data.forEach((item) => {
+      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const group = dataGrouping.get(key) ?? [];
+      group.push(item);
+      dataGrouping.set(key, group);
+    });
+
+    const headers = [
+      "ID",
+      "Produto",
+      "Quantidade",
+      "Peso Uni.",
+      "Fornecedor",
+      "Data de Receb.",
+    ];
+    const columnWidths = [10, 120, 30, 30, 50, 40];
+
+    for (const [supplier, items] of dataGrouping) {
+      this.checkPageBreak(50);
+
+      // Add grouping header
+      this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
+      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(
+        `Fornecedor: ${supplier}`,
+        this.margins.left,
+        this.currentY
+      );
+      this.currentY += 10;
+
+      // Add items table
+      const rows = items.map((item) => [
+        item.id.toString(),
+        item.name,
+        `${item.quantity} ${item.unit}`,
+        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        item.supplier,
+        this.formatDate(item.receiptDate.toString()),
+      ]);
+
+      this.addTable(headers, columnWidths, rows);
+
+      this.addHorizontalLine(this.currentY);
+      this.currentY += 5;
+
+      // Add supplier total
+      const total = this.calculateTotals(items);
+      const formatted = this.formatTotalValues(total);
+      this.addTotalSection("TOTAL", formatted);
+
+      this.currentY -= 2;
+      this.addHorizontalLine(this.currentY);
+
+      this.currentY += 15;
+    }
+
+    // Add grand total
+    this.checkPageBreak(20);
+    this.addHorizontalLine(this.currentY);
+    this.currentY += 5;
+
+    const mainTotal = this.calculateTotals(this.data);
+    const mainTotalFormatted = this.formatTotalValues(mainTotal);
+    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+
+    this.currentY -= 2;
+    this.addHorizontalLine(this.currentY);
+
+    this.addFooter();
+    const arrayBuffer = this.doc.output("arraybuffer");
+    return new Uint8Array(arrayBuffer);
+  }
+}
+
+export const generateSuppliersPdf = async (
+  data: SuppliersReportResponse[],
+  initialDate: string,
+  finalDate: string
+): Promise<Uint8Array> => {
+  const generator = new SuppliersPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
 };
 

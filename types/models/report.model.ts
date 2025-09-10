@@ -38,6 +38,29 @@ export type PurchasedReportResponse = {
   unit: UnitType;
   unitWeight?: number;
   unitOfUnitWeight?: UnitType;
+  supplier: string;
+  receiptDate: Date;
+};
+
+export type ReceiversReportResponse = {
+  id: number;
+  name: string;
+  quantity: number;
+  unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
+  receiver: string;
+  receiptDate: Date;
+};
+
+export type SuppliersReportResponse = {
+  id: number;
+  name: string;
+  quantity: number;
+  unit: UnitType;
+  unitWeight?: number;
+  unitOfUnitWeight?: UnitType;
+  supplier: string;
   receiptDate: Date;
 };
 
@@ -72,6 +95,8 @@ export type ReportDataResponse =
   | DonationsReportResponse[]
   | PurchasedReportResponse[]
   | InventoryReportResponse[]
+  | ReceiversReportResponse[]
+  | SuppliersReportResponse[]
   | StockMovementReportResponse[];
 
 export type DateRangeParams = {

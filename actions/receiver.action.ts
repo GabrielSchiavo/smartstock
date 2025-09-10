@@ -152,11 +152,11 @@ export const deleteReceiver = async (
 };
 
 export const checkReceiverUsage = async (
-  receiverName: string
+  receiverId: string
 ): Promise<CheckReceiverResponse> => {
   try {
     const productWithReceiver =
-      await receiverRepository.checkInProducts(receiverName);
+      await receiverRepository.checkInProducts(receiverId);
 
     return {
       isUsed: !!productWithReceiver,

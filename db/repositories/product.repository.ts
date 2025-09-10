@@ -44,7 +44,15 @@ export const productRepository = {
     return (await client.product.create({
       data: productData,
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
     })) as ProductWithMasterProductResponse;
   },
@@ -52,7 +60,15 @@ export const productRepository = {
   async findAll(): Promise<ProductWithMasterProductResponse[]> {
     return await db.product.findMany({
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: { id: "asc" },
     });
@@ -94,7 +110,15 @@ export const productRepository = {
         validityDate: { lte: currentDate }, // Incluindo o dia atual
       },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: {
         validityDate: "asc",
@@ -114,7 +138,15 @@ export const productRepository = {
         },
       },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: {
         validityDate: "asc",
@@ -134,7 +166,13 @@ export const productRepository = {
     return (await db.product.findUnique({
       where: { id },
       include: {
-        masterProduct: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
     })) as ProductWithMasterProductResponse | null;
   },
@@ -174,7 +212,15 @@ export const productRepository = {
       where: { id },
       data: productData,
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
     })) as ProductWithMasterProductResponse;
   },
@@ -195,7 +241,15 @@ export const productRepository = {
       where: { id },
       data: { quantity },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
     })) as ProductWithMasterProductResponse;
   },
@@ -207,7 +261,15 @@ export const productRepository = {
     return db.product.findMany({
       where: { validityDate: { gte: initialDate, lte: finalDate } },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: { validityDate: "asc" },
     });
@@ -225,7 +287,15 @@ export const productRepository = {
         ],
       },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: { receiptDate: "asc" },
     });
@@ -241,7 +311,64 @@ export const productRepository = {
         receiptDate: { gte: initialDate, lte: finalDate },
       },
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
+      },
+      orderBy: { receiptDate: "asc" },
+    });
+  },
+
+  async findAllByReceiptDate(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<ProductWithMasterProductResponse[]> {
+    return db.product.findMany({
+      where: {
+        receiptDate: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
+      },
+      orderBy: { receiptDate: "asc" },
+    });
+  },
+
+  async findBySuppliers(
+    initialDate: Date,
+    finalDate: Date
+  ): Promise<ProductWithMasterProductResponse[]> {
+    return db.product.findMany({
+      where: {
+        supplierId: {
+          not: null
+        },
+        receiptDate: { gte: initialDate, lte: finalDate },
+      },
+      include: {
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: { receiptDate: "asc" },
     });
@@ -250,7 +377,15 @@ export const productRepository = {
   async findInventory(): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       include: {
-        masterProduct: true,
+        receiver: true,
+        supplier: true,
+        masterProduct: {
+          include: {
+            category: true,
+            group: true,
+            subgroup: true,
+          },
+        },
       },
       orderBy: { validityDate: "asc" },
     });

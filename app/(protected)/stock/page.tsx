@@ -37,7 +37,7 @@ export default async function StockFoodPage() {
             <ClientDataTableProduct
               products={products}
               addButton={false}
-              groupBy="masterProduct.group"
+              groupBy="masterProduct.group.name"
             />
           </div>
         </div>

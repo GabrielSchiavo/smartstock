@@ -28,6 +28,8 @@ const enumTranslations: Record<string, string> = {
   [ReportType.DONATIONS]: "Doações",
   // [ReportType.PURCHASED]: "Compras",
   [ReportType.INVENTORY]: "Inventário",
+  [ReportType.RECEIVERS]: "Recebedores",
+  [ReportType.SUPPLIERS]: "Fornecedores",
   [ReportType.INPUTS]: "Entradas",
   [ReportType.OUTPUTS]: "Saídas",
   [ReportType.ADJUSTMENTS]: "Ajustes",

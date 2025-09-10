@@ -17,30 +17,18 @@ export const CreateEditMasterProductSchema = z.object({
         ? "Selecione uma unidade de medida base"
         : undefined,
   }),
-  category: z
+  categoryId: z.string().trim().min(2, {
+    error: "Categoria é obrigatório",
+  }),
+  groupId: z.string().trim().min(2, {
+    error: "Grupo é obrigatório",
+  }),
+  subgroupId: z
     .string()
     .trim()
     .min(2, {
-      error: "Categoria é obrigatório",
+      error: "Subgrupo é obrigatório",
     })
-    .max(50, {
-      error: "Categoria deve ter no máximo 50 caracteres",
-    }),
-  group: z
-    .string()
-    .trim()
-    .min(2, {
-      error: "Grupo é obrigatório",
-    })
-    .max(50, {
-      error: "Grupo deve ter no máximo 50 caracteres",
-    }),
-  subgroup: z
-    .string()
-    .trim()
-    .min(2)
-    .max(50, {
-      error: "Subgrupo deve ter no máximo 50 caracteres",
-    })
+    .nullable()
     .optional(),
 });

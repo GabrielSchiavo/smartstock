@@ -1,4 +1,4 @@
-import { OptionProps, ProductWithMasterProductResponse } from "@/types";
+import { MasterProductWithCategoryGroupSubgroupResponse, OptionProps, ProductWithMasterProductResponse } from "@/types";
 import { AlertType, Product } from "@prisma/client";
 import { ToastType } from "@/types";
 
@@ -31,14 +31,14 @@ export interface BaseDynamicComboboxProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   inputValue: string;
-  setInputValue: (value: string) => void;
+  setInputValue: (value: string | null) => void;
   options: OptionProps[];
   isPending: boolean;
   allowCreate: boolean;
   allowDelete: boolean;
   handleCreateNew: () => void;
   handleSelect: (option: OptionProps) => void;
-  handleDelete: (id: string, name: string) => void;
+  handleDelete: (id: string) => void;
   className?: string;
   resourceName: string;
 }
@@ -73,6 +73,14 @@ export interface LogoWithTextProps {
 export interface SelectorProductProps {
   products: ProductWithMasterProductResponse[];
   onSelect: (product: ProductWithMasterProductResponse) => void;
+  selectedId?: string;
+  disabled?: boolean;
+  isLoading: boolean;
+}
+
+export interface SelectorMasterProductProps {
+  masterProducts: MasterProductWithCategoryGroupSubgroupResponse[];
+  onSelect: (masterProduct: MasterProductWithCategoryGroupSubgroupResponse) => void;
   selectedId?: string;
   disabled?: boolean;
   isLoading: boolean;

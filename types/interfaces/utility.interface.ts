@@ -1,5 +1,4 @@
 import { PdfUnitType, BaseUnitType, UnitType, ValidityStatusType } from "@/types/enums/enums";
-import { MasterProduct } from "@prisma/client";
 
 export interface PdfConfigProps {
   orientation?: "portrait" | "landscape";
@@ -64,14 +63,6 @@ export interface TotalValuesWithUnitsProps {
     unit: BaseUnitType.UN;
     formatted: string;
   };
-}
-
-export interface SelectorMasterProductProps {
-  masterProducts: MasterProduct[];
-  onSelect: (masterProduct: MasterProduct) => void;
-  selectedId?: string;
-  disabled?: boolean;
-  isLoading: boolean;
 }
 
 // check-expiry-status.ts

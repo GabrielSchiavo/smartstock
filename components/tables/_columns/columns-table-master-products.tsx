@@ -4,20 +4,21 @@ import { ColumnDef, FilterFn } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
-import { MasterProduct } from "@prisma/client";
-import { ColumnMetaProps, ColumnsTableMasterProductsProps } from "@/types";
+import {
+  ColumnMetaProps,
+  ColumnsTableMasterProductsProps,
+  MasterProductWithCategoryGroupSubgroupResponse,
+} from "@/types";
 import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
 import { FormEditMasterProduct } from "@/components/stock/master-product/form-edit-master-product";
 import { deleteMasterProduct } from "@/actions";
 
 // Função para escolher as colunas pesquisáveis
-const multiColumnFilterFn: FilterFn<MasterProduct> = (
-  row,
-  columnId,
-  filterValue
-) => {
+const multiColumnFilterFn: FilterFn<
+  MasterProductWithCategoryGroupSubgroupResponse
+> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string for search columns
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.baseUnit} ${row.original.category} ${row.original.group} ${row.original.subgroup}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.baseUnit} ${row.original.category.name} ${row.original.group.name} ${row.original.subgroup?.name}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -27,7 +28,7 @@ export const columnsTableMasterProducts = ({
   isSelectingAction = false,
   onSelect,
   selectedMasterProductId,
-}: ColumnsTableMasterProductsProps): ColumnDef<MasterProduct>[] => [
+}: ColumnsTableMasterProductsProps): ColumnDef<MasterProductWithCategoryGroupSubgroupResponse>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -85,7 +86,7 @@ export const columnsTableMasterProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "category",
+    accessorKey: "category.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Categoria" />
     ),
@@ -94,7 +95,7 @@ export const columnsTableMasterProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "group",
+    accessorKey: "group.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grupo" />
     ),
@@ -103,18 +104,11 @@ export const columnsTableMasterProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "subgroup",
+    accessorKey: "subgroup.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Subgrupo" />
     ),
-    cell: ({ row }) => {
-      const subgroup = row.getValue("subgroup");
-      if (subgroup === null || subgroup === undefined) {
-        return "-";
-      } else {
-        return subgroup;
-      }
-    },
+    cell: ({ row }) => row.original.subgroup?.name || "-",
     meta: {
       title: "Subgrupo",
     } as ColumnMetaProps,

@@ -48,9 +48,9 @@ export const BaseFormMasterProduct = forwardRef<
       defaultValues: defaultValues || {
         name: "",
         baseUnit: undefined,
-        category: "",
-        group: "",
-        subgroup: undefined,
+        categoryId: "",
+        groupId: "",
+        subgroupId: undefined,
       },
     });
 
@@ -123,51 +123,51 @@ export const BaseFormMasterProduct = forwardRef<
                 </div>
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="categoryId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Categoria</FormLabel>
-                        <DynamicCombobox
-                          resourceType={ResourceType.CATEGORY}
-                          value={field.value ? field.value : ""}
-                          onChange={field.onChange}
-                          disabled={isPending}
-                          placeholder="Selecione uma Categoria..."
-                        />
+                      <DynamicCombobox
+                        resourceType={ResourceType.CATEGORY}
+                        value={field.value ? field.value : ""}
+                        onChange={field.onChange}
+                        disabled={isPending}
+                        placeholder="Selecione uma Categoria..."
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="group"
+                  name="groupId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Grupo</FormLabel>
-                        <DynamicCombobox
-                          resourceType={ResourceType.GROUP}
-                          value={field.value ? field.value : ""}
-                          onChange={field.onChange}
-                          disabled={isPending}
-                          placeholder="Selecione um Grupo..."
-                        />
+                      <DynamicCombobox
+                        resourceType={ResourceType.GROUP}
+                        value={field.value ? field.value : ""}
+                        onChange={field.onChange}
+                        disabled={isPending}
+                        placeholder="Selecione um Grupo..."
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="subgroup"
+                  name="subgroupId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Subgrupo (Opcional)</FormLabel>
-                        <DynamicCombobox
-                          resourceType={ResourceType.SUBGROUP}
-                          value={field.value ? field.value : ""}
-                          onChange={field.onChange}
-                          disabled={isPending}
-                          placeholder="Selecione um Subgrupo..."
-                        />
+                      <DynamicCombobox
+                        resourceType={ResourceType.SUBGROUP}
+                        value={field.value ? field.value : ""}
+                        onChange={field.onChange}
+                        disabled={isPending}
+                        placeholder="Selecione um Subgrupo..."
+                      />
                       <FormMessage />
                     </FormItem>
                   )}

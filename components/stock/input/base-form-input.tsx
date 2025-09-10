@@ -35,11 +35,11 @@ import {
   UnitType,
   ExtendedFormBaseInputProductProps,
   BaseUnitType,
+  MasterProductWithCategoryGroupSubgroupResponse,
 } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
-import { MasterProduct } from "@prisma/client";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
@@ -72,9 +72,9 @@ export const BaseFormInput = forwardRef<
         unitOfUnitWeight: undefined,
         lot: "",
         validityDate: undefined,
-        supplier: undefined,
+        supplierId: undefined,
         receiptDate: undefined,
-        receiver: "",
+        receiverId: "",
         productType: undefined,
         category: "",
         group: "",
@@ -105,7 +105,7 @@ export const BaseFormInput = forwardRef<
     const prevRef = useRef(isSupplierDisabled);
     useEffect(() => {
       if (!prevRef.current && isSupplierDisabled) {
-        form.setValue("supplier", undefined, {
+        form.setValue("supplierId", undefined, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
@@ -132,21 +132,21 @@ export const BaseFormInput = forwardRef<
     }, [isUnitWeightDisabled, form]);
 
     // Função para lidar com a seleção do produto mestre
-    const handleMasterProductSelect = (masterProduct: MasterProduct) => {
+    const handleMasterProductSelect = (masterProduct: MasterProductWithCategoryGroupSubgroupResponse) => {
       form.setValue("masterProductId", masterProduct.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("category", masterProduct.category, {
+      form.setValue("category", masterProduct.category.name, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("group", masterProduct.group, {
+      form.setValue("group", masterProduct.group.name, {
         shouldValidate: true,
         shouldDirty: true,
       });
       if (masterProduct.subgroup) {
-        form.setValue("subgroup", masterProduct.subgroup, {
+        form.setValue("subgroup", masterProduct.subgroup.name, {
           shouldValidate: true,
           shouldDirty: true,
         });
@@ -464,7 +464,7 @@ export const BaseFormInput = forwardRef<
                 <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
                   <FormField
                     control={form.control}
-                    name="receiver"
+                    name="receiverId"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Recebedor</FormLabel>
@@ -539,7 +539,7 @@ export const BaseFormInput = forwardRef<
 
                   <FormField
                     control={form.control}
-                    name="supplier"
+                    name="supplierId"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Fornecedor (Opcional)</FormLabel>

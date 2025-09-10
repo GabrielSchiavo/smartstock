@@ -1,19 +1,36 @@
-import { MasterProductResponse, MasterProductUpdateResponse } from "@/types";
+import {
+  MasterProductResponse,
+  MasterProductUpdateResponse,
+  MasterProductWithCategoryGroupSubgroupResponse,
+} from "@/types";
 import { db } from "@/lib/db";
 import { MasterProduct, Prisma, Product } from "@prisma/client";
 
 export const masterProductRepository = {
-  async create(data: MasterProductResponse, tx?: Prisma.TransactionClient): Promise<MasterProduct> {
+  async create(
+    data: MasterProductResponse,
+    tx?: Prisma.TransactionClient
+  ): Promise<MasterProduct> {
     const client = tx ?? db;
 
     return (await client.masterProduct.create({
       data: data,
+      include: {
+        category: true,
+        group: true,
+        subgroup: true,
+      },
     })) as MasterProduct;
   },
 
-  async findAll(): Promise<MasterProduct[]> {
+  async findAll(): Promise<MasterProductWithCategoryGroupSubgroupResponse[]> {
     return await db.masterProduct.findMany({
       orderBy: { id: "asc" },
+      include: {
+        category: true,
+        group: true,
+        subgroup: true,
+      },
     });
   },
 
@@ -26,12 +43,22 @@ export const masterProductRepository = {
 
     await client.masterProduct.delete({
       where: { id },
+      include: {
+        category: true,
+        group: true,
+        subgroup: true,
+      },
     });
   },
 
   async findById(id: number): Promise<MasterProduct | null> {
     return await db.masterProduct.findUnique({
       where: { id },
+      include: {
+        category: true,
+        group: true,
+        subgroup: true,
+      },
     });
   },
 
@@ -45,6 +72,11 @@ export const masterProductRepository = {
     return await client.masterProduct.update({
       where: { id },
       data,
+      include: {
+        category: true,
+        group: true,
+        subgroup: true,
+      },
     });
   },
 

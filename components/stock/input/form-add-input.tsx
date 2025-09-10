@@ -2,19 +2,18 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { getMasterProducts, registerInput } from "@/actions";
-import { FormAddEditProps, ToastType } from "@/types";
+import { FormAddEditProps, MasterProductWithCategoryGroupSubgroupResponse, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateInputEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
-import { MasterProduct } from "@prisma/client";
 import { BaseFormInput } from "@/components/stock/input/base-form-input";
 
 export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>> | null>(null);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
+  const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // função reutilizável de carregar produtos mestres

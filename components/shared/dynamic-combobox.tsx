@@ -25,7 +25,7 @@ import {
 import { DynamicComboboxProps, ResourceType } from "@/types";
 import { BaseDynamicCombobox } from "@/components/shared/base-dynamic-combobox";
 import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { checkCategoryUsage, createCategory, deleteCategory, getAllCategory, searchCategory } from "@/actions/category.action";
 
 export function DynamicCombobox({
@@ -108,14 +108,8 @@ export function DynamicCombobox({
     handleDelete,
   } = useDynamicCombobox(api, resourceConfig.resourceName, value, onChange);
 
-  useEffect(() => {
-    if (!value) {
-      setInputValue("");
-    }
-  }, [value, setInputValue]);
-
   const displayValue = value
-    ? options.find((option) => option.name === value)?.name || value
+    ? options.find((option) => option.id === value)?.name || placeholder
     : placeholder;
 
   return (

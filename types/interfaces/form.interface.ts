@@ -5,11 +5,10 @@ import {
   CreateOutputSchema,
 } from "@/schemas";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { ModeType, ReportDataResponse, ReportType, ResourceType } from "@/types";
+import { MasterProductWithCategoryGroupSubgroupResponse, ModeType, ReportDataResponse, ReportType, ResourceType } from "@/types";
 import { DeleteActionResponse } from "@/types";
 import { z } from "zod";
 import { ReactNode } from "react";
-import { MasterProduct } from "@prisma/client";
 
 export interface DatePickerFormProps<T extends FieldValues> {
   field: ControllerRenderProps<T, Path<T>>;
@@ -28,8 +27,8 @@ export interface DynamicComboboxProps {
 }
 
 export interface OptionProps {
-  id: string;
-  name: string;
+  id: string | null;
+  name: string | null;
 }
 
 export interface FormAddEditProps {
@@ -130,5 +129,5 @@ export interface FormBaseInputProductProps {
 
 export interface ExtendedFormBaseInputProductProps
   extends FormBaseInputProductProps {
-  masterProducts: MasterProduct[];
+  masterProducts: MasterProductWithCategoryGroupSubgroupResponse[];
 }

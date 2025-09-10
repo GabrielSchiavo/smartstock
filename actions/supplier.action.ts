@@ -176,11 +176,11 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
 }
 
 export async function checkSupplierUsage(
-  supplierName: string
+  supplierId: string
 ): Promise<CheckSupplierResponse> {
   try {
     const productWithSupplier =
-      await supplierRepository.checkInProducts(supplierName);
+      await supplierRepository.checkInProducts(supplierId);
 
     return {
       isUsed: !!productWithSupplier,

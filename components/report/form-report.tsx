@@ -21,6 +21,8 @@ import {
   generateInventoryReport,
   generateOutputsReport,
   generatePurchasedReport,
+  generateReceiversReport,
+  generateSuppliersReport,
   generateValidityReport,
 } from "@/actions";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -81,6 +83,18 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
             break;
           case ReportType.PURCHASED:
             response = await generatePurchasedReport(
+              values.initialDate!,
+              values.finalDate!
+            );
+            break;
+          case ReportType.RECEIVERS:
+            response = await generateReceiversReport(
+              values.initialDate!,
+              values.finalDate!
+            );
+            break;
+          case ReportType.SUPPLIERS:
+            response = await generateSuppliersReport(
               values.initialDate!,
               values.finalDate!
             );
@@ -208,7 +222,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               <TooltipItem>
                                 <p className="text-sm">
                                   <span className="font-semibold">
-                                    Validades
+                                    {formatEnumValueDisplay(
+                                      ReportType.VALIDITY,
+                                      "capitalize"
+                                    )}
                                   </span>{" "}
                                   - Gera um relatório de todos os items com suas
                                   respectivas validades em um determinado
@@ -217,7 +234,12 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               </TooltipItem>
                               <TooltipItem>
                                 <p className="text-sm">
-                                  <span className="font-semibold">Doados</span>{" "}
+                                  <span className="font-semibold">
+                                    {formatEnumValueDisplay(
+                                      ReportType.DONATIONS,
+                                      "capitalize"
+                                    )}
+                                  </span>{" "}
                                   - Gera um relatório de todos os items doados
                                   em um determinado período
                                 </p>
@@ -234,7 +256,35 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               <TooltipItem>
                                 <p className="text-sm">
                                   <span className="font-semibold">
-                                    Inventário
+                                    {formatEnumValueDisplay(
+                                      ReportType.RECEIVERS,
+                                      "capitalize"
+                                    )}
+                                  </span>{" "}
+                                  - Gera um relatório de todos os recebedores e
+                                  seus items recebidos em um determinado período
+                                </p>
+                              </TooltipItem>
+                              <TooltipItem>
+                                <p className="text-sm">
+                                  <span className="font-semibold">
+                                    {formatEnumValueDisplay(
+                                      ReportType.SUPPLIERS,
+                                      "capitalize"
+                                    )}
+                                  </span>{" "}
+                                  - Gera um relatório de todos os Fornecedores e
+                                  seus items fornecidos em um determinado
+                                  período
+                                </p>
+                              </TooltipItem>
+                              <TooltipItem>
+                                <p className="text-sm">
+                                  <span className="font-semibold">
+                                    {formatEnumValueDisplay(
+                                      ReportType.INVENTORY,
+                                      "capitalize"
+                                    )}
                                   </span>{" "}
                                   - Gera um relatório de todos os produtos
                                   cadastrados no sistema em um determinado
@@ -244,7 +294,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               <TooltipItem>
                                 <p className="text-sm">
                                   <span className="font-semibold">
-                                    Entradas
+                                    {formatEnumValueDisplay(
+                                      ReportType.INPUTS,
+                                      "capitalize"
+                                    )}
                                   </span>{" "}
                                   - Gera um relatório de todas as entradas em um
                                   determinado período
@@ -252,14 +305,24 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                               </TooltipItem>
                               <TooltipItem>
                                 <p className="text-sm">
-                                  <span className="font-semibold">Saídas</span>{" "}
+                                  <span className="font-semibold">
+                                    {formatEnumValueDisplay(
+                                      ReportType.OUTPUTS,
+                                      "capitalize"
+                                    )}
+                                  </span>{" "}
                                   - Gera um relatório de todas as saídas em um
                                   determinado período
                                 </p>
                               </TooltipItem>
                               <TooltipItem>
                                 <p className="text-sm">
-                                  <span className="font-semibold">Ajustes</span>{" "}
+                                  <span className="font-semibold">
+                                    {formatEnumValueDisplay(
+                                      ReportType.ADJUSTMENTS,
+                                      "capitalize"
+                                    )}
+                                  </span>{" "}
                                   - Gera um relatório de todos os ajustes em um
                                   determinado período
                                 </p>
@@ -280,7 +343,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.VALIDITY, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.VALIDITY,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -290,7 +356,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.DONATIONS, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.DONATIONS,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -300,7 +369,33 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.PURCHASED, "capitalize")}
+                                    Comprados
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.RECEIVERS}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(
+                                      ReportType.RECEIVERS,
+                                      "capitalize"
+                                    )}
+                                  </FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center">
+                                  <FormControl>
+                                    <RadioGroupItem
+                                      value={ReportType.SUPPLIERS}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {formatEnumValueDisplay(
+                                      ReportType.SUPPLIERS,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -310,7 +405,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.INVENTORY, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.INVENTORY,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -318,7 +416,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     <RadioGroupItem value={ReportType.INPUTS} />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.INPUTS, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.INPUTS,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -328,7 +429,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.OUTPUTS, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.OUTPUTS,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -338,7 +442,10 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(ReportType.ADJUSTMENTS, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      ReportType.ADJUSTMENTS,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                               </div>

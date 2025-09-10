@@ -1,4 +1,4 @@
-import { useState, useEffect, useTransition, useRef } from "react";
+import { useState, useEffect, useTransition, useRef, useCallback } from "react";
 import { ComboboxApiParams, OptionProps, ToastType } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -14,8 +14,9 @@ export function useDynamicCombobox(
   const nameRef = useRef(resourceName);
 
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
-  const debouncedInputValue = useDebounce(inputValue, debounceDelay); // Usando o hook de debounce
+  const [inputValue, setInputValue] = useState("");
+  const [isUserTyping, setIsUserTyping] = useState(false);
+  const debouncedInputValue = useDebounce(inputValue, debounceDelay);
   const [options, setOptions] = useState<OptionProps[]>([]);
   const [, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
@@ -28,10 +29,43 @@ export function useDynamicCombobox(
     nameRef.current = resourceName;
   }, [api, resourceName]);
 
-  // Sincroniza inputValue com value externo
+  // Função para carregar opções iniciais
+  const loadInitialOptions = useCallback(async () => {
+    if (!value || options.length > 0) return;
+    
+    setIsLoading(true);
+    try {
+      const response = await apiRef.current.getAll({});
+      if (response?.success) {
+        setOptions(Array.isArray(response.data) ? response.data : []);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar opções iniciais:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [value, options.length]);
+
+  // Carrega opções iniciais se necessário
   useEffect(() => {
-    setInputValue(value || "");
-  }, [value]);
+    if (value && options.length === 0 && !open) {
+      loadInitialOptions();
+    }
+  }, [value, options.length, loadInitialOptions, open]);
+
+  // Sincroniza inputValue com o name da opção selecionada (apenas quando não está digitando)
+  useEffect(() => {
+    if (isUserTyping || open) return; // Não interfere quando usuário está digitando ou popover está aberto
+    
+    if (value && options.length > 0) {
+      const selectedOption = options.find(option => option.id === value);
+      if (selectedOption) {
+        setInputValue(selectedOption.name as string);
+      }
+    } else if (!value) {
+      setInputValue("");
+    }
+  }, [value, options, isUserTyping, open]);
 
   // Carrega opções quando o popover abre ou quando inputValue muda
   useEffect(() => {
@@ -93,6 +127,35 @@ export function useDynamicCombobox(
     };
   }, [open, debouncedInputValue]);
 
+  // Handler personalizado para mudanças no input
+  const handleInputValueChange = (newValue: string | null) => {
+    setInputValue(newValue as string);
+    setIsUserTyping(true);
+  };
+
+  // Handler para quando o popover abre
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    
+    if (newOpen) {
+      // Quando abre, prepara o input com o valor atual se houver seleção
+      if (value && options.length > 0) {
+        const selectedOption = options.find(option => option.id === value);
+        if (selectedOption) {
+          setInputValue(selectedOption.name as string);
+        }
+      }
+      setIsUserTyping(false);
+    } else {
+      // Quando fecha, para de considerar que está digitando
+      setIsUserTyping(false);
+      // Se não há seleção, limpa o input
+      if (!value) {
+        setInputValue("");
+      }
+    }
+  };
+
   const handleCreateNew = async () => {
     if (!inputValue) return;
 
@@ -106,8 +169,9 @@ export function useDynamicCombobox(
           description: `${resourceName} criado com sucesso.`,
           type: ToastType.SUCCESS,
         });
-        onChange(response.data.name);
-        setInputValue(response.data.name);
+        onChange(response.data.id as string);
+        setInputValue(response.data.name as string);
+        setIsUserTyping(false);
         setOpen(false);
 
         const updatedResponse = await api.getAll({
@@ -136,15 +200,16 @@ export function useDynamicCombobox(
   };
 
   const handleSelect = (option: OptionProps) => {
-    onChange(option.name);
-    setInputValue(option.name);
+    onChange(option.id as string);
+    setInputValue(option.name as string);
+    setIsUserTyping(false);
     setOpen(false);
   };
 
-  const handleDelete = async (optionId: string, optionName: string) => {
+  const handleDelete = async (optionId: string) => {
     setIsLoading(true);
     try {
-      const { isUsed } = await api.checkUsage(optionName);
+      const { isUsed } = await api.checkUsage(optionId);
 
       if (isUsed) {
         showToast({
@@ -165,9 +230,10 @@ export function useDynamicCombobox(
           type: ToastType.SUCCESS,
         });
 
-        if (value === optionName) {
+        if (value === optionId) {
           onChange("");
           setInputValue("");
+          setIsUserTyping(false);
         }
         const updatedResponse = await api.getAll({
           signal: abortControllerRef.current?.signal,
@@ -196,9 +262,9 @@ export function useDynamicCombobox(
 
   return {
     open,
-    setOpen,
+    setOpen: handleOpenChange,
     inputValue,
-    setInputValue,
+    setInputValue: handleInputValueChange,
     options,
     isLoading,
     handleCreateNew,

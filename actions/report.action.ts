@@ -7,8 +7,10 @@ import {
   InventoryReportResponse,
   ProductType,
   PurchasedReportResponse,
+  ReceiversReportResponse,
   ReportResponse,
   StockMovementReportResponse,
+  SuppliersReportResponse,
   UnitType,
   ValidityReportResponse,
 } from "@/types";
@@ -78,7 +80,7 @@ export const generateDonationsReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
-      supplier: product.supplier || "Não informado",
+      supplier: product.supplier?.name || "Não informado",
       receiptDate: product.receiptDate,
     }));
 
@@ -116,6 +118,7 @@ export const generatePurchasedReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
+      supplier: product.supplier?.name || "Não informado",
       receiptDate: product.receiptDate,
     }));
 
@@ -136,7 +139,85 @@ export const generatePurchasedReport = async (
   }
 };
 
-export const generateInventoryReport = async (): Promise<ReportResponse<InventoryReportResponse>> => {
+export const generateReceiversReport = async (
+  initialDate: Date,
+  finalDate: Date
+): Promise<ReportResponse<ReceiversReportResponse>> => {
+  try {
+    const products = await productRepository.findAllByReceiptDate(
+      initialDate,
+      finalDate
+    );
+
+    const reportData = products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      quantity: product.quantity,
+      unit: product.unit as UnitType,
+      unitWeight: product.unitWeight!,
+      unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
+      receiver: product.receiver.name,
+      receiptDate: product.receiptDate,
+    }));
+
+    revalidatePath(ROUTES.PAGE_REPORTS);
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de recebedores gerado com sucesso.",
+      data: reportData,
+    };
+  } catch (error) {
+    console.error("Erro ao gerar relatório de recebedores:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de recebedores.",
+    };
+  }
+};
+
+export const generateSuppliersReport = async (
+  initialDate: Date,
+  finalDate: Date
+): Promise<ReportResponse<SuppliersReportResponse>> => {
+  try {
+    const products = await productRepository.findBySuppliers(
+      initialDate,
+      finalDate
+    );
+
+    const reportData = products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      quantity: product.quantity,
+      unit: product.unit as UnitType,
+      unitWeight: product.unitWeight!,
+      unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
+      supplier: product.supplier?.name || "Não informado",
+      receiptDate: product.receiptDate,
+    }));
+
+    revalidatePath(ROUTES.PAGE_REPORTS);
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: "Relatório de fornecedores gerado com sucesso.",
+      data: reportData,
+    };
+  } catch (error) {
+    console.error("Erro ao gerar relatório de fornecedores:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível gerar o relatório de fornecedores.",
+    };
+  }
+};
+
+export const generateInventoryReport = async (): Promise<
+  ReportResponse<InventoryReportResponse>
+> => {
   try {
     const products = await productRepository.findInventory();
 
@@ -154,7 +235,7 @@ export const generateInventoryReport = async (): Promise<ReportResponse<Inventor
         lot: product.lot,
         validityDate: product.validityDate,
         productType: product.productType as ProductType,
-        group: product.masterProduct.group,
+        group: product.masterProduct.group.name,
         daysUntilExpiry,
         status,
       };

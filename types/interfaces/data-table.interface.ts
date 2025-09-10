@@ -10,12 +10,13 @@ import {
   DeleteRegisterProps,
   FilterModeType,
   FormAddEditProps,
+  MasterProductWithCategoryGroupSubgroupResponse,
   ProductWithMasterProductResponse,
   ReportDataResponse,
   ReportType,
   StockMovementWithProductResponse,
 } from "@/types";
-import { AuditLog, MasterProduct, User } from "@prisma/client";
+import { AuditLog, User } from "@prisma/client";
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -63,7 +64,7 @@ export interface DataTableFunctionsProps<TData> {
 
 export interface ColumnsTableMasterProductsProps {
   isSelectingAction?: boolean;
-  onSelect?: (masterProduct: MasterProduct) => void;
+  onSelect?: (masterProduct: MasterProductWithCategoryGroupSubgroupResponse) => void;
   selectedMasterProductId?: string;
 }
 
@@ -121,7 +122,7 @@ export interface ClientDataTableProductProps {
   groupBy: string;
 }
 export interface ClientDataTableMasterProductProps {
-  masterProducts: MasterProduct[];
+  masterProducts: MasterProductWithCategoryGroupSubgroupResponse[];
 }
 export interface ClientDataTableHistoryProps {
   history: AuditLog[];

@@ -9,6 +9,7 @@ import {
   EntityType,
   ActionType,
   MasterProductOperationResponse,
+  MasterProductWithCategoryGroupSubgroupResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -214,7 +215,7 @@ export const getMasterProductById = async (
   }
 };
 
-export const getMasterProducts = async (): Promise<MasterProduct[]> => {
+export const getMasterProducts = async (): Promise<MasterProductWithCategoryGroupSubgroupResponse[]> => {
   try {
     return await masterProductRepository.findAll();
   } catch (error) {

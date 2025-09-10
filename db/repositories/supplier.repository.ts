@@ -54,11 +54,11 @@ export const supplierRepository = {
   },
 
   async checkInProducts(
-    supplierName: string
+    supplierId: string
   ): Promise<Pick<Product, "id"> | null> {
     return await db.product.findFirst({
       where: {
-        supplier: supplierName,
+        supplierId: supplierId,
       },
       select: { id: true },
     });

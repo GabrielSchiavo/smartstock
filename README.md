@@ -65,6 +65,8 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
     - Produtos por data de validade;
     - Produtos doados;
     - Produtos comprados;
+    - Produtos por recebedor;
+    - Produtos por fornecedor;
     - Inventário de todos os produtos cadastrados;
     - Entradas de todos as entradas;
     - Saídas de todos as saídas;

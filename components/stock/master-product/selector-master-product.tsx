@@ -12,11 +12,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MasterProduct } from "@prisma/client";
 import { DataTableMasterProducts } from "@/components/tables/data-table-master-products";
 import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-table-master-products";
 import { Input } from "@/components/ui/input";
-import { SelectorMasterProductProps } from "@/types";
+import { MasterProductWithCategoryGroupSubgroupResponse, SelectorMasterProductProps } from "@/types";
 
 export function SelectorMasterProduct({
   masterProducts,
@@ -31,7 +30,7 @@ export function SelectorMasterProduct({
     (item) => item.id.toString() === selectedId
   );
 
-  const handleSelect = (item: MasterProduct) => {
+  const handleSelect = (item: MasterProductWithCategoryGroupSubgroupResponse) => {
     onSelect(item);
     setIsOpen(false);
   };
@@ -70,7 +69,7 @@ export function SelectorMasterProduct({
             addButton={false}
             data={masterProducts}
             columns={columns}
-            groupBy="category"
+            groupBy="category.name"
             isLoading={isLoading}
           />
         </div>

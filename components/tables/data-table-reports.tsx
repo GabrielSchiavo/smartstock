@@ -7,7 +7,9 @@ import {
   DonationsReportResponse,
   InventoryReportResponse,
   PurchasedReportResponse,
+  ReceiversReportResponse,
   StockMovementReportResponse,
+  SuppliersReportResponse,
   ToastType,
   ValidityReportResponse,
 } from "@/types";
@@ -35,6 +37,8 @@ import {
   generateInventoryPdf,
   generateOutputsPdf,
   generatePurchasedPdf,
+  generateReceiversPdf,
+  generateSuppliersPdf,
   generateValidityPdf,
 } from "@/lib/pdf-generator";
 import { useGroupedTable } from "@/hooks/use-grouped-table";
@@ -42,7 +46,6 @@ import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { showToast } from "@/components/utils/show-toast";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { BaseDataTable } from "@/components/tables/base-data-table";
-import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 
 export function DataTableReport<TData>({
@@ -99,6 +102,20 @@ export function DataTableReport<TData>({
         case ReportType.PURCHASED:
           pdf = await generatePurchasedPdf(
             data as PurchasedReportResponse[],
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
+          );
+          break;
+        case ReportType.RECEIVERS:
+          pdf = await generateReceiversPdf(
+            data as ReceiversReportResponse[],
+            initialDate!.toISOString(),
+            finalDate!.toISOString()
+          );
+          break;
+        case ReportType.SUPPLIERS:
+          pdf = await generateSuppliersPdf(
+            data as SuppliersReportResponse[],
             initialDate!.toISOString(),
             finalDate!.toISOString()
           );
@@ -168,15 +185,6 @@ export function DataTableReport<TData>({
   return (
     <div className="grid gap-4 w-full">
       <div className="flex items-center justify-end gap-4 sm:gap-6 w-full">
-        <ToolTipHelp>
-          <TooltipItem>
-            <p className="text-sm">
-              <span className="font-semibold">Ordenação</span> - Use a opção{" "}
-              <span className="font-semibold italic">Imprimir</span> para salvar
-              o relatório com a ordenação de registros personalizada.
-            </p>
-          </TooltipItem>
-        </ToolTipHelp>
         {groupBy && groupedData && (
           <TooltipProvider>
             <Tooltip>

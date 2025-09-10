@@ -25,7 +25,7 @@ export function getGroupedData<TData>(
     let groupValue: unknown;
     
     if (groupBy.includes('.')) {
-      // Para chaves aninhadas como "masterProduct.group"
+      // Para chaves aninhadas como "masterProduct.group.name"
       groupValue = getNestedProperty(row.original, groupBy);
     } else {
       // Para chaves simples

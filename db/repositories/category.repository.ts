@@ -54,11 +54,11 @@ export const categoryRepository = {
   },
 
   async checkInMasterProducts(
-    categoryName: string
+    categoryId: string
   ): Promise<Pick<MasterProduct, "id"> | null> {
     return await db.masterProduct.findFirst({
       where: {
-        category: categoryName,
+        categoryId: categoryId,
       },
       select: { id: true },
     });

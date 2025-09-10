@@ -91,9 +91,10 @@ model PasswordResetToken {
 }
 
 model Notification {
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   id String @id @default(cuid())
 
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
   type      AlertType
   isRead    Boolean   @default(false)
@@ -104,9 +105,10 @@ model Notification {
 }
 
 model AuditLog {
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   id String @id @default(cuid())
 
-  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String
   recordChangedId String
   actionType      String  @db.VarChar(30)
@@ -118,13 +120,17 @@ model AuditLog {
 }
 
 model MasterProduct {
+  category Category  @relation(fields: [categoryId], references: [id], onDelete: NoAction)
+  group    Group     @relation(fields: [groupId], references: [id], onDelete: NoAction)
+  subgroup Subgroup? @relation(fields: [subgroupId], references: [id], onDelete: NoAction)
+
   id Int @id @default(autoincrement())
 
-  name     String   @db.VarChar(150)
-  baseUnit BaseUnitType
-  category String   @db.VarChar(50)
-  group    String   @db.VarChar(50)
-  subgroup String?  @db.VarChar(50)
+  name       String       @db.VarChar(150)
+  baseUnit   BaseUnitType
+  categoryId String
+  groupId    String
+  subgroupId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,22 +141,24 @@ model MasterProduct {
 }
 
 model Product {
+  masterProduct MasterProduct @relation(fields: [masterProductId], references: [id], onDelete: NoAction)
+  receiver      Receiver      @relation(fields: [receiverId], references: [id], onDelete: NoAction)
+  supplier      Supplier?     @relation(fields: [supplierId], references: [id], onDelete: NoAction)
+
   id Int @id @default(autoincrement())
 
-  masterProduct   MasterProduct @relation(fields: [masterProductId], references: [id], onDelete: NoAction)
-  masterProductId Int
-
-  name             String      @db.VarChar(150)
-  quantity         Float       @db.Real
+  masterProductId  Int
+  name             String    @db.VarChar(150)
+  quantity         Float     @db.Real
   unit             UnitType
-  unitWeight       Float?      @db.Real
+  unitWeight       Float?    @db.Real
   unitOfUnitWeight UnitType?
-  lot              String      @db.VarChar(50)
-  validityDate     DateTime    @db.Date
-  receiptDate      DateTime    @db.Date
-  receiver         String      @db.VarChar(150)
-  supplier         String?     @db.VarChar(150)
-  productType      ProductType
+  lot              String    @db.VarChar(50)
+  validityDate     DateTime  @db.Date
+  receiptDate      DateTime  @db.Date
+  receiverId String
+  supplierId String?
+  productType ProductType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -162,9 +170,10 @@ model Product {
 }
 
 model StockMovement {
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
   id String @id @default(cuid())
 
-  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId        Int
   quantity         Float    @db.Real
   unit             UnitType
@@ -181,28 +190,38 @@ model Category {
   id        String   @id @default(cuid())
   name      String   @unique @db.VarChar(50)
   createdAt DateTime @default(now())
+
+  MasterProduct MasterProduct[]
 }
 
 model Group {
   id        String   @id @default(cuid())
   name      String   @unique @db.VarChar(50)
   createdAt DateTime @default(now())
+
+  MasterProduct MasterProduct[]
 }
 
 model Subgroup {
   id        String   @id @default(cuid())
   name      String   @unique @db.VarChar(50)
   createdAt DateTime @default(now())
+
+  MasterProduct MasterProduct[]
 }
 
 model Receiver {
-  id        String   @id @default(cuid())
-  name      String   @unique @db.VarChar(150)
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  name      String    @unique @db.VarChar(150)
+  createdAt DateTime  @default(now())
+
+  Product   Product[]
 }
 
 model Supplier {
-  id        String   @id @default(cuid())
-  name      String   @unique @db.VarChar(150)
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  name      String    @unique @db.VarChar(150)
+  createdAt DateTime  @default(now())
+  
+  Product   Product[]
 }

@@ -153,11 +153,11 @@ export const deleteSubgroup = async (
 };
 
 export const checkSubgroupUsage = async (
-  subgroupName: string
+  subgroupId: string
 ): Promise<CheckSubgroupResponse> => {
   try {
     const productWithSubgroup =
-      await subgroupRepository.checkInMasterProducts(subgroupName);
+      await subgroupRepository.checkInMasterProducts(subgroupId);
 
     return {
       isUsed: !!productWithSubgroup,

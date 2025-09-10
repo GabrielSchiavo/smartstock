@@ -6,7 +6,9 @@ import {
   LocaleType,
   MovementType,
   PurchasedReportResponse,
+  ReceiversReportResponse,
   StockMovementReportResponse,
+  SuppliersReportResponse,
   ValidityReportResponse,
   ValidityStatusType,
 } from "@/types";
@@ -295,6 +297,179 @@ export const columnsTableReportPurchased: ColumnDef<PurchasedReportResponse>[] =
       },
       meta: {
         title: "Peso Unitário",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "supplier",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Fornecedor" />
+      ),
+      meta: {
+        title: "Fornecedor",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "receiptDate",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Data de Recebimento" />
+      ),
+      cell: ({ row }) => {
+        const receiptDate = row.original.receiptDate;
+        return formatDateOnlyToLocale(receiptDate);
+      },
+      meta: {
+        title: "Data de Recebimento",
+      } as ColumnMetaProps,
+    },
+  ];
+export const columnsTableReportReceivers: ColumnDef<ReceiversReportResponse>[] =
+  [
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ID" />
+      ),
+      meta: {
+        title: "ID",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Nome do Produto" />
+      ),
+      meta: {
+        title: "Nome",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "quantity",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Quantidade" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <span>
+            {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
+            {row.original.unit}
+          </span>
+        );
+      },
+      meta: {
+        title: "Quantidade",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "unitWeight",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Peso Unitário" />
+      ),
+      cell: ({ row }) => {
+        const unitWeight = row.getValue("unitWeight");
+        if (unitWeight === null || unitWeight === undefined) {
+          return "-";
+        } else {
+          return (
+            <span>
+              {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+              {row.original.unitOfUnitWeight}
+            </span>
+          );
+        }
+      },
+      meta: {
+        title: "Peso Unitário",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "receiver",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Recebedor" />
+      ),
+      meta: {
+        title: "Recebedor",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "receiptDate",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Data de Recebimento" />
+      ),
+      cell: ({ row }) => {
+        const receiptDate = row.original.receiptDate;
+        return formatDateOnlyToLocale(receiptDate);
+      },
+      meta: {
+        title: "Data de Recebimento",
+      } as ColumnMetaProps,
+    },
+  ];
+export const columnsTableReportSuppliers: ColumnDef<SuppliersReportResponse>[] =
+  [
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="ID" />
+      ),
+      meta: {
+        title: "ID",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Nome do Produto" />
+      ),
+      meta: {
+        title: "Nome",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "quantity",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Quantidade" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <span>
+            {row.original.quantity.toLocaleString(LocaleType.PT_BR)} {""}
+            {row.original.unit}
+          </span>
+        );
+      },
+      meta: {
+        title: "Quantidade",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "unitWeight",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Peso Unitário" />
+      ),
+      cell: ({ row }) => {
+        const unitWeight = row.getValue("unitWeight");
+        if (unitWeight === null || unitWeight === undefined) {
+          return "-";
+        } else {
+          return (
+            <span>
+              {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+              {row.original.unitOfUnitWeight}
+            </span>
+          );
+        }
+      },
+      meta: {
+        title: "Peso Unitário",
+      } as ColumnMetaProps,
+    },
+    {
+      accessorKey: "supplier",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Fornecedor" />
+      ),
+      meta: {
+        title: "Fornecedor",
       } as ColumnMetaProps,
     },
     {

@@ -43,10 +43,10 @@ export const groupRepository = {
     })
   },
 
-  async checkInMasterProducts(groupName: string): Promise<Pick<MasterProduct, 'id'> | null> {
+  async checkInMasterProducts(groupId: string): Promise<Pick<MasterProduct, 'id'> | null> {
     return await db.masterProduct.findFirst({
       where: {
-          group: groupName,
+          groupId: groupId,
       },
       select: { id: true },
     })

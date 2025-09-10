@@ -10,7 +10,7 @@ export function ClientDataTableMasterProduct({ masterProducts }: ClientDataTable
       addButton={true}
       data={masterProducts}
       columns={columnsTableMasterProducts({})}
-      groupBy="category"
+      groupBy="category.name"
     />
   );
 }

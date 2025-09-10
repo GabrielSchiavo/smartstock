@@ -6,6 +6,7 @@ import { editProduct, getMasterProducts, getProductById } from "@/actions";
 import {
   BaseUnitType,
   FormAddEditProps,
+  MasterProductWithCategoryGroupSubgroupResponse,
   ModeType,
   ProductType,
   ToastType,
@@ -17,7 +18,6 @@ import { CreateInputEditProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
-import { MasterProduct } from "@prisma/client";
 
 export const FormEditProduct = ({
   rowItemId,
@@ -51,12 +51,12 @@ export const FormEditProduct = ({
                 | undefined,
               lot: productData.lot,
               validityDate: productData.validityDate,
-              supplier: productData.supplier || undefined,
+              supplierId: productData.supplier?.name || undefined,
               receiptDate: productData.receiptDate,
-              receiver: productData.receiver,
-              category: productData.masterProduct.category,
-              group: productData.masterProduct.group,
-              subgroup: productData.masterProduct.subgroup || undefined,
+              receiverId: productData.receiver.name,
+              category: productData.masterProduct.category.name,
+              group: productData.masterProduct.group.name,
+              subgroup: productData.masterProduct.subgroup!.name || undefined,
               baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
               movementCategory: "",
@@ -78,7 +78,7 @@ export const FormEditProduct = ({
     loadProduct();
   }, [rowItemId]);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
+  const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
 
   // Carregue os master items no useEffect ou via server component
   useEffect(() => {

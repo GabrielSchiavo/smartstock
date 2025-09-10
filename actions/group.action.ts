@@ -147,11 +147,11 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
 }
 
 export async function checkGroupUsage(
-  groupName: string
+  groupId: string
 ): Promise<CheckGroupResponse> {
   try {
     const productWithGroup =
-      await groupRepository.checkInMasterProducts(groupName);
+      await groupRepository.checkInMasterProducts(groupId);
 
     return {
       isUsed: !!productWithGroup,

@@ -3,12 +3,11 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { BaseFormInput } from "@/components/stock/input/base-form-input";
 import { getMasterProducts, registerInput } from "@/actions";
-import { FormAddEditProps, ToastType } from "@/types";
+import { FormAddEditProps, MasterProductWithCategoryGroupSubgroupResponse, ToastType } from "@/types";
 import { z } from "zod";
 import { CreateInputEditProductSchema } from "@/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { showToast } from "@/components/utils/show-toast";
-import { MasterProduct } from "@prisma/client";
 
 export const FormAddProduct = ({
   onShouldInvalidate,
@@ -18,7 +17,7 @@ export const FormAddProduct = ({
   const formRef =
     useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>>(null);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProduct[]>([]);
+  const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
 
     // Carregue os master items no useEffect ou via server component
    useEffect(() => {

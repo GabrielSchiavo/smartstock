@@ -46,9 +46,9 @@ export function BaseDynamicCombobox({
 
   const handleClear = () => {
     // Chama handleSelect com um objeto vazio/null para limpar
-    handleSelect({ id: "", name: "" });
+    handleSelect({ id: null, name: null });
     // Limpa o input também
-    setInputValue("");
+    setInputValue(null);
     // Fecha o popover
     setOpen(false);
   };
@@ -137,7 +137,7 @@ export function BaseDynamicCombobox({
                   {options.map((option) => (
                     <CommandItem
                       key={option.id}
-                      value={option.name}
+                      value={option.id as string}
                       onSelect={() => handleSelect(option)}
                       className="group flex justify-between items-center py-1"
                     >
@@ -145,7 +145,7 @@ export function BaseDynamicCombobox({
                         <CheckIcon
                           className={cn(
                             "mr-2 h-4 w-4",
-                            value === option.name ? "opacity-100" : "opacity-0"
+                            value === option.id ? "opacity-100" : "opacity-0"
                           )}
                         />
                         {option.name}
@@ -156,7 +156,7 @@ export function BaseDynamicCombobox({
                           size={"sm"}
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDelete(option.id, option.name);
+                            handleDelete(option.id as string);
                           }}
                           className="p-1.5! h-fit opacity-0 group-hover:opacity-100 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
                           disabled={isPending}

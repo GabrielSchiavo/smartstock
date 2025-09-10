@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { BaseUnitType, InputMovementCategoryType, ProductType, UnitType } from "@/types";
+import {
+  BaseUnitType,
+  InputMovementCategoryType,
+  ProductType,
+  UnitType,
+} from "@/types";
 
 export const CreateInputEditProductSchema = z
   .object({
@@ -80,15 +85,9 @@ export const CreateInputEditProductSchema = z
     receiptDate: z.date({
       error: "Selecione uma data.",
     }),
-    receiver: z
-      .string()
-      .trim()
-      .min(2, {
-        error: "Recebedor é obrigatório",
-      })
-      .max(30, {
-        error: "Recebedor deve ter no máximo 30 caracteres",
-      }),
+    receiverId: z.string().trim().min(2, {
+      error: "Recebedor é obrigatório",
+    }),
     category: z
       .string()
       .trim()
@@ -125,14 +124,11 @@ export const CreateInputEditProductSchema = z
       error: (issue) =>
         issue.input === undefined ? "Selecione um tipo de produto." : undefined,
     }),
-    supplier: z
+    supplierId: z
       .string()
       .trim()
       .min(2, {
         error: "Fornecedor é obrigatório",
-      })
-      .max(30, {
-        error: "Fornecedor deve ter no máximo 30 caracteres",
       })
       .nullable()
       .optional(),
@@ -153,9 +149,14 @@ export const CreateInputEditProductSchema = z
     ),
   })
   .refine(
-    (data) => !(data.productType === ProductType.DONATED && !data.supplier),
+    (data) => {
+      if (data.productType === ProductType.DONATED) {
+        return data.supplierId !== null && data.supplierId !== undefined;
+      }
+      return true;
+    },
     {
-      path: ["supplier"],
+      path: ["supplierId"],
       error: "Fornecedor é obrigatório para produtos doados.",
     }
   );

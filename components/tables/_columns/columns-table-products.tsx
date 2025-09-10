@@ -27,7 +27,7 @@ const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   filterValue
 ) => {
   // Concatenate the values from multiple columns into a single string for search columns
-  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver} ${row.original.masterProduct.name} ${row.original.masterProduct.category} ${row.original.masterProduct.group} ${row.original.masterProduct.subgroup} ${row.original.productType} ${row.original.supplier}`;
+  const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver.name} ${row.original.masterProduct.name} ${row.original.masterProduct.category.name} ${row.original.masterProduct.group.name} ${row.original.masterProduct.subgroup?.name} ${row.original.productType} ${row.original.supplier?.name}`;
 
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
@@ -199,7 +199,7 @@ export const columnsTableProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "receiver",
+    accessorKey: "receiver.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Recebedor" />
     ),
@@ -217,7 +217,7 @@ export const columnsTableProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.category",
+    accessorKey: "masterProduct.category.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Categoria" />
     ),
@@ -226,7 +226,7 @@ export const columnsTableProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.group",
+    accessorKey: "masterProduct.group.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Grupo" />
     ),
@@ -235,11 +235,11 @@ export const columnsTableProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.subgroup",
+    accessorKey: "masterProduct.subgroup.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Subgrupo" />
     ),
-    cell: ({ row }) => row.original.masterProduct?.subgroup || "-",
+    cell: ({ row }) => row.original.masterProduct.subgroup?.name || "-",
     meta: {
       title: "Subgrupo",
     } as ColumnMetaProps,
@@ -262,11 +262,11 @@ export const columnsTableProducts = ({
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "supplier",
+    accessorKey: "supplier.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Fornecedor" />
     ),
-    cell: ({ row }) => row.original.supplier || "-",
+    cell: ({ row }) => row.original.supplier?.name || "-",
     meta: {
       title: "Fornecedor",
     } as ColumnMetaProps,

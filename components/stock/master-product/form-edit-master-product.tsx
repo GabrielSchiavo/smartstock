@@ -33,9 +33,9 @@ export const FormEditMasterProduct = ({
             setInitialValues({
               name: masterProductData.name,
               baseUnit: masterProductData.baseUnit as BaseUnitType,
-              category: masterProductData.category,
-              group: masterProductData.group,
-              subgroup: masterProductData.subgroup || undefined,
+              categoryId: masterProductData.categoryId,
+              groupId: masterProductData.groupId,
+              subgroupId: masterProductData.subgroupId || undefined,
             });
           }
         }

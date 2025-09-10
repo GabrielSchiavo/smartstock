@@ -168,11 +168,11 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
 }
 
 export async function checkCategoryUsage(
-  categoryName: string
+  categoryId: string
 ): Promise<CheckCategoryResponse> {
   try {
     const productWithCategory =
-      await categoryRepository.checkInMasterProducts(categoryName);
+      await categoryRepository.checkInMasterProducts(categoryId);
 
     return {
       isUsed: !!productWithCategory,

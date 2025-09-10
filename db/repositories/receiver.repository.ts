@@ -43,10 +43,10 @@ export const receiverRepository = {
     })
   },
 
-  async checkInProducts(receiverName: string): Promise<Pick<Product, 'id'> | null> {
+  async checkInProducts(receiverId: string): Promise<Pick<Product, 'id'> | null> {
     return await db.product.findFirst({
       where: {
-        receiver: receiverName,
+        receiverId: receiverId,
       },
       select: { id: true },
     })

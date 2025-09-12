@@ -51,12 +51,12 @@ export const FormEditProduct = ({
                 | undefined,
               lot: productData.lot,
               validityDate: productData.validityDate,
-              supplierId: productData.supplier?.name || undefined,
+              supplierId: productData.supplierId || undefined,
               receiptDate: productData.receiptDate,
-              receiverId: productData.receiver.name,
+              receiverId: productData.receiverId,
               category: productData.masterProduct.category.name,
               group: productData.masterProduct.group.name,
-              subgroup: productData.masterProduct.subgroup!.name || undefined,
+              subgroup: productData.masterProduct.subgroup?.name || undefined,
               baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
               movementCategory: "",
@@ -78,7 +78,9 @@ export const FormEditProduct = ({
     loadProduct();
   }, [rowItemId]);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
+  const [masterProducts, setMasterProducts] = useState<
+    MasterProductWithCategoryGroupSubgroupResponse[]
+  >([]);
 
   // Carregue os master items no useEffect ou via server component
   useEffect(() => {
@@ -93,7 +95,9 @@ export const FormEditProduct = ({
     loadMasterProducts();
   }, []);
 
-  const onSubmit = async (values: z.infer<typeof CreateInputEditProductSchema>) => {
+  const onSubmit = async (
+    values: z.infer<typeof CreateInputEditProductSchema>
+  ) => {
     await startTransition(async () => {
       try {
         const response = await editProduct(rowItemId as number, values);

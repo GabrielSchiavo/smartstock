@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FormBaseMasterProductProps, ResourceType, UnitType } from "@/types";
+import { BaseUnitType, FormBaseMasterProductProps, ResourceType, UnitType } from "@/types";
 import { MoonLoader } from "react-spinners";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 
@@ -47,10 +47,10 @@ export const BaseFormMasterProduct = forwardRef<
       resolver: zodResolver(CreateEditMasterProductSchema),
       defaultValues: defaultValues || {
         name: "",
-        baseUnit: undefined,
+        baseUnit: "" as BaseUnitType,
         categoryId: "",
         groupId: "",
-        subgroupId: undefined,
+        subgroupId: "",
       },
     });
 

@@ -20,7 +20,7 @@ export const FormAddOutput = ({ onShouldInvalidate, onCancel }: FormAddEditProps
   const [products, setMasterProducts] = useState<ProductWithMasterProductResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // função reutilizável de carregar produtos
+  // função carregar produtos
   const loadProductsSelector = async () => {
     try {
       const items = await getProducts();

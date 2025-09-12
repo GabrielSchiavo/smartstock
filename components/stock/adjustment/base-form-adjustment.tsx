@@ -66,9 +66,9 @@ export const BaseFormAdjustment = forwardRef<
         lot: "",
         validityDate: "",
         quantity: "",
-        unit: undefined,
-        movementCategory: undefined,
-        adjustmentType: undefined,
+        unit: "" as UnitType,
+        movementCategory: "" as AdjustmentMovementCategoryType,
+        adjustmentType: "" as AdjustmentType,
       },
     });
 

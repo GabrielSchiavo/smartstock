@@ -67,20 +67,20 @@ export const BaseFormInput = forwardRef<
         masterProductId: "",
         name: "",
         quantity: "",
-        unit: undefined,
+        unit: "" as UnitType,
         unitWeight: "",
-        unitOfUnitWeight: undefined,
+        unitOfUnitWeight: "" as UnitType.KG | UnitType.G | UnitType.L,
         lot: "",
         validityDate: undefined,
-        supplierId: undefined,
+        supplierId: "",
         receiptDate: undefined,
         receiverId: "",
-        productType: undefined,
+        productType: "" as ProductType,
         category: "",
         group: "",
         subgroup: "",
         baseUnit: "" as BaseUnitType,
-        movementCategory: undefined,
+        movementCategory: "" as InputMovementCategoryType,
       },
     });
 
@@ -132,7 +132,9 @@ export const BaseFormInput = forwardRef<
     }, [isUnitWeightDisabled, form]);
 
     // Função para lidar com a seleção do produto mestre
-    const handleMasterProductSelect = (masterProduct: MasterProductWithCategoryGroupSubgroupResponse) => {
+    const handleMasterProductSelect = (
+      masterProduct: MasterProductWithCategoryGroupSubgroupResponse
+    ) => {
       form.setValue("masterProductId", masterProduct.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
@@ -468,13 +470,13 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Recebedor</FormLabel>
-                          <DynamicCombobox
-                            resourceType={ResourceType.RECEIVER}
-                            value={field.value ? field.value : ""}
-                            onChange={field.onChange}
-                            disabled={isPending || isEditMode}
-                            placeholder="Selecione um recebedor..."
-                          />
+                        <DynamicCombobox
+                          resourceType={ResourceType.RECEIVER}
+                          value={field.value ? field.value : ""}
+                          onChange={field.onChange}
+                          disabled={isPending || isEditMode}
+                          placeholder="Selecione um recebedor..."
+                        />
                         <FormMessage />
                       </FormItem>
                     )}
@@ -516,7 +518,10 @@ export const BaseFormInput = forwardRef<
                                   <RadioGroupItem value={ProductType.DONATED} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(ProductType.DONATED, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    ProductType.DONATED,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -526,7 +531,10 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(ProductType.PURCHASED, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    ProductType.PURCHASED,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -543,19 +551,19 @@ export const BaseFormInput = forwardRef<
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Fornecedor (Opcional)</FormLabel>
-                          <DynamicCombobox
-                            resourceType={ResourceType.SUPPLIER}
-                            value={field.value ? field.value : ""}
-                            onChange={field.onChange}
-                            disabled={
-                              isSupplierDisabled || isPending || isEditMode
-                            }
-                            placeholder={
-                              isSupplierDisabled
-                                ? "Selecione o 'Tipo de Produto' para habilitar"
-                                : "Selecione um fornecedor"
-                            }
-                          />
+                        <DynamicCombobox
+                          resourceType={ResourceType.SUPPLIER}
+                          value={field.value ? field.value : ""}
+                          onChange={field.onChange}
+                          disabled={
+                            isSupplierDisabled || isPending || isEditMode
+                          }
+                          placeholder={
+                            isSupplierDisabled
+                              ? "Selecione o 'Tipo de Produto' para habilitar"
+                              : "Selecione um fornecedor"
+                          }
+                        />
                         <FormMessage />
                       </FormItem>
                     )}
@@ -586,7 +594,10 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(InputMovementCategoryType.DONATION, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    InputMovementCategoryType.DONATION,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -596,7 +607,10 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(InputMovementCategoryType.PURCHASE, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    InputMovementCategoryType.PURCHASE,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -606,7 +620,10 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(InputMovementCategoryType.RETURN, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    InputMovementCategoryType.RETURN,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
@@ -616,7 +633,10 @@ export const BaseFormInput = forwardRef<
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(InputMovementCategoryType.TRANSFER, "capitalize")}
+                                  {formatEnumValueDisplay(
+                                    InputMovementCategoryType.TRANSFER,
+                                    "capitalize"
+                                  )}
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>

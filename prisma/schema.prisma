@@ -148,17 +148,17 @@ model Product {
   id Int @id @default(autoincrement())
 
   masterProductId  Int
-  name             String    @db.VarChar(150)
-  quantity         Float     @db.Real
+  name             String      @db.VarChar(150)
+  quantity         Float       @db.Real
   unit             UnitType
-  unitWeight       Float?    @db.Real
+  unitWeight       Float?      @db.Real
   unitOfUnitWeight UnitType?
-  lot              String    @db.VarChar(50)
-  validityDate     DateTime  @db.Date
-  receiptDate      DateTime  @db.Date
-  receiverId String
-  supplierId String?
-  productType ProductType
+  lot              String      @db.VarChar(50)
+  validityDate     DateTime    @db.Date
+  receiptDate      DateTime    @db.Date
+  receiverId       String
+  supplierId       String?
+  productType      ProductType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -211,17 +211,17 @@ model Subgroup {
 }
 
 model Receiver {
-  id        String    @id @default(cuid())
-  name      String    @unique @db.VarChar(150)
-  createdAt DateTime  @default(now())
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(150)
+  createdAt DateTime @default(now())
 
-  Product   Product[]
+  Product Product[]
 }
 
 model Supplier {
-  id        String    @id @default(cuid())
-  name      String    @unique @db.VarChar(150)
-  createdAt DateTime  @default(now())
-  
-  Product   Product[]
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(150)
+  createdAt DateTime @default(now())
+
+  Product Product[]
 }

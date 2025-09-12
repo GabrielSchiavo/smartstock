@@ -16,7 +16,7 @@ export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps)
   const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // função reutilizável de carregar produtos mestres
+  // função carregar produtos mestres
   const loadMasterProductsSelector = async () => {
     try {
       const items = await getMasterProducts();

@@ -110,7 +110,7 @@ export function BaseDataTableExpandable<TData>({
               </div>
               <div className="flex gap-3 justify-between items-center">
                 <span className="text-sm text-muted-foreground text-end text-wrap">
-                  Valor:
+                  {`${data.entity === EntityType.INPUT || data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "Quantidade:" : "Nome:"}`}
                 </span>
                 <span
                   className={`${data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "text-red-600 dark:text-red-500" : data.entity === EntityType.INPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE ? "text-emerald-600 dark:text-emerald-500" : ""}`}

@@ -65,8 +65,8 @@ export const BaseFormOutput = forwardRef<
         lot: "",
         validityDate: "",
         quantity: "",
-        unit: undefined,
-        movementCategory: undefined,
+        unit: "" as UnitType,
+        movementCategory: "" as OutputMovementCategoryType,
       },
     });
 

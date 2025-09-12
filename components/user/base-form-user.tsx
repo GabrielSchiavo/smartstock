@@ -42,7 +42,7 @@ export const BaseFormUser = ({
     defaultValues: {
       email: "",
       name: "",
-      userType: undefined,
+      userType: "" as UserType,
       ...(hidePasswordInputs ? {} : { password: "", confirmPassword: "" }),
       ...defaultValues,
     },

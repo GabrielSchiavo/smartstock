@@ -9,8 +9,10 @@ import { showToast } from "@/components/utils/show-toast";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
 
-export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
-
+export function AlertItem({
+  alert,
+  onAlertChange,
+}: AlertProps & { onAlertChange: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await toggleAlertReadStatus(alert.id);
@@ -26,36 +28,32 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
     switch (alert.type) {
       case AlertType.EXPIRING:
         return (
-          <>
-            O produto{" "}
-            <span className="font-bold">
-              ID {alert.product.id} {alert.product.name}
+          <p>
+            O produto <span className="font-bold">{alert.product.name}</span>{" "}
+            com <span className="font-bold">ID {alert.product.id}</span> está a{" "}
+            <span className="italic underline">
+              {daysDefaultUntilExpiry} dia(s)
             </span>{" "}
-            está a {daysDefaultUntilExpiry} dias do vencimento. Por favor, verifique e tome as medidas
-            necessárias.
-          </>
+            do vencimento. Por favor, verifique e tome as medidas necessárias.
+          </p>
         );
       case AlertType.EXPIRED:
         return (
-          <>
-            O produto{" "}
-            <span className="font-bold">
-              ID {alert.product.id} {alert.product.name}
-            </span>{" "}
-            ultrapassou o prazo de validade. Por favor, verifique e tome as
-            medidas necessárias.
-          </>
+          <p>
+            O produto de <span className="font-bold">{alert.product.name}</span>{" "}
+            com <span className="font-bold">ID {alert.product.id}</span>{" "}
+            <span className="italic underline">ultrapassou</span> o prazo de
+            validade. Por favor, verifique e tome as medidas necessárias.
+          </p>
         );
       case AlertType.OUT_STOCK:
         return (
-          <>
-            O produto{" "}
-            <span className="font-bold">
-              ID {alert.product.id} {alert.product.name}
-            </span>{" "}
-            está com estoque zerado. Por favor, verifique e tome as
-            medidas necessárias.
-          </>
+          <p>
+            O produto de <span className="font-bold">{alert.product.name}</span>{" "}
+            com <span className="font-bold">ID {alert.product.id}</span> está
+            com estoque <span className="italic underline">zerado</span>. Por
+            favor, verifique e tome as medidas necessárias.
+          </p>
         );
     }
   };
@@ -65,7 +63,7 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
       case AlertType.EXPIRING:
         return `Aviso! Produto próximo da validade`;
       case AlertType.EXPIRED:
-        return `Alerta! Produto atingiu a validade`;
+        return `Alerta! Produto ultrapassou a validade`;
       case AlertType.OUT_STOCK:
         return `Alerta! Produto com estoque zerado`;
     }
@@ -89,14 +87,15 @@ export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange
           variant={alertVariant}
           className="hover:border-foreground cursor-pointer text-start rounded-xl"
         >
-          {alert.type === AlertType.EXPIRED || alert.type === AlertType.OUT_STOCK ? (
+          {alert.type === AlertType.EXPIRED ||
+          alert.type === AlertType.OUT_STOCK ? (
             <TriangleAlertIcon />
           ) : (
             <CircleAlertIcon />
           )}
           <AlertTitle>{getAlertTitle()}</AlertTitle>
           <AlertDescription>
-            <span>{getAlertMessage()}</span>
+            {getAlertMessage()}
             <span className="text-xs italic text-end w-full">
               {getAlertDate()}
             </span>

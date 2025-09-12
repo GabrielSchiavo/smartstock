@@ -27,7 +27,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useAlertWatcher } from "@/hooks/use-alert-watcher";
 import { BasicAlertProps, ToastType } from "@/types";
 import { showToast } from "@/components/utils/show-toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function AlertButton() {
   const [alerts, setAlerts] = useState<BasicAlertProps[]>([]);
@@ -92,7 +96,9 @@ export function AlertButton() {
       <SheetContent className="h-full!">
         <SheetHeader>
           <SheetTitle>Alertas</SheetTitle>
-          <SheetDescription>Visualize e gerencie todos os alertas do sistema.</SheetDescription>
+          <SheetDescription>
+            Visualize e gerencie todos os alertas do sistema.
+          </SheetDescription>
         </SheetHeader>
         <ScrollArea className="overflow-auto">
           <div className="grid flex-1 auto-rows-min gap-6 px-6">
@@ -103,8 +109,8 @@ export function AlertButton() {
             ) : (
               <>
                 <div className="grid gap-1">
-                  <span className="text-muted-foreground italic text-sm">
-                    Não lidos
+                  <span className="text-muted-foreground text-sm">
+                    Não Lidos
                   </span>
                   <Separator className="-mx-6 w-auto!" />
                 </div>
@@ -125,7 +131,7 @@ export function AlertButton() {
                 )}
 
                 <div className="grid gap-1">
-                  <span className="text-muted-foreground italic text-sm">
+                  <span className="text-muted-foreground text-sm">
                     Lidos
                   </span>
                   <Separator className="-mx-6 w-auto!" />
@@ -157,8 +163,10 @@ export function AlertButton() {
               size={"sm"}
               className="w-full"
             >
-              <CheckCheckIcon />
-              Marcar como lidos
+              <span className="flex gap-1.5 items-center">
+                <CheckCheckIcon className="size-4 shrink-0" />
+                Marcar todos como lidos
+              </span>
             </Button>
           </form>
           <DeleteAlertsDialog onDeleteSuccess={refreshAlerts} />

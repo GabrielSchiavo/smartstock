@@ -23,7 +23,7 @@ export function SidebarMain({
       <SidebarHeader>
         <SidebarBrand />
       </SidebarHeader>
-      <SidebarContent className="overflow-hidden">
+      <SidebarContent className="overflow-x-hidden overflow-y-auto">
         <NavSidebarPrimary />
         <NavSidebarSecondary />
         <NavSidebarTertiary />

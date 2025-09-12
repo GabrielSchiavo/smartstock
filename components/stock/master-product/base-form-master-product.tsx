@@ -108,7 +108,7 @@ export const BaseFormMasterProduct = forwardRef<
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                <SelectLabel>Unidades</SelectLabel>
+                                <SelectLabel>Unidades Base</SelectLabel>
                                 <SelectItem value={UnitType.KG}>KG</SelectItem>
                                 <SelectItem value={UnitType.UN}>UN.</SelectItem>
                                 <SelectItem value={UnitType.L}>L</SelectItem>

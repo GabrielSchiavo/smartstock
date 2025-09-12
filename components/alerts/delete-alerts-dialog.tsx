@@ -49,12 +49,14 @@ export default function DeleteAlertsDialog({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="ghost"
+          variant="destructive"
           size={"sm"}
-          className="w-full cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
+          className="w-full bg-red-700! hover:bg-destructive!"
         >
-          <Trash2Icon />
-          Excluir alertas
+          <span className="flex gap-1.5 items-center">
+            <Trash2Icon className="size-4 shrink-0" />
+            Excluir todos
+          </span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

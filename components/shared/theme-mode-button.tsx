@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { CheckIcon, MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function ThemeModeButton() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -34,17 +34,20 @@ export function ThemeModeButton() {
           Tema
         </TooltipContent>
       </Tooltip>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className="*:justify-between" align="end">
         <DropdownMenuLabel>Tema</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => setTheme("light")}>
           Claro
+          {theme === "light" && <CheckIcon className="size-4 shrink-0" />}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Escuro
+          {theme === "dark" && <CheckIcon className="size-4 shrink-0" />}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           Sistema
+          {theme === "system" && <CheckIcon className="size-4 shrink-0" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

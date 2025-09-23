@@ -115,6 +115,7 @@ export enum MovementType {
 }
 
 export enum InputMovementCategoryType {
+  DEFAULT = "DEFAULT",
   PURCHASE = "PURCHASE",
   DONATION = "DONATION",
   RETURN = "RETURN",

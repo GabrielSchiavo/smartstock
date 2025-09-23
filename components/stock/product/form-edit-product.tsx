@@ -6,6 +6,7 @@ import { editProduct, getMasterProducts, getProductById } from "@/actions";
 import {
   BaseUnitType,
   FormAddEditProps,
+  InputMovementCategoryType,
   MasterProductWithCategoryGroupSubgroupResponse,
   ModeType,
   ProductType,
@@ -59,7 +60,9 @@ export const FormEditProduct = ({
               subgroup: productData.masterProduct.subgroup?.name || "",
               baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
-              movementCategory: "",
+              
+              // Valor default para o campo movementCAtegory pois ele não é usado no formulário de edição
+              movementCategory: InputMovementCategoryType.DEFAULT,
             });
           }
         }

@@ -142,14 +142,7 @@ export const CreateInputEditProductSchema = z
       },
     }),
     supplierId: z.string().trim().nullable().optional(),
-    movementCategory: z.enum(
-      [
-        InputMovementCategoryType.DONATION,
-        InputMovementCategoryType.PURCHASE,
-        InputMovementCategoryType.RETURN,
-        InputMovementCategoryType.TRANSFER,
-        ""
-      ],
+    movementCategory: z.enum(InputMovementCategoryType,
       {
         error: (issue) => {
           if (issue.input === undefined) {

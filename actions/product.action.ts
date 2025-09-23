@@ -61,8 +61,8 @@ export const editProduct = async (
           recordChangedId: updatedProduct.id.toString(),
           actionType: ActionType.UPDATE,
           entity: EntityType.PRODUCT,
-          changedValue: `${updatedProduct.quantity.toString()} ${updatedProduct.unit}`,
-          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.quantity.toString()} ${updatedProduct.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          changedValue: updatedProduct.name,
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

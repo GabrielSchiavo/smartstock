@@ -85,7 +85,7 @@ export function AlertItem({
       <button type="submit" title="Marcar como Lido/Não lido">
         <Alert
           variant={alertVariant}
-          className="hover:border-foreground cursor-pointer text-start rounded-xl"
+          className={`hover:border-foreground cursor-pointer text-start rounded-xl ${!alert.isRead && `shadow`}`}
         >
           {alert.type === AlertType.EXPIRED ||
           alert.type === AlertType.OUT_STOCK ? (

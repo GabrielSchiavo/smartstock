@@ -90,7 +90,7 @@ model PasswordResetToken {
   @@index([token])
 }
 
-model Notification {
+model AlertSystem {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   id String @id @default(cuid())
@@ -163,7 +163,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Notification  Notification[]
+  AlertSystem  AlertSystem[]
   StockMovement StockMovement[]
 
   @@index([validityDate])

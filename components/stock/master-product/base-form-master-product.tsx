@@ -50,7 +50,7 @@ export const BaseFormMasterProduct = forwardRef<
         baseUnit: "" as BaseUnitType,
         categoryId: "",
         groupId: "",
-        subgroupId: "",
+        subgroupId: null,
       },
     });
 

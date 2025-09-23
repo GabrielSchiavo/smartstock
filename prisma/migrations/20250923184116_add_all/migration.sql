@@ -52,14 +52,14 @@ CREATE TABLE "public"."PasswordResetToken" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Notification" (
+CREATE TABLE "public"."AlertSystem" (
     "id" TEXT NOT NULL,
     "productId" INTEGER NOT NULL,
     "type" "public"."AlertType" NOT NULL,
     "isRead" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "AlertSystem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -195,7 +195,7 @@ CREATE INDEX "PasswordResetToken_token_idx" ON "public"."PasswordResetToken"("to
 CREATE UNIQUE INDEX "PasswordResetToken_email_token_key" ON "public"."PasswordResetToken"("email", "token");
 
 -- CreateIndex
-CREATE INDEX "Notification_type_isRead_idx" ON "public"."Notification"("type", "isRead");
+CREATE INDEX "AlertSystem_type_isRead_idx" ON "public"."AlertSystem"("type", "isRead");
 
 -- CreateIndex
 CREATE INDEX "MasterProduct_name_baseUnit_idx" ON "public"."MasterProduct"("name", "baseUnit");
@@ -222,7 +222,7 @@ CREATE UNIQUE INDEX "Receiver_name_key" ON "public"."Receiver"("name");
 CREATE UNIQUE INDEX "Supplier_name_key" ON "public"."Supplier"("name");
 
 -- AddForeignKey
-ALTER TABLE "public"."Notification" ADD CONSTRAINT "Notification_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "public"."AlertSystem" ADD CONSTRAINT "AlertSystem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."AuditLog" ADD CONSTRAINT "AuditLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

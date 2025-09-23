@@ -35,7 +35,7 @@ export const FormEditMasterProduct = ({
               baseUnit: masterProductData.baseUnit as BaseUnitType,
               categoryId: masterProductData.categoryId,
               groupId: masterProductData.groupId,
-              subgroupId: masterProductData.subgroupId || undefined,
+              subgroupId: masterProductData.subgroupId || null,
             });
           }
         }

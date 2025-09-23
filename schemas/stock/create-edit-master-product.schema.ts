@@ -26,9 +26,6 @@ export const CreateEditMasterProductSchema = z.object({
   subgroupId: z
     .string()
     .trim()
-    .min(2, {
-      error: "Subgrupo é obrigatório",
-    })
     .nullable()
     .optional(),
 });

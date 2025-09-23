@@ -21,7 +21,6 @@ import {
   markAllAlertsAsRead,
 } from "@/actions";
 import { AlertItem } from "@/components/alerts/alert-item";
-import { Separator } from "@/components/ui/separator";
 import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { useAlertWatcher } from "@/hooks/use-alert-watcher";
@@ -32,12 +31,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export function AlertButton() {
   const [alerts, setAlerts] = useState<BasicAlertProps[]>([]);
   const [unreadAlertsCount, setUnreadAlertsCount] = useState(0);
 
-  // Use useCallback para memoizar a função de refresh
+  // Use useCallback para memorizar a função de refresh
   const refreshAlerts = useCallback(async () => {
     try {
       const [alertsData, count] = await Promise.all([
@@ -93,83 +93,109 @@ export function AlertButton() {
           <p>Alertas</p>
         </TooltipContent>
       </Tooltip>
-      <SheetContent className="h-full!">
-        <SheetHeader>
+      <SheetContent className="flex flex-col gap-6 p-6">
+        <SheetHeader className="p-0">
           <SheetTitle>Alertas</SheetTitle>
           <SheetDescription>
             Visualize e gerencie todos os alertas do sistema.
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className="overflow-auto">
-          <div className="grid flex-1 auto-rows-min gap-6 px-6">
-            {alerts.length === 0 ? (
-              <p className="w-full text-center text-muted-foreground text-sm">
-                Nenhum alerta encontrado!
-              </p>
-            ) : (
-              <>
-                <div className="grid gap-1">
-                  <span className="text-muted-foreground text-sm">
-                    Não Lidos
-                  </span>
-                  <Separator className="-mx-6 w-auto!" />
-                </div>
-                {alerts.filter((alert) => !alert.isRead).length > 0 ? (
-                  alerts
-                    .filter((alert) => !alert.isRead)
-                    .map((alert) => (
-                      <AlertItem
-                        key={alert.id}
-                        alert={alert}
-                        onAlertChange={refreshAlerts}
-                      />
-                    ))
-                ) : (
-                  <p className="w-full text-center text-muted-foreground text-sm">
-                    Nenhum alerta não lido!
-                  </p>
-                )}
 
-                <div className="grid gap-1">
-                  <span className="text-muted-foreground text-sm">
-                    Lidos
-                  </span>
-                  <Separator className="-mx-6 w-auto!" />
-                </div>
-                {alerts.filter((alert) => alert.isRead).length > 0 ? (
-                  alerts
-                    .filter((alert) => alert.isRead)
-                    .map((alert) => (
-                      <AlertItem
-                        key={alert.id}
-                        alert={alert}
-                        onAlertChange={refreshAlerts}
-                      />
-                    ))
-                ) : (
-                  <p className="w-full text-center text-muted-foreground text-sm">
-                    Nenhum alerta lido!
-                  </p>
-                )}
-              </>
-            )}
+        <Tabs
+          defaultValue="alertsUnread"
+          className="flex flex-col flex-1 gap-3 min-h-0"
+        >
+          <div className="w-full flex justify-center">
+            <TabsList>
+              <TabsTrigger value="alertsUnread">Não Lidos</TabsTrigger>
+              <TabsTrigger value="alertsRead">Lidos</TabsTrigger>
+            </TabsList>
           </div>
-        </ScrollArea>
-        <SheetFooter>
-          <form onSubmit={handleMarkAllAsRead}>
-            <Button
-              type="submit"
-              variant="outline"
-              size={"sm"}
-              className="w-full"
-            >
-              <span className="flex gap-1.5 items-center">
-                <CheckCheckIcon className="size-4 shrink-0" />
-                Marcar todos como lidos
-              </span>
-            </Button>
-          </form>
-          <DeleteAlertsDialog onDeleteSuccess={refreshAlerts} />
+          <TabsContent value="alertsUnread" className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="grid flex-1 auto-rows-min">
+                {alerts.length === 0 ? (
+                  <div className="border rounded-xl p-6 shadow">
+                    <p className="text-muted-foreground text-sm text-center">
+                      Nenhum alerta encontrado.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {alerts.filter((alert) => !alert.isRead).length > 0 ? (
+                      alerts
+                        .filter((alert) => !alert.isRead)
+                        .map((alert) => (
+                          <AlertItem
+                            key={alert.id}
+                            alert={alert}
+                            onAlertChange={refreshAlerts}
+                          />
+                        ))
+                    ) : (
+                      <div className="border rounded-xl p-6 shadow">
+                        <p className="text-muted-foreground text-sm text-center">
+                          Nenhum alerta encontrado.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+          <TabsContent value="alertsRead" className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="grid flex-1 auto-rows-min">
+                {alerts.length === 0 ? (
+                  <div className="border rounded-xl p-6 shadow">
+                    <p className="text-muted-foreground text-sm text-center">
+                      Nenhum alerta encontrado.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {alerts.filter((alert) => alert.isRead).length > 0 ? (
+                      alerts
+                        .filter((alert) => alert.isRead)
+                        .map((alert) => (
+                          <AlertItem
+                            key={alert.id}
+                            alert={alert}
+                            onAlertChange={refreshAlerts}
+                          />
+                        ))
+                    ) : (
+                      <div className="border rounded-xl p-6 shadow">
+                        <p className="text-muted-foreground text-sm text-center">
+                          Nenhum alerta encontrado.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
+
+        <SheetFooter className="p-0">
+          <div className="flex flex-col gap-3">
+            <form onSubmit={handleMarkAllAsRead}>
+              <Button
+                type="submit"
+                variant="outline"
+                size={"sm"}
+                className="w-full"
+              >
+                <span className="flex gap-1.5 items-center text-ellipsis!">
+                  <CheckCheckIcon className="size-4 shrink-0" />
+                  Marcar como lidos
+                </span>
+              </Button>
+            </form>
+            <DeleteAlertsDialog onDeleteSuccess={refreshAlerts} />
+          </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>

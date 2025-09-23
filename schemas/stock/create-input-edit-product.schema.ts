@@ -39,10 +39,16 @@ export const CreateInputEditProductSchema = z
         }
       ),
     unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-      error: (issue) =>
-        issue.input === undefined
-          ? "Você precisa selecionar uma unidade de medida."
-          : undefined,
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return { message: `Selecione a unidade.` };
+        }
+        if (issue.code === "invalid_value") {
+          return { message: `Selecione a unidade.` };
+        }
+
+        return "Inválido.";
+      },
     }),
     unitWeight: z
       .string()
@@ -63,10 +69,13 @@ export const CreateInputEditProductSchema = z
       .optional(),
     unitOfUnitWeight: z
       .enum([UnitType.KG, UnitType.G, UnitType.L], {
-        error: (issue) =>
-          issue.input === undefined
-            ? "Você precisa selecionar uma unidade de medida."
-            : undefined,
+        error: (issue) => {
+          if (issue.code === "invalid_value") {
+            return { message: `Unidade inválida.` };
+          }
+
+          return "Inválido.";
+        },
       })
       .nullable()
       .optional(),
@@ -118,45 +127,78 @@ export const CreateInputEditProductSchema = z
       .or(z.literal(""))
       .optional(),
     baseUnit: z.enum([BaseUnitType.KG, BaseUnitType.L, BaseUnitType.UN], {
-      error: "Selecione um produto",
+      error: "Selecione um produto mestre",
     }),
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
-      error: (issue) =>
-        issue.input === undefined ? "Selecione um tipo de produto." : undefined,
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return { message: `Selecione o tipo do produto.` };
+        }
+        if (issue.code === "invalid_value") {
+          return { message: `Selecione o tipo do produto.` };
+        }
+
+        return "Inválido.";
+      },
     }),
-    supplierId: z
-      .string()
-      .trim()
-      .min(2, {
-        error: "Fornecedor é obrigatório",
-      })
-      .nullable()
-      .optional(),
+    supplierId: z.string().trim().nullable().optional(),
     movementCategory: z.enum(
       [
         InputMovementCategoryType.DONATION,
         InputMovementCategoryType.PURCHASE,
         InputMovementCategoryType.RETURN,
         InputMovementCategoryType.TRANSFER,
-        "",
+        ""
       ],
       {
-        error: (issue) =>
-          issue.input === undefined
-            ? "Selecione a categoria de entrada."
-            : undefined,
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione uma categoria de entrada.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione uma categoria de entrada.` };
+          }
+
+          return "Inválido.";
+        },
       }
     ),
   })
   .refine(
     (data) => {
       if (data.productType === ProductType.DONATED) {
-        return data.supplierId !== null && data.supplierId !== undefined;
+        return !!data.supplierId;
       }
       return true;
     },
     {
       path: ["supplierId"],
       error: "Fornecedor é obrigatório para produtos doados.",
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.unit === UnitType.UN) {
+        return !!data.unitWeight;
+      }
+      return true;
+    },
+    {
+      path: ["unitWeight"],
+      error: "Obrigatório para produtos com Unidade 'UN'.",
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.unit === UnitType.UN) {
+        return !!data.unitOfUnitWeight;
+      }
+      return true;
+    },
+    {
+      path: ["unitOfUnitWeight"],
+      error: () => {
+        return "Obrigatório para produtos com Unidade 'UN'.";
+      },
     }
   );

@@ -40,7 +40,7 @@ export const alertRepository = {
   },
 
   async findExisting(productId: number, type: AlertType) {
-    return await db.notification.findFirst({
+    return await db.alertSystem.findFirst({
       where: {
         productId,
         type,
@@ -49,7 +49,7 @@ export const alertRepository = {
   },
 
   async create(productId: number, type: AlertType) {
-    return await db.notification.create({
+    return await db.alertSystem.create({
       data: {
         productId,
         type,
@@ -58,25 +58,25 @@ export const alertRepository = {
   },
 
   async updateReadStatus(alertId: string, isRead: boolean) {
-    return await db.notification.update({
+    return await db.alertSystem.update({
       where: { id: alertId },
       data: { isRead },
     });
   },
 
   async updateAllReadStatus(isRead: boolean) {
-    return await db.notification.updateMany({
+    return await db.alertSystem.updateMany({
       where: { isRead: !isRead },
       data: { isRead },
     });
   },
 
   async deleteAll() {
-    return await db.notification.deleteMany();
+    return await db.alertSystem.deleteMany();
   },
 
   async getAll() {
-    return await db.notification.findMany({
+    return await db.alertSystem.findMany({
       include: { product: true },
       orderBy: [
         { createdAt: "desc" }, // Mais recentes primeiro
@@ -86,19 +86,19 @@ export const alertRepository = {
   },
 
   async unreadCount() {
-    return await db.notification.count({
+    return await db.alertSystem.count({
       where: { isRead: false },
     });
   },
 
   async getById(alertId: string) {
-    return await db.notification.findUnique({
+    return await db.alertSystem.findUnique({
       where: { id: alertId },
     });
   },
 
   async toggleReadStatus(alertId: string, isRead: boolean) {
-    return await db.notification.update({
+    return await db.alertSystem.update({
       where: { id: alertId },
       data: { isRead: isRead },
     });

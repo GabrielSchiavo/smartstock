@@ -1,5 +1,5 @@
 // Schemas compartilhados
-export * from "./shared/base.schema";
+export * from "./shared/base-auth.schema";
 
 // Auth
 export * from "./auth/login.schema";

@@ -48,15 +48,15 @@ export const FormEditProduct = ({
                 | UnitType.KG
                 | UnitType.G
                 | UnitType.L
-                | undefined,
+                | null,
               lot: productData.lot,
               validityDate: productData.validityDate,
-              supplierId: productData.supplierId || undefined,
+              supplierId: productData.supplierId || null,
               receiptDate: productData.receiptDate,
               receiverId: productData.receiverId,
               category: productData.masterProduct.category.name,
               group: productData.masterProduct.group.name,
-              subgroup: productData.masterProduct.subgroup?.name || undefined,
+              subgroup: productData.masterProduct.subgroup?.name || "",
               baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
               movementCategory: "",

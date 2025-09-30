@@ -190,6 +190,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 - `Node.js - 22.19.0`
 - `React.js - 19.1.1`
 - `Next.js - 15.5.2`
+- `Next.js Server Actions`
 - `PostgreSQL - 17.5`
 - `Prisma - 6.15.0`
 - `Auth.js - 5.0.0`

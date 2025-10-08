@@ -89,9 +89,9 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 ## 🎞️ Galeria
 
 <div align="center">
+  <img width="1000" src="./public/assets/images/screenshots/doc/login.png" alt="Screenshot Login"/>
   <img width="1000" src="./public/assets/images/screenshots/doc/dashboard.png" alt="Screenshot Dashboard"/>
   <img width="1000" src="./public/assets/images/screenshots/doc/stock.png" alt="Screenshot Tabela Estoque"/>
-  <img width="1000" src="./public/assets/images/screenshots/doc/cadastre.png" alt="Screenshot Cadastro"/>
   <img width="1000" src="./public/assets/images/screenshots/doc/report.png" alt="Screenshot Relatórios"/>
 </div>
 

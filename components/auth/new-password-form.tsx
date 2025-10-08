@@ -21,7 +21,9 @@ import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { ROUTES } from "@/config/routes";
-import { MoonLoader } from "react-spinners";
+import { Spinner } from "@/components/ui/spinner";
+import { FieldGroup, FieldSeparator } from "../ui/field";
+import Link from "next/link";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
@@ -54,24 +56,29 @@ export const NewPasswordForm = () => {
     });
   };
 
+  const isSuccess = success ? true : false;
+
   return (
     <CardWrapper
-      headerLabel="Redefina sua senha"
-      backButtonLabel="Voltar para o login"
+      headerTitle="Redefinir senha"
+      headerLabel="Crie sua nova senha"
+      backButtonLabel="Login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-          <div className="grid gap-6">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <MessageError message={error} />
+            <MessageSuccess message={success} />
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="gap-3">
                   <FormLabel>Nova senha</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      disabled={isPending}
+                      disabled={isPending || isSuccess}
                       className="default-height"
                       placeholder="********"
                       {...field}
@@ -85,11 +92,11 @@ export const NewPasswordForm = () => {
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="gap-3">
                   <FormLabel>Confirme a senha</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      disabled={isPending}
+                      disabled={isPending || isSuccess}
                       className="default-height"
                       placeholder="********"
                       {...field}
@@ -99,24 +106,38 @@ export const NewPasswordForm = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <MessageError message={error} />
-          <MessageSuccess message={success} />
-          <Button
-            disabled={isPending}
-            type="submit"
-            size={"sm"}
-            className="w-full"
-          >
-            {isPending ? (
-              <span className="flex items-center gap-3">
-                <MoonLoader size={16} color="#ffffff" />
-                {"Alterando senha..."}
+            <Button
+              disabled={isPending || isSuccess}
+              type="submit"
+              size={"sm"}
+              className="w-full"
+            >
+              {isPending ? (
+                <span className="flex items-center gap-3">
+                  <Spinner className="size-4 shrink-0" />
+                  {"Alterando senha..."}
+                </span>
+              ) : (
+                "Continuar"
+              )}
+            </Button>
+            {isSuccess && (
+              <span className="grid items-center gap-7">
+                <FieldSeparator></FieldSeparator>
+                <Link href={ROUTES.AUTH_LOGIN} className="w-full">
+                  <Button
+                    disabled={isPending}
+                    type="button"
+                    size={"sm"}
+                    variant={"outline"}
+                    className="w-full"
+                  >
+                    Acessar Conta
+                  </Button>
+                </Link>
               </span>
-            ) : (
-              "Continuar"
             )}
-          </Button>
+          </FieldGroup>
         </form>
       </Form>
     </CardWrapper>

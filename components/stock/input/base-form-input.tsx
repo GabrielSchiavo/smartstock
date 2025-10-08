@@ -37,11 +37,12 @@ import {
   BaseUnitType,
   MasterProductWithCategoryGroupSubgroupResponse,
 } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { ptBR } from "date-fns/locale";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
 import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { Spinner } from "@/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
 export const BaseFormInput = forwardRef<
   UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>,
@@ -651,28 +652,29 @@ export const BaseFormInput = forwardRef<
             </div>
 
             <div className="flex gap-3 justify-end">
-              {isEditMode && (
-                <Button
-                  disabled={isPending}
-                  size="sm"
-                  type="reset"
-                  variant={"ghost"}
-                  onClick={() => {
-                    form.reset();
-                    onCancel?.();
-                  }}
-                >
-                  Cancelar
-                </Button>
-              )}
+              <Button
+                disabled={isPending}
+                size="sm"
+                type="reset"
+                variant={"ghost"}
+                onClick={() => {
+                  form.reset();
+                  onCancel?.();
+                }}
+              >
+                Cancelar
+              </Button>
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? (
                   <span className="flex items-center gap-3">
-                    <MoonLoader size={16} color="#ffffff" />
+                    <Spinner className="size-4 shrink-0" />
                     {loadingText}
                   </span>
                 ) : (
-                  submitButtonText
+                  <span className="flex items-center gap-1.5">
+                    <SaveIcon className="size-4 shrink-0" />
+                    {submitButtonText}
+                  </span>
                 )}
               </Button>
             </div>

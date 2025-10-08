@@ -24,9 +24,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BaseUnitType, FormBaseMasterProductProps, ResourceType, UnitType } from "@/types";
-import { MoonLoader } from "react-spinners";
+import {
+  BaseUnitType,
+  FormBaseMasterProductProps,
+  ResourceType,
+  UnitType,
+} from "@/types";
 import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
+import { Spinner } from "@/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
 export const BaseFormMasterProduct = forwardRef<
   UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>,
@@ -190,11 +196,14 @@ export const BaseFormMasterProduct = forwardRef<
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? (
                   <span className="flex items-center gap-3">
-                    <MoonLoader size={16} color="#ffffff" />
+                    <Spinner className="size-4 shrink-0" />
                     {loadingText}
                   </span>
                 ) : (
-                  submitButtonText
+                  <span className="flex items-center gap-1.5">
+                    <SaveIcon className="size-4 shrink-0" />
+                    {submitButtonText}
+                  </span>
                 )}
               </Button>
             </div>

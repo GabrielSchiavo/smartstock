@@ -22,7 +22,6 @@ import {
   UnitType,
   AdjustmentType,
 } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { SelectorProduct } from "@/components/stock/product/selector-product";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -36,6 +35,8 @@ import {
 } from "@/components/ui/select";
 import { formatDateOnlyToLocale } from "@/utils/date-utils";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { Spinner } from "@/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
 interface ExtendedFormBaseInputProductProps extends FormAdjustmentProps {
   products: ProductWithMasterProductResponse[];
@@ -333,7 +334,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.GENERAL, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentMovementCategoryType.GENERAL,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -345,7 +349,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.CORRECTION, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentMovementCategoryType.CORRECTION,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -357,7 +364,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.LOSS_DAMAGE, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentMovementCategoryType.LOSS_DAMAGE,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -369,7 +379,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.THEFT_MISPLACEMENT, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -381,7 +394,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentMovementCategoryType.DUE_DATE, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentMovementCategoryType.DUE_DATE,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                               </RadioGroup>
@@ -412,7 +428,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentType.POSITIVE, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentType.POSITIVE,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
@@ -422,7 +441,10 @@ export const BaseFormAdjustment = forwardRef<
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(AdjustmentType.NEGATIVE, "capitalize")}
+                                    {formatEnumValueDisplay(
+                                      AdjustmentType.NEGATIVE,
+                                      "capitalize"
+                                    )}
                                   </FormLabel>
                                 </FormItem>
                               </RadioGroup>
@@ -437,14 +459,28 @@ export const BaseFormAdjustment = forwardRef<
               </div>
             </div>
             <div className="flex gap-3 justify-end">
+              <Button
+                disabled={isPending}
+                size="sm"
+                type="reset"
+                variant={"ghost"}
+                onClick={() => {
+                  form.reset();
+                }}
+              >
+                Cancelar
+              </Button>
               <Button disabled={isPending} type="submit" size="sm">
                 {isPending ? (
                   <span className="flex items-center gap-3">
-                    <MoonLoader size={16} color="#ffffff" />
+                    <Spinner className="size-4 shrink-0" />
                     {loadingText}
                   </span>
                 ) : (
-                  submitButtonText
+                  <span className="flex items-center gap-1.5">
+                    <SaveIcon className="size-4 shrink-0" />
+                    {submitButtonText}
+                  </span>
                 )}
               </Button>
             </div>

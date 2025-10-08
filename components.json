@@ -10,21 +10,15 @@
     "cssVariables": true,
     "prefix": ""
   },
+  "iconLibrary": "lucide",
   "aliases": {
-    "styles": "@/styles",
     "components": "@/components",
-    "providers": "@/components/providers",
+    "utils": "@/lib/utils",
     "ui": "@/components/ui",
     "lib": "@/lib",
-    "utils": "@/lib/utils",
-    "hooks": "@/hooks",
-    "css": "@/app",
-    "images": "@/public/assets/images",
-    "fonts": "@/public/assets/fonts",
-    "types": "@/types",
-    "schema": "@/schemas",
-    "db": "@/db",
-    "actions": "@/actions"
+    "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "registries": {
+    "@magicui": "https://magicui.design/r/{name}.json"
+  }
 }

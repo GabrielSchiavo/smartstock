@@ -7,8 +7,17 @@ export const CreateReportSchema = z
     finalDate: z.date().optional(),
     reportType: z.enum(
       [ReportType.VALIDITY, ReportType.DONATIONS, ReportType.PURCHASED, ReportType.RECEIVERS, ReportType.SUPPLIERS, ReportType.INVENTORY, ReportType.INPUTS, ReportType.OUTPUTS, ReportType.ADJUSTMENTS],
-      {
-        message: "Selecione o tipo de relatório."
+{
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione o tipo de relatório.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione o tipo de relatório.` };
+          }
+
+          return "Inválido.";
+        },
       }
     ),
   })

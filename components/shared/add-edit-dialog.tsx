@@ -56,7 +56,7 @@ export function AddEditDialog({
           <Button
             variant={config.variant}
             size="sm"
-            className={`flex justify-start items-center gap-2 cursor-pointer ${
+            className={`flex justify-start items-center cursor-pointer ${
               mode === "edit" ? "w-full text-foreground hover:text-foreground" : ""
             } ${triggerClassName}`}
             title={config.triggerText}

@@ -34,11 +34,12 @@ import {
   ReportType,
   ToastType,
 } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ptBR } from "date-fns/locale";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { Spinner } from "@/components/ui/spinner";
+import { PlusIcon } from "lucide-react";
 
 export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
   const [isPending, startTransition] = useTransition();
@@ -464,11 +465,14 @@ export const FormReport = ({ onReportGenerated }: FormReportsProps) => {
             <Button disabled={isPending} type="submit" size="sm">
               {isPending ? (
                 <span className="flex items-center gap-3">
-                  <MoonLoader size={16} color="#ffffff" />
+                  <Spinner className="size-4 shrink-0" />
                   {"Gerando..."}
                 </span>
               ) : (
-                "Gerar Relatório"
+                <span className="flex items-center gap-1.5">
+                  <PlusIcon className="size-4 shrink-0" />
+                  Gerar Relatório
+                </span>
               )}
             </Button>
           </div>

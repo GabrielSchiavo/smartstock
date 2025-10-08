@@ -5,11 +5,11 @@ import { BaseFormUser } from "@/components/user/base-form-user";
 import { editUser, getUserById } from "@/actions";
 import { FormAddEditProps, ToastType } from "@/types";
 import { UserType } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { MessageError } from "@/components/utils/message-error";
 import { EditUserSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
+import { Spinner } from "@/components/ui/spinner";
 
 export const FormEditUser = ({
   rowItemId,
@@ -53,7 +53,7 @@ export const FormEditUser = ({
     return (
       <div className="w-full flex justify-center">
         <span className="flex items-center text-muted-foreground gap-3">
-          <MoonLoader size={22} color="#71717b" />
+          <Spinner className="size-5 shrink-0" />
           {"Carregando dados..."}
         </span>
       </div>

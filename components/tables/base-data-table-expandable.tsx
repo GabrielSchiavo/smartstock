@@ -22,7 +22,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
-import { MoonLoader } from "react-spinners";
+import { Spinner } from "@/components/ui/spinner";
+import { DataTableEmpty } from "./_components/data-table-empty";
 
 export function BaseDataTableExpandable<TData>({
   table,
@@ -305,7 +306,7 @@ export function BaseDataTableExpandable<TData>({
             <TableCell colSpan={columns.length} className="h-24 text-center">
               <div className="flex items-center justify-center">
                 <span className="flex items-center text-muted-foreground gap-3">
-                  <MoonLoader size={22} color="#71717b" />
+                  <Spinner className="size-5 shrink-0" />
                   {"Carregando registros..."}
                 </span>
               </div>
@@ -314,7 +315,7 @@ export function BaseDataTableExpandable<TData>({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              Nenhum resultado encontrado.
+              <DataTableEmpty />
             </TableCell>
           </TableRow>
         )}

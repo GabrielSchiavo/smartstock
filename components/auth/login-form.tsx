@@ -16,14 +16,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageError } from "@/components/utils/message-error";
-import { MessageSuccess } from "@/components/utils/message-success";
 import { login } from "@/actions";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
-import { MoonLoader } from "react-spinners";
 import { ROUTES } from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
+import { FieldGroup } from "../ui/field";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -34,6 +34,7 @@ export const LoginForm = () => {
       : "";
 
   const [error, setError] = useState<string | undefined>("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -70,18 +71,21 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
+      headerTitle="Acesse sua conta"
       headerLabel="Bem-vindo de volta"
       backButtonLabel=""
       backButtonHref=""
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-          <div className="grid gap-6">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <MessageError message={error || urlError} />
+            {/* <MessageSuccess message={success} /> */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="gap-3">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
@@ -100,8 +104,25 @@ export const LoginForm = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                <FormItem className="gap-3">
+                  <FormLabel>
+                    <div className="flex w-full items-center justify-between gap-3">
+                      Senha
+                      <Button
+                        size="sm"
+                        variant="link"
+                        asChild
+                        className="h-fit! w-fit! font-medium p-0"
+                      >
+                        <Link
+                          href={ROUTES.AUTH_RESET_PASSWORD}
+                          className="h-fit! w-fit!"
+                        >
+                          Esqueceu sua senha?
+                        </Link>
+                      </Button>
+                    </div>
+                  </FormLabel>
                   <FormControl>
                     <PasswordInput
                       disabled={isPending}
@@ -111,35 +132,35 @@ export const LoginForm = () => {
                     />
                   </FormControl>
                   <FormMessage />
-                  <Button
-                    size="sm"
-                    variant="link"
-                    asChild
-                    className="px-0 font-normal justify-start"
-                  >
-                    <Link href={ROUTES.AUTH_RESET_PASSWORD}>Esqueceu sua senha?</Link>
-                  </Button>
                 </FormItem>
               )}
             />
-          </div>
-          <MessageError message={error || urlError} />
-          <MessageSuccess message={success} />
+            <Button
+              disabled={isPending}
+              type="submit"
+              size={"sm"}
+              className="w-full"
+            >
+              {isPending || isRedirecting ? (
+                <span className="flex items-center gap-3">
+                  <Spinner className="size-4 shrink-0" />
+                  {isRedirecting ? "Redirecionando..." : "Autenticando..."}
+                </span>
+              ) : (
+                "Entrar"
+              )}
+            </Button>
+            {/* <FieldSeparator>OU</FieldSeparator>
           <Button
             disabled={isPending}
-            type="submit"
+            type="button"
             size={"sm"}
             className="w-full"
+            variant={"outline"}
           >
-            {isPending || isRedirecting ? (
-              <span className="flex items-center gap-3">
-                <MoonLoader size={16} color="#ffffff" />
-                {isRedirecting ? "Redirecionando..." : "Autenticando..."}
-              </span>
-            ) : (
-              "Entrar"
-            )}
-          </Button>
+            <Link href={"#"}>Crie uma Conta</Link>
+          </Button> */}
+          </FieldGroup>
         </form>
       </Form>
     </CardWrapper>

@@ -19,10 +19,11 @@ import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/auth/input-password";
-import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 import { CopyToClipboard } from "@/components/utils/copy-to-clipboard";
+import { Spinner } from "@/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
 export const FormSetting = () => {
   const user = useCurrentUser();
@@ -91,9 +92,7 @@ export const FormSetting = () => {
         <div className="flex flex-col gap-12 w-full md:max-w-4xl">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
-              <h1 className="text-md font-medium">
-                Detalhes da Conta
-              </h1>
+              <h1 className="text-md font-medium">Detalhes da Conta</h1>
             </div>
 
             <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
@@ -183,15 +182,29 @@ export const FormSetting = () => {
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex gap-3 justify-end">
+            <Button
+              disabled={isPending}
+              size="sm"
+              type="reset"
+              variant={"ghost"}
+              onClick={() => {
+                form.reset();
+              }}
+            >
+              Cancelar
+            </Button>
             <Button disabled={isPending} type="submit" size="sm">
               {isPending ? (
                 <span className="flex items-center gap-3">
-                  <MoonLoader size={16} color="#ffffff" />
+                  <Spinner className="size-4 shrink-0" />
                   {"Salvando..."}
                 </span>
               ) : (
-                "Salvar"
+                <span className="flex items-center gap-1.5">
+                  <SaveIcon className="size-4 shrink-0" />
+                  Salvar
+                </span>
               )}
             </Button>
           </div>

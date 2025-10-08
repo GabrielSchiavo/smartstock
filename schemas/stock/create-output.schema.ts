@@ -42,8 +42,17 @@ export const CreateOutputSchema = z.object({
       }
     ),
   productUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    error: "Selecione um produto",
-  }),
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione um produto.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione um produto.` };
+          }
+
+          return "Inválido.";
+        },
+      }),
 
   quantity: z
     .string()
@@ -64,9 +73,17 @@ export const CreateOutputSchema = z.object({
       }
     ),
   unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    error: (issue) =>
-      issue.input === undefined ? "Selecione uma unidade de medida" : undefined,
-  }),
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione uma unidade de medida.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione uma unidade de medida.` };
+          }
+
+          return "Inválido.";
+        },
+      }),
   movementCategory: z.enum(
     [
       OutputMovementCategoryType.CONSUMPTION,
@@ -76,10 +93,16 @@ export const CreateOutputSchema = z.object({
       OutputMovementCategoryType.TRANSFER,
     ],
     {
-      error: (issue) =>
-        issue.input === undefined
-          ? "Selecione a categoria de saída."
-          : undefined,
-    }
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione uma categoria de saída.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione uma categoria de saída.` };
+          }
+
+          return "Inválido.";
+        },
+      }
   ),
 });

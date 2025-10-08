@@ -19,8 +19,9 @@ import { MessageError } from "@/components/utils/message-error";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
-import { MoonLoader } from "react-spinners";
 import { ROUTES } from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
+import { FieldGroup } from "../ui/field";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -52,18 +53,21 @@ export const ResetForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Redefina sua senha"
-      backButtonLabel="Voltar para o login"
+      headerTitle="Redefinir senha"
+      headerLabel="Informe seu email cadastrado para redefinir sua senha"
+      backButtonLabel="Login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
-          <div className="grid gap-6">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <MessageError message={error} />
+            <MessageSuccess message={success} />
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="gap-3">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
@@ -78,24 +82,22 @@ export const ResetForm = () => {
                 </FormItem>
               )}
             />
-          </div>
-          <MessageError message={error} />
-          <MessageSuccess message={success} />
-          <Button
-            disabled={isPending}
-            type="submit"
-            size={"sm"}
-            className="w-full"
-          >
-            {isPending ? (
-              <span className="flex items-center gap-3">
-                <MoonLoader size={16} color="#ffffff" />
-                {"Enviando email..."}
-              </span>
-            ) : (
-              "Continuar"
-            )}
-          </Button>
+            <Button
+              disabled={isPending}
+              type="submit"
+              size={"sm"}
+              className="w-full"
+            >
+              {isPending ? (
+                <span className="flex items-center gap-3">
+                  <Spinner className="size-4 shrink-0" />
+                  {"Enviando email..."}
+                </span>
+              ) : (
+                "Continuar"
+              )}
+            </Button>
+          </FieldGroup>
         </form>
       </Form>
     </CardWrapper>

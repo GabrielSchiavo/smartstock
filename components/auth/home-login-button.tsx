@@ -1,12 +1,12 @@
 "use client";
 
 import { ROUTES } from "@/config/routes";
-import { LoginButtonProps } from "@/types";
+import { HomeLoginButtonProps } from "@/types";
 import { useRouter } from "next/navigation";
 
-export const LoginButton = ({
+export const HomeLoginButton = ({
     children,
-}: LoginButtonProps) => {
+}: HomeLoginButtonProps) => {
     const router = useRouter();
 
     const onClick = () => {

@@ -4,6 +4,7 @@ import { ToastType } from "@/types";
 
 export interface CardWrapperProps {
   children: React.ReactNode;
+  headerTitle: string;
   headerLabel: string;
   backButtonLabel: string;
   backButtonHref: string;
@@ -84,4 +85,9 @@ export interface SelectorMasterProductProps {
   selectedId?: string;
   disabled?: boolean;
   isLoading: boolean;
+}
+
+export interface QuoteProps {
+  quote: string;
+  author: string;
 }

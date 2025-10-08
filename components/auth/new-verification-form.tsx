@@ -1,6 +1,5 @@
 "use client";
 
-import { MoonLoader } from "react-spinners";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -8,6 +7,9 @@ import { newVerification } from "@/actions";
 import { MessageSuccess } from "@/components/utils/message-success";
 import { MessageError } from "@/components/utils/message-error";
 import { ROUTES } from "@/config/routes";
+import { Spinner } from "@/components/ui/spinner";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message
@@ -40,21 +42,36 @@ export const NewVerificationForm = () => {
     onSubmit();
   }, [onSubmit]);
 
+  const isSuccess = success ? true : false;
+
   return (
     <CardWrapper
-      headerLabel="Verificando email"
-      backButtonLabel="Voltar para o login"
+      headerTitle="Verificando email"
+      headerLabel="Estamos verificando seu email"
+      backButtonLabel="Login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
-      <div className="flex items-center w-full justify-center">
+      <div className="flex flex-col items-center w-full justify-center gap-7">
+        <MessageSuccess message={success} />
+        {!success && <MessageError message={error} />}
         {!success && !error && (
           <div className="flex items-center gap-3">
-            <MoonLoader size={22} color="#ffffff" />
+            <Spinner className="size-5 shrink-0" />
             <span className="text-foreground">Verificando...</span>
           </div>
         )}
-        <MessageSuccess message={success} />
-        {!success && <MessageError message={error} />}
+        {isSuccess && (
+          <Link href={ROUTES.AUTH_LOGIN} className="w-full">
+            <Button
+              type="button"
+              size={"sm"}
+              variant={"outline"}
+              className="w-full"
+            >
+              Acessar Conta
+            </Button>
+          </Link>
+        )}
       </div>
     </CardWrapper>
   );

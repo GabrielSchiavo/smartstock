@@ -14,57 +14,21 @@ import {
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  clientCheckProductAlerts,
-  getAlerts,
-  getUnreadAlertsCount,
-  markAllAlertsAsRead,
-} from "@/actions";
+import { markAllAlertsAsRead } from "@/actions";
 import { AlertItem } from "@/components/alerts/alert-item";
 import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
-import { useCallback, useEffect, useState } from "react";
-import { useAlertWatcher } from "@/hooks/use-alert-watcher";
-import { BasicAlertProps, ToastType } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
+import React from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertEmpty } from "./alert-empty";
+import { useAlerts } from "@/hooks/use-alerts";
 
 export function AlertButton() {
-  const [alerts, setAlerts] = useState<BasicAlertProps[]>([]);
-  const [unreadAlertsCount, setUnreadAlertsCount] = useState(0);
-
-  // Use useCallback para memorizar a função de refresh
-  const refreshAlerts = useCallback(async () => {
-    try {
-      const [alertsData, count] = await Promise.all([
-        getAlerts(),
-        getUnreadAlertsCount(),
-      ]);
-      setAlerts(alertsData);
-      setUnreadAlertsCount(count);
-      return count;
-    } catch (error) {
-      console.error("Erro ao carregar alertas:", error);
-      showToast({
-        title: "Erro!",
-        description: `Não foi possível carregar os alertas.`,
-        type: ToastType.ERROR,
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    clientCheckProductAlerts();
-    refreshAlerts();
-  }, [refreshAlerts]);
-
-  useAlertWatcher(() => {
-    refreshAlerts();
-  }, unreadAlertsCount);
+  const { alerts, unreadAlertsCount, refreshAlerts } = useAlerts();
 
   const handleMarkAllAsRead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,11 +79,7 @@ export function AlertButton() {
             <ScrollArea className="h-full">
               <div className="grid flex-1 auto-rows-min">
                 {alerts.length === 0 ? (
-                  <div className="border rounded-xl p-6 shadow">
-                    <p className="text-muted-foreground text-sm text-center">
-                      Nenhum alerta encontrado.
-                    </p>
-                  </div>
+                  <AlertEmpty />
                 ) : (
                   <div className="flex flex-col gap-3">
                     {alerts.filter((alert) => !alert.isRead).length > 0 ? (
@@ -133,11 +93,7 @@ export function AlertButton() {
                           />
                         ))
                     ) : (
-                      <div className="border rounded-xl p-6 shadow">
-                        <p className="text-muted-foreground text-sm text-center">
-                          Nenhum alerta encontrado.
-                        </p>
-                      </div>
+                      <AlertEmpty />
                     )}
                   </div>
                 )}
@@ -148,11 +104,7 @@ export function AlertButton() {
             <ScrollArea className="h-full">
               <div className="grid flex-1 auto-rows-min">
                 {alerts.length === 0 ? (
-                  <div className="border rounded-xl p-6 shadow">
-                    <p className="text-muted-foreground text-sm text-center">
-                      Nenhum alerta encontrado.
-                    </p>
-                  </div>
+                  <AlertEmpty />
                 ) : (
                   <div className="flex flex-col gap-3">
                     {alerts.filter((alert) => alert.isRead).length > 0 ? (
@@ -166,11 +118,7 @@ export function AlertButton() {
                           />
                         ))
                     ) : (
-                      <div className="border rounded-xl p-6 shadow">
-                        <p className="text-muted-foreground text-sm text-center">
-                          Nenhum alerta encontrado.
-                        </p>
-                      </div>
+                      <AlertEmpty />
                     )}
                   </div>
                 )}

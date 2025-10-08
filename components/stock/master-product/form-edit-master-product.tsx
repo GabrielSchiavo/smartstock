@@ -5,11 +5,11 @@ import { BaseFormMasterProduct } from "@/components/stock/master-product/base-fo
 import { editMasterProduct, getMasterProductById } from "@/actions";
 import { FormAddEditProps, ToastType, BaseUnitType } from "@/types";
 import { MessageError } from "@/components/utils/message-error";
-import { MoonLoader } from "react-spinners";
 import { CreateEditMasterProductSchema } from "@/schemas";
 import { z } from "zod";
 import { showToast } from "@/components/utils/show-toast";
 import { UseFormReturn } from "react-hook-form";
+import { Spinner } from "@/components/ui/spinner";
 
 export const FormEditMasterProduct = ({
   rowItemId,
@@ -81,7 +81,7 @@ export const FormEditMasterProduct = ({
     return (
       <div className="w-full flex justify-center">
         <span className="flex items-center text-muted-foreground gap-3">
-          <MoonLoader size={22} color="#71717b" />
+          <Spinner className="size-5 shrink-0" />
           {"Carregando dados..."}
         </span>
       </div>

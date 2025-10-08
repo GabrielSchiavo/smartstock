@@ -16,11 +16,12 @@ import { useTransition } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PasswordInput } from "@/components/auth/input-password";
 import { FormBaseUserProps, ToastType, UserType } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { showToast } from "@/components/utils/show-toast";
 import { useSession } from "next-auth/react";
 import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { Spinner } from "@/components/ui/spinner";
+import { SaveIcon } from "lucide-react";
 
 export const BaseFormUser = ({
   schema,
@@ -220,7 +221,12 @@ export const BaseFormUser = ({
                               checked={field.value === UserType.ADMIN}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">{formatEnumValueDisplay(UserType.ADMIN, "capitalize")}</FormLabel>
+                          <FormLabel className="font-normal">
+                            {formatEnumValueDisplay(
+                              UserType.ADMIN,
+                              "capitalize"
+                            )}
+                          </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
                           <FormControl>
@@ -229,7 +235,12 @@ export const BaseFormUser = ({
                               checked={field.value === UserType.DEFAULT}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">{formatEnumValueDisplay(UserType.DEFAULT, "capitalize")}</FormLabel>
+                          <FormLabel className="font-normal">
+                            {formatEnumValueDisplay(
+                              UserType.DEFAULT,
+                              "capitalize"
+                            )}
+                          </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
                           <FormControl>
@@ -239,7 +250,10 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(UserType.CADASTRE, "capitalize")}
+                            {formatEnumValueDisplay(
+                              UserType.CADASTRE,
+                              "capitalize"
+                            )}
                           </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
@@ -250,7 +264,10 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(UserType.REPORT, "capitalize")}
+                            {formatEnumValueDisplay(
+                              UserType.REPORT,
+                              "capitalize"
+                            )}
                           </FormLabel>
                         </FormItem>
                       </RadioGroup>
@@ -277,11 +294,14 @@ export const BaseFormUser = ({
             <Button disabled={isPending} type="submit" size="sm">
               {isPending ? (
                 <span className="flex items-center gap-3">
-                  <MoonLoader size={16} color="#ffffff" />
+                  <Spinner className="size-4 shrink-0" />
                   {loadingText}
                 </span>
               ) : (
-                submitButtonText
+                <span className="flex items-center gap-1.5">
+                  <SaveIcon className="size-4 shrink-0" />
+                  {submitButtonText}
+                </span>
               )}
             </Button>
           </div>

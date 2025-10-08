@@ -127,8 +127,17 @@ export const CreateInputEditProductSchema = z
       .or(z.literal(""))
       .optional(),
     baseUnit: z.enum([BaseUnitType.KG, BaseUnitType.L, BaseUnitType.UN], {
-      error: "Selecione um produto mestre",
-    }),
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione um produto mestre` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione um produto mestre` };
+          }
+
+          return "Inválido.";
+        },
+      }),
     productType: z.enum([ProductType.DONATED, ProductType.PURCHASED], {
       error: (issue) => {
         if (issue.input === undefined) {

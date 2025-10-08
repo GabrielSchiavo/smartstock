@@ -62,9 +62,15 @@ export const NameSchema = z
 export const UserTypeSchema = z.enum(
   [UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE, UserType.REPORT],
   {
-    error: (issue) =>
-      issue.input === undefined
-        ? "Você precisa selecionar um tipo de usuário."
-        : undefined,
+    error: (issue) => {
+      if (issue.input === undefined) {
+        return { message: `Selecione o tipo de usuário.` };
+      }
+      if (issue.code === "invalid_value") {
+        return { message: `Selecione o tipo de usuário.` };
+      }
+
+      return "Inválido.";
+    },
   }
 );

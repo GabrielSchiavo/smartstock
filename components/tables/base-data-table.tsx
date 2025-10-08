@@ -13,8 +13,9 @@ import {
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
-import { MoonLoader } from "react-spinners";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { Spinner } from "@/components/ui/spinner";
+import { DataTableEmpty } from "./_components/data-table-empty";
 
 // Type guard to check if data can be used for totals
 function isCalculableTotalData(
@@ -149,7 +150,7 @@ export function BaseDataTable<TData>({
             <TableCell colSpan={columns.length} className="h-24 text-center">
               <div className="flex items-center justify-center">
                 <span className="flex items-center text-muted-foreground gap-3">
-                  <MoonLoader size={22} color="#71717b" />
+                  <Spinner className="size-5 shrink-0" />
                   {"Carregando registros..."}
                 </span>
               </div>
@@ -158,7 +159,7 @@ export function BaseDataTable<TData>({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              Nenhum resultado encontrado.
+              <DataTableEmpty />
             </TableCell>
           </TableRow>
         )}

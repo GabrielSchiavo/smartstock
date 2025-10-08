@@ -5,9 +5,10 @@ import { TriangleAlertIcon } from "lucide-react"
 export const ErrorCard = () => {
     return (
         <CardWrapper
-            headerLabel="Oops! Something went wrong!"
+            headerTitle="Erro!"
+            headerLabel="Ops! Algo deu errado!"
             backButtonHref={ROUTES.AUTH_LOGIN}
-            backButtonLabel="Back to login"
+            backButtonLabel="Login"
         >
             <div className="w-full flex justify-center items-center">
                 <TriangleAlertIcon className="text-destructive" />

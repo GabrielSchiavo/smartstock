@@ -1,27 +1,33 @@
 "use client";
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { HeaderAuth } from "@/components/auth/header-auth";
 import { BackButton } from "@/components/auth/back-button";
 import { CardWrapperProps } from "@/types";
 
 export const CardWrapper = ({
-    children,
-    headerLabel,
-    backButtonLabel,
-    backButtonHref,
+  children,
+  headerTitle,
+  headerLabel,
+  backButtonLabel,
+  backButtonHref,
 }: CardWrapperProps) => {
-    return (
-        <Card className="w-[400px] shadow-md rounded-xl">
-            <CardHeader>
-                <HeaderAuth label={headerLabel} />
-            </CardHeader>
-            <CardContent>
-                {children}
-            </CardContent>
-            <CardFooter>
-                {backButtonLabel === "" ? <></> : <BackButton label={backButtonLabel} href={backButtonHref}/>}
-            </CardFooter>
-        </Card>
-    );
+  return (
+    <section className="w-full max-w-xs">
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h1 className="text-2xl font-bold">{headerTitle}</h1>
+          <p className="text-muted-foreground text-sm text-balance">
+            {headerLabel}
+          </p>
+        </div>
+        {children}
+        <div>
+          {backButtonLabel === "" ? (
+            <></>
+          ) : (
+            <BackButton label={backButtonLabel} href={backButtonHref} />
+          )}
+        </div>
+      </div>
+    </section>
+  );
 };

@@ -20,8 +20,8 @@ import {
   XIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MoonLoader } from "react-spinners";
 import { BaseDynamicComboboxProps } from "@/types";
+import { Spinner } from "@/components/ui/spinner";
 
 export function BaseDynamicCombobox({
   value,
@@ -105,7 +105,7 @@ export function BaseDynamicCombobox({
           <CommandList className="p-1">
             {isPending ? (
               <CommandEmpty className="h-[45px] flex items-center justify-center p-0">
-                <MoonLoader size={22} color="#71717b" />
+                <Spinner className="size-5 shrink-0" />
               </CommandEmpty>
             ) : (
               <>

@@ -12,11 +12,17 @@ export const CreateEditMasterProductSchema = z.object({
       error: "Nome deve ter no máximo 60 caracteres",
     }),
   baseUnit: z.enum([BaseUnitType.KG, BaseUnitType.UN, BaseUnitType.L], {
-    error: (issue) =>
-      issue.input === undefined
-        ? "Selecione uma unidade de medida base"
-        : undefined,
-  }),
+        error: (issue) => {
+          if (issue.input === undefined) {
+            return { message: `Selecione a unidade de medida base.` };
+          }
+          if (issue.code === "invalid_value") {
+            return { message: `Selecione a unidade de medida base.` };
+          }
+
+          return "Inválido.";
+        },
+      }),
   categoryId: z.string().trim().min(2, {
     error: "Categoria é obrigatório",
   }),

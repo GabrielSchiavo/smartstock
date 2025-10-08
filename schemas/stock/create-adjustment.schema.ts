@@ -46,7 +46,16 @@ export const CreateAdjustmentSchema = z.object({
       }
     ),
   productUnit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    error: "Selecione um produto",
+    error: (issue) => {
+      if (issue.input === undefined) {
+        return { message: `Selecione um produto.` };
+      }
+      if (issue.code === "invalid_value") {
+        return { message: `Selecione um produto.` };
+      }
+
+      return "Inválido.";
+    },
   }),
 
   quantity: z
@@ -68,8 +77,16 @@ export const CreateAdjustmentSchema = z.object({
       }
     ),
   unit: z.enum([UnitType.KG, UnitType.G, UnitType.L, UnitType.UN], {
-    error: (issue) =>
-      issue.input === undefined ? "Selecione uma unidade de medida" : undefined,
+    error: (issue) => {
+      if (issue.input === undefined) {
+        return { message: `Selecione uma unidade de medida.` };
+      }
+      if (issue.code === "invalid_value") {
+        return { message: `Selecione uma unidade de medida.` };
+      }
+
+      return "Inválido.";
+    },
   }),
   movementCategory: z.enum(
     [
@@ -80,14 +97,28 @@ export const CreateAdjustmentSchema = z.object({
       AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
     ],
     {
-      error: (issue) =>
-        issue.input === undefined
-          ? "Selecione a categoria de ajuste."
-          : undefined,
+      error: (issue) => {
+        if (issue.input === undefined) {
+          return { message: `Selecione uma categoria de ajuste.` };
+        }
+        if (issue.code === "invalid_value") {
+          return { message: `Selecione uma categoria de ajuste.` };
+        }
+
+        return "Inválido.";
+      },
     }
   ),
   adjustmentType: z.enum([AdjustmentType.POSITIVE, AdjustmentType.NEGATIVE], {
-    error: (issue) =>
-      issue.input === undefined ? "Selecione o tipo de ajuste." : undefined,
+    error: (issue) => {
+      if (issue.input === undefined) {
+        return { message: `Selecione o tipo de ajuste.` };
+      }
+      if (issue.code === "invalid_value") {
+        return { message: `Selecione o tipo de ajuste.` };
+      }
+
+      return "Inválido.";
+    },
   }),
 });

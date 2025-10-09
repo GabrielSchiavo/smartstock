@@ -2,17 +2,12 @@ import { HomeLoginButton } from "@/components/auth/home-login-button";
 import { Metadata } from "next";
 import { LogoWithText } from "@/components/shared/logo-with-text";
 import { ROUTES } from "@/config/routes";
-import {
-  ArrowRightIcon,
-  BellRingIcon,
-  BarChart3Icon,
-  CalendarClockIcon,
-  SmartphoneIcon,
-} from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { InfiniteFeaturesScrolling } from "@/components/shared/infinite-features-scrolling";
 
 export const metadata: Metadata = {
   title: "SmartStock: Gestão de Estoque",
@@ -77,40 +72,9 @@ export default function Home() {
           </HomeLoginButton>
         </div>
 
-        <ul className="grid w-full max-w-5xl grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 z-20">
-          <li className="flex justify-center items-center gap-5">
-            <div className="bg-accent/50 flex size-12 items-center justify-center rounded-lg">
-              <CalendarClockIcon className="text-accent-foreground size-6 shrink-0" />
-            </div>
-            <p className="text-md text-foreground font-medium">
-              Controle de Validade
-            </p>
-          </li>
-          <li className="flex justify-center items-center gap-5">
-            <div className="bg-accent/50 flex size-12 items-center justify-center rounded-lg">
-              <BarChart3Icon className="text-accent-foreground size-6 shrink-0" />
-            </div>
-            <p className="text-md text-foreground font-medium">
-              Relatórios Completos
-            </p>
-          </li>
-          <li className="flex justify-center items-center gap-5">
-            <div className="bg-accent/50 flex size-12 items-center justify-center rounded-lg">
-              <SmartphoneIcon className="text-accent-foreground size-6 shrink-0" />
-            </div>
-            <p className="text-md text-foreground font-medium">
-              Acesso Onde Estiver
-            </p>
-          </li>
-          <li className="flex justify-center items-center gap-5 lg:col-start-2">
-            <div className="bg-accent/50 flex size-12 items-center justify-center rounded-lg">
-              <BellRingIcon className="text-accent-foreground size-6 shrink-0" />
-            </div>
-            <p className="text-md text-foreground font-medium">
-              Alertas Inteligentes
-            </p>
-          </li>
-        </ul>
+        <div className="w-full max-w-6xl">
+          <InfiniteFeaturesScrolling />
+        </div>
       </div>
     </main>
   );

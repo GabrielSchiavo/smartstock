@@ -25,7 +25,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="bg-muted relative hidden lg:block">
         <Image
           src={BackgroundImage}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover saturate-130"
           alt="Imagem de background"
           aria-hidden="true"
         />

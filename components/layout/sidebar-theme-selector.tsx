@@ -21,17 +21,12 @@ const COLOR_THEMES = [
   {
     name: "Azul",
     value: "blue",
-    color: "bg-blue-600",
+    color: "bg-blue-700",
   },
   {
     name: "Cinza",
     value: "gray",
     color: "bg-gray-600",
-  },
-  {
-    name: "Indigo",
-    value: "indigo",
-    color: "bg-indigo-600",
   },
   {
     name: "Laranja",

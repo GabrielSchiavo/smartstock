@@ -40,7 +40,6 @@ export const FormAddMasterProduct = ({
         });
       }
     });
-    console.log(values);
   };
 
   return (

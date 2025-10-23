@@ -23,7 +23,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { ROUTES } from "@/config/routes";
 import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup } from "../ui/field";
+import { FieldGroup } from "@/components/ui/field";
 
 export const LoginForm = () => {
   const router = useRouter();

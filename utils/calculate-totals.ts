@@ -5,7 +5,8 @@ import { normalizeValue } from "@/utils/unit-conversion";
  * Calcula os totais normalizados de peso, volume e unidades para uma lista de itens
  * @param data - Array de itens com propriedades de quantidade e unidades
  * @param initialValues - Valores iniciais para os totais (opcional)
- * @returns Objeto com os totais calculados
+ * @returns Objeto com os totais calculados. Somente retornará units caso não existir unitWeight e/ou unitOfUnitWeight. 
+ *          Caso contrário será convertido units em KG ou L e somado com weight ou volume.
  */
 export const calculateTotals = <T extends CalculableTotalItemProps>(
   data: T[],

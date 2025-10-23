@@ -10,9 +10,15 @@ import {
   ProductCountType,
   ProductOperationResponse,
   ProductWithMasterProductResponse,
+  CalculableTotalItemProps,
+  TotalAmountByMonthChartResponse,
+  ProductsCountByValidityStatusResponse,
 } from "@/types";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { calculateTotals } from "@/utils/calculate-totals";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export const editProduct = async (
   id: number,
@@ -196,3 +202,117 @@ export const getProductsToExpire = async (): Promise<
     throw error;
   }
 };
+
+export const getTotalAmountByMonthChart = async (
+  year?: number
+): Promise<TotalAmountByMonthChartResponse> => {
+  try {
+    const currentYear = year || new Date().getFullYear();
+
+    // Array com os nomes dos meses em português
+    const monthNames = Array.from({ length: 12 }, (_, index) => {
+      const date = new Date(currentYear, index, 1);
+      const monthName = format(date, "MMMM", { locale: ptBR });
+      return monthName.charAt(0).toUpperCase() + monthName.slice(1);
+    });
+
+    // Buscar todos os produtos do ano corrente
+    const startDate = new Date(currentYear, 0, 1); // 1º de janeiro
+    const endDate = new Date(currentYear, 11, 31, 23, 59, 59); // 31 de dezembro
+
+    const products = await productRepository.findAllByReceiptDate(
+      startDate,
+      endDate
+    );
+
+    // Agrupar produtos por mês
+    const productsByMonth = products.reduce(
+      (acc, product) => {
+        const month = new Date(product.receiptDate).getMonth();
+        if (!acc[month]) {
+          acc[month] = [];
+        }
+        acc[month].push(product);
+        return acc;
+      },
+      {} as Record<number, ProductWithMasterProductResponse[]>
+    );
+
+    // Calcular totais para cada mês
+    const monthlyTotals = monthNames.map((monthName, index) => {
+      const monthProducts = productsByMonth[index] || [];
+      const totals = calculateTotals(
+        monthProducts as unknown as CalculableTotalItemProps[]
+      );
+
+      return {
+        month: monthName,
+        monthNumber: index + 1,
+        totalKg: totals.weight,
+        totalL: totals.volume,
+        totalUN: totals.units,
+      };
+    });
+
+    return {
+      success: true,
+      title: "Sucesso!",
+      description: `Totais de ${currentYear} calculados com sucesso.`,
+      data: monthlyTotals,
+    };
+  } catch (error) {
+    console.error("Erro ao calcular totais por mês:", error);
+    return {
+      success: false,
+      title: "Erro!",
+      description: "Não foi possível calcular os totais por mês.",
+    };
+  }
+};
+
+export const getProductsCountByValidityStatus =
+  async (): Promise<ProductsCountByValidityStatusResponse> => {
+    try {
+      const productsCount = await productRepository.countProducts();
+      const expiredProducts = await productRepository.findExpired();
+      const expiringSoonProducts = await productRepository.findAboutToExpire();
+      const validCount =
+        productsCount - (expiredProducts.length + expiringSoonProducts.length);
+
+      // Retornar dados no formato de array para o RadialBarChart
+      const data = [
+        {
+          status: "expired",
+          count: expiredProducts.length,
+          fill: "oklch(57.7% 0.245 27.325)",
+          // fill: "var(--chart-1)",
+        },
+        {
+          status: "expiringSoon",
+          count: expiringSoonProducts.length,
+          fill: "oklch(79.5% 0.184 86.047)",
+          // fill: "var(--chart-2)",
+        },
+        {
+          status: "valid",
+          count: validCount,
+          fill: "oklch(62.7% 0.194 149.214)",
+          // fill: "var(--chart-3)",
+        },
+      ];
+
+      return {
+        success: true,
+        title: "Sucesso!",
+        description: "Contagem por status de validade calculada com sucesso.",
+        data: data,
+      };
+    } catch (error) {
+      console.error("Erro ao contar produtos por status de validade:", error);
+      return {
+        success: false,
+        title: "Erro!",
+        description: "Não foi possível contar produtos por status de validade.",
+      };
+    }
+  };

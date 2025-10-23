@@ -86,8 +86,3 @@ export interface SelectorMasterProductProps {
   disabled?: boolean;
   isLoading: boolean;
 }
-
-export interface QuoteProps {
-  quote: string;
-  author: string;
-}

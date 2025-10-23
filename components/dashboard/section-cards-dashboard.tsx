@@ -6,14 +6,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { ProductCountType } from "@/types";
 import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
-import { BoxesIcon, CalendarClockIcon, CalendarX2Icon, TruckIcon } from "lucide-react";
+import {
+  BoxesIcon,
+  CalendarClockIcon,
+  CalendarX2Icon,
+  TruckIcon,
+} from "lucide-react";
 
 export async function SectionCardsDashboard() {
   const productsCount = (await getProductsCount()).count;
-  const productsToExpireCount = (await getProductsCount(ProductCountType.ABOUT_TO_EXPIRE)).count;
-  const productsExpiredCount = (await getProductsCount(ProductCountType.EXPIRED)).count;
+  const productsToExpireCount = (
+    await getProductsCount(ProductCountType.ABOUT_TO_EXPIRE)
+  ).count;
+  const productsExpiredCount = (
+    await getProductsCount(ProductCountType.EXPIRED)
+  ).count;
   const suppliersCount = (await getSuppliersCount()).count;
 
   return (
@@ -23,7 +33,11 @@ export async function SectionCardsDashboard() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Cadastrados
           </CardTitle>
-          <BoxesIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
+          <BoxesIcon
+            absoluteStrokeWidth={true}
+            size={40}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -41,7 +55,11 @@ export async function SectionCardsDashboard() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos à vencer
           </CardTitle>
-          <CalendarClockIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
+          <CalendarClockIcon
+            absoluteStrokeWidth={true}
+            size={40}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
@@ -59,23 +77,33 @@ export async function SectionCardsDashboard() {
           <CardTitle className="text-md font-medium text-muted-foreground">
             Produtos Vencidos
           </CardTitle>
-          <CalendarX2Icon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
+          <CalendarX2Icon
+            absoluteStrokeWidth={true}
+            size={40}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
-          <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          <CardTitle
+            className={cn(`text-4xl font-semibold tabular-nums @[250px]/card:text-3xl`)}
+          >
             {productsExpiredCount}
           </CardTitle>
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-md  text-muted-foreground">
-          <div className="line-clamp-1 flex gap-2">
-            Produtos já vencidos
-          </div>
+          <div className="line-clamp-1 flex gap-2">Produtos já vencidos</div>
         </CardFooter>
       </Card>
       <Card className="bg-background! rounded-xl shadow">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-md font-medium text-muted-foreground">Fornecedores</CardTitle>
-          <TruckIcon absoluteStrokeWidth={true} size={40} className="text-muted-foreground" />
+          <CardTitle className="text-md font-medium text-muted-foreground">
+            Fornecedores
+          </CardTitle>
+          <TruckIcon
+            absoluteStrokeWidth={true}
+            size={40}
+            className="text-muted-foreground"
+          />
         </CardHeader>
         <CardContent>
           <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-3xl">

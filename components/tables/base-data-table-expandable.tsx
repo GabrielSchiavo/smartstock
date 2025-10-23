@@ -23,7 +23,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTimeToLocale } from "@/utils/date-utils";
 import { Spinner } from "@/components/ui/spinner";
-import { DataTableEmpty } from "./_components/data-table-empty";
+import { DataTableEmpty } from "@/components/tables/_components/data-table-empty";
 
 export function BaseDataTableExpandable<TData>({
   table,

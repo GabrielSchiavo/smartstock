@@ -390,4 +390,21 @@ export const productRepository = {
       orderBy: { validityDate: "asc" },
     });
   },
+
+  // Adicione esta função dentro do objeto productRepository
+  async countByProductType(): Promise<{ type: string; count: number }[]> {
+    const result = await db.product.groupBy({
+      by: ["productType"],
+      _count: {
+        _all: true,
+      },
+    });
+
+    // Mapeia o resultado para um formato mais limpo
+    return result.map((item) => ({
+      type: item.productType,
+      count: item._count._all,
+    }));
+  },
 };
+

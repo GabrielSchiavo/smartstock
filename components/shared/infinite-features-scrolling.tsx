@@ -1,4 +1,4 @@
-import { Marquee } from "../ui/marquee";
+import { Marquee } from "@/components/ui/marquee";
 import {
   ArrowRightLeftIcon,
   BarChart3Icon,
@@ -36,7 +36,7 @@ const secondRow = features.slice(features.length / 2);
 const FeatureBadge = ({ icon, title }: { icon: LucideIcon; title: string }) => {
   const IconComponent = icon;
   return (
-    <div className="bg-accent/70 flex items-center gap-3 rounded-full text-base px-4 py-2 shadow-2xs">
+    <div className="bg-accent/70 flex items-center gap-3 rounded-md text-sm px-2.5 py-1.5 shadow-2xs">
       <IconComponent className="size-4 shrink-0" />
       {title}
     </div>

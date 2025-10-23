@@ -35,7 +35,7 @@ export function ThemeModeButton() {
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent className="*:justify-between" align="end">
-        <DropdownMenuLabel>Tema</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">Tema</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => setTheme("light")}>
           Claro

@@ -9,7 +9,7 @@ import { MessageError } from "@/components/utils/message-error";
 import { ROUTES } from "@/config/routes";
 import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message

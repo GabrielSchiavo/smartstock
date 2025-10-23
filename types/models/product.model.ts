@@ -1,5 +1,13 @@
 import { Product, Receiver, Supplier } from "@prisma/client";
-import { AdjustmentMovementCategoryType, BaseUnitType, InputMovementCategoryType, MasterProductWithCategoryGroupSubgroupResponse, OutputMovementCategoryType, ProductType, UnitType } from "@/types";
+import {
+  AdjustmentMovementCategoryType,
+  BaseUnitType,
+  InputMovementCategoryType,
+  MasterProductWithCategoryGroupSubgroupResponse,
+  OutputMovementCategoryType,
+  ProductType,
+  UnitType,
+} from "@/types";
 
 export type ProductResponse = {
   masterProductId: number;
@@ -18,7 +26,11 @@ export type ProductResponse = {
   subgroup?: string | null;
   baseUnit: BaseUnitType;
   productType: ProductType;
-  movementCategory: InputMovementCategoryType | OutputMovementCategoryType | AdjustmentMovementCategoryType | "";
+  movementCategory:
+    | InputMovementCategoryType
+    | OutputMovementCategoryType
+    | AdjustmentMovementCategoryType
+    | "";
 };
 
 // Tipo estendido para produto com informações do produto mestre
@@ -37,4 +49,27 @@ export type ProductOperationResponse = {
   title: string;
   description?: string;
   product?: Product;
+};
+
+export type TotalAmountByMonthChartResponse = {
+  success: boolean;
+  title: string;
+  description: string;
+  data?: Array<{
+    month: string;
+    monthNumber: number;
+    totalKg: number;
+    totalL: number;
+    totalUN: number;
+  }>;
+};
+export type ProductsCountByValidityStatusResponse = {
+  success: boolean;
+  title: string;
+  description: string;
+  data?: Array<{
+    status: string;
+    count: number;
+    fill: string;
+  }>;
 };

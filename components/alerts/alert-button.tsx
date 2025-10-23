@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertEmpty } from "./alert-empty";
+import { AlertEmpty } from "@/components/alerts/alert-empty";
 import { useAlerts } from "@/hooks/use-alerts";
 
 export function AlertButton() {

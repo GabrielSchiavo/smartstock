@@ -21,7 +21,7 @@ import { resetPassword } from "@/actions";
 import { useState, useTransition } from "react";
 import { ROUTES } from "@/config/routes";
 import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup } from "../ui/field";
+import { FieldGroup } from "@/components/ui/field";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");

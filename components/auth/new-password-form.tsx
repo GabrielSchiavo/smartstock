@@ -22,7 +22,7 @@ import { useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/auth/input-password";
 import { ROUTES } from "@/config/routes";
 import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup, FieldSeparator } from "../ui/field";
+import { FieldGroup, FieldSeparator } from "@/components/ui/field";
 import Link from "next/link";
 
 export const NewPasswordForm = () => {

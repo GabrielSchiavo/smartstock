@@ -15,7 +15,7 @@ import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
 import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
 import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
 import { Spinner } from "@/components/ui/spinner";
-import { DataTableEmpty } from "./_components/data-table-empty";
+import { DataTableEmpty } from "@/components/tables/_components/data-table-empty";
 
 // Type guard to check if data can be used for totals
 function isCalculableTotalData(

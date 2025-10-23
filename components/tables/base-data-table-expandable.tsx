@@ -40,11 +40,11 @@ export function BaseDataTableExpandable<TData>({
       [ActionType.DELETE]:
         "border-0 bg-red-500/15 text-red-600 dark:text-red-500",
       [ActionType.LOGIN]:
-        "border-0 bg-sky-500/15 text-sky-600 dark:text-sky-500",
+        "border-0 bg-emerald-500/15 text-emerald-600 dark:text-emerald-500",
       [ActionType.LOGOUT]:
-        "border-0 bg-teal-500/15 text-teal-600 dark:text-teal-500",
+        "border-0 bg-yellow-500/15 text-yellow-600 dark:text-yellow-500",
       [ActionType.LOGIN_FAILURE]:
-        "border-0 bg-indigo-500/15 text-indigo-600 dark:text-indigo-500",
+        "border-0 bg-red-500/15 text-red-600 dark:text-red-500",
     };
 
     return (

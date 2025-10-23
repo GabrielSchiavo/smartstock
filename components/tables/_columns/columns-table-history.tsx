@@ -126,19 +126,19 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
             );
           case ActionType.LOGIN:
             return (
-              <Badge className="text-sm bg-sky-500/15 text-sky-600 dark:text-sky-500">
+              <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
                 {formatEnumValueDisplay(ActionType.LOGIN, "uppercase")}
               </Badge>
             );
           case ActionType.LOGOUT:
             return (
-              <Badge className="text-sm bg-teal-500/15 text-teal-600 dark:text-teal-500">
+              <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
                 {formatEnumValueDisplay(ActionType.LOGOUT, "uppercase")}
               </Badge>
             );
           case ActionType.LOGIN_FAILURE:
             return (
-              <Badge className="text-sm bg-indigo-500/15 text-indigo-600 dark:text-indigo-500">
+              <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
                 {formatEnumValueDisplay(ActionType.LOGIN_FAILURE, "uppercase")}
               </Badge>
             );

@@ -21,7 +21,7 @@ export default function ReportsPage() {
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <h1 className="text-lg leading-none font-semibold">
                 <span className="flex gap-3 items-center">Gerar Relatório</span>
               </h1>

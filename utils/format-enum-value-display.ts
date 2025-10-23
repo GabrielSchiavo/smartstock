@@ -64,6 +64,7 @@ const enumTranslations: Record<string, string> = {
   [ActionType.DELETE]: "Excluir",
   [ActionType.LOGIN]: "Login",
   [ActionType.LOGOUT]: "Logout",
+  [ActionType.LOGIN_FAILURE]: "Falha de Login",
 
   [EntityType.USER]: "Usuário",
   [EntityType.MASTER_PRODUCT]: "Produto Mestre",

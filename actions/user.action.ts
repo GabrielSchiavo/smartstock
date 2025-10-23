@@ -9,7 +9,7 @@ import { sendVerificationEmail } from "@/utils/send-mail";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
 import { EntityType, ActionType, UserOperationResponse } from "@/types";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
 
 export const registerUser = async (

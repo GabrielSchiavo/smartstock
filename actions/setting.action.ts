@@ -1,7 +1,7 @@
 "use server";
 
 import { userRepository } from "@/db";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/utils/send-mail";
 import { SettingsSchema } from "@/schemas";

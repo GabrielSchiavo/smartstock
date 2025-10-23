@@ -1,6 +1,6 @@
 "use server";
 
-import { currentRole } from "@/lib/auth";
+import { currentRole } from "@/utils/current-session-utils";
 import { AuthorizationResponse, UserType } from "@/types";
 
 export const verifyAdminAccess = async (): Promise<AuthorizationResponse> => {

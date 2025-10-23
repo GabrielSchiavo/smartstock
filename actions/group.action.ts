@@ -8,7 +8,7 @@ import {
   EntityType,
 } from "@/types";
 import { auditLogRepository, groupRepository } from "@/db";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
 
 // Implementações

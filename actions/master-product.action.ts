@@ -11,7 +11,7 @@ import {
   MasterProductOperationResponse,
   MasterProductWithCategoryGroupSubgroupResponse,
 } from "@/types";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
 
 export const registerMasterProduct = async (

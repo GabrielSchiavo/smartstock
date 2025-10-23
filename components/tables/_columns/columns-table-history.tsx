@@ -69,7 +69,11 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
               className="size-8! shrink-0"
             >
               <span className="sr-only">Expandir/Recolher Linha</span>
-              {row.getIsExpanded() ? <ChevronDownIcon className="size-4 shrink-0" /> : <ChevronRightIcon className="size-4 shrink-0" />}
+              {row.getIsExpanded() ? (
+                <ChevronDownIcon className="size-4 shrink-0" />
+              ) : (
+                <ChevronRightIcon className="size-4 shrink-0" />
+              )}
             </Button>
           </div>
         );
@@ -132,6 +136,12 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
                 {formatEnumValueDisplay(ActionType.LOGOUT, "uppercase")}
               </Badge>
             );
+          case ActionType.LOGIN_FAILURE:
+            return (
+              <Badge className="text-sm bg-indigo-500/15 text-indigo-600 dark:text-indigo-500">
+                {formatEnumValueDisplay(ActionType.LOGIN_FAILURE, "uppercase")}
+              </Badge>
+            );
           default:
             return (
               <Badge className="text-sm bg-zinc-500/15 text-zinc-600 dark:text-zinc-500">
@@ -153,7 +163,10 @@ export const columnsTableHistory = ({}): ColumnDef<AuditLog>[] => {
         const value = row.getValue("entity");
 
         return (
-          <Badge variant={"outline"} className={`text-sm ${value === EntityType.ADJUSTMENT_POSITIVE || value === EntityType.INPUT ? "text-emerald-600 dark:text-emerald-500" : value === EntityType.ADJUSTMENT_NEGATIVE || value === EntityType.OUTPUT ? "text-red-600 dark:text-red-500" : ""}`}>
+          <Badge
+            variant={"outline"}
+            className={`text-sm ${value === EntityType.ADJUSTMENT_POSITIVE || value === EntityType.INPUT ? "text-emerald-600 dark:text-emerald-500" : value === EntityType.ADJUSTMENT_NEGATIVE || value === EntityType.OUTPUT ? "text-red-600 dark:text-red-500" : ""}`}
+          >
             {formatEnumValueDisplay(value as string, "uppercase")}
           </Badge>
         );

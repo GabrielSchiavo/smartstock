@@ -10,7 +10,7 @@ import {
   ActionType,
   EntityType,
 } from "@/types";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
 
 export async function getAllSupplier(): Promise<SupplierResponse> {

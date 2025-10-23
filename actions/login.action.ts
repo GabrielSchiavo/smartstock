@@ -3,14 +3,18 @@
 import { z } from "zod";
 import { AuthError } from "next-auth";
 
-import { signIn } from "@/auth";
+import { signIn } from "@/lib/auth";
 import { LoginSchema } from "@/schemas";
 import { DEFAULT_LOGIN_REDIRECT, ROUTES } from "@/config/routes";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/utils/send-mail";
-import { userRepository } from "@/db";
+import { auditLogRepository, userRepository } from "@/db";
+import { ActionType, EntityType } from "@/types";
+import { headers } from "next/headers";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
+  const ip = (await headers()).get("x-forwarded-for") ?? "UNKNOWN_IP";
+
   // Validação dos campos de entrada
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -24,6 +28,18 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const existingUser = await userRepository.findByEmail(email);
 
   if (!existingUser?.email || !existingUser.password) {
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: null,
+      recordChangedId: null,
+      actionType: ActionType.LOGIN_FAILURE,
+      entity: EntityType.SYSTEM,
+      changedValue: null,
+      ipAddress: ip,
+      targetEmail: email,
+      details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP='${ip}' | Message='User not found' | Date Time='${new Date().toISOString()}'`,
+    });
+
     return { error: "Credenciais inválidas!" };
   }
 
@@ -55,6 +71,17 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       redirect: false, // Explicitly enable redirect
     });
 
+    await auditLogRepository.create({
+      createdAt: new Date(),
+      userId: existingUser.id as string,
+      recordChangedId: null,
+      actionType: ActionType.LOGIN,
+      entity: EntityType.SYSTEM,
+      changedValue: null,
+      ipAddress: ip,
+      details: `[SYSTEM] Action='${ActionType.LOGIN}' | Entity='${EntityType.SYSTEM}' | User ID='${existingUser.id}' | User='${existingUser.name}' | IP='${ip}' | Message='Successful login' | Date Time='${new Date().toISOString()}'`,
+    });
+
     return {
       success: "Login realizado com sucesso! Redirecionando...",
       redirectUrl: DEFAULT_LOGIN_REDIRECT,
@@ -64,6 +91,18 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
+          await auditLogRepository.create({
+            createdAt: new Date(),
+            userId: null,
+            recordChangedId: null,
+            actionType: ActionType.LOGIN_FAILURE,
+            entity: EntityType.SYSTEM,
+            changedValue: null,
+            ipAddress: ip,
+            targetEmail: email,
+            details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP='${ip}' | Message='User found, but invalid credentials' | Date Time='${new Date().toISOString()}'`,
+          });
+
           return { error: "Credenciais inválidas!" };
         default:
           console.error("Erro de autenticação:", error);

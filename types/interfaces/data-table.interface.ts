@@ -8,6 +8,7 @@ import {
 import {
   DataExpandableType,
   DeleteRegisterProps,
+  FiltersGroupType,
   FilterModeType,
   FormAddEditProps,
   MasterProductWithCategoryGroupSubgroupResponse,
@@ -25,6 +26,7 @@ export interface DataTableProps<TData, TValue> {
   groupBy?: string;
   selectionMode?: boolean;
   isLoading?: boolean;
+  filterGroup?: FiltersGroupType;
 }
 
 export interface DataTableReportProps<TData> {
@@ -126,6 +128,7 @@ export interface ClientDataTableMasterProductProps {
 }
 export interface ClientDataTableHistoryProps {
   history: AuditLog[];
+  filterGroup: FiltersGroupType;
 }
 export interface ClientDataTableUserProps {
   users: User[];

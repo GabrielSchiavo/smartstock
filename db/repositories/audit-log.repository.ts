@@ -83,7 +83,7 @@ export const auditLogRepository = {
     });
   },
 
-  async findSeveral(): Promise<AuditLogWithUserResponse[]> {
+  async findMiscellaneous(): Promise<AuditLogWithUserResponse[]> {
     return await db.auditLog.findMany({
       where: {
         NOT: {
@@ -93,6 +93,7 @@ export const auditLogRepository = {
               EntityType.OUTPUT,
               EntityType.ADJUSTMENT_POSITIVE,
               EntityType.ADJUSTMENT_NEGATIVE,
+              EntityType.SYSTEM,
             ],
           },
         },

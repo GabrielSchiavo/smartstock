@@ -78,6 +78,7 @@ export function ProductsCountByValidityStatusChart() {
   }, []);
 
   const totalProducts = chartData.reduce((sum, item) => sum + item.count, 0);
+  const filteredData = chartData.filter((item) => item.count > 0);
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
@@ -128,7 +129,7 @@ export function ProductsCountByValidityStatusChart() {
                       />
                       <ChartLegend content={<ChartLegendContent />} />
                       <Pie
-                        data={chartData}
+                        data={filteredData}
                         dataKey="count"
                         nameKey="status"
                         startAngle={180}

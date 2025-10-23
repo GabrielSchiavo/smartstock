@@ -105,15 +105,17 @@ model AlertSystem {
 }
 
 model AuditLog {
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   id String @id @default(cuid())
 
-  userId          String
-  recordChangedId String
+  userId          String?
+  recordChangedId String?
   actionType      String  @db.VarChar(30)
   entity          String  @db.VarChar(30)
   changedValue    String? @db.VarChar(150)
+  ipAddress       String? @db.VarChar(45)
+  targetEmail     String? @db.VarChar(255)
   details         String  @db.Text
 
   createdAt DateTime @default(now())

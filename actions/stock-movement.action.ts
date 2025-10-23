@@ -23,7 +23,7 @@ import { revalidatePath } from "next/cache";
 import z from "zod";
 import { getProductById } from "@/actions/product.action";
 import { convertUnit } from "@/utils/unit-conversion";
-import { currentUser } from "@/lib/auth";
+import { currentUser } from "@/utils/current-session-utils";
 import { getMasterProductById } from "@/actions/master-product.action";
 import { omit } from "@/lib/omit";
 import { db } from "@/lib/db";

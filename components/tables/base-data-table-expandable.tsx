@@ -43,6 +43,8 @@ export function BaseDataTableExpandable<TData>({
         "border-0 bg-sky-500/15 text-sky-600 dark:text-sky-500",
       [ActionType.LOGOUT]:
         "border-0 bg-teal-500/15 text-teal-600 dark:text-teal-500",
+      [ActionType.LOGIN_FAILURE]:
+        "border-0 bg-indigo-500/15 text-indigo-600 dark:text-indigo-500",
     };
 
     return (
@@ -72,22 +74,36 @@ export function BaseDataTableExpandable<TData>({
                 <span className="text-sm text-muted-foreground">
                   ID do Usuário:
                 </span>
-                <Badge variant="outline">{data.userId}</Badge>
+                {data.userId == null ? (
+                  "-"
+                ) : (
+                  <Badge variant="outline">{data.userId}</Badge>
+                )}
               </div>
               <div className="flex gap-3 justify-between items-center">
                 <span className="text-sm text-muted-foreground">
                   Nome do Usuário:
                 </span>
                 <span className="text-sm text-end text-wrap">
-                  {data.user.name}
+                  {data.user?.name == null ? "-" : data.user?.name}
                 </span>
               </div>
-              <div className="flex gap-3 justify-between items-center">
-                <span className="text-sm text-muted-foreground">
-                  ID do Registro:
-                </span>
-                <Badge variant="outline">{data.recordChangedId}</Badge>
-              </div>
+              {data.entity !== EntityType.SYSTEM && (
+                <div className="flex gap-3 justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    ID do Registro:
+                  </span>
+                  <Badge variant="outline">{data.recordChangedId}</Badge>
+                </div>
+              )}
+              {data.entity === EntityType.SYSTEM && (
+                <div className="flex gap-3 justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    Endereço IP:
+                  </span>
+                  {data.ipAddress}
+                </div>
+              )}
             </CardContent>
           </Card>
           {/* Detalhes */}
@@ -109,21 +125,31 @@ export function BaseDataTableExpandable<TData>({
                 <span className="text-sm text-muted-foreground">Entidade:</span>
                 <Badge variant="outline">{data.entity}</Badge>
               </div>
-              <div className="flex gap-3 justify-between items-center">
-                <span className="text-sm text-muted-foreground text-end text-wrap">
-                  {`${data.entity === EntityType.INPUT || data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "Quantidade:" : "Nome:"}`}
-                </span>
-                <span
-                  className={`${data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "text-red-600 dark:text-red-500" : data.entity === EntityType.INPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE ? "text-emerald-600 dark:text-emerald-500" : ""}`}
-                >
-                  {data.entity === EntityType.OUTPUT ||
-                  data.entity === EntityType.ADJUSTMENT_NEGATIVE
-                    ? `- ${data.changedValue}`
-                    : data.entity === EntityType.INPUT
-                      ? `+ ${data.changedValue}`
-                      : data.changedValue}
-                </span>
-              </div>
+              {data.entity !== EntityType.SYSTEM && (
+                <div className="flex gap-3 justify-between items-center">
+                  <span className="text-sm text-muted-foreground text-end text-wrap">
+                    {`${data.entity === EntityType.INPUT || data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "Quantidade:" : "Nome:"}`}
+                  </span>
+                  <span
+                    className={`${data.entity === EntityType.OUTPUT || data.entity === EntityType.ADJUSTMENT_NEGATIVE ? "text-red-600 dark:text-red-500" : data.entity === EntityType.INPUT || data.entity === EntityType.ADJUSTMENT_POSITIVE ? "text-emerald-600 dark:text-emerald-500" : ""}`}
+                  >
+                    {data.entity === EntityType.OUTPUT ||
+                    data.entity === EntityType.ADJUSTMENT_NEGATIVE
+                      ? `- ${data.changedValue}`
+                      : data.entity === EntityType.INPUT
+                        ? `+ ${data.changedValue}`
+                        : data.changedValue}
+                  </span>
+                </div>
+              )}
+              {data.entity === EntityType.SYSTEM && (
+                <div className="flex gap-3 justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    Email Alvo:
+                  </span>
+                  {data.targetEmail == null ? "-" : data.targetEmail}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

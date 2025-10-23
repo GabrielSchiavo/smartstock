@@ -149,6 +149,7 @@ export enum ActionType {
   DELETE = "DELETE",
   LOGIN = "LOGIN",
   LOGOUT = "LOGOUT",
+  LOGIN_FAILURE = "LOGIN_FAILURE",
 }
 
 export enum EntityType {
@@ -175,4 +176,11 @@ export enum FilterModeType {
 export enum DataExpandableType {
   AUDIT_LOG = "AUDIT_LOG",
   STOCK_MOVEMENT = "STOCK_MOVEMENT",
+}
+
+export enum FiltersGroupType {
+  INPUTS_OUTPUTS_HISTORY = "INPUTS_OUTPUTS_HISTORY",
+  ADJUSTMENTS_HISTORY = "ADJUSTMENTS_HISTORY",
+  SYSTEM_HISTORY = "SYSTEM_HISTORY",
+  MISCELLANEOUS_HISTORY = "MISCELLANEOUS_HISTORY",
 }

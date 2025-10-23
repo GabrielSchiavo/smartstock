@@ -1,4 +1,4 @@
-import { currentRole } from "@/lib/auth";
+import { currentRole } from "@/utils/current-session-utils";
 import { UserType } from "@/types";
 import { NextResponse } from "next/server";
 

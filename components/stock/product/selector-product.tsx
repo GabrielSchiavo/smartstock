@@ -49,7 +49,7 @@ export function SelectorProduct({
       <DialogTrigger asChild>
         <div className="flex w-full items-center gap-4">
           <Input
-            className="default-height"
+            className="default-btn-field-height"
             defaultValue={undefined}
             value={
               !selectedItem

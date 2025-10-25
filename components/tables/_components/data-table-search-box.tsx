@@ -19,7 +19,7 @@ export function DataTableSearchBox<TData>({
         onChange={(event) =>
           table.getColumn(searchColumnKey)?.setFilterValue(event.target.value)
         }
-        className="max-w-sm default-height pl-8"
+        className="max-w-sm default-btn-field-height pl-8"
       />
       <SearchIcon className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
     </div>

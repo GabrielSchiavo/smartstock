@@ -90,9 +90,9 @@ export default function DeleteDialog<T extends string | number>({
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
-            <AlertDialogCancel title="Cancelar">Cancelar</AlertDialogCancel>
+            <AlertDialogCancel title="Cancelar" className="default-btn-field-height">Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-700 hover:bg-destructive"
+              className="bg-red-700 hover:bg-destructive default-btn-field-height"
               title="Confirmar Exclusão"
               type="submit"
             >

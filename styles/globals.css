@@ -17,6 +17,7 @@ body,
   --font-albert-sans: var(--font-albert-sans);
 
   --header-height: calc(var(--spacing) * 12 + 1px);
+  --default-btn-field-height: 32px;
 
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -50,7 +51,6 @@ body,
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
-  --default-button-input-height: 32px;
 }
 
 .dark {
@@ -91,6 +91,8 @@ body,
   --font-sans: var(--font-geist);
   --font-mono: var(--font-geist-mono);
   --font-albert-sans: var(--font-albert-sans);
+  --default-btn-field-height: var(--default-btn-field-height);
+  --header-height: var(--header-height);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -169,24 +171,38 @@ body {
     SIDEBAR_WIDTH, --sidebar-width-icon: SIDEBAR_WIDTH_ICON, ...style;
 }
 
-.default-height {
-  height: var(--default-button-input-height) !important;
+.default-btn-field-height {
+  height: var(--default-btn-field-height) !important;
+  min-height: var(--default-btn-field-height) !important;
+  max-height: var(--default-btn-field-height) !important;
 }
 
 button {
   cursor: pointer;
 }
 
+/* CSS personalizado para tornar o select do shadcn mais responsivo */
 .select-container button {
   width: 100%;
-  height: var(--default-button-input-height) !important;
+  position: relative;
+  white-space: normal;
 }
 .select-container button span {
-  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 150px;
-  display: block;
+  text-overflow: ellipsis;
+  padding-right: 2.5rem; 
+  position: absolute;
+  text-align: start;
+}
+.select-container button svg {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
 }
 
 /* Style for print reports */

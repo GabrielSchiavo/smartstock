@@ -1,5 +1,4 @@
 import { MasterProductWithCategoryGroupSubgroupResponse, OptionProps, ProductWithMasterProductResponse } from "@/types";
-import { AlertType, Product } from "@prisma/client";
 import { ToastType } from "@/types";
 
 export interface CardWrapperProps {
@@ -42,19 +41,6 @@ export interface BaseDynamicComboboxProps {
   handleDelete: (id: string) => void;
   className?: string;
   resourceName: string;
-}
-
-export interface BasicAlertProps {
-  id: string;
-  type: AlertType;
-  isRead: boolean;
-  createdAt: Date;
-  product: Product;
-}
-
-export interface AlertProps {
-  alert: BasicAlertProps;
-  key?: string;
 }
 
 export interface ToastProps {

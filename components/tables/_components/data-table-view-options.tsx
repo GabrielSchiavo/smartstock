@@ -29,7 +29,7 @@ export function DataTableViewOptions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-[180px]">
-        <DropdownMenuLabel>Exibir/Ocultar Colunas</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">Exibir/Ocultar Colunas</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()

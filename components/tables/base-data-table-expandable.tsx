@@ -52,7 +52,7 @@ export function BaseDataTableExpandable<TData>({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Identificação */}
           <Card className="overflow-x-auto">
-            <CardHeader className="">
+            <CardHeader>
               <CardTitle className="text-sm">Identificação</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -185,7 +185,7 @@ export function BaseDataTableExpandable<TData>({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Identificação */}
           <Card className="overflow-x-auto">
-            <CardHeader className="">
+            <CardHeader>
               <CardTitle className="text-sm">Identificação</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">

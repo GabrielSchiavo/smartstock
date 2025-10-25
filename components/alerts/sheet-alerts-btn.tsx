@@ -10,25 +10,29 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
 import { BellIcon, CheckCheckIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { markAllAlertsAsRead } from "@/actions";
 import { AlertItem } from "@/components/alerts/alert-item";
 import DeleteAlertsDialog from "@/components/alerts/delete-alerts-dialog";
-import React from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertEmpty } from "@/components/alerts/alert-empty";
+import { AlertsEmpty } from "@/components/alerts/alerts-empty";
 import { useAlerts } from "@/hooks/use-alerts";
 
-export function AlertButton() {
-  const { alerts, unreadAlertsCount, refreshAlerts } = useAlerts();
+export function SheetAlertsBtn() {
+  const {
+    unreadAlerts,
+    readAlerts,
+    unreadAlertsCount,
+    isLoading,
+    refreshAlerts,
+  } = useAlerts();
 
   const handleMarkAllAsRead = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +61,7 @@ export function AlertButton() {
           <p>Alertas</p>
         </TooltipContent>
       </Tooltip>
+
       <SheetContent className="flex flex-col gap-6 p-6">
         <SheetHeader className="p-0">
           <SheetTitle>Alertas</SheetTitle>
@@ -71,58 +76,57 @@ export function AlertButton() {
         >
           <div className="w-full flex justify-center">
             <TabsList>
-              <TabsTrigger value="alertsUnread">Não Lidos</TabsTrigger>
-              <TabsTrigger value="alertsRead">Lidos</TabsTrigger>
+              <TabsTrigger value="alertsUnread">
+                Não Lidos{" "}
+                {unreadAlerts.length > 0 && `(${unreadAlerts.length})`}
+              </TabsTrigger>
+              <TabsTrigger value="alertsRead">
+                Lidos {readAlerts.length > 0 && `(${readAlerts.length})`}
+              </TabsTrigger>
             </TabsList>
           </div>
+
           <TabsContent value="alertsUnread" className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
-              <div className="grid flex-1 auto-rows-min">
-                {alerts.length === 0 ? (
-                  <AlertEmpty />
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    {alerts.filter((alert) => !alert.isRead).length > 0 ? (
-                      alerts
-                        .filter((alert) => !alert.isRead)
-                        .map((alert) => (
-                          <AlertItem
-                            key={alert.id}
-                            alert={alert}
-                            onAlertChange={refreshAlerts}
-                          />
-                        ))
-                    ) : (
-                      <AlertEmpty />
-                    )}
-                  </div>
-                )}
-              </div>
+              {isLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-sm text-muted-foreground">Carregando...</p>
+                </div>
+              ) : unreadAlerts.length === 0 ? (
+                <AlertsEmpty />
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {unreadAlerts.map((alert) => (
+                    <AlertItem
+                      key={alert.id}
+                      alert={alert}
+                      onAlertChange={refreshAlerts}
+                    />
+                  ))}
+                </div>
+              )}
             </ScrollArea>
           </TabsContent>
+
           <TabsContent value="alertsRead" className="flex-1 overflow-hidden">
             <ScrollArea className="h-full">
-              <div className="grid flex-1 auto-rows-min">
-                {alerts.length === 0 ? (
-                  <AlertEmpty />
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    {alerts.filter((alert) => alert.isRead).length > 0 ? (
-                      alerts
-                        .filter((alert) => alert.isRead)
-                        .map((alert) => (
-                          <AlertItem
-                            key={alert.id}
-                            alert={alert}
-                            onAlertChange={refreshAlerts}
-                          />
-                        ))
-                    ) : (
-                      <AlertEmpty />
-                    )}
-                  </div>
-                )}
-              </div>
+              {isLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-sm text-muted-foreground">Carregando...</p>
+                </div>
+              ) : readAlerts.length === 0 ? (
+                <AlertsEmpty />
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {readAlerts.map((alert) => (
+                    <AlertItem
+                      key={alert.id}
+                      alert={alert}
+                      onAlertChange={refreshAlerts}
+                    />
+                  ))}
+                </div>
+              )}
             </ScrollArea>
           </TabsContent>
         </Tabs>
@@ -133,10 +137,11 @@ export function AlertButton() {
               <Button
                 type="submit"
                 variant="outline"
-                size={"sm"}
+                size="sm"
                 className="w-full"
+                disabled={unreadAlertsCount === 0 || isLoading}
               >
-                <span className="flex gap-1.5 items-center text-ellipsis!">
+                <span className="flex gap-1.5 items-center text-ellipsis">
                   <CheckCheckIcon className="size-4 shrink-0" />
                   Marcar como lidos
                 </span>

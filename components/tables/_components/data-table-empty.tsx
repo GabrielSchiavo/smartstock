@@ -11,7 +11,7 @@ import {
 
 export function DataTableEmpty() {
   return (
-    <Empty className="">
+    <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <TextSearchIcon />

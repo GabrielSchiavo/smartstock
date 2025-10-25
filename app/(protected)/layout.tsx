@@ -13,14 +13,15 @@ export default async function MainLayout({
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
   return (
-    <main>
-      <SidebarProvider defaultOpen={defaultOpen} className="bg-sidebar overflow-x-hidden">
-        <SidebarMain />
-        <SidebarInset className="m-0 ml-0! sm:m-2 rounded-none sm:rounded-xl shadow-sm">
-          <HeaderMain />
-          <div className="p-6 md:p-6">{children}</div>
-        </SidebarInset>
-      </SidebarProvider>
-    </main>
+    <SidebarProvider
+      defaultOpen={defaultOpen}
+      className="bg-sidebar overflow-x-hidden"
+    >
+      <SidebarMain />
+      <SidebarInset className="m-0 ml-0! sm:m-2 rounded-none sm:rounded-xl shadow-sm">
+        <HeaderMain />
+        <div className="p-6 md:p-6">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

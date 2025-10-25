@@ -1,6 +1,5 @@
 "use client";
 
-import { ChartPieIcon } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
@@ -15,14 +14,8 @@ import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 import { useEffect, useState } from "react";
 import { getProductsCountByValidityStatus } from "@/actions";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
 import { Spinner } from "@/components/ui/spinner";
+import { ChartEmpty } from "./chart-empty";
 
 const chartConfig = {
   expired: {
@@ -102,19 +95,7 @@ export function ProductsCountByValidityStatusChart() {
               ) : !chartData ||
                 chartData.length === 0 ||
                 totalProducts === 0 ? (
-                <div className="w-full flex justify-center">
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyMedia variant="icon">
-                        <ChartPieIcon />
-                      </EmptyMedia>
-                      <EmptyTitle>Sem dados</EmptyTitle>
-                      <EmptyDescription>
-                        Nenhum produto cadastrado encontrado.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                </div>
+                <ChartEmpty />
               ) : (
                 <div className="h-[350px]">
                   <ChartContainer

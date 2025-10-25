@@ -73,7 +73,7 @@ export const ResetForm = () => {
                     <Input
                       {...field}
                       disabled={isPending}
-                      className="default-height"
+                      className="default-btn-field-height"
                       placeholder="exemplo@exemplo.com"
                       type="email"
                     />

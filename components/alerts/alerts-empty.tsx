@@ -13,7 +13,7 @@ import {
 import { useAlerts } from "@/hooks/use-alerts";
 import { Spinner } from "@/components/ui/spinner";
 
-export function AlertEmpty() {
+export function AlertsEmpty() {
   const { refreshAlerts } = useAlerts();
   const [isPending, startTransition] = React.useTransition();
 

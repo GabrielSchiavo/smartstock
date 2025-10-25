@@ -39,7 +39,7 @@ export function DataTableDropdown<T extends string | number>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Opções</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">Opções</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

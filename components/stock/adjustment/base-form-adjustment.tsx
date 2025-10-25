@@ -177,7 +177,7 @@ export const BaseFormAdjustment = forwardRef<
                         <FormControl>
                           <Input
                             disabled={true}
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -196,7 +196,7 @@ export const BaseFormAdjustment = forwardRef<
                           <Input
                             disabled={true}
                             type="text"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -217,7 +217,7 @@ export const BaseFormAdjustment = forwardRef<
                           <Input
                             disabled={true}
                             type="text"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -236,7 +236,7 @@ export const BaseFormAdjustment = forwardRef<
                           <Input
                             disabled={true}
                             type="text"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -264,7 +264,7 @@ export const BaseFormAdjustment = forwardRef<
                           <Input
                             disabled={isPending}
                             type="number"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Digite a quantidade de ajuste"
                             {...field}
                           />

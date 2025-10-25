@@ -62,7 +62,7 @@ export function AddEditDialog({
             title={config.triggerText}
           >
             <config.icon className="w-4 h-4" />
-            <span className="hidden lg:inline">{config.triggerText}</span>
+            <span className="inline">{config.triggerText}</span>
           </Button>
         )}
       </DialogTrigger>

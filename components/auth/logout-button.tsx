@@ -1,14 +1,14 @@
 "use client";
 
 import { logout } from "@/actions";
-import { clearSessionStorage } from "@/hooks/use-alert-watcher";
+import { clearAlertsStorage } from "@/hooks/use-alerts";
 import { LogoutButtonProps } from "@/types";
 
 export const LogoutButton = ({
     children
 }: LogoutButtonProps) => {
     const onClick = () => {
-        clearSessionStorage();
+        clearAlertsStorage();
         logout();
     };
 

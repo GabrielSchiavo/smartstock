@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeModeButton } from "@/components/shared/theme-mode-button";
-import { AlertButton } from "@/components/alerts/alert-button";
+import { SheetAlertsBtn } from "@/components/alerts/sheet-alerts-btn";
 import { pageTitles } from "@/config/routes";
 import { usePathname } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -31,7 +31,7 @@ export function HeaderMain() {
           <h1 className="text-base font-medium ml-2">{headerTitle}</h1>
         </div>
         <div className="flex items-center gap-3">
-          <AlertButton />
+          <SheetAlertsBtn />
           <ThemeModeButton />
         </div>
       </div>

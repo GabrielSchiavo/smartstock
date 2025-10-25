@@ -290,7 +290,7 @@ export const columnsTableProducts = ({
       } else {
         return (
           <DataTableDropdown
-            entity="Produto Mestre"
+            entity="Produto"
             rowItemId={row.original.id as number}
             formComponent={FormEditProduct}
             deleteAction={deleteProduct}

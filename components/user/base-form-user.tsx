@@ -102,7 +102,7 @@ export const BaseFormUser = ({
                       <Input
                         {...field}
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                         placeholder="Nome do usuário"
                       />
                     </FormControl>
@@ -121,7 +121,7 @@ export const BaseFormUser = ({
                       <Input
                         {...field}
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                         placeholder="exemplo@exemplo.com"
                         type="email"
                       />
@@ -142,7 +142,7 @@ export const BaseFormUser = ({
                         <FormControl>
                           <PasswordInput
                             disabled={isPending}
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="********"
                             {...field}
                           />
@@ -161,7 +161,7 @@ export const BaseFormUser = ({
                         <FormControl>
                           <PasswordInput
                             disabled={isPending}
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="********"
                             {...field}
                           />

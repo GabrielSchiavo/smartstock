@@ -91,7 +91,7 @@ export const LoginForm = () => {
                     <Input
                       {...field}
                       disabled={isPending}
-                      className="default-height"
+                      className="default-btn-field-height"
                       placeholder="exemplo@exemplo.com"
                       type="email"
                     />
@@ -126,7 +126,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <PasswordInput
                       disabled={isPending}
-                      className="default-height"
+                      className="default-btn-field-height"
                       placeholder="********"
                       {...field}
                     />

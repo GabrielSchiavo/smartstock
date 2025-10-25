@@ -12,14 +12,6 @@ import {
 } from "@/components/ui/chart";
 import { getTotalAmountByMonthChart } from "@/actions";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import { ChartPieIcon } from "lucide-react";
 import { showToast } from "@/components/utils/show-toast";
 import { ToastType } from "@/types";
 import { TotalAmountByMonthChartProps } from "@/types/interfaces/chart.interface";
@@ -32,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ChartEmpty } from "./chart-empty";
 
 const chartConfig = {
   totalKg: {
@@ -99,36 +92,32 @@ export function TotalAmountByMonthChart() {
       <div className="flex flex-col gap-12 w-full h-full">
         <div className="flex flex-col gap-6 h-full">
           <div className="flex flex-col gap-6 border rounded-xl p-6 shadow h-full">
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <div className="flex flex-col gap-2">
-                  <h1 className="text-md font-medium">
-                    Quantidade Total x Mês
-                  </h1>
-                  <p className="text-muted-foreground text-sm">
-                    Quantidade total recebida nos meses de {timeRange}.
-                  </p>
-                </div>
-                <Select value={timeRange} onValueChange={setTimeRange}>
-                  <SelectTrigger
-                    size="sm"
-                    className="min-w-[130px]"
-                    aria-label="Selecione o ano"
-                  >
-                    <SelectValue placeholder="Ano" />
-                  </SelectTrigger>
-                  <SelectContent align="center">
-                    <SelectGroup>
-                      <SelectLabel>Anos</SelectLabel>
-                      {availableYears.map((year) => (
-                        <SelectItem key={year} value={year.toString()}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex flex-col gap-2">
+                <h1 className="text-md font-medium">Quantidade Total x Mês</h1>
+                <p className="text-muted-foreground text-sm">
+                  Quantidade total recebida nos meses de {timeRange}.
+                </p>
               </div>
+              <Select value={timeRange} onValueChange={setTimeRange}>
+                <SelectTrigger
+                  size="sm"
+                  className="min-w-[130px]"
+                  aria-label="Selecione o ano"
+                >
+                  <SelectValue placeholder="Ano" />
+                </SelectTrigger>
+                <SelectContent align="center">
+                  <SelectGroup>
+                    <SelectLabel>Anos</SelectLabel>
+                    {availableYears.map((year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex-1 flex flex-col justify-center items-center min-h-0">
@@ -140,19 +129,7 @@ export function TotalAmountByMonthChart() {
                   </span>
                 </div>
               ) : !chartData || chartData.length === 0 ? (
-                <div className="w-full flex justify-center">
-                  <Empty className="">
-                    <EmptyHeader>
-                      <EmptyMedia variant="icon">
-                        <ChartPieIcon />
-                      </EmptyMedia>
-                      <EmptyTitle>Sem dados</EmptyTitle>
-                      <EmptyDescription>
-                        Nenhum dado foi encontrado.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                </div>
+                <ChartEmpty />
               ) : (
                 <div className="overflow-x-auto w-full">
                   <ChartContainer

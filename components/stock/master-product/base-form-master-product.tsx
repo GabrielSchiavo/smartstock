@@ -85,7 +85,7 @@ export const BaseFormMasterProduct = forwardRef<
                       <FormControl>
                         <Input
                           disabled={isPending}
-                          className="default-height"
+                          className="default-btn-field-height"
                           placeholder="Digite um nome"
                           {...field}
                         />

@@ -208,7 +208,7 @@ export const BaseFormInput = forwardRef<
                         <FormControl>
                           <Input
                             disabled={true}
-                            className="default-height bg-muted"
+                            className="default-btn-field-height bg-muted"
                             placeholder="Será preenchida automaticamente"
                             {...field}
                           />
@@ -226,7 +226,7 @@ export const BaseFormInput = forwardRef<
                         <FormControl>
                           <Input
                             disabled={true}
-                            className="default-height bg-muted"
+                            className="default-btn-field-height bg-muted"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -244,7 +244,7 @@ export const BaseFormInput = forwardRef<
                         <FormControl>
                           <Input
                             disabled={true}
-                            className="default-height bg-muted"
+                            className="default-btn-field-height bg-muted"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -265,7 +265,7 @@ export const BaseFormInput = forwardRef<
                           <Input
                             disabled={true}
                             type="text"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Será preenchido automaticamente"
                             {...field}
                           />
@@ -291,7 +291,7 @@ export const BaseFormInput = forwardRef<
                       <FormControl>
                         <Input
                           disabled={isPending}
-                          className="default-height bg-muted"
+                          className="default-btn-field-height bg-muted"
                           placeholder="Informe o nome do produto"
                           {...field}
                         />
@@ -311,7 +311,7 @@ export const BaseFormInput = forwardRef<
                           <Input
                             disabled={isPending || isEditMode}
                             type="number"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Digite a quantidade"
                             {...field}
                           />
@@ -364,7 +364,7 @@ export const BaseFormInput = forwardRef<
                               isUnitWeightDisabled || isPending || isEditMode
                             }
                             type="number"
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder={
                               isUnitWeightDisabled
                                 ? "Selecione 'UN.' para habilitar"
@@ -429,7 +429,7 @@ export const BaseFormInput = forwardRef<
                         <FormControl>
                           <Input
                             disabled={isPending || isEditMode}
-                            className="default-height"
+                            className="default-btn-field-height"
                             placeholder="Digite o lote"
                             {...field}
                           />

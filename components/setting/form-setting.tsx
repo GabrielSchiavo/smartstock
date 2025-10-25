@@ -117,7 +117,7 @@ export const FormSetting = () => {
                         {...field}
                         placeholder="Nome de usuário"
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                       />
                     </FormControl>
                     <FormMessage />
@@ -136,7 +136,7 @@ export const FormSetting = () => {
                         placeholder="exemplo@exemplo.com"
                         type="email"
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                       />
                     </FormControl>
                     <FormMessage />
@@ -152,7 +152,7 @@ export const FormSetting = () => {
                     <FormControl>
                       <PasswordInput
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                         placeholder="********"
                         {...field}
                       />
@@ -170,7 +170,7 @@ export const FormSetting = () => {
                     <FormControl>
                       <PasswordInput
                         disabled={isPending}
-                        className="default-height"
+                        className="default-btn-field-height"
                         placeholder="********"
                         {...field}
                       />

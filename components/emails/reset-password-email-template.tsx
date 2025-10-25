@@ -31,7 +31,7 @@ export const ResetPasswordEmailTemplate = ({
         <Body className="mx-auto my-auto bg-white px-2 font-sans">
           <Preview>{previewText}</Preview>
           <Container className="mx-auto my-[40px] max-w-[465px] rounded-md border border-[#eaeaea] border-solid p-[20px]">
-            <Section className=" mt-[32px]">
+            <Section className="mt-[32px]">
               <Row>
                 <Column align="center">
                   <table>
@@ -62,7 +62,7 @@ export const ResetPasswordEmailTemplate = ({
             <Text className="text-[14px] text-black leading-[24px]">
               Clique no botão abaixo para redefinir a senha do seu usuário:
             </Text>
-            <Section className="mt-[32px] mb-[32px] text-center">
+            <Section className="my-[32px] text-center">
               <Button
                 className="rounded-md bg-blue-700 px-5 py-3 text-center font-semibold text-[14px] text-white no-underline"
                 href={url}

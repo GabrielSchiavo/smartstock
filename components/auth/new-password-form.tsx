@@ -79,7 +79,7 @@ export const NewPasswordForm = () => {
                   <FormControl>
                     <PasswordInput
                       disabled={isPending || isSuccess}
-                      className="default-height"
+                      className="default-btn-field-height"
                       placeholder="********"
                       {...field}
                     />
@@ -97,7 +97,7 @@ export const NewPasswordForm = () => {
                   <FormControl>
                     <PasswordInput
                       disabled={isPending || isSuccess}
-                      className="default-height"
+                      className="default-btn-field-height"
                       placeholder="********"
                       {...field}
                     />

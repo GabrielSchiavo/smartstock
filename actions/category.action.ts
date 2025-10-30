@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export async function getAllCategory(): Promise<CategoryResponse> {
   try {
@@ -97,7 +98,8 @@ export async function createCategory(
           actionType: ActionType.CREATE,
           entity: EntityType.CATEGORY,
           changedValue: newCategory.name,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Category '${newCategory.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -146,7 +148,8 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
           actionType: ActionType.DELETE,
           entity: EntityType.CATEGORY,
           changedValue: existingCategory.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Category '${existingCategory.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

@@ -13,6 +13,7 @@ import {
 } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const registerMasterProduct = async (
   values: z.infer<typeof CreateEditMasterProductSchema>
@@ -47,7 +48,8 @@ export const registerMasterProduct = async (
           actionType: ActionType.CREATE,
           entity: EntityType.MASTER_PRODUCT,
           changedValue: masterProductData.name,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${masterProduct.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -116,7 +118,8 @@ export const editMasterProduct = async (
           actionType: ActionType.UPDATE,
           entity: EntityType.MASTER_PRODUCT,
           changedValue: masterProductData.name,
-          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${masterProductData.name}' Updated' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -177,7 +180,8 @@ export const deleteMasterProduct = async (id: number) => {
           actionType: ActionType.DELETE,
           entity: EntityType.MASTER_PRODUCT,
           changedValue: existingMasterProduct.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${existingMasterProduct.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

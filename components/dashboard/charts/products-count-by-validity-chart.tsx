@@ -15,7 +15,7 @@ import { ToastType } from "@/types";
 import { useEffect, useState } from "react";
 import { getProductsCountByValidityStatus } from "@/actions";
 import { Spinner } from "@/components/ui/spinner";
-import { ChartEmpty } from "./chart-empty";
+import { ChartEmpty } from "@/components/dashboard/charts/chart-empty";
 
 const chartConfig = {
   expired: {

@@ -114,7 +114,7 @@ model AuditLog {
   actionType      String  @db.VarChar(30)
   entity          String  @db.VarChar(30)
   changedValue    String? @db.VarChar(150)
-  ipAddress       String? @db.VarChar(45)
+  ipAddress       String @db.VarChar(45)
   targetEmail     String? @db.VarChar(255)
   details         String  @db.Text
 

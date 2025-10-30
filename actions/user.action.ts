@@ -11,6 +11,7 @@ import { User } from "@prisma/client";
 import { EntityType, ActionType, UserOperationResponse } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const registerUser = async (
   values: z.infer<typeof CreateUserSchema>
@@ -79,7 +80,8 @@ export const registerUser = async (
           actionType: ActionType.CREATE,
           entity: EntityType.USER,
           changedValue: newUser.name as string,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.USER}' | Record Changed ID='${newUser.id}' | Changed Value='${newUser.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='User '${user?.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -145,7 +147,8 @@ export const deleteUser = async (id: string) => {
           actionType: ActionType.DELETE,
           entity: EntityType.USER,
           changedValue: existingUser.name as string,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='User '${existingUser.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -274,7 +277,8 @@ export const editUser = async (
           actionType: ActionType.UPDATE,
           entity: EntityType.USER,
           changedValue: existingUser.name as string,
-          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.USER}' | Record Changed ID='${existingUser.id}' | Changed Value='${existingUser.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='User '${existingUser.name}' Updated' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

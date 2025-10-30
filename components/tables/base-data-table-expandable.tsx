@@ -96,14 +96,12 @@ export function BaseDataTableExpandable<TData>({
                   <Badge variant="outline">{data.recordChangedId}</Badge>
                 </div>
               )}
-              {data.entity === EntityType.SYSTEM && (
-                <div className="flex gap-3 justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Endereço IP:
-                  </span>
-                  {data.ipAddress}
-                </div>
-              )}
+              <div className="flex gap-3 justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  Endereço IP:
+                </span>
+                {data.ipAddress}
+              </div>
             </CardContent>
           </Card>
           {/* Detalhes */}

@@ -10,11 +10,9 @@ import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/utils/send-mail";
 import { auditLogRepository, userRepository } from "@/db";
 import { ActionType, EntityType } from "@/types";
-import { headers } from "next/headers";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
-  const ip = (await headers()).get("x-forwarded-for") ?? "UNKNOWN_IP";
-
   // Validação dos campos de entrada
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -35,9 +33,9 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       actionType: ActionType.LOGIN_FAILURE,
       entity: EntityType.SYSTEM,
       changedValue: null,
-      ipAddress: ip,
+      ipAddress: await getIpAddress(),
       targetEmail: email,
-      details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP='${ip}' | Message='User not found' | Date Time='${new Date().toISOString()}'`,
+      details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP Address='${await getIpAddress()}' | Message='User Not Found' | Date Time='${new Date().toISOString()}'`,
     });
 
     return { error: "Credenciais inválidas!" };
@@ -78,8 +76,8 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       actionType: ActionType.LOGIN,
       entity: EntityType.SYSTEM,
       changedValue: null,
-      ipAddress: ip,
-      details: `[SYSTEM] Action='${ActionType.LOGIN}' | Entity='${EntityType.SYSTEM}' | User ID='${existingUser.id}' | User='${existingUser.name}' | IP='${ip}' | Message='Successful login' | Date Time='${new Date().toISOString()}'`,
+      ipAddress: await getIpAddress(),
+      details: `[SYSTEM] Action='${ActionType.LOGIN}' | Entity='${EntityType.SYSTEM}' | User ID='${existingUser.id}' | User='${existingUser.name}' | IP Address='${await getIpAddress()}' | Message='Login Successful' | Date Time='${new Date().toISOString()}'`,
     });
 
     return {
@@ -98,9 +96,9 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             actionType: ActionType.LOGIN_FAILURE,
             entity: EntityType.SYSTEM,
             changedValue: null,
-            ipAddress: ip,
+            ipAddress: await getIpAddress(),
             targetEmail: email,
-            details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP='${ip}' | Message='User found, but invalid credentials' | Date Time='${new Date().toISOString()}'`,
+            details: `[SYSTEM] Action='${ActionType.LOGIN_FAILURE}' | Entity='${EntityType.SYSTEM}' | Email Target='${email}' | IP Address='${await getIpAddress()}' | Message='User Found, but Invalid Credentials' | Date Time='${new Date().toISOString()}'`,
           });
 
           return { error: "Credenciais inválidas!" };

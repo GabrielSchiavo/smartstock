@@ -19,6 +19,7 @@ import { db } from "@/lib/db";
 import { calculateTotals } from "@/utils/calculate-totals";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const editProduct = async (
   id: number,
@@ -68,7 +69,8 @@ export const editProduct = async (
           actionType: ActionType.UPDATE,
           entity: EntityType.PRODUCT,
           changedValue: updatedProduct.name,
-          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${updatedProduct.id}' | Changed Value='${updatedProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Product '${updatedProduct.name}' Updated' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -110,7 +112,8 @@ export const deleteProduct = async (id: number) => {
           actionType: ActionType.DELETE,
           entity: EntityType.PRODUCT,
           changedValue: product?.name as string,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.PRODUCT}' | Record Changed ID='${id.toString()}' | Changed Value='${product?.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Product '${product?.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

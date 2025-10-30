@@ -70,7 +70,7 @@ CREATE TABLE "AuditLog" (
     "actionType" VARCHAR(30) NOT NULL,
     "entity" VARCHAR(30) NOT NULL,
     "changedValue" VARCHAR(150),
-    "ipAddress" VARCHAR(45),
+    "ipAddress" VARCHAR(45) NOT NULL,
     "targetEmail" VARCHAR(255),
     "details" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

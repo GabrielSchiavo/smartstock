@@ -8,7 +8,7 @@ export type AuditLogResponse = {
   actionType: ActionType;
   entity: EntityType;
   changedValue: string | null;
-  ipAddress?: string | null;
+  ipAddress: string;
   targetEmail?: string | null;
   details: string;
 };

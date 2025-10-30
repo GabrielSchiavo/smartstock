@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const getAllReceiver = async (): Promise<ReceiverResponse> => {
   try {
@@ -79,7 +80,8 @@ export const createReceiver = async (
           actionType: ActionType.CREATE,
           entity: EntityType.RECEIVER,
           changedValue: newReceiver.name,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Receiver '${newReceiver.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -130,7 +132,8 @@ export const deleteReceiver = async (
           actionType: ActionType.DELETE,
           entity: EntityType.RECEIVER,
           changedValue: existingReceiver.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Receiver '${existingReceiver.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

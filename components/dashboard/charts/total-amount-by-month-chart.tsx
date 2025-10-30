@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChartEmpty } from "./chart-empty";
+import { ChartEmpty } from "@/components/dashboard/charts/chart-empty";
 
 const chartConfig = {
   totalKg: {

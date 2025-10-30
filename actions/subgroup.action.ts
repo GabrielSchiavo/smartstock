@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const getAllSubgroup = async (): Promise<SubgroupResponse> => {
   try {
@@ -80,7 +81,8 @@ export const createSubgroup = async (
           actionType: ActionType.CREATE,
           entity: EntityType.SUBGROUP,
           changedValue: newSubgroup.name,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Subgroup '${newSubgroup.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -131,7 +133,8 @@ export const deleteSubgroup = async (
           actionType: ActionType.DELETE,
           entity: EntityType.SUBGROUP,
           changedValue: existingSubgroup.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Subgroup ${existingSubgroup.name} Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

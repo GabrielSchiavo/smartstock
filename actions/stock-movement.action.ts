@@ -27,6 +27,7 @@ import { currentUser } from "@/utils/current-session-utils";
 import { getMasterProductById } from "@/actions/master-product.action";
 import { omit } from "@/lib/omit";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export const registerInput = async (
   values: z.infer<typeof CreateInputEditProductSchema>
@@ -100,7 +101,8 @@ export const registerInput = async (
           actionType: ActionType.CREATE,
           entity: EntityType.INPUT,
           changedValue: `${product.quantity.toString()} ${product.unit}`,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Input of '${product.quantity.toString()} ${product.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -216,7 +218,8 @@ export const registerOutput = async (
           actionType: ActionType.CREATE,
           entity: EntityType.OUTPUT,
           changedValue: `${outputData.quantity} ${outputData.unit}`,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${outputData.quantity} ${outputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${outputData.quantity} ${outputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Output of '${outputData.quantity} ${outputData.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -348,7 +351,8 @@ export const registerAdjustment = async (
           actionType: ActionType.CREATE,
           entity: adjustmentEntityType,
           changedValue: `${adjustmentData.quantity} ${adjustmentData.unit}`,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${adjustmentEntityType}' | Record Changed ID='${movementAdjustment?.id.toString()}' | Changed Value='${adjustmentData.quantity} ${adjustmentData.unit}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${adjustmentEntityType}' | Record Changed ID='${movementAdjustment?.id.toString()}' | Changed Value='${adjustmentData.quantity} ${adjustmentData.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Adjustment type '${adjustmentEntityType}' of '${adjustmentData.quantity} ${adjustmentData.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

@@ -12,6 +12,7 @@ import {
 } from "@/types";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 export async function getAllSupplier(): Promise<SupplierResponse> {
   try {
@@ -105,7 +106,8 @@ export async function createSupplier(
           actionType: ActionType.CREATE,
           entity: EntityType.SUPPLIER,
           changedValue: newSupplier.name,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Supplier '${newSupplier.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -154,7 +156,8 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
           actionType: ActionType.DELETE,
           entity: EntityType.SUPPLIER,
           changedValue: existingSupplier.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Supplier '${existingSupplier.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

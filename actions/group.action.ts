@@ -10,6 +10,7 @@ import {
 import { auditLogRepository, groupRepository } from "@/db";
 import { currentUser } from "@/utils/current-session-utils";
 import { db } from "@/lib/db";
+import { getIpAddress } from "@/utils/ip-address-utils";
 
 // Implementações
 export async function getAllGroup(): Promise<GroupResponse> {
@@ -76,7 +77,8 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
           actionType: ActionType.CREATE,
           entity: EntityType.GROUP,
           changedValue: newGroup.name as string,
-          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),  
+          details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Group '${newGroup.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );
@@ -125,7 +127,8 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
           actionType: ActionType.DELETE,
           entity: EntityType.GROUP,
           changedValue: existingGroup.name,
-          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | Date Time='${new Date().toISOString()}'`,
+          ipAddress: await getIpAddress(),
+          details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Group '${existingGroup.id}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
         tx
       );

@@ -125,13 +125,9 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
           docker-compose up -d
         ```
         
-    - `Credenciais (Opcional):` caso necessite alterar as credenciais de acesso ao Banco de Dados altere as seguintes variáveis no arquivo `.env`:
+    - `Credenciais (Opcional):` caso necessite alterar as credenciais de acesso ao Banco de Dados altere esta variável no arquivo `.env`:
         ```env
-          DB_HOST=
-          DB_PORT=
-          DB_USER=
-          DB_PASSWORD=
-          DB_NAME=
+          DATABASE_URL="postgresql://root:12345@localhost:5432/smartstock?schema=public"
         ```
 
 4.  `Configurar Auth.js:`

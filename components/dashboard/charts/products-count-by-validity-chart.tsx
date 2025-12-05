@@ -130,7 +130,6 @@ export function ProductsCountByValidityStatusChart() {
                               dominantBaseline={props.dominantBaseline}
                               fill="var(--foreground)"
                             >
-                              {/* @ts-expect-error: Recharts payload type for label is not fully compatible */}
                               {payload.count}
                             </text>
                           );

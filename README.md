@@ -183,15 +183,15 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 ## ✅ Tecnologias Utilizadas
 
 - `TypeScript`
-- `Node.js - 22.19.0`
-- `React.js - 19.1.1`
-- `Next.js - 15.5.2`
+- `Node.js - 24.12.0`
+- `React.js - 19.2.3`
+- `Next.js - 16.1.1`
 - `Next.js Server Actions`
-- `PostgreSQL - 17.5`
-- `Prisma - 6.15.0`
+- `PostgreSQL - 18.1`
+- `Prisma - 7.2.0`
 - `Auth.js - 5.0.0`
-- `Nodemailer - 7.0.6`
-- `jsPDF - 3.0.2`
-- `Zod - 4.1.5`
-- `Tailwind CSS - 4.1.12`
+- `Nodemailer - 7.0.12`
+- `jsPDF - 3.0.4`
+- `Zod - 4.2.1`
+- `Tailwind CSS - 4.1.18`
 - `shadcn/ui`

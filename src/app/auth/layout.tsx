@@ -3,7 +3,7 @@
 import { LogoWithText } from "@/components/shared/logo-with-text";
 import Image from "next/image";
 import React from "react";
-import BackgroundImage from "@/public/assets/images/background-image.webp";
+import BackgroundImage from "@/assets/images/background-image.webp";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (

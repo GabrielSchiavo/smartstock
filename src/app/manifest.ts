@@ -59,7 +59,7 @@ export default function manifest(): MetadataRoute.Manifest {
         url: `${BASE_URL}${ROUTES.AUTH_LOGIN}`,
         icons: [
           {
-            src: "assets/images/icons/shortcuts/login.png",
+            src: "assets/images/shortcuts/login.png",
             sizes: "96x96"
           },
         ],
@@ -69,7 +69,7 @@ export default function manifest(): MetadataRoute.Manifest {
         url: `${BASE_URL}${ROUTES.PAGE_DASHBOARD}`,
         icons: [
           {
-            src: "assets/images/icons/shortcuts/dashboard.png",
+            src: "assets/images/shortcuts/dashboard.png",
             sizes: "96x96"
           },
         ],

@@ -1,14 +1,14 @@
-"use server";
+'use server';
 
-import { auditLogRepository } from "@/db";
-import { signOut } from "@/lib/auth";
-import { ActionType, EntityType } from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { getIpAddress } from "@/utils/ip-address-utils";
-import { revalidatePath } from "next/cache";
+import { auditLogRepository } from '@/db';
+import { signOut } from '@/lib/auth';
+import { ActionType, EntityType } from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { getIpAddress } from '@/utils/ip-address-utils';
+import { revalidatePath } from 'next/cache';
 
 export const logout = async () => {
-  revalidatePath("/");
+  revalidatePath('/');
 
   const user = await currentUser();
 

@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { getMasterProducts, registerInput } from "@/actions";
-import { FormAddEditProps, MasterProductWithCategoryGroupSubgroupResponse, ToastType } from "@/types";
-import { z } from "zod";
-import { CreateInputEditProductSchema } from "@/schemas";
-import { UseFormReturn } from "react-hook-form";
-import { showToast } from "@/components/utils/show-toast";
-import { BaseFormInput } from "@/components/stock/input/base-form-input";
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { getMasterProducts, registerInput } from '@/actions';
+import {
+  FormAddEditProps,
+  MasterProductWithCategoryGroupSubgroupResponse,
+  ToastType,
+} from '@/types';
+import { z } from 'zod';
+import { CreateInputEditProductSchema } from '@/schemas';
+import { UseFormReturn } from 'react-hook-form';
+import { showToast } from '@/components/utils/show-toast';
+import { BaseFormInput } from '@/components/stock/input/base-form-input';
 
 export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const formRef = useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>> | null>(null);
 
-  const [masterProducts, setMasterProducts] = useState<MasterProductWithCategoryGroupSubgroupResponse[]>([]);
+  const [masterProducts, setMasterProducts] = useState<
+    MasterProductWithCategoryGroupSubgroupResponse[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // função carregar produtos mestres
@@ -28,11 +34,11 @@ export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps)
     } catch (error) {
       setIsLoading(false);
       showToast({
-        title: "Erro!",
-        description: "Não foi possível carregar os produtos mestre",
+        title: 'Erro!',
+        description: 'Não foi possível carregar os produtos mestre',
         type: ToastType.ERROR,
       });
-      console.error("Erro! Não foi possível carregar os produtos mestre:", error);
+      console.error('Erro! Não foi possível carregar os produtos mestre:', error);
     }
   };
 
@@ -59,9 +65,9 @@ export const FormAddInput = ({ onShouldInvalidate, onCancel }: FormAddEditProps)
         type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
       });
     } catch (err) {
-      console.error("Erro ao submeter entrada:", err);
+      console.error('Erro ao submeter entrada:', err);
       showToast({
-        title: "Algo deu errado!",
+        title: 'Algo deu errado!',
         type: ToastType.ERROR,
       });
     }

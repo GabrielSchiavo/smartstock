@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeModeButton } from "@/components/shared/theme-mode-button";
-import { SheetAlertsBtn } from "@/components/alerts/sheet-alerts-btn";
-import { pageTitles } from "@/config/routes";
-import { usePathname } from "next/navigation";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { ThemeModeButton } from '@/components/shared/theme-mode-button';
+import { SheetAlertsBtn } from '@/components/alerts/sheet-alerts-btn';
+import { pageTitles } from '@/config/routes';
+import { usePathname } from 'next/navigation';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export function HeaderMain() {
   const pathname = usePathname();
-  const headerTitle = pageTitles[pathname] || "SmartStock";
+  const headerTitle = pageTitles[pathname] || 'SmartStock';
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -24,11 +24,8 @@ export function HeaderMain() {
               <p>Abrir/Fechar Menu</p>
             </TooltipContent>
           </Tooltip>
-          <Separator
-            orientation="vertical"
-            className="data-[orientation=vertical]:h-4"
-          />
-          <h1 className="text-base font-medium ml-2">{headerTitle}</h1>
+          <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
+          <h1 className="ml-2 text-base font-medium">{headerTitle}</h1>
         </div>
         <div className="flex items-center gap-3">
           <SheetAlertsBtn />

@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/components/ui/badge';
 
 export const VersionBadge = () => (
   <Badge variant="secondary" className="truncate text-sm">

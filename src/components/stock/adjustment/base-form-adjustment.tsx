@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateAdjustmentSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { CreateAdjustmentSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -11,19 +11,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { forwardRef, useEffect, useImperativeHandle, useMemo } from 'react';
 import {
   FormAdjustmentProps,
   AdjustmentMovementCategoryType,
   ProductWithMasterProductResponse,
   UnitType,
   AdjustmentType,
-} from "@/types";
-import { SelectorProduct } from "@/components/stock/product/selector-product";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from '@/types';
+import { SelectorProduct } from '@/components/stock/product/selector-product';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -32,11 +32,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { formatDateOnlyToLocale } from "@/utils/date-utils";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
-import { Spinner } from "@/components/ui/spinner";
-import { SaveIcon } from "lucide-react";
+} from '@/components/ui/select';
+import { formatDateOnlyToLocale } from '@/utils/date-utils';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
+import { Spinner } from '@/components/ui/spinner';
+import { SaveIcon } from 'lucide-react';
 
 interface ExtendedFormBaseInputProductProps extends FormAdjustmentProps {
   products: ProductWithMasterProductResponse[];
@@ -47,29 +47,21 @@ export const BaseFormAdjustment = forwardRef<
   ExtendedFormBaseInputProductProps
 >(
   (
-    {
-      defaultValues,
-      onSubmit,
-      isPending,
-      submitButtonText,
-      loadingText,
-      products,
-      isLoading,
-    },
-    ref
+    { defaultValues, onSubmit, isPending, submitButtonText, loadingText, products, isLoading },
+    ref,
   ) => {
     const form = useForm<z.infer<typeof CreateAdjustmentSchema>>({
       resolver: zodResolver(CreateAdjustmentSchema),
       defaultValues: defaultValues || {
-        productId: "",
-        productQuantity: "",
-        productUnit: "" as UnitType,
-        lot: "",
-        validityDate: "",
-        quantity: "",
-        unit: "" as UnitType,
-        movementCategory: "" as AdjustmentMovementCategoryType,
-        adjustmentType: "" as AdjustmentType,
+        productId: '',
+        productQuantity: '',
+        productUnit: '' as UnitType,
+        lot: '',
+        validityDate: '',
+        quantity: '',
+        unit: '' as UnitType,
+        movementCategory: '' as AdjustmentMovementCategoryType,
+        adjustmentType: '' as AdjustmentType,
       },
     });
 
@@ -77,34 +69,32 @@ export const BaseFormAdjustment = forwardRef<
 
     // Função para lidar com a seleção do produto mestre
     const handleProductSelect = (product: ProductWithMasterProductResponse) => {
-      const formattedValidityDate = formatDateOnlyToLocale(
-        product.validityDate
-      );
+      const formattedValidityDate = formatDateOnlyToLocale(product.validityDate);
 
-      form.setValue("productId", product.id.toString(), {
+      form.setValue('productId', product.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("productQuantity", product.quantity.toString(), {
+      form.setValue('productQuantity', product.quantity.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("productUnit", product.unit.toString() as UnitType, {
+      form.setValue('productUnit', product.unit.toString() as UnitType, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("lot", product.lot, {
+      form.setValue('lot', product.lot, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("validityDate", formattedValidityDate, {
+      form.setValue('validityDate', formattedValidityDate, {
         shouldValidate: true,
         shouldDirty: true,
       });
     };
 
     // Validação da seleção de categoria e tipo de ajuste
-    const movementCategory = form.watch("movementCategory");
+    const movementCategory = form.watch('movementCategory');
 
     const negativesCategories = useMemo(
       () => [
@@ -112,15 +102,14 @@ export const BaseFormAdjustment = forwardRef<
         AdjustmentMovementCategoryType.LOSS_DAMAGE,
         AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
       ],
-      []
+      [],
     );
 
-    const isDisabled =
-      !movementCategory || negativesCategories.includes(movementCategory);
+    const isDisabled = !movementCategory || negativesCategories.includes(movementCategory);
 
     useEffect(() => {
       if (negativesCategories.includes(movementCategory)) {
-        form.setValue("adjustmentType", AdjustmentType.NEGATIVE, {
+        form.setValue('adjustmentType', AdjustmentType.NEGATIVE, {
           shouldValidate: true,
         });
       }
@@ -129,7 +118,7 @@ export const BaseFormAdjustment = forwardRef<
         movementCategory === AdjustmentMovementCategoryType.GENERAL ||
         movementCategory === AdjustmentMovementCategoryType.CORRECTION
       ) {
-        form.resetField("adjustmentType");
+        form.resetField('adjustmentType');
       }
     }, [movementCategory, form, negativesCategories]);
 
@@ -137,14 +126,14 @@ export const BaseFormAdjustment = forwardRef<
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col items-center justify-center"
         >
-          <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+          <div className="flex w-full flex-col gap-12 md:max-w-4xl">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes do Produto</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
                 <FormField
                   control={form.control}
                   name="productId"
@@ -167,7 +156,7 @@ export const BaseFormAdjustment = forwardRef<
                     </FormItem>
                   )}
                 />
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="lot"
@@ -206,7 +195,7 @@ export const BaseFormAdjustment = forwardRef<
                     )}
                   />
                 </div>
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="productQuantity"
@@ -252,8 +241,8 @@ export const BaseFormAdjustment = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes do Ajuste</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="quantity"
@@ -306,8 +295,8 @@ export const BaseFormAdjustment = forwardRef<
                     )}
                   />
                 </div>
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
-                  <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="movementCategory"
@@ -315,8 +304,7 @@ export const BaseFormAdjustment = forwardRef<
                         <FormItem>
                           <div className="flex flex-col gap-3">
                             <FormLabel>
-                              Categoria de Ajuste:{" "}
-                              <span className="text-red-500">*</span>
+                              Categoria de Ajuste: <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl className="flex flex-col gap-3">
                               <RadioGroup
@@ -328,75 +316,65 @@ export const BaseFormAdjustment = forwardRef<
                                 <FormItem className="flex items-center">
                                   <FormControl>
                                     <RadioGroupItem
-                                      value={
-                                        AdjustmentMovementCategoryType.GENERAL
-                                      }
+                                      value={AdjustmentMovementCategoryType.GENERAL}
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {formatEnumValueDisplay(
                                       AdjustmentMovementCategoryType.GENERAL,
-                                      "capitalize"
+                                      'capitalize',
                                     )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
                                   <FormControl>
                                     <RadioGroupItem
-                                      value={
-                                        AdjustmentMovementCategoryType.CORRECTION
-                                      }
+                                      value={AdjustmentMovementCategoryType.CORRECTION}
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {formatEnumValueDisplay(
                                       AdjustmentMovementCategoryType.CORRECTION,
-                                      "capitalize"
+                                      'capitalize',
                                     )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
                                   <FormControl>
                                     <RadioGroupItem
-                                      value={
-                                        AdjustmentMovementCategoryType.LOSS_DAMAGE
-                                      }
+                                      value={AdjustmentMovementCategoryType.LOSS_DAMAGE}
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {formatEnumValueDisplay(
                                       AdjustmentMovementCategoryType.LOSS_DAMAGE,
-                                      "capitalize"
+                                      'capitalize',
                                     )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
                                   <FormControl>
                                     <RadioGroupItem
-                                      value={
-                                        AdjustmentMovementCategoryType.THEFT_MISPLACEMENT
-                                      }
+                                      value={AdjustmentMovementCategoryType.THEFT_MISPLACEMENT}
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {formatEnumValueDisplay(
                                       AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
-                                      "capitalize"
+                                      'capitalize',
                                     )}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
                                   <FormControl>
                                     <RadioGroupItem
-                                      value={
-                                        AdjustmentMovementCategoryType.DUE_DATE
-                                      }
+                                      value={AdjustmentMovementCategoryType.DUE_DATE}
                                     />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {formatEnumValueDisplay(
                                       AdjustmentMovementCategoryType.DUE_DATE,
-                                      "capitalize"
+                                      'capitalize',
                                     )}
                                   </FormLabel>
                                 </FormItem>
@@ -423,28 +401,18 @@ export const BaseFormAdjustment = forwardRef<
                               >
                                 <FormItem className="flex items-center">
                                   <FormControl>
-                                    <RadioGroupItem
-                                      value={AdjustmentType.POSITIVE}
-                                    />
+                                    <RadioGroupItem value={AdjustmentType.POSITIVE} />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(
-                                      AdjustmentType.POSITIVE,
-                                      "capitalize"
-                                    )}
+                                    {formatEnumValueDisplay(AdjustmentType.POSITIVE, 'capitalize')}
                                   </FormLabel>
                                 </FormItem>
                                 <FormItem className="flex items-center">
                                   <FormControl>
-                                    <RadioGroupItem
-                                      value={AdjustmentType.NEGATIVE}
-                                    />
+                                    <RadioGroupItem value={AdjustmentType.NEGATIVE} />
                                   </FormControl>
                                   <FormLabel className="font-normal">
-                                    {formatEnumValueDisplay(
-                                      AdjustmentType.NEGATIVE,
-                                      "capitalize"
-                                    )}
+                                    {formatEnumValueDisplay(AdjustmentType.NEGATIVE, 'capitalize')}
                                   </FormLabel>
                                 </FormItem>
                               </RadioGroup>
@@ -458,12 +426,12 @@ export const BaseFormAdjustment = forwardRef<
                 </div>
               </div>
             </div>
-            <div className="flex gap-3 justify-end">
+            <div className="flex justify-end gap-3">
               <Button
                 disabled={isPending}
                 size="sm"
                 type="reset"
-                variant={"ghost"}
+                variant={'ghost'}
                 onClick={() => {
                   form.reset();
                 }}
@@ -488,7 +456,7 @@ export const BaseFormAdjustment = forwardRef<
         </form>
       </Form>
     );
-  }
+  },
 );
 
-BaseFormAdjustment.displayName = "BaseFormAdjustment";
+BaseFormAdjustment.displayName = 'BaseFormAdjustment';

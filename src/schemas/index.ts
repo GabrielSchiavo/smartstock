@@ -1,21 +1,21 @@
 // Schemas compartilhados
-export * from "./shared/base-auth.schema";
+export * from './shared/base-auth.schema';
 
 // Auth
-export * from "./auth/login.schema";
-export * from "./auth/reset-password.schema";
-export * from "./auth/new-password.schema";
+export * from './auth/login.schema';
+export * from './auth/reset-password.schema';
+export * from './auth/new-password.schema';
 
 // User
-export * from "./user/create-user.schema";
-export * from "./user/edit-user.schema";
-export * from "./setting/settings.schema";
+export * from './user/create-user.schema';
+export * from './user/edit-user.schema';
+export * from './setting/settings.schema';
 
 // Stock
-export * from "./stock/create-adjustment.schema";
-export * from "./stock/create-edit-master-product.schema";
-export * from "./stock/create-input-edit-product.schema";
-export * from "./stock/create-output.schema";
+export * from './stock/create-adjustment.schema';
+export * from './stock/create-edit-master-product.schema';
+export * from './stock/create-input-edit-product.schema';
+export * from './stock/create-output.schema';
 
 // Report
-export * from "./report/create-report.schema";
+export * from './report/create-report.schema';

@@ -1,23 +1,17 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { alertRepository } from "@/db";
-import { AlertType } from "@/types";
+import { revalidatePath } from 'next/cache';
+import { alertRepository } from '@/db';
+import { AlertType } from '@/types';
 
 export async function checkProductAlerts() {
   const productsExpiring = await alertRepository.findExpiringProducts();
   const productsOutOfStock = await alertRepository.findOutStockProducts();
 
   for (const product of productsExpiring) {
-    const alertType =
-      product.validityDate < new Date()
-        ? AlertType.EXPIRED
-        : AlertType.EXPIRING;
+    const alertType = product.validityDate < new Date() ? AlertType.EXPIRED : AlertType.EXPIRING;
 
-    const existingAlert = await alertRepository.findExisting(
-      product.id,
-      alertType
-    );
+    const existingAlert = await alertRepository.findExisting(product.id, alertType);
 
     if (!existingAlert) {
       await alertRepository.create(product.id, alertType);
@@ -27,18 +21,14 @@ export async function checkProductAlerts() {
   for (const product of productsOutOfStock) {
     const alertType = AlertType.OUT_STOCK;
 
-    const existingAlert = await alertRepository.findExisting(
-      product.id,
-      alertType
-    );
+    const existingAlert = await alertRepository.findExisting(product.id, alertType);
 
     if (!existingAlert) {
       await alertRepository.create(product.id, alertType);
     }
   }
 
-  
-  revalidatePath("/");
+  revalidatePath('/');
 }
 
 export async function toggleAlertReadStatus(alertId: string) {
@@ -47,48 +37,48 @@ export async function toggleAlertReadStatus(alertId: string) {
   if (!alert) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O alerta solicitado não existe.",
+      title: 'Erro!',
+      description: 'O alerta solicitado não existe.',
     };
   }
 
   await alertRepository.toggleReadStatus(alertId, !alert.isRead);
 
-  revalidatePath("/");
+  revalidatePath('/');
 
   return {
     success: true,
-    title: "Sucesso!",
-    description: "Status do alerta atualizado com sucesso.",
+    title: 'Sucesso!',
+    description: 'Status do alerta atualizado com sucesso.',
   };
 }
 
 export async function markAlertAsRead(alertId: string) {
   await alertRepository.updateReadStatus(alertId, true);
-  revalidatePath("/");
+  revalidatePath('/');
 }
 
 export async function markAllAlertsAsRead() {
   await alertRepository.updateAllReadStatus(true);
-  revalidatePath("/");
+  revalidatePath('/');
 }
 
 export async function deleteAllAlerts() {
   try {
     await alertRepository.deleteAll();
-    revalidatePath("/");
+    revalidatePath('/');
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Todos os alertas foram excluídos.",
+      title: 'Sucesso!',
+      description: 'Todos os alertas foram excluídos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar alertas:", error);
+    console.error('Erro ao verificar alertas:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível excluir os alertas.",
+      title: 'Erro!',
+      description: 'Não foi possível excluir os alertas.',
     };
   }
 }
@@ -107,15 +97,15 @@ export async function clientCheckProductAlerts() {
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Alertas verificados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Alertas verificados com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao verificar alertas:", error);
+    console.error('Erro ao verificar alertas:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível verificar os alertas.",
+      title: 'Erro!',
+      description: 'Não foi possível verificar os alertas.',
     };
   }
 }

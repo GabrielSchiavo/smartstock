@@ -1,15 +1,15 @@
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, EyeOffIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDownIcon, EyeOffIcon } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DataTableColumnHeaderProps } from "@/types";
+} from '@/components/ui/dropdown-menu';
+import { DataTableColumnHeaderProps } from '@/types';
 
 export function DataTableColumnHeader<TData, TValue>({
   column,
@@ -21,19 +21,15 @@ export function DataTableColumnHeader<TData, TValue>({
   }
 
   return (
-    <div className={cn("flex justify-center items-center space-x-2", className)}>
+    <div className={cn('flex items-center justify-center space-x-2', className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 data-[state=open]:bg-accent"
-            >
+            <Button variant="ghost" size="sm" className="data-[state=open]:bg-accent h-8">
               <span>{title}</span>
-              {column.getIsSorted() === "desc" ? (
+              {column.getIsSorted() === 'desc' ? (
                 <ArrowDownIcon />
-              ) : column.getIsSorted() === "asc" ? (
+              ) : column.getIsSorted() === 'asc' ? (
                 <ArrowUpIcon />
               ) : (
                 <ChevronsUpDownIcon />
@@ -43,16 +39,16 @@ export function DataTableColumnHeader<TData, TValue>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUpIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
+            <ArrowUpIcon className="text-muted-foreground/70 h-3.5 w-3.5" />
             Asc
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDownIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
+            <ArrowDownIcon className="text-muted-foreground/70 h-3.5 w-3.5" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
-            <EyeOffIcon className="h-3.5 w-3.5 text-muted-foreground/70" />
+            <EyeOffIcon className="text-muted-foreground/70 h-3.5 w-3.5" />
             Ocultar
           </DropdownMenuItem>
         </DropdownMenuContent>

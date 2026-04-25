@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
+import { ColumnDef, FilterFn } from '@tanstack/react-table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from '@/components/tables/_components/data-table-column-header';
 import {
   ColumnMetaProps,
   ColumnsTableProductsProps,
@@ -10,21 +10,21 @@ import {
   ProductType,
   ProductWithMasterProductResponse,
   ValidityStatusType,
-} from "@/types";
-import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { deleteProduct } from "@/actions";
-import { FormEditProduct } from "@/components/stock/product/form-edit-product";
-import { formatDateOnlyToLocale } from "@/utils/date-utils";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { checkExpiryStatus } from "@/utils/check-expiry-status";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@/types';
+import { DataTableDropdown } from '@/components/tables/_components/data-table-dropdown';
+import { deleteProduct } from '@/actions';
+import { FormEditProduct } from '@/components/stock/product/form-edit-product';
+import { formatDateOnlyToLocale } from '@/utils/date-utils';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { checkExpiryStatus } from '@/utils/check-expiry-status';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 // Função para escolher as colunas pesquisáveis
 const multiColumnFilterFn: FilterFn<ProductWithMasterProductResponse> = (
   row,
   columnId,
-  filterValue
+  filterValue,
 ) => {
   // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.lot} ${row.original.validityDate} ${row.original.receiptDate} ${row.original.receiver.name} ${row.original.masterProduct.name} ${row.original.masterProduct.category.name} ${row.original.masterProduct.group.name} ${row.original.masterProduct.subgroup?.name} ${row.original.productType} ${row.original.supplier?.name}`;
@@ -39,13 +39,13 @@ export const columnsTableProducts = ({
   selectedProductId,
 }: ColumnsTableProductsProps): ColumnDef<ProductWithMasterProductResponse>[] => [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -65,22 +65,18 @@ export const columnsTableProducts = ({
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
+    accessorKey: 'id',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
     filterFn: multiColumnFilterFn,
     meta: {
-      title: "ID",
+      title: 'ID',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nome" />
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
     meta: {
-      title: "Nome",
+      title: 'Nome',
     } as ColumnMetaProps,
   },
   // {
@@ -103,54 +99,46 @@ export const columnsTableProducts = ({
   //   } as ColumnMetaProps,
   // },
   {
-    accessorKey: "quantity",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quantidade" />
-    ),
+    accessorKey: 'quantity',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Quantidade" />,
     cell: ({ row }) => (
       <span>
-        {row.original.quantity?.toLocaleString(LocaleType.PT_BR)} {""}
+        {row.original.quantity?.toLocaleString(LocaleType.PT_BR)} {''}
         {row.original.unit}
       </span>
     ),
     meta: {
-      title: "Quantidade",
+      title: 'Quantidade',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "unitWeight",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Peso Unitário" />
-    ),
+    accessorKey: 'unitWeight',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Peso Unitário" />,
     cell: ({ row }) =>
       row.original.unitWeight ? (
         <span>
-          {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {""}
+          {row.original.unitWeight?.toLocaleString(LocaleType.PT_BR)} {''}
           {row.original.unitOfUnitWeight}
         </span>
       ) : (
-        "-"
+        '-'
       ),
     meta: {
-      title: "Peso Unitário",
+      title: 'Peso Unitário',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "lot",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Lote" />
-    ),
+    accessorKey: 'lot',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Lote" />,
     meta: {
-      title: "Lote",
+      title: 'Lote',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "validityDate",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Data de Validade" />
-    ),
+    accessorKey: 'validityDate',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Data de Validade" />,
     cell: ({ row }) => {
-      const validityResult = checkExpiryStatus(row.getValue("validityDate"), {
+      const validityResult = checkExpiryStatus(row.getValue('validityDate'), {
         dateOnly: true,
         formatDate: formatDateOnlyToLocale,
       });
@@ -161,118 +149,102 @@ export const columnsTableProducts = ({
       switch (status) {
         case ValidityStatusType.EXPIRED:
           return (
-            <Badge className="text-sm bg-red-500/15 text-red-600 dark:text-red-500">
+            <Badge className="bg-red-500/15 text-sm text-red-600 dark:text-red-500">
               {formattedDate}
             </Badge>
           );
 
         case ValidityStatusType.EXPIRING:
           return (
-            <Badge className="text-sm bg-yellow-500/15 text-yellow-600 dark:text-yellow-500">
+            <Badge className="bg-yellow-500/15 text-sm text-yellow-600 dark:text-yellow-500">
               {formattedDate}
             </Badge>
           );
 
         default:
           return (
-            <Badge className="text-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-500">
+            <Badge className="bg-emerald-500/15 text-sm text-emerald-600 dark:text-emerald-500">
               {formattedDate}
             </Badge>
           );
       }
     },
     meta: {
-      title: "Data de Validade",
+      title: 'Data de Validade',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "receiptDate",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Data de Recebimento" />
-    ),
+    accessorKey: 'receiptDate',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Data de Recebimento" />,
     cell: ({ row }) => {
-      const receiptDate = new Date(row.getValue("receiptDate"));
+      const receiptDate = new Date(row.getValue('receiptDate'));
       return formatDateOnlyToLocale(receiptDate);
     },
     meta: {
-      title: "Data de Recebimento",
+      title: 'Data de Recebimento',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "receiver.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Recebedor" />
-    ),
+    accessorKey: 'receiver.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Recebedor" />,
     meta: {
-      title: "Recebedor",
+      title: 'Recebedor',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Produto Mestre" />
-    ),
+    accessorKey: 'masterProduct.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Produto Mestre" />,
     meta: {
-      title: "Produto Mestre",
+      title: 'Produto Mestre',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.category.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Categoria" />
-    ),
+    accessorKey: 'masterProduct.category.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Categoria" />,
     meta: {
-      title: "Categoria",
+      title: 'Categoria',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.group.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grupo" />
-    ),
+    accessorKey: 'masterProduct.group.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Grupo" />,
     meta: {
-      title: "Grupo",
+      title: 'Grupo',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "masterProduct.subgroup.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Subgrupo" />
-    ),
-    cell: ({ row }) => row.original.masterProduct.subgroup?.name || "-",
+    accessorKey: 'masterProduct.subgroup.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Subgrupo" />,
+    cell: ({ row }) => row.original.masterProduct.subgroup?.name || '-',
     meta: {
-      title: "Subgrupo",
+      title: 'Subgrupo',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "productType",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tipo de Produto" />
-    ),
+    accessorKey: 'productType',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tipo de Produto" />,
     cell: ({ row }) => {
-      const value = row.getValue("productType");
+      const value = row.getValue('productType');
       return (
-        <Badge variant={"outline"} className="text-sm">
-          {formatEnumValueDisplay(value as ProductType, "uppercase")}
+        <Badge variant={'outline'} className="text-sm">
+          {formatEnumValueDisplay(value as ProductType, 'uppercase')}
         </Badge>
       );
     },
     meta: {
-      title: "Tipo de Produto",
+      title: 'Tipo de Produto',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "supplier.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Fornecedor" />
-    ),
-    cell: ({ row }) => row.original.supplier?.name || "-",
+    accessorKey: 'supplier.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Fornecedor" />,
+    cell: ({ row }) => row.original.supplier?.name || '-',
     meta: {
-      title: "Fornecedor",
+      title: 'Fornecedor',
     } as ColumnMetaProps,
   },
   {
-    id: "actions",
+    id: 'actions',
     header: () => null,
     cell: ({ row }) => {
       if (isSelectingAction && onSelect) {
@@ -280,11 +252,11 @@ export const columnsTableProducts = ({
         return (
           <Button
             onClick={() => onSelect(row.original)}
-            variant={isSelected ? "outline" : "default"}
+            variant={isSelected ? 'outline' : 'default'}
             size="sm"
             disabled={isSelected}
           >
-            {isSelected ? "Selecionado" : "Selecionar"}
+            {isSelected ? 'Selecionado' : 'Selecionar'}
           </Button>
         );
       } else {

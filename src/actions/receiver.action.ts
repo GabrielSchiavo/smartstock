@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { auditLogRepository, receiverRepository } from "@/db";
+import { auditLogRepository, receiverRepository } from '@/db';
 import {
   CheckReceiverResponse,
   SingleReceiverResponse,
@@ -8,63 +8,59 @@ import {
   ReceiverResponse,
   ActionType,
   EntityType,
-} from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export const getAllReceiver = async (): Promise<ReceiverResponse> => {
   try {
     const receivers = await receiverRepository.findAll();
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Recebedores carregados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Recebedores carregados com sucesso.',
       data: receivers,
     };
   } catch (error) {
-    console.error("Erro ao buscar Recebedores:", error);
+    console.error('Erro ao buscar Recebedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao acessar a lista de recebedores.",
+      title: 'Erro!',
+      description: 'Erro ao acessar a lista de recebedores.',
     };
   }
 };
 
-export const searchReceiver = async (
-  query: string
-): Promise<ReceiverResponse> => {
+export const searchReceiver = async (query: string): Promise<ReceiverResponse> => {
   if (!query) return { success: true, data: [] };
 
   try {
     const receivers = await receiverRepository.search(query);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Recebedores encontrados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Recebedores encontrados com sucesso.',
       data: receivers,
     };
   } catch (error) {
-    console.error("Erro ao buscar Recebedores:", error);
+    console.error('Erro ao buscar Recebedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao pesquisar recebedores.",
+      title: 'Erro!',
+      description: 'Erro ao pesquisar recebedores.',
     };
   }
 };
 
-export const createReceiver = async (
-  name: string
-): Promise<SingleReceiverResponse> => {
+export const createReceiver = async (name: string): Promise<SingleReceiverResponse> => {
   const user = await currentUser();
 
   if (!name.trim()) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O campo de não pode estar vazio.",
+      title: 'Erro!',
+      description: 'O campo de não pode estar vazio.',
     };
   }
 
@@ -83,7 +79,7 @@ export const createReceiver = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${newReceiver.id}' | Changed Value='${newReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Receiver '${newReceiver.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return newReceiver;
@@ -92,22 +88,20 @@ export const createReceiver = async (
     return {
       success: true,
       data: newReceiver,
-      title: "Sucesso!",
-      description: "Recebedor criado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Recebedor criado com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao criar Recebedor:", error);
+    console.error('Erro ao criar Recebedor:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao criar recebedor.",
+      title: 'Erro!',
+      description: 'Erro ao criar recebedor.',
     };
   }
 };
 
-export const deleteReceiver = async (
-  id: string
-): Promise<ReceiverOperationResponse> => {
+export const deleteReceiver = async (id: string): Promise<ReceiverOperationResponse> => {
   const user = await currentUser();
 
   try {
@@ -116,8 +110,8 @@ export const deleteReceiver = async (
     if (!existingReceiver) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Recebedor não encontrado.",
+        title: 'Erro!',
+        description: 'Recebedor não encontrado.',
       };
     }
 
@@ -135,45 +129,42 @@ export const deleteReceiver = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.RECEIVER}' | Record Changed ID='${existingReceiver.id}' | Changed Value='${existingReceiver.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Receiver '${existingReceiver.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Recebedor excluído com sucesso.",
+      title: 'Sucesso!',
+      description: 'Recebedor excluído com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao excluir Recebedor:", error);
+    console.error('Erro ao excluir Recebedor:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao excluir recebedor.",
+      title: 'Erro!',
+      description: 'Erro ao excluir recebedor.',
     };
   }
 };
 
-export const checkReceiverUsage = async (
-  receiverId: string
-): Promise<CheckReceiverResponse> => {
+export const checkReceiverUsage = async (receiverId: string): Promise<CheckReceiverResponse> => {
   try {
-    const productWithReceiver =
-      await receiverRepository.checkInProducts(receiverId);
+    const productWithReceiver = await receiverRepository.checkInProducts(receiverId);
 
     return {
       isUsed: !!productWithReceiver,
       success: false,
-      title: "Aviso!",
-      description: "Este recebedor está associado a um ou mais produtos.",
+      title: 'Aviso!',
+      description: 'Este recebedor está associado a um ou mais produtos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar produtos associados:", error);
+    console.error('Erro ao verificar produtos associados:', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Erro ao verificar produtos associados.",
+      title: 'Erro!',
+      description: 'Erro ao verificar produtos associados.',
     };
   }
 };

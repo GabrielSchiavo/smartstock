@@ -1,4 +1,4 @@
-import { ProductType, UnitType, ValidityStatusType } from "@/types";
+import { ProductType, UnitType, ValidityStatusType } from '@/types';
 
 export type ReportResponse<T> = {
   data?: T[];

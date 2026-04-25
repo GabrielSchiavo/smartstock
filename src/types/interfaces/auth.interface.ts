@@ -1,8 +1,8 @@
-import { UserType } from "@/types";
+import { UserType } from '@/types';
 
 export interface HomeLoginButtonProps {
   children: React.ReactNode;
-  mode?: "modal" | "redirect";
+  mode?: 'modal' | 'redirect';
   asChild?: boolean;
 }
 

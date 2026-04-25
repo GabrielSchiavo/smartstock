@@ -1,12 +1,12 @@
-import { db } from "@/lib/db"
-import { Prisma, Product, Receiver } from "@prisma/client"
+import { db } from '@/lib/db';
+import { Prisma, Product, Receiver } from '@/.prisma/client';
 
 export const receiverRepository = {
   async findAll(take = 100): Promise<Receiver[]> {
     return await db.receiver.findMany({
       orderBy: { name: 'asc' },
       take,
-    })
+    });
   },
 
   async search(query: string, take = 10): Promise<Receiver[]> {
@@ -18,7 +18,7 @@ export const receiverRepository = {
         },
       },
       take,
-    })
+    });
   },
 
   async create(name: string, tx?: Prisma.TransactionClient): Promise<Receiver> {
@@ -26,21 +26,21 @@ export const receiverRepository = {
 
     return await client.receiver.create({
       data: { name },
-    })
+    });
   },
 
   async findById(id: string): Promise<Receiver | null> {
     return await db.receiver.findUnique({
       where: { id },
-    })
+    });
   },
 
-  async delete(id: string,tx?: Prisma.TransactionClient): Promise<void> {
+  async delete(id: string, tx?: Prisma.TransactionClient): Promise<void> {
     const client = tx ?? db;
 
     await client.receiver.delete({
       where: { id },
-    })
+    });
   },
 
   async checkInProducts(receiverId: string): Promise<Pick<Product, 'id'> | null> {
@@ -49,6 +49,6 @@ export const receiverRepository = {
         receiverId: receiverId,
       },
       select: { id: true },
-    })
+    });
   },
-}
+};

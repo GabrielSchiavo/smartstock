@@ -3,12 +3,18 @@ import {
   CreateEditMasterProductSchema,
   CreateInputEditProductSchema,
   CreateOutputSchema,
-} from "@/schemas";
-import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
-import { MasterProductWithCategoryGroupSubgroupResponse, ModeType, ReportDataResponse, ReportType, ResourceType } from "@/types";
-import { DeleteActionResponse } from "@/types";
-import { z } from "zod";
-import { ReactNode } from "react";
+} from '@/schemas';
+import { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
+import {
+  MasterProductWithCategoryGroupSubgroupResponse,
+  ModeType,
+  ReportDataResponse,
+  ReportType,
+  ResourceType,
+} from '@/types';
+import { DeleteActionResponse } from '@/types';
+import { z } from 'zod';
+import { ReactNode } from 'react';
 
 export interface DatePickerFormProps<T extends FieldValues> {
   field: ControllerRenderProps<T, Path<T>>;
@@ -62,9 +68,7 @@ export interface FormReportsProps {
 
 export interface FormBaseMasterProductProps {
   defaultValues?: z.infer<typeof CreateEditMasterProductSchema>;
-  onSubmit: (
-    values: z.infer<typeof CreateEditMasterProductSchema>
-  ) => Promise<void>;
+  onSubmit: (values: z.infer<typeof CreateEditMasterProductSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
@@ -73,9 +77,7 @@ export interface FormBaseMasterProductProps {
 
 export interface FormOutputProps {
   defaultValues?: z.infer<typeof CreateOutputSchema>;
-  onSubmit: (
-    values: z.infer<typeof CreateOutputSchema>
-  ) => Promise<void>;
+  onSubmit: (values: z.infer<typeof CreateOutputSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
@@ -85,9 +87,7 @@ export interface FormOutputProps {
 
 export interface FormAdjustmentProps {
   defaultValues?: z.infer<typeof CreateAdjustmentSchema>;
-  onSubmit: (
-    values: z.infer<typeof CreateAdjustmentSchema>
-  ) => Promise<void>;
+  onSubmit: (values: z.infer<typeof CreateAdjustmentSchema>) => Promise<void>;
   onCancel?: () => void;
   isPending: boolean;
   submitButtonText: string;
@@ -127,7 +127,6 @@ export interface FormBaseInputProductProps {
   isLoading?: boolean;
 }
 
-export interface ExtendedFormBaseInputProductProps
-  extends FormBaseInputProductProps {
+export interface ExtendedFormBaseInputProductProps extends FormBaseInputProductProps {
   masterProducts: MasterProductWithCategoryGroupSubgroupResponse[];
 }

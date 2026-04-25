@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 12345
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql
     restart: unless-stopped

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,18 +11,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
-import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
+} from '@tanstack/react-table';
+import { DataTableToolbar } from '@/components/tables/_components/data-table-toolbar';
+import { DataTablePagination } from '@/components/tables/_components/data-table-pagination';
 import {
   ActionType,
   DataExpandableType,
   DataTableProps,
   EntityType,
   FiltersGroupType,
-} from "@/types";
-import { BaseDataTableExpandable } from "@/components/tables/base-data-table-expandable";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@/types';
+import { BaseDataTableExpandable } from '@/components/tables/base-data-table-expandable';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 export function DataTableHistory<TData, TValue>({
   columns,
@@ -31,11 +31,8 @@ export function DataTableHistory<TData, TValue>({
   filterGroup,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -61,95 +58,89 @@ export function DataTableHistory<TData, TValue>({
   const actionsDefault = [
     {
       value: ActionType.CREATE,
-      label: formatEnumValueDisplay(ActionType.CREATE, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.CREATE, 'capitalize'),
     },
     {
       value: ActionType.UPDATE,
-      label: formatEnumValueDisplay(ActionType.UPDATE, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.UPDATE, 'capitalize'),
     },
     {
       value: ActionType.DELETE,
-      label: formatEnumValueDisplay(ActionType.DELETE, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.DELETE, 'capitalize'),
     },
   ];
   const actionsSystem = [
     {
       value: ActionType.LOGIN,
-      label: formatEnumValueDisplay(ActionType.LOGIN, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.LOGIN, 'capitalize'),
     },
     {
       value: ActionType.LOGOUT,
-      label: formatEnumValueDisplay(ActionType.LOGOUT, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.LOGOUT, 'capitalize'),
     },
     {
       value: ActionType.LOGIN_FAILURE,
-      label: formatEnumValueDisplay(ActionType.LOGIN_FAILURE, "capitalize"),
+      label: formatEnumValueDisplay(ActionType.LOGIN_FAILURE, 'capitalize'),
     },
   ];
   const entitiesInputsOutputs = [
     {
       value: EntityType.INPUT,
-      label: formatEnumValueDisplay(EntityType.INPUT, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.INPUT, 'capitalize'),
     },
     {
       value: EntityType.OUTPUT,
-      label: formatEnumValueDisplay(EntityType.OUTPUT, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.OUTPUT, 'capitalize'),
     },
   ];
   const entitiesAdjustments = [
     {
       value: EntityType.ADJUSTMENT_POSITIVE,
-      label: formatEnumValueDisplay(
-        EntityType.ADJUSTMENT_POSITIVE,
-        "capitalize"
-      ),
+      label: formatEnumValueDisplay(EntityType.ADJUSTMENT_POSITIVE, 'capitalize'),
     },
     {
       value: EntityType.ADJUSTMENT_NEGATIVE,
-      label: formatEnumValueDisplay(
-        EntityType.ADJUSTMENT_NEGATIVE,
-        "capitalize"
-      ),
+      label: formatEnumValueDisplay(EntityType.ADJUSTMENT_NEGATIVE, 'capitalize'),
     },
   ];
   const entitiesSystem = [
     {
       value: EntityType.SYSTEM,
-      label: formatEnumValueDisplay(EntityType.SYSTEM, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.SYSTEM, 'capitalize'),
     },
   ];
   const entitiesMiscellaneous = [
     {
       value: EntityType.CATEGORY,
-      label: formatEnumValueDisplay(EntityType.CATEGORY, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.CATEGORY, 'capitalize'),
     },
     {
       value: EntityType.GROUP,
-      label: formatEnumValueDisplay(EntityType.GROUP, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.GROUP, 'capitalize'),
     },
     {
       value: EntityType.MASTER_PRODUCT,
-      label: formatEnumValueDisplay(EntityType.MASTER_PRODUCT, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.MASTER_PRODUCT, 'capitalize'),
     },
     {
       value: EntityType.PRODUCT,
-      label: formatEnumValueDisplay(EntityType.PRODUCT, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.PRODUCT, 'capitalize'),
     },
     {
       value: EntityType.RECEIVER,
-      label: formatEnumValueDisplay(EntityType.RECEIVER, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.RECEIVER, 'capitalize'),
     },
     {
       value: EntityType.SUBGROUP,
-      label: formatEnumValueDisplay(EntityType.SUBGROUP, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.SUBGROUP, 'capitalize'),
     },
     {
       value: EntityType.SUPPLIER,
-      label: formatEnumValueDisplay(EntityType.SUPPLIER, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.SUPPLIER, 'capitalize'),
     },
     {
       value: EntityType.USER,
-      label: formatEnumValueDisplay(EntityType.USER, "capitalize"),
+      label: formatEnumValueDisplay(EntityType.USER, 'capitalize'),
     },
   ];
 
@@ -171,23 +162,20 @@ export function DataTableHistory<TData, TValue>({
 
   const filters = [
     {
-      columnKey: "actionType",
-      title: "Ação",
-      options:
-        filterGroup === FiltersGroupType.SYSTEM_HISTORY
-          ? actionsSystem
-          : actionsDefault,
+      columnKey: 'actionType',
+      title: 'Ação',
+      options: filterGroup === FiltersGroupType.SYSTEM_HISTORY ? actionsSystem : actionsDefault,
     },
     {
-      columnKey: "entity",
-      title: "Entidade",
+      columnKey: 'entity',
+      title: 'Entidade',
       options: getEntitiesOptions(),
     },
   ];
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex gap-2 items-center justify-between">
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
@@ -197,7 +185,7 @@ export function DataTableHistory<TData, TValue>({
         />
       </div>
 
-      <div className="rounded-xl border overflow-hidden">
+      <div className="overflow-hidden rounded-xl border">
         <BaseDataTableExpandable
           table={table}
           columns={columns as ColumnDef<TData>[]}

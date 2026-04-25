@@ -1,6 +1,6 @@
-import { CopyToClipboardProps, ToastType } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CopyToClipboardProps, ToastType } from '@/types';
+import { showToast } from '@/components/utils/show-toast';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export const CopyToClipboard = ({
   textToCopy,
@@ -12,15 +12,15 @@ export const CopyToClipboard = ({
     try {
       await navigator.clipboard.writeText(textToCopy);
       showToast({
-        title: "Sucesso!",
-        description:"Texto copiado para a área de transferência.",
+        title: 'Sucesso!',
+        description: 'Texto copiado para a área de transferência.',
         type: ToastType.SUCCESS,
       });
     } catch (error) {
-      console.error("Erro ao copiar o texto:", error);
+      console.error('Erro ao copiar o texto:', error);
       showToast({
-        title:"Erro!",
-        description: "Erro ao copiar o texto.",
+        title: 'Erro!',
+        description: 'Erro ao copiar o texto.',
         type: ToastType.ERROR,
       });
     }

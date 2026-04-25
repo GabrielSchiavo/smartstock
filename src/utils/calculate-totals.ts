@@ -1,16 +1,23 @@
-import { CalculableTotalItemProps, LocaleType, TotalValuesProps, TotalValuesWithUnitsProps, BaseUnitType, UnitType } from "@/types";
-import { normalizeValue } from "@/utils/unit-conversion";
+import {
+  CalculableTotalItemProps,
+  LocaleType,
+  TotalValuesProps,
+  TotalValuesWithUnitsProps,
+  BaseUnitType,
+  UnitType,
+} from '@/types';
+import { normalizeValue } from '@/utils/unit-conversion';
 
 /**
  * Calcula os totais normalizados de peso, volume e unidades para uma lista de itens
  * @param data - Array de itens com propriedades de quantidade e unidades
  * @param initialValues - Valores iniciais para os totais (opcional)
- * @returns Objeto com os totais calculados. Somente retornará units caso não existir unitWeight e/ou unitOfUnitWeight. 
+ * @returns Objeto com os totais calculados. Somente retornará units caso não existir unitWeight e/ou unitOfUnitWeight.
  *          Caso contrário será convertido units em KG ou L e somado com weight ou volume.
  */
 export const calculateTotals = <T extends CalculableTotalItemProps>(
   data: T[],
-  initialValues: TotalValuesProps = { weight: 0, volume: 0, units: 0 }
+  initialValues: TotalValuesProps = { weight: 0, volume: 0, units: 0 },
 ): TotalValuesProps => {
   return data.reduce((total: TotalValuesProps, item) => {
     // Extração segura das propriedades do item
@@ -29,7 +36,7 @@ export const calculateTotals = <T extends CalculableTotalItemProps>(
       quantity,
       unit as UnitType,
       unitWeight,
-      unitOfUnitWeight
+      unitOfUnitWeight,
     );
 
     // Atualização dos totais
@@ -50,7 +57,7 @@ export const calculateTotals = <T extends CalculableTotalItemProps>(
 const formatNumber = (value: number, decimals: number = 2): string => {
   return value.toLocaleString(LocaleType.PT_BR, {
     minimumFractionDigits: decimals,
-    maximumFractionDigits: 3
+    maximumFractionDigits: 3,
   });
 };
 
@@ -67,30 +74,26 @@ export const addUnitsForDisplay = (
     weightDecimals?: number;
     volumeDecimals?: number;
     unitsDecimals?: number;
-  } = {}
+  } = {},
 ): TotalValuesWithUnitsProps => {
-  const {
-    weightDecimals = 2,
-    volumeDecimals = 2,
-    unitsDecimals = 0
-  } = options;
+  const { weightDecimals = 2, volumeDecimals = 2, unitsDecimals = 0 } = options;
 
   return {
     weight: {
       value: totals.weight,
       unit: BaseUnitType.KG,
-      formatted: `${formatNumber(totals.weight, weightDecimals)} KG`
+      formatted: `${formatNumber(totals.weight, weightDecimals)} KG`,
     },
     volume: {
       value: totals.volume,
       unit: BaseUnitType.L,
-      formatted: `${formatNumber(totals.volume, volumeDecimals)} L`
+      formatted: `${formatNumber(totals.volume, volumeDecimals)} L`,
     },
     units: {
       value: totals.units,
       unit: BaseUnitType.UN,
-      formatted: `${formatNumber(totals.units, unitsDecimals)} UN`
-    }
+      formatted: `${formatNumber(totals.units, unitsDecimals)} UN`,
+    },
   };
 };
 
@@ -102,11 +105,7 @@ export const addUnitsForDisplay = (
  */
 export const getTotalDisplayStrings = (totals: TotalValuesProps): [string, string, string] => {
   const display = addUnitsForDisplay(totals);
-  return [
-    display.weight.formatted,
-    display.volume.formatted,
-    display.units.formatted
-  ];
+  return [display.weight.formatted, display.volume.formatted, display.units.formatted];
 };
 
 /**
@@ -117,12 +116,12 @@ export const getTotalDisplayStrings = (totals: TotalValuesProps): [string, strin
  * EX.: const summary = createTotalSummary(totalValues, ' | ', { showZeroValues: true }); // "150,25 KG | 45,80 L | 0 UN"
  */
 export const createTotalSummary = (
-  totals: TotalValuesProps, 
+  totals: TotalValuesProps,
   separator: string = ' | ',
   options: {
     showZeroValues?: boolean;
     threshold?: number;
-  } = {}
+  } = {},
 ): string => {
   const { showZeroValues = false, threshold = 0 } = options;
 

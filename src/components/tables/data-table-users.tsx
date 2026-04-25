@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ColumnFiltersState,
   SortingState,
@@ -12,21 +12,16 @@ import {
   useReactTable,
   Row,
   ColumnDef,
-} from "@tanstack/react-table";
-import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
-import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import { Maximize2Icon, Minimize2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { DataTableProps, TableType, UserType } from "@/types";
-import { BaseDataTable } from "@/components/tables/base-data-table";
-import { useGroupedTable } from "@/hooks/use-grouped-table";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@tanstack/react-table';
+import { DataTableToolbar } from '@/components/tables/_components/data-table-toolbar';
+import { DataTablePagination } from '@/components/tables/_components/data-table-pagination';
+import { Maximize2Icon, Minimize2Icon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { DataTableProps, TableType, UserType } from '@/types';
+import { BaseDataTable } from '@/components/tables/base-data-table';
+import { useGroupedTable } from '@/hooks/use-grouped-table';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 export function DataTableUsers<TData, TValue>({
   columns,
@@ -35,15 +30,10 @@ export function DataTableUsers<TData, TValue>({
   groupBy,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [collapsedGroups, setCollapsedGroups] = React.useState<Set<string>>(
-    new Set()
-  );
+  const [collapsedGroups, setCollapsedGroups] = React.useState<Set<string>>(new Set());
 
   const table = useReactTable({
     data,
@@ -75,28 +65,26 @@ export function DataTableUsers<TData, TValue>({
   const accessLevels = [
     {
       value: UserType.ADMIN,
-      label: formatEnumValueDisplay(UserType.ADMIN, "capitalize"),
+      label: formatEnumValueDisplay(UserType.ADMIN, 'capitalize'),
     },
     {
       value: UserType.CADASTRE,
-      label: formatEnumValueDisplay(UserType.CADASTRE, "capitalize"),
+      label: formatEnumValueDisplay(UserType.CADASTRE, 'capitalize'),
     },
     {
       value: UserType.DEFAULT,
-      label: formatEnumValueDisplay(UserType.DEFAULT, "capitalize"),
+      label: formatEnumValueDisplay(UserType.DEFAULT, 'capitalize'),
     },
     {
       value: UserType.REPORT,
-      label: formatEnumValueDisplay(UserType.REPORT, "capitalize"),
+      label: formatEnumValueDisplay(UserType.REPORT, 'capitalize'),
     },
   ];
-  const filters = [
-    { columnKey: "role", title: "Nível de Acesso", options: accessLevels },
-  ];
+  const filters = [{ columnKey: 'role', title: 'Nível de Acesso', options: accessLevels }];
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex gap-4 sm:gap-6 items-center justify-between">
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex items-center justify-between gap-4 sm:gap-6">
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
@@ -113,7 +101,7 @@ export function DataTableUsers<TData, TValue>({
                   variant="ghost"
                   size="icon"
                   onClick={toggleAllGroups}
-                  className="size-8! shrink-0 ml-auto"
+                  className="ml-auto size-8! shrink-0"
                 >
                   {collapsedGroups.size === Object.keys(groupedData).length ? (
                     <Maximize2Icon className="size-4 shrink-0" />
@@ -125,8 +113,8 @@ export function DataTableUsers<TData, TValue>({
               <TooltipContent>
                 <p>
                   {collapsedGroups.size === Object.keys(groupedData).length
-                    ? "Expandir Grupos"
-                    : "Recolher Grupos"}
+                    ? 'Expandir Grupos'
+                    : 'Recolher Grupos'}
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -134,7 +122,7 @@ export function DataTableUsers<TData, TValue>({
         )}
       </div>
 
-      <div className="rounded-xl border overflow-hidden">
+      <div className="overflow-hidden rounded-xl border">
         <BaseDataTable
           table={table}
           columns={columns as ColumnDef<TData>[]}

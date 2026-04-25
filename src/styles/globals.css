@@ -1,7 +1,7 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-@import "./themes.css";
+@import './themes.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,7 +132,7 @@ body,
 
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
- 
+
   @keyframes marquee {
     from {
       transform: translateX(0);
@@ -167,8 +167,7 @@ body {
 }
 
 .sidebar {
-  --sidebar-width:
-    SIDEBAR_WIDTH, --sidebar-width-icon: SIDEBAR_WIDTH_ICON, ...style;
+  --sidebar-width: SIDEBAR_WIDTH, --sidebar-width-icon: SIDEBAR_WIDTH_ICON, ...style;
 }
 
 .default-btn-field-height {
@@ -193,7 +192,7 @@ button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 2.5rem; 
+  padding-right: 2.5rem;
   position: absolute;
   text-align: start;
 }
@@ -223,12 +222,12 @@ button {
   margin: 10mm;
 
   @top-center {
-    content: "SmartStock";
+    content: 'SmartStock';
     font-size: 14px;
     padding-top: 5mm;
   }
   @bottom-right {
-    content: "Página " counter(page) " de " counter(pages);
+    content: 'Página ' counter(page) ' de ' counter(pages);
     font-size: 14px;
     padding-bottom: 5mm;
   }

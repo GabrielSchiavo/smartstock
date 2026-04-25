@@ -1,22 +1,24 @@
-"use client";
+'use client';
 
-import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
+import { ColumnDef, FilterFn } from '@tanstack/react-table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { DataTableColumnHeader } from '@/components/tables/_components/data-table-column-header';
 import {
   ColumnMetaProps,
   ColumnsTableMasterProductsProps,
   MasterProductWithCategoryGroupSubgroupResponse,
-} from "@/types";
-import { DataTableDropdown } from "@/components/tables/_components/data-table-dropdown";
-import { FormEditMasterProduct } from "@/components/stock/master-product/form-edit-master-product";
-import { deleteMasterProduct } from "@/actions";
+} from '@/types';
+import { DataTableDropdown } from '@/components/tables/_components/data-table-dropdown';
+import { FormEditMasterProduct } from '@/components/stock/master-product/form-edit-master-product';
+import { deleteMasterProduct } from '@/actions';
 
 // Função para escolher as colunas pesquisáveis
-const multiColumnFilterFn: FilterFn<
-  MasterProductWithCategoryGroupSubgroupResponse
-> = (row, columnId, filterValue) => {
+const multiColumnFilterFn: FilterFn<MasterProductWithCategoryGroupSubgroupResponse> = (
+  row,
+  columnId,
+  filterValue,
+) => {
   // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.name} ${row.original.baseUnit} ${row.original.category.name} ${row.original.group.name} ${row.original.subgroup?.name}`;
 
@@ -30,13 +32,13 @@ export const columnsTableMasterProducts = ({
   selectedMasterProductId,
 }: ColumnsTableMasterProductsProps): ColumnDef<MasterProductWithCategoryGroupSubgroupResponse>[] => [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -58,76 +60,63 @@ export const columnsTableMasterProducts = ({
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
+    accessorKey: 'id',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
     filterFn: multiColumnFilterFn,
     meta: {
-      title: "ID",
+      title: 'ID',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nome" />
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
     meta: {
-      title: "Nome",
+      title: 'Nome',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "baseUnit",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unidade Base" />
-    ),
+    accessorKey: 'baseUnit',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Unidade Base" />,
     meta: {
-      title: "Unidade Base",
+      title: 'Unidade Base',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "category.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Categoria" />
-    ),
+    accessorKey: 'category.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Categoria" />,
     meta: {
-      title: "Categoria",
+      title: 'Categoria',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "group.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Grupo" />
-    ),
+    accessorKey: 'group.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Grupo" />,
     meta: {
-      title: "Grupo",
+      title: 'Grupo',
     } as ColumnMetaProps,
   },
   {
-    accessorKey: "subgroup.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Subgrupo" />
-    ),
-    cell: ({ row }) => row.original.subgroup?.name || "-",
+    accessorKey: 'subgroup.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Subgrupo" />,
+    cell: ({ row }) => row.original.subgroup?.name || '-',
     meta: {
-      title: "Subgrupo",
+      title: 'Subgrupo',
     } as ColumnMetaProps,
   },
   {
-    id: "actions",
+    id: 'actions',
     header: () => null,
     cell: ({ row }) => {
       if (isSelectingAction && onSelect) {
-        const isSelected =
-          selectedMasterProductId === row.original.id.toString();
+        const isSelected = selectedMasterProductId === row.original.id.toString();
         return (
           <Button
             onClick={() => onSelect(row.original)}
-            variant={isSelected ? "outline" : "default"}
+            variant={isSelected ? 'outline' : 'default'}
             size="sm"
             disabled={isSelected}
           >
-            {isSelected ? "Selecionado" : "Selecionar"}
+            {isSelected ? 'Selecionado' : 'Selecionar'}
           </Button>
         );
       } else {

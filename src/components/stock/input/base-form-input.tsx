@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateInputEditProductSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { CreateInputEditProductSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -11,11 +11,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -24,8 +24,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { DatePickerMonthYear } from "@/components/shared/date-picker-month-year-selectors";
+} from '@/components/ui/select';
+import { DatePickerMonthYear } from '@/components/shared/date-picker-month-year-selectors';
 import {
   LocaleType,
   ModeType,
@@ -36,13 +36,13 @@ import {
   ExtendedFormBaseInputProductProps,
   BaseUnitType,
   MasterProductWithCategoryGroupSubgroupResponse,
-} from "@/types";
-import { ptBR } from "date-fns/locale";
-import { DynamicCombobox } from "@/components/shared/dynamic-combobox";
-import { SelectorMasterProduct } from "@/components/stock/master-product/selector-master-product";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
-import { Spinner } from "@/components/ui/spinner";
-import { SaveIcon } from "lucide-react";
+} from '@/types';
+import { ptBR } from 'date-fns/locale';
+import { DynamicCombobox } from '@/components/shared/dynamic-combobox';
+import { SelectorMasterProduct } from '@/components/stock/master-product/selector-master-product';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
+import { Spinner } from '@/components/ui/spinner';
+import { SaveIcon } from 'lucide-react';
 
 export const BaseFormInput = forwardRef<
   UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>,
@@ -60,28 +60,28 @@ export const BaseFormInput = forwardRef<
       isLoading = false,
       mode = ModeType.ADD,
     },
-    ref
+    ref,
   ) => {
     const form = useForm<z.infer<typeof CreateInputEditProductSchema>>({
       resolver: zodResolver(CreateInputEditProductSchema),
       defaultValues: defaultValues || {
-        masterProductId: "",
-        name: "",
-        quantity: "",
-        unit: "" as UnitType,
-        unitWeight: "",
+        masterProductId: '',
+        name: '',
+        quantity: '',
+        unit: '' as UnitType,
+        unitWeight: '',
         unitOfUnitWeight: null as UnitType.KG | UnitType.G | UnitType.L | null,
-        lot: "",
+        lot: '',
         validityDate: undefined,
         supplierId: null,
         receiptDate: undefined,
-        receiverId: "",
-        productType: "" as ProductType,
-        category: "",
-        group: "",
-        subgroup: "",
-        baseUnit: "" as BaseUnitType,
-        movementCategory: "" as InputMovementCategoryType,
+        receiverId: '',
+        productType: '' as ProductType,
+        category: '',
+        group: '',
+        subgroup: '',
+        baseUnit: '' as BaseUnitType,
+        movementCategory: '' as InputMovementCategoryType,
       },
     });
 
@@ -89,8 +89,8 @@ export const BaseFormInput = forwardRef<
 
     const isEditMode = mode === ModeType.EDIT;
 
-    const selectedType = form.watch("productType");
-    const unitSelected = form.watch("unit");
+    const selectedType = form.watch('productType');
+    const unitSelected = form.watch('unit');
     // const masterProductId = form.watch("masterProductId");
 
     // Determina se o input deve estar desabilitado
@@ -106,7 +106,7 @@ export const BaseFormInput = forwardRef<
     const prevRef = useRef(isSupplierDisabled);
     useEffect(() => {
       if (!prevRef.current && isSupplierDisabled) {
-        form.setValue("supplierId", undefined, {
+        form.setValue('supplierId', undefined, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
@@ -118,12 +118,12 @@ export const BaseFormInput = forwardRef<
     const prevRefUnit = useRef(isUnitWeightDisabled);
     useEffect(() => {
       if (!prevRefUnit.current && isUnitWeightDisabled) {
-        form.setValue("unitWeight", undefined, {
+        form.setValue('unitWeight', undefined, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
         });
-        form.setValue("unitOfUnitWeight", undefined, {
+        form.setValue('unitOfUnitWeight', undefined, {
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
@@ -134,28 +134,28 @@ export const BaseFormInput = forwardRef<
 
     // Função para lidar com a seleção do produto mestre
     const handleMasterProductSelect = (
-      masterProduct: MasterProductWithCategoryGroupSubgroupResponse
+      masterProduct: MasterProductWithCategoryGroupSubgroupResponse,
     ) => {
-      form.setValue("masterProductId", masterProduct.id.toString(), {
+      form.setValue('masterProductId', masterProduct.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("category", masterProduct.category.name, {
+      form.setValue('category', masterProduct.category.name, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("group", masterProduct.group.name, {
+      form.setValue('group', masterProduct.group.name, {
         shouldValidate: true,
         shouldDirty: true,
       });
       if (masterProduct.subgroup) {
-        form.setValue("subgroup", masterProduct.subgroup.name, {
+        form.setValue('subgroup', masterProduct.subgroup.name, {
           shouldValidate: true,
           shouldDirty: true,
         });
       }
       if (masterProduct.baseUnit) {
-        form.setValue("baseUnit", masterProduct.baseUnit as BaseUnitType, {
+        form.setValue('baseUnit', masterProduct.baseUnit as BaseUnitType, {
           shouldValidate: true,
           shouldDirty: true,
         });
@@ -166,16 +166,14 @@ export const BaseFormInput = forwardRef<
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col items-center justify-center"
         >
-          <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+          <div className="flex w-full flex-col gap-12 md:max-w-4xl">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4">
-                <h1 className="text-md font-medium">
-                  Detalhes do Produto Mestre
-                </h1>
+                <h1 className="text-md font-medium">Detalhes do Produto Mestre</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
                 <FormField
                   control={form.control}
                   name="masterProductId"
@@ -198,7 +196,7 @@ export const BaseFormInput = forwardRef<
                     </FormItem>
                   )}
                 />
-                <div className="grid sm:grid-cols-3 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
                   <FormField
                     control={form.control}
                     name="category"
@@ -254,7 +252,7 @@ export const BaseFormInput = forwardRef<
                     )}
                   />
                 </div>
-                <div className="grid sm:grid-cols-3 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-3">
                   <FormField
                     control={form.control}
                     name="baseUnit"
@@ -281,7 +279,7 @@ export const BaseFormInput = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes do Produto</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
                 <FormField
                   control={form.control}
                   name="name"
@@ -300,7 +298,7 @@ export const BaseFormInput = forwardRef<
                     </FormItem>
                   )}
                 />
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="quantity"
@@ -360,15 +358,13 @@ export const BaseFormInput = forwardRef<
                         <FormLabel>Peso Unitário</FormLabel>
                         <FormControl>
                           <Input
-                            disabled={
-                              isUnitWeightDisabled || isPending || isEditMode
-                            }
+                            disabled={isUnitWeightDisabled || isPending || isEditMode}
                             type="number"
                             className="default-btn-field-height"
                             placeholder={
                               isUnitWeightDisabled
                                 ? "Selecione 'UN.' para habilitar"
-                                : "Digite o peso unitário"
+                                : 'Digite o peso unitário'
                             }
                             {...field}
                           />
@@ -385,13 +381,9 @@ export const BaseFormInput = forwardRef<
                         <FormLabel>Unidade Peso Unitário</FormLabel>
                         <div className="select-container">
                           <Select
-                            disabled={
-                              isUnitWeightDisabled || isPending || isEditMode
-                            }
-                            value={field.value ?? ""}
-                            onValueChange={(val) =>
-                              field.onChange(val ?? undefined)
-                            }
+                            disabled={isUnitWeightDisabled || isPending || isEditMode}
+                            value={field.value ?? ''}
+                            onValueChange={(val) => field.onChange(val ?? undefined)}
                           >
                             <FormControl>
                               <SelectTrigger size="sm">
@@ -399,16 +391,14 @@ export const BaseFormInput = forwardRef<
                                   placeholder={
                                     isUnitWeightDisabled
                                       ? "Selecione 'UN.' para habilitar"
-                                      : "Selecione a unidade do peso unitário"
+                                      : 'Selecione a unidade do peso unitário'
                                   }
                                 />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                <SelectLabel>
-                                  Unidades Peso Unitário
-                                </SelectLabel>
+                                <SelectLabel>Unidades Peso Unitário</SelectLabel>
                                 <SelectItem value={UnitType.KG}>KG</SelectItem>
                                 <SelectItem value={UnitType.G}>G</SelectItem>
                                 <SelectItem value={UnitType.L}>L</SelectItem>
@@ -463,8 +453,8 @@ export const BaseFormInput = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes da Entrada</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="receiverId"
@@ -473,7 +463,7 @@ export const BaseFormInput = forwardRef<
                         <FormLabel>Recebedor</FormLabel>
                         <DynamicCombobox
                           resourceType={ResourceType.RECEIVER}
-                          value={field.value ? field.value : ""}
+                          value={field.value ? field.value : ''}
                           onChange={field.onChange}
                           disabled={isPending || isEditMode}
                           placeholder="Selecione um recebedor..."
@@ -519,23 +509,15 @@ export const BaseFormInput = forwardRef<
                                   <RadioGroupItem value={ProductType.DONATED} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(
-                                    ProductType.DONATED,
-                                    "capitalize"
-                                  )}
+                                  {formatEnumValueDisplay(ProductType.DONATED, 'capitalize')}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
                                 <FormControl>
-                                  <RadioGroupItem
-                                    value={ProductType.PURCHASED}
-                                  />
+                                  <RadioGroupItem value={ProductType.PURCHASED} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {formatEnumValueDisplay(
-                                    ProductType.PURCHASED,
-                                    "capitalize"
-                                  )}
+                                  {formatEnumValueDisplay(ProductType.PURCHASED, 'capitalize')}
                                 </FormLabel>
                               </FormItem>
                             </RadioGroup>
@@ -554,15 +536,13 @@ export const BaseFormInput = forwardRef<
                         <FormLabel>Fornecedor (Opcional)</FormLabel>
                         <DynamicCombobox
                           resourceType={ResourceType.SUPPLIER}
-                          value={field.value ? field.value : ""}
+                          value={field.value ? field.value : ''}
                           onChange={field.onChange}
-                          disabled={
-                            isSupplierDisabled || isPending || isEditMode
-                          }
+                          disabled={isSupplierDisabled || isPending || isEditMode}
                           placeholder={
                             isSupplierDisabled
                               ? "Selecione o 'Tipo de Produto' para habilitar"
-                              : "Selecione um fornecedor"
+                              : 'Selecione um fornecedor'
                           }
                         />
                         <FormMessage />
@@ -579,8 +559,7 @@ export const BaseFormInput = forwardRef<
                       <FormItem>
                         <div className="flex flex-col gap-3">
                           <FormLabel>
-                            Categoria de Entrada:{" "}
-                            <span className="text-red-500">*</span>
+                            Categoria de Entrada: <span className="text-red-500">*</span>
                           </FormLabel>
                           <FormControl className="flex flex-col gap-3">
                             <RadioGroup
@@ -590,53 +569,45 @@ export const BaseFormInput = forwardRef<
                             >
                               <FormItem className="flex items-center">
                                 <FormControl>
-                                  <RadioGroupItem
-                                    value={InputMovementCategoryType.DONATION}
-                                  />
+                                  <RadioGroupItem value={InputMovementCategoryType.DONATION} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
                                   {formatEnumValueDisplay(
                                     InputMovementCategoryType.DONATION,
-                                    "capitalize"
+                                    'capitalize',
                                   )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
                                 <FormControl>
-                                  <RadioGroupItem
-                                    value={InputMovementCategoryType.PURCHASE}
-                                  />
+                                  <RadioGroupItem value={InputMovementCategoryType.PURCHASE} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
                                   {formatEnumValueDisplay(
                                     InputMovementCategoryType.PURCHASE,
-                                    "capitalize"
+                                    'capitalize',
                                   )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
                                 <FormControl>
-                                  <RadioGroupItem
-                                    value={InputMovementCategoryType.RETURN}
-                                  />
+                                  <RadioGroupItem value={InputMovementCategoryType.RETURN} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
                                   {formatEnumValueDisplay(
                                     InputMovementCategoryType.RETURN,
-                                    "capitalize"
+                                    'capitalize',
                                   )}
                                 </FormLabel>
                               </FormItem>
                               <FormItem className="flex items-center">
                                 <FormControl>
-                                  <RadioGroupItem
-                                    value={InputMovementCategoryType.TRANSFER}
-                                  />
+                                  <RadioGroupItem value={InputMovementCategoryType.TRANSFER} />
                                 </FormControl>
                                 <FormLabel className="font-normal">
                                   {formatEnumValueDisplay(
                                     InputMovementCategoryType.TRANSFER,
-                                    "capitalize"
+                                    'capitalize',
                                   )}
                                 </FormLabel>
                               </FormItem>
@@ -651,12 +622,12 @@ export const BaseFormInput = forwardRef<
               </div>
             </div>
 
-            <div className="flex gap-3 justify-end">
+            <div className="flex justify-end gap-3">
               <Button
                 disabled={isPending}
                 size="sm"
                 type="reset"
-                variant={"ghost"}
+                variant={'ghost'}
                 onClick={() => {
                   form.reset();
                   onCancel?.();
@@ -682,7 +653,7 @@ export const BaseFormInput = forwardRef<
         </form>
       </Form>
     );
-  }
+  },
 );
 
-BaseFormInput.displayName = "BaseFormInput";
+BaseFormInput.displayName = 'BaseFormInput';

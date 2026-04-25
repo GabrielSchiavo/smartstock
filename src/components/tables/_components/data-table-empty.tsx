@@ -1,5 +1,5 @@
-import React from "react";
-import { TextSearchIcon } from "lucide-react";
+import React from 'react';
+import { TextSearchIcon } from 'lucide-react';
 
 import {
   Empty,
@@ -7,7 +7,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
+} from '@/components/ui/empty';
 
 export function DataTableEmpty() {
   return (
@@ -17,9 +17,7 @@ export function DataTableEmpty() {
           <TextSearchIcon />
         </EmptyMedia>
         <EmptyTitle>Sem registros</EmptyTitle>
-        <EmptyDescription>
-          Nenhum registro foi criado ainda.
-        </EmptyDescription>
+        <EmptyDescription>Nenhum registro foi criado ainda.</EmptyDescription>
       </EmptyHeader>
     </Empty>
   );

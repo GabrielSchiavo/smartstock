@@ -1,5 +1,5 @@
-import { User } from "@prisma/client";
-import { UserType } from "@/types";
+import { User } from '@/.prisma/client';
+import { UserType } from '@/types';
 
 export type UserResponse = {
   name: string;

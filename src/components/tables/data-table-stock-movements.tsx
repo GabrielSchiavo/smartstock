@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,12 +11,19 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { DataTableToolbar } from "@/components/tables/_components/data-table-toolbar";
-import { DataTablePagination } from "@/components/tables/_components/data-table-pagination";
-import { AdjustmentMovementCategoryType, DataExpandableType, DataTableProps, InputMovementCategoryType, MovementType, OutputMovementCategoryType } from "@/types";
-import { BaseDataTableExpandable } from "@/components/tables/base-data-table-expandable";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@tanstack/react-table';
+import { DataTableToolbar } from '@/components/tables/_components/data-table-toolbar';
+import { DataTablePagination } from '@/components/tables/_components/data-table-pagination';
+import {
+  AdjustmentMovementCategoryType,
+  DataExpandableType,
+  DataTableProps,
+  InputMovementCategoryType,
+  MovementType,
+  OutputMovementCategoryType,
+} from '@/types';
+import { BaseDataTableExpandable } from '@/components/tables/base-data-table-expandable';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 export function DataTableStockMovements<TData, TValue>({
   columns,
@@ -24,11 +31,8 @@ export function DataTableStockMovements<TData, TValue>({
   addButton,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -54,75 +58,78 @@ export function DataTableStockMovements<TData, TValue>({
   const movements = [
     {
       value: MovementType.INPUT,
-      label: formatEnumValueDisplay(MovementType.INPUT, "capitalize"),
+      label: formatEnumValueDisplay(MovementType.INPUT, 'capitalize'),
     },
     {
       value: MovementType.OUTPUT,
-      label: formatEnumValueDisplay(MovementType.OUTPUT, "capitalize"),
+      label: formatEnumValueDisplay(MovementType.OUTPUT, 'capitalize'),
     },
     {
       value: MovementType.ADJUSTMENT_POSITIVE,
-      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_POSITIVE, "capitalize"),
+      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_POSITIVE, 'capitalize'),
     },
     {
       value: MovementType.ADJUSTMENT_NEGATIVE,
-      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_NEGATIVE, "capitalize"),
+      label: formatEnumValueDisplay(MovementType.ADJUSTMENT_NEGATIVE, 'capitalize'),
     },
   ];
   const categories = [
     {
       value: InputMovementCategoryType.DONATION || OutputMovementCategoryType.DONATION,
-      label: formatEnumValueDisplay(InputMovementCategoryType.DONATION, "capitalize"),
+      label: formatEnumValueDisplay(InputMovementCategoryType.DONATION, 'capitalize'),
     },
     {
       value: InputMovementCategoryType.PURCHASE,
-      label: formatEnumValueDisplay(InputMovementCategoryType.PURCHASE, "capitalize"),
+      label: formatEnumValueDisplay(InputMovementCategoryType.PURCHASE, 'capitalize'),
     },
     {
       value: InputMovementCategoryType.TRANSFER || OutputMovementCategoryType.TRANSFER,
-      label: formatEnumValueDisplay(InputMovementCategoryType.TRANSFER, "capitalize"),
+      label: formatEnumValueDisplay(InputMovementCategoryType.TRANSFER, 'capitalize'),
     },
     {
       value: InputMovementCategoryType.RETURN || OutputMovementCategoryType.RETURN,
-      label: formatEnumValueDisplay(InputMovementCategoryType.RETURN, "capitalize"),
+      label: formatEnumValueDisplay(InputMovementCategoryType.RETURN, 'capitalize'),
     },
     {
       value: OutputMovementCategoryType.CONSUMPTION,
-      label: formatEnumValueDisplay(OutputMovementCategoryType.CONSUMPTION, "capitalize"),
+      label: formatEnumValueDisplay(OutputMovementCategoryType.CONSUMPTION, 'capitalize'),
     },
     {
       value: OutputMovementCategoryType.SALE,
-      label: formatEnumValueDisplay(OutputMovementCategoryType.SALE, "capitalize"),
+      label: formatEnumValueDisplay(OutputMovementCategoryType.SALE, 'capitalize'),
     },
     {
       value: AdjustmentMovementCategoryType.CORRECTION,
-      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.CORRECTION, "capitalize"),
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.CORRECTION, 'capitalize'),
     },
     {
       value: AdjustmentMovementCategoryType.DUE_DATE,
-      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.DUE_DATE, "capitalize"),
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.DUE_DATE, 'capitalize'),
     },
     {
       value: AdjustmentMovementCategoryType.GENERAL,
-      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.GENERAL, "capitalize"),
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.GENERAL, 'capitalize'),
     },
     {
       value: AdjustmentMovementCategoryType.LOSS_DAMAGE,
-      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.LOSS_DAMAGE, "capitalize"),
+      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.LOSS_DAMAGE, 'capitalize'),
     },
     {
       value: AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
-      label: formatEnumValueDisplay(AdjustmentMovementCategoryType.THEFT_MISPLACEMENT, "capitalize"),
-    },    
+      label: formatEnumValueDisplay(
+        AdjustmentMovementCategoryType.THEFT_MISPLACEMENT,
+        'capitalize',
+      ),
+    },
   ];
   const filters = [
-    { columnKey: "movementType", title: "Movimentação", options: movements },
-    { columnKey: "movementCategory", title: "Categoria", options: categories },
+    { columnKey: 'movementType', title: 'Movimentação', options: movements },
+    { columnKey: 'movementCategory', title: 'Categoria', options: categories },
   ];
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex gap-2 items-center justify-between">
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex items-center justify-between gap-2">
         <DataTableToolbar
           toolTip={false}
           addButton={addButton}
@@ -132,7 +139,7 @@ export function DataTableStockMovements<TData, TValue>({
         />
       </div>
 
-      <div className="rounded-xl border overflow-hidden">
+      <div className="overflow-hidden rounded-xl border">
         <BaseDataTableExpandable
           table={table}
           columns={columns as ColumnDef<TData>[]}

@@ -1,4 +1,4 @@
-import { Subgroup } from "@prisma/client";
+import { Subgroup } from '@/.prisma/client';
 
 export type SubgroupResponse<T = Subgroup[]> = {
   success: boolean;
@@ -9,7 +9,7 @@ export type SubgroupResponse<T = Subgroup[]> = {
 
 export type SingleSubgroupResponse = SubgroupResponse<Subgroup>;
 
-export type SubgroupOperationResponse = Omit<SubgroupResponse, "data">;
+export type SubgroupOperationResponse = Omit<SubgroupResponse, 'data'>;
 
 export type CheckSubgroupResponse = {
   isUsed: boolean;

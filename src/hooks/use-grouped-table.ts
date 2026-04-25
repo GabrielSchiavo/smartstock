@@ -1,6 +1,6 @@
-import { getGroupedData } from "@/components/utils/group-table";
-import { GroupedTableProps } from "@/types";
-import { useMemo } from "react";
+import { getGroupedData } from '@/components/utils/group-table';
+import { GroupedTableProps } from '@/types';
+import { useMemo } from 'react';
 
 export function useGroupedTable<TData>({
   table,
@@ -13,7 +13,7 @@ export function useGroupedTable<TData>({
   const groupedData = useMemo(
     () => getGroupedData(table, groupBy as string),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [table, groupBy, getTableState]
+    [table, groupBy, getTableState],
   );
 
   const toggleGroup = (groupName: string) => {

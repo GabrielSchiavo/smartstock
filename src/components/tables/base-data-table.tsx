@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { flexRender } from "@tanstack/react-table";
+import * as React from 'react';
+import { flexRender } from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -9,22 +9,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
-import { BaseDataTableProps, CalculableTotalItemProps } from "@/types";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
-import { Spinner } from "@/components/ui/spinner";
-import { DataTableEmpty } from "@/components/tables/_components/data-table-empty";
+} from '@/components/ui/table';
+import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { getTotalValuesDisplayForData } from '@/components/utils/group-table';
+import { BaseDataTableProps, CalculableTotalItemProps } from '@/types';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
+import { Spinner } from '@/components/ui/spinner';
+import { DataTableEmpty } from '@/components/tables/_components/data-table-empty';
 
 // Type guard to check if data can be used for totals
-function isCalculableTotalData(
-  data: unknown[]
-): data is CalculableTotalItemProps[] {
-  return (
-    data.length === 0 ||
-    (!!data[0] && typeof data[0] === "object" && data[0] !== null)
-  );
+function isCalculableTotalData(data: unknown[]): data is CalculableTotalItemProps[] {
+  return data.length === 0 || (!!data[0] && typeof data[0] === 'object' && data[0] !== null);
 }
 
 export function BaseDataTable<TData>({
@@ -49,10 +44,7 @@ export function BaseDataTable<TData>({
               <TableHead key={header.id} className="text-center!">
                 {header.isPlaceholder
                   ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                  : flexRender(header.column.columnDef.header, header.getContext())}
               </TableHead>
             ))}
           </TableRow>
@@ -73,17 +65,12 @@ export function BaseDataTable<TData>({
                 <React.Fragment key={groupName}>
                   <TableRow
                     className={`cursor-pointer ${
-                      isCollapsed
-                        ? "bg-transparent hover:bg-accent/45"
-                        : "bg-accent/45"
+                      isCollapsed ? 'hover:bg-accent/45 bg-transparent' : 'bg-accent/45'
                     }`}
                     onClick={() => toggleGroup(groupName)}
                     aria-expanded={!isCollapsed}
                   >
-                    <TableCell
-                      colSpan={columns.length}
-                      className="font-semibold"
-                    >
+                    <TableCell colSpan={columns.length} className="font-semibold">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-2">
@@ -92,20 +79,19 @@ export function BaseDataTable<TData>({
                             ) : (
                               <ChevronUpIcon className="size-4 shrink-0" />
                             )}
-                            <span className="truncate max-w-[200px]">
-                              {formatEnumValueDisplay(groupName, "capitalize")}
+                            <span className="max-w-[200px] truncate">
+                              {formatEnumValueDisplay(groupName, 'capitalize')}
                             </span>
                           </div>
                           {showGroupTotal && totalToShow && (
-                            <span className="flex items-center font-normal text-muted-foreground gap-2">
+                            <span className="text-muted-foreground flex items-center gap-2 font-normal">
                               Total:
                               <span className="font-medium">{totalToShow}</span>
                             </span>
                           )}
                         </div>
-                        <span className="font-normal text-muted-foreground italic">
-                          {groupRows.length}{" "}
-                          {groupRows.length === 1 ? "item" : "itens"}
+                        <span className="text-muted-foreground font-normal italic">
+                          {groupRows.length} {groupRows.length === 1 ? 'item' : 'itens'}
                         </span>
                       </div>
                     </TableCell>
@@ -114,15 +100,12 @@ export function BaseDataTable<TData>({
                     groupRows.map((row) => (
                       <TableRow
                         key={row.id}
-                        data-state={row.getIsSelected() && "selected"}
+                        data-state={row.getIsSelected() && 'selected'}
                         className="text-center"
                       >
                         {row.getVisibleCells().map((cell) => (
                           <TableCell key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
                           </TableCell>
                         ))}
                       </TableRow>
@@ -134,7 +117,7 @@ export function BaseDataTable<TData>({
             rowModel.rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
                 className="text-center"
               >
                 {row.getVisibleCells().map((cell) => (
@@ -149,9 +132,9 @@ export function BaseDataTable<TData>({
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
               <div className="flex items-center justify-center">
-                <span className="flex items-center text-muted-foreground gap-3">
+                <span className="text-muted-foreground flex items-center gap-3">
                   <Spinner className="size-5 shrink-0" />
-                  {"Carregando registros..."}
+                  {'Carregando registros...'}
                 </span>
               </div>
             </TableCell>
@@ -166,11 +149,8 @@ export function BaseDataTable<TData>({
       </TableBody>
       {showFooter && (
         <tfoot>
-          <TableRow className="bg-accent/50 font-normal w-full">
-            <TableCell
-              colSpan={columns.length}
-              className="text-center font-medium px-8"
-            >
+          <TableRow className="bg-accent/50 w-full font-normal">
+            <TableCell colSpan={columns.length} className="px-8 text-center font-medium">
               {footerContent}
             </TableCell>
           </TableRow>

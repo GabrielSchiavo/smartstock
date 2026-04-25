@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   AlertDialog,
@@ -10,12 +10,12 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { DeleteRegisterProps, ToastType } from "@/types";
-import { Trash2Icon } from "lucide-react";
-import { useState } from "react";
-import { showToast } from "@/components/utils/show-toast";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { DeleteRegisterProps, ToastType } from '@/types';
+import { Trash2Icon } from 'lucide-react';
+import { useState } from 'react';
+import { showToast } from '@/components/utils/show-toast';
 
 export default function DeleteDialog<T extends string | number>({
   rowItemId,
@@ -42,7 +42,7 @@ export default function DeleteDialog<T extends string | number>({
       }
       if (response.isUsed) {
         showToast({
-          title: "Aviso!",
+          title: 'Aviso!',
           description: `Este Produto Mestre está em uso e não pode ser excluído.`,
           type: ToastType.WARNING,
         });
@@ -55,10 +55,10 @@ export default function DeleteDialog<T extends string | number>({
         type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
       });
     } catch (error) {
-      console.error("Algo deu errado:", error);
+      console.error('Algo deu errado:', error);
       showToast({
-        title: "Erro!",
-        description: "Algo deu errado.",
+        title: 'Erro!',
+        description: 'Algo deu errado.',
         type: ToastType.ERROR,
       });
     }
@@ -69,13 +69,13 @@ export default function DeleteDialog<T extends string | number>({
       <AlertDialogTrigger asChild>
         <Button
           variant="ghost"
-          size={"sm"}
-          className="flex justify-start items-center gap-2 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
+          size={'sm'}
+          className="text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15! flex cursor-pointer items-center justify-start gap-2"
           asChild
           title="Excluir"
         >
           <div>
-            <Trash2Icon className="w-4 h-4" />
+            <Trash2Icon className="h-4 w-4" />
             Excluir
           </div>
         </Button>
@@ -84,15 +84,16 @@ export default function DeleteDialog<T extends string | number>({
         <AlertDialogHeader>
           <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
           <AlertDialogDescription className="text-[15px]">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
-            cadastro.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o cadastro.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
           <AlertDialogFooter className="flex gap-4">
-            <AlertDialogCancel title="Cancelar" className="default-btn-field-height">Cancelar</AlertDialogCancel>
+            <AlertDialogCancel title="Cancelar" className="default-btn-field-height">
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-700 hover:bg-destructive default-btn-field-height"
+              className="hover:bg-destructive default-btn-field-height bg-red-700"
               title="Confirmar Exclusão"
               type="submit"
             >

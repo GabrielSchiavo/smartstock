@@ -1,10 +1,10 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 function createTransport() {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === 'production') {
     // Real emails
     return nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: process.env.GMAIL_SMTP_USER,
         pass: process.env.GMAIL_SMTP_PASS,
@@ -14,7 +14,7 @@ function createTransport() {
 
   // Captured by Ethereal
   return nodemailer.createTransport({
-    host: "smtp.ethereal.email",
+    host: 'smtp.ethereal.email',
     port: 587,
     // secure: false,
     auth: {

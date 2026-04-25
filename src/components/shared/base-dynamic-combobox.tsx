@@ -5,27 +5,17 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import {
-  CheckIcon,
-  ChevronsUpDownIcon,
-  PlusIcon,
-  Trash2Icon,
-  XIcon,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import { BaseDynamicComboboxProps } from "@/types";
-import { Spinner } from "@/components/ui/spinner";
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { CheckIcon, ChevronsUpDownIcon, PlusIcon, Trash2Icon, XIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { BaseDynamicComboboxProps } from '@/types';
+import { Spinner } from '@/components/ui/spinner';
 
 export function BaseDynamicCombobox({
   value,
-  placeholder = "Pesquisar...",
+  placeholder = 'Pesquisar...',
   displayValue,
   disabled,
   open,
@@ -42,7 +32,7 @@ export function BaseDynamicCombobox({
   className,
   resourceName,
 }: BaseDynamicComboboxProps) {
-  const hasValue = value && value.trim() !== "";
+  const hasValue = value && value.trim() !== '';
 
   const handleClear = () => {
     // Chama handleSelect com um objeto vazio/null para limpar
@@ -62,13 +52,13 @@ export function BaseDynamicCombobox({
           aria-expanded={open}
           className="w-full justify-between"
           disabled={disabled}
-          size={"sm"}
+          size={'sm'}
           type="button"
         >
           {displayValue}
           {hasValue && handleClear && (
             <span
-              className="inline-flex items-center justify-center size-8 shrink-0 -me-2 hover:bg-accent-foreground/5! rounded-md cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+              className="hover:bg-accent-foreground/5! -me-2 inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md disabled:pointer-events-none disabled:opacity-50"
               onClick={(e) => {
                 e.stopPropagation();
                 if (!disabled) {
@@ -79,7 +69,7 @@ export function BaseDynamicCombobox({
               role="button"
               tabIndex={disabled ? -1 : 0}
               onKeyDown={(e) => {
-                if ((e.key === "Enter" || e.key === " ") && !disabled) {
+                if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
                   e.preventDefault();
                   e.stopPropagation();
                   handleClear();
@@ -90,11 +80,11 @@ export function BaseDynamicCombobox({
             </span>
           )}
           {!hasValue && (
-            <ChevronsUpDownIcon className="size-4 shrink-0 opacity-50 pointer-events-none" />
+            <ChevronsUpDownIcon className="pointer-events-none size-4 shrink-0 opacity-50" />
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 max-w-[90vw]">
+      <PopoverContent className="max-w-[90vw] p-0">
         <Command shouldFilter={false}>
           <CommandInput
             placeholder={placeholder}
@@ -104,7 +94,7 @@ export function BaseDynamicCombobox({
           />
           <CommandList className="p-1">
             {isPending ? (
-              <CommandEmpty className="h-[45px] flex items-center justify-center p-0">
+              <CommandEmpty className="flex h-[45px] items-center justify-center p-0">
                 <Spinner className="size-5 shrink-0" />
               </CommandEmpty>
             ) : (
@@ -113,52 +103,51 @@ export function BaseDynamicCombobox({
                   <CommandEmpty className="p-0">
                     {allowCreate && inputValue.trim() ? (
                       <Button
-                        variant={"ghost"}
-                        size={"sm"}
+                        variant={'ghost'}
+                        size={'sm'}
                         onClick={handleCreateNew}
-                        className="flex items-center w-full p-2 gap-2 text-sm text-muted-foreground hover:bg-accent justify-start"
+                        className="text-muted-foreground hover:bg-accent flex w-full items-center justify-start gap-2 p-2 text-sm"
                         disabled={isPending}
                         type="button"
                       >
                         <PlusIcon className="h-4 w-4" />
-                        Criar{" "}
-                        <span className="text-foreground">{inputValue}</span>
+                        Criar <span className="text-foreground">{inputValue}</span>
                       </Button>
                     ) : (
-                      <div className="text-center p-1.5">
-                        <span className="text-sm text-muted-foreground">
+                      <div className="p-1.5 text-center">
+                        <span className="text-muted-foreground text-sm">
                           Nenhum resultado encontrado...
                         </span>
                       </div>
                     )}
                   </CommandEmpty>
                 )}
-                <CommandGroup className="p-0 overflow-auto">
+                <CommandGroup className="overflow-auto p-0">
                   {options.map((option) => (
                     <CommandItem
                       key={option.id}
                       value={option.id as string}
                       onSelect={() => handleSelect(option)}
-                      className="group flex justify-between items-center py-1"
+                      className="group flex items-center justify-between py-1"
                     >
                       <div className="flex items-center">
                         <CheckIcon
                           className={cn(
-                            "mr-2 h-4 w-4",
-                            value === option.id ? "opacity-100" : "opacity-0"
+                            'mr-2 h-4 w-4',
+                            value === option.id ? 'opacity-100' : 'opacity-0',
                           )}
                         />
                         {option.name}
                       </div>
                       {allowDelete && (
                         <Button
-                          variant={"ghost"}
-                          size={"sm"}
+                          variant={'ghost'}
+                          size={'sm'}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDelete(option.id as string);
                           }}
-                          className="p-1.5! h-fit opacity-0 group-hover:opacity-100 cursor-pointer text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15!"
+                          className="text-destructive! dark:hover:bg-destructive/12! hover:bg-destructive/15! h-fit cursor-pointer p-1.5! opacity-0 group-hover:opacity-100"
                           disabled={isPending}
                           title={`Excluir ${resourceName}`}
                           type="button"

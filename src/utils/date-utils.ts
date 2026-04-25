@@ -1,22 +1,13 @@
 // lib/date-utils.ts
-import { formatInTimeZone, toDate } from "date-fns-tz";
-import { format, Locale } from "date-fns";
-import { LocaleType } from "@/types";
+import { formatInTimeZone, toDate } from 'date-fns-tz';
+import { format, Locale } from 'date-fns';
+import { LocaleType } from '@/types';
 
 /**
  * Converte uma data local para UTC mantendo os componentes de data
  */
 export const convertLocalToUTC = (date: Date): Date => {
-  return toDate(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0
-    )
-  );
+  return toDate(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
 };
 
 /**
@@ -31,35 +22,28 @@ export const convertUTCToDisplay = (date: Date | string): Date => {
  */
 export const convertUTCToLocalDate = (date: Date | string): Date => {
   const d = new Date(date);
-  return new Date(
-    d.getUTCFullYear(),
-    d.getUTCMonth(),
-    d.getUTCDate()
-  );
+  return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
 };
 
 /**
  * Formata uma data UTC para exibição
  */
 export const formatUTCDate = (
-  date: Date | string | undefined, 
+  date: Date | string | undefined,
   locale: Locale,
-  formatStr = LocaleType.DD_MM_YYYY
+  formatStr = LocaleType.DD_MM_YYYY,
 ): string => {
-  if (!date) return "";
+  if (!date) return '';
   return formatInTimeZone(date, LocaleType.UTC, formatStr, { locale });
 };
 
 /**
  * Obtém nomes dos meses localizados
  */
-export const getLocalizedMonthNames = (
-  year: number, 
-  locale: Locale
-): string[] => {
+export const getLocalizedMonthNames = (year: number, locale: Locale): string[] => {
   return Array.from({ length: 12 }, (_, i) => {
     const monthDate = new Date(year, i, 1);
-    return format(monthDate, "MMMM", { locale });
+    return format(monthDate, 'MMMM', { locale });
   });
 };
 
@@ -69,9 +53,22 @@ export const getLocalizedMonthNames = (
  * @returns String formatada no padrão DD/MM/YYYY
  */
 export function formatDateOnlyToLocale(date: Date): string {
-  return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.UTC, day: "2-digit", month: "2-digit", year: "numeric" });
+  return date.toLocaleDateString(LocaleType.PT_BR, {
+    timeZone: LocaleType.UTC,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 }
 
 export function formatDateTimeToLocale(date: Date): string {
-  return date.toLocaleDateString(LocaleType.PT_BR, { timeZone: LocaleType.SAO_PAULO, day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  return date.toLocaleDateString(LocaleType.PT_BR, {
+    timeZone: LocaleType.SAO_PAULO,
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
 }

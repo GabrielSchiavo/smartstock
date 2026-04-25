@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useForm, UseFormReturn } from "react-hook-form";
-import { CreateOutputSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { CreateOutputSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -11,18 +11,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { forwardRef, useImperativeHandle } from "react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { forwardRef, useImperativeHandle } from 'react';
 import {
   FormOutputProps,
   OutputMovementCategoryType,
   ProductWithMasterProductResponse,
   UnitType,
-} from "@/types";
-import { SelectorProduct } from "@/components/stock/product/selector-product";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+} from '@/types';
+import { SelectorProduct } from '@/components/stock/product/selector-product';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -31,11 +31,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { formatDateOnlyToLocale } from "@/utils/date-utils";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
-import { Spinner } from "@/components/ui/spinner";
-import { SaveIcon } from "lucide-react";
+} from '@/components/ui/select';
+import { formatDateOnlyToLocale } from '@/utils/date-utils';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
+import { Spinner } from '@/components/ui/spinner';
+import { SaveIcon } from 'lucide-react';
 
 interface ExtendedFormBaseInputProductProps extends FormOutputProps {
   products: ProductWithMasterProductResponse[];
@@ -46,28 +46,20 @@ export const BaseFormOutput = forwardRef<
   ExtendedFormBaseInputProductProps
 >(
   (
-    {
-      defaultValues,
-      onSubmit,
-      isPending,
-      submitButtonText,
-      loadingText,
-      products,
-      isLoading,
-    },
-    ref
+    { defaultValues, onSubmit, isPending, submitButtonText, loadingText, products, isLoading },
+    ref,
   ) => {
     const form = useForm<z.infer<typeof CreateOutputSchema>>({
       resolver: zodResolver(CreateOutputSchema),
       defaultValues: defaultValues || {
-        productId: "",
-        productQuantity: "",
-        productUnit: "" as UnitType,
-        lot: "",
-        validityDate: "",
-        quantity: "",
-        unit: "" as UnitType,
-        movementCategory: "" as OutputMovementCategoryType,
+        productId: '',
+        productQuantity: '',
+        productUnit: '' as UnitType,
+        lot: '',
+        validityDate: '',
+        quantity: '',
+        unit: '' as UnitType,
+        movementCategory: '' as OutputMovementCategoryType,
       },
     });
 
@@ -75,27 +67,25 @@ export const BaseFormOutput = forwardRef<
 
     // Função para lidar com a seleção do produto mestre
     const handleProductSelect = (product: ProductWithMasterProductResponse) => {
-      const formattedValidityDate = formatDateOnlyToLocale(
-        product.validityDate
-      );
+      const formattedValidityDate = formatDateOnlyToLocale(product.validityDate);
 
-      form.setValue("productId", product.id.toString(), {
+      form.setValue('productId', product.id.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("productQuantity", product.quantity.toString(), {
+      form.setValue('productQuantity', product.quantity.toString(), {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("productUnit", product.unit.toString() as UnitType, {
+      form.setValue('productUnit', product.unit.toString() as UnitType, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("lot", product.lot, {
+      form.setValue('lot', product.lot, {
         shouldValidate: true,
         shouldDirty: true,
       });
-      form.setValue("validityDate", formattedValidityDate, {
+      form.setValue('validityDate', formattedValidityDate, {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -105,14 +95,14 @@ export const BaseFormOutput = forwardRef<
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col items-center justify-center"
         >
-          <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+          <div className="flex w-full flex-col gap-12 md:max-w-4xl">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes do Produto</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
                 <FormField
                   control={form.control}
                   name="productId"
@@ -135,7 +125,7 @@ export const BaseFormOutput = forwardRef<
                     </FormItem>
                   )}
                 />
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="lot"
@@ -174,7 +164,7 @@ export const BaseFormOutput = forwardRef<
                     )}
                   />
                 </div>
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="productQuantity"
@@ -220,8 +210,8 @@ export const BaseFormOutput = forwardRef<
               <div className="flex flex-col gap-4">
                 <h1 className="text-md font-medium">Detalhes da Saída</h1>
               </div>
-              <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-                <div className="grid sm:grid-cols-2 grid-cols-1 gap-6 items-start">
+              <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
+                <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="quantity"
@@ -281,8 +271,7 @@ export const BaseFormOutput = forwardRef<
                     <FormItem>
                       <div className="flex flex-col gap-3">
                         <FormLabel>
-                          Categoria de Saída:{" "}
-                          <span className="text-red-500">*</span>
+                          Categoria de Saída: <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl className="flex flex-col gap-3">
                           <RadioGroup
@@ -292,66 +281,56 @@ export const BaseFormOutput = forwardRef<
                           >
                             <FormItem className="flex items-center">
                               <FormControl>
-                                <RadioGroupItem
-                                  value={OutputMovementCategoryType.CONSUMPTION}
-                                />
+                                <RadioGroupItem value={OutputMovementCategoryType.CONSUMPTION} />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 {formatEnumValueDisplay(
                                   OutputMovementCategoryType.CONSUMPTION,
-                                  "capitalize"
+                                  'capitalize',
                                 )}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
                               <FormControl>
-                                <RadioGroupItem
-                                  value={OutputMovementCategoryType.DONATION}
-                                />
+                                <RadioGroupItem value={OutputMovementCategoryType.DONATION} />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 {formatEnumValueDisplay(
                                   OutputMovementCategoryType.DONATION,
-                                  "capitalize"
+                                  'capitalize',
                                 )}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
                               <FormControl>
-                                <RadioGroupItem
-                                  value={OutputMovementCategoryType.RETURN}
-                                />
+                                <RadioGroupItem value={OutputMovementCategoryType.RETURN} />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 {formatEnumValueDisplay(
                                   OutputMovementCategoryType.RETURN,
-                                  "capitalize"
+                                  'capitalize',
                                 )}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
                               <FormControl>
-                                <RadioGroupItem
-                                  value={OutputMovementCategoryType.SALE}
-                                />
+                                <RadioGroupItem value={OutputMovementCategoryType.SALE} />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 {formatEnumValueDisplay(
                                   OutputMovementCategoryType.SALE,
-                                  "capitalize"
+                                  'capitalize',
                                 )}
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center">
                               <FormControl>
-                                <RadioGroupItem
-                                  value={OutputMovementCategoryType.TRANSFER}
-                                />
+                                <RadioGroupItem value={OutputMovementCategoryType.TRANSFER} />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 {formatEnumValueDisplay(
                                   OutputMovementCategoryType.TRANSFER,
-                                  "capitalize"
+                                  'capitalize',
                                 )}
                               </FormLabel>
                             </FormItem>
@@ -364,12 +343,12 @@ export const BaseFormOutput = forwardRef<
                 />
               </div>
             </div>
-            <div className="flex gap-3 justify-end">
+            <div className="flex justify-end gap-3">
               <Button
                 disabled={isPending}
                 size="sm"
                 type="reset"
-                variant={"ghost"}
+                variant={'ghost'}
                 onClick={() => {
                   form.reset();
                 }}
@@ -394,7 +373,7 @@ export const BaseFormOutput = forwardRef<
         </form>
       </Form>
     );
-  }
+  },
 );
 
-BaseFormOutput.displayName = "BaseFormOutput";
+BaseFormOutput.displayName = 'BaseFormOutput';

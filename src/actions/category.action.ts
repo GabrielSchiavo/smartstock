@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { auditLogRepository, categoryRepository } from "@/db";
+import { auditLogRepository, categoryRepository } from '@/db';
 import {
   type CategoryResponse,
   type SingleCategoryResponse,
@@ -8,10 +8,10 @@ import {
   type CategoryCountResponse,
   ActionType,
   EntityType,
-} from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export async function getAllCategory(): Promise<CategoryResponse> {
   try {
@@ -19,17 +19,17 @@ export async function getAllCategory(): Promise<CategoryResponse> {
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Categorias carregados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Categorias carregados com sucesso.',
       data: categories,
     };
   } catch (error) {
-    console.error("Erro ao buscar Categorias:", error);
+    console.error('Erro ao buscar Categorias:', error);
 
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao acessar a lista de categorias.",
+      title: 'Erro!',
+      description: 'Erro ao acessar a lista de categorias.',
     };
   }
 }
@@ -42,11 +42,11 @@ export async function getCategoriesCount(): Promise<CategoryCountResponse> {
       count,
     };
   } catch (error) {
-    console.error("Erro ao contar Categorias:", error);
+    console.error('Erro ao contar Categorias:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível contar os categorias.",
+      title: 'Erro!',
+      description: 'Não foi possível contar os categorias.',
     };
   }
 }
@@ -58,31 +58,29 @@ export async function searchCategory(query: string): Promise<CategoryResponse> {
     const categories = await categoryRepository.search(query);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Categorias encontrados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Categorias encontrados com sucesso.',
       data: categories,
     };
   } catch (error) {
-    console.error("Erro na busca por Categorias:", error);
+    console.error('Erro na busca por Categorias:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao pesquisar categorias.",
+      title: 'Erro!',
+      description: 'Erro ao pesquisar categorias.',
     };
   }
 }
 
-export async function createCategory(
-  name: string
-): Promise<SingleCategoryResponse> {
+export async function createCategory(name: string): Promise<SingleCategoryResponse> {
   const trimmedName = name.trim();
   const user = await currentUser();
 
   if (!trimmedName) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O campo de não pode estar vazio.",
+      title: 'Erro!',
+      description: 'O campo de não pode estar vazio.',
     };
   }
 
@@ -101,7 +99,7 @@ export async function createCategory(
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${newCategory.id}' | Changed Value='${newCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Category '${newCategory.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return newCategory;
@@ -109,16 +107,16 @@ export async function createCategory(
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Categoria criada com sucesso.",
+      title: 'Sucesso!',
+      description: 'Categoria criada com sucesso.',
       data: newCategory,
     };
   } catch (error) {
-    console.error("Erro ao criar Categoria:", error);
+    console.error('Erro ao criar Categoria:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao criar categoria.",
+      title: 'Erro!',
+      description: 'Erro ao criar categoria.',
     };
   }
 }
@@ -132,8 +130,8 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
     if (!existingCategory) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Categoria não encontrado.",
+        title: 'Erro!',
+        description: 'Categoria não encontrado.',
       };
     }
 
@@ -151,45 +149,42 @@ export async function deleteCategory(id: string): Promise<CategoryResponse> {
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.CATEGORY}' | Record Changed ID='${existingCategory.id}' | Changed Value='${existingCategory.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Category '${existingCategory.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Categoria excluído com sucesso.",
+      title: 'Sucesso!',
+      description: 'Categoria excluído com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao excluir Categoria:", error);
+    console.error('Erro ao excluir Categoria:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao excluir categoria.",
+      title: 'Erro!',
+      description: 'Erro ao excluir categoria.',
     };
   }
 }
 
-export async function checkCategoryUsage(
-  categoryId: string
-): Promise<CheckCategoryResponse> {
+export async function checkCategoryUsage(categoryId: string): Promise<CheckCategoryResponse> {
   try {
-    const productWithCategory =
-      await categoryRepository.checkInMasterProducts(categoryId);
+    const productWithCategory = await categoryRepository.checkInMasterProducts(categoryId);
 
     return {
       isUsed: !!productWithCategory,
       success: false,
-      title: "Aviso!",
-      description: "Este categoria está associado a um ou mais produtos.",
+      title: 'Aviso!',
+      description: 'Este categoria está associado a um ou mais produtos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar produtos associados", error);
+    console.error('Erro ao verificar produtos associados', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Erro ao verificar produtos associados.",
+      title: 'Erro!',
+      description: 'Erro ao verificar produtos associados.',
     };
   }
 }

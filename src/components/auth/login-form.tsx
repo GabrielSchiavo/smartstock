@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { LoginSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { CardWrapper } from '@/components/auth/card-wrapper';
+import { LoginSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -12,44 +12,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/utils/message-error";
-import { login } from "@/actions";
-import { useState, useTransition } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { PasswordInput } from "@/components/auth/input-password";
-import { ROUTES } from "@/config/routes";
-import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup } from "@/components/ui/field";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { MessageError } from '@/components/utils/message-error';
+import { login } from '@/actions';
+import { useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { PasswordInput } from '@/components/auth/input-password';
+import { ROUTES } from '@/config/routes';
+import { Spinner } from '@/components/ui/spinner';
+import { FieldGroup } from '@/components/ui/field';
 
 export const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider!"
-      : "";
+    searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Email already in use with different provider!'
+      : '';
 
-  const [error, setError] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     setIsRedirecting(false);
 
     startTransition(() => {
@@ -112,12 +112,9 @@ export const LoginForm = () => {
                         size="sm"
                         variant="link"
                         asChild
-                        className="h-fit! w-fit! font-medium p-0"
+                        className="h-fit! w-fit! p-0 font-medium"
                       >
-                        <Link
-                          href={ROUTES.AUTH_RESET_PASSWORD}
-                          className="h-fit! w-fit!"
-                        >
+                        <Link href={ROUTES.AUTH_RESET_PASSWORD} className="h-fit! w-fit!">
                           Esqueceu sua senha?
                         </Link>
                       </Button>
@@ -135,19 +132,14 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <Button
-              disabled={isPending}
-              type="submit"
-              size={"sm"}
-              className="w-full"
-            >
+            <Button disabled={isPending} type="submit" size={'sm'} className="w-full">
               {isPending || isRedirecting ? (
                 <span className="flex items-center gap-3">
                   <Spinner className="size-4 shrink-0" />
-                  {isRedirecting ? "Redirecionando..." : "Autenticando..."}
+                  {isRedirecting ? 'Redirecionando...' : 'Autenticando...'}
                 </span>
               ) : (
-                "Entrar"
+                'Entrar'
               )}
             </Button>
             {/* <FieldSeparator>OU</FieldSeparator>

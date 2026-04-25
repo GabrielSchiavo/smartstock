@@ -1,10 +1,10 @@
-import { db } from "@/lib/db";
-import { MasterProduct, Prisma } from "@prisma/client";
+import { db } from '@/lib/db';
+import { MasterProduct, Prisma } from '@/.prisma/client';
 
 export const categoryRepository = {
   async findAll(take = 100) {
     return await db.category.findMany({
-      orderBy: { name: "asc" },
+      orderBy: { name: 'asc' },
       take,
     });
   },
@@ -18,7 +18,7 @@ export const categoryRepository = {
       where: {
         name: {
           contains: query,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
       take,
@@ -53,9 +53,7 @@ export const categoryRepository = {
     });
   },
 
-  async checkInMasterProducts(
-    categoryId: string
-  ): Promise<Pick<MasterProduct, "id"> | null> {
+  async checkInMasterProducts(categoryId: string): Promise<Pick<MasterProduct, 'id'> | null> {
     return await db.masterProduct.findFirst({
       where: {
         categoryId: categoryId,

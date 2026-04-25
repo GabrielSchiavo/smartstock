@@ -1,17 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { getProducts, registerOutput } from "@/actions";
-import {
-  FormAddEditProps,
-  ProductWithMasterProductResponse,
-  ToastType,
-} from "@/types";
-import { z } from "zod";
-import { CreateOutputSchema } from "@/schemas";
-import { UseFormReturn } from "react-hook-form";
-import { showToast } from "@/components/utils/show-toast";
-import { BaseFormOutput } from "@/components/stock/output/base-form-output";
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { getProducts, registerOutput } from '@/actions';
+import { FormAddEditProps, ProductWithMasterProductResponse, ToastType } from '@/types';
+import { z } from 'zod';
+import { CreateOutputSchema } from '@/schemas';
+import { UseFormReturn } from 'react-hook-form';
+import { showToast } from '@/components/utils/show-toast';
+import { BaseFormOutput } from '@/components/stock/output/base-form-output';
 
 export const FormAddOutput = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
@@ -32,11 +28,11 @@ export const FormAddOutput = ({ onShouldInvalidate, onCancel }: FormAddEditProps
     } catch (error) {
       setIsLoading(false);
       showToast({
-        title: "Erro!",
-        description: "Não foi possível carregar os produtos",
+        title: 'Erro!',
+        description: 'Não foi possível carregar os produtos',
         type: ToastType.ERROR,
       });
-      console.error("Erro! Não foi possível carregar os produtos:", error);
+      console.error('Erro! Não foi possível carregar os produtos:', error);
     }
   };
 
@@ -65,9 +61,9 @@ export const FormAddOutput = ({ onShouldInvalidate, onCancel }: FormAddEditProps
         type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
       });
     } catch (error) {
-      console.error("Erro ao submeter saída:", error);
+      console.error('Erro ao submeter saída:', error);
       showToast({
-        title: "Algo deu errado!",
+        title: 'Algo deu errado!',
         type: ToastType.ERROR,
       });
     }

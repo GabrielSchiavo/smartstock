@@ -1,6 +1,6 @@
-import { OptionProps } from "@/types";
-import { Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { OptionProps } from '@/types';
+import { Transporter } from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export type ResetPasswordResponse = {
   success?: string;
@@ -44,5 +44,5 @@ export type DeleteActionResponse = {
   success: boolean;
   title: string;
   description: string;
-  isUsed?: boolean
+  isUsed?: boolean;
 };

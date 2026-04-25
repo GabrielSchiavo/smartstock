@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -10,20 +10,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { useTransition } from "react";
-import { SettingsSchema } from "@/schemas";
-import { updateUserSettings } from "@/actions";
-import { useSession } from "next-auth/react";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/auth/input-password";
-import { showToast } from "@/components/utils/show-toast";
-import { ToastType } from "@/types";
-import { CopyToClipboard } from "@/components/utils/copy-to-clipboard";
-import { Spinner } from "@/components/ui/spinner";
-import { SaveIcon } from "lucide-react";
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { useTransition } from 'react';
+import { SettingsSchema } from '@/schemas';
+import { updateUserSettings } from '@/actions';
+import { useSession } from 'next-auth/react';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/auth/input-password';
+import { showToast } from '@/components/utils/show-toast';
+import { ToastType } from '@/types';
+import { CopyToClipboard } from '@/components/utils/copy-to-clipboard';
+import { Spinner } from '@/components/ui/spinner';
+import { SaveIcon } from 'lucide-react';
 
 export const FormSetting = () => {
   const user = useCurrentUser();
@@ -34,10 +34,10 @@ export const FormSetting = () => {
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      password: "",
-      newPassword: "",
+      name: user?.name || '',
+      email: user?.email || '',
+      password: '',
+      newPassword: '',
     },
   });
 
@@ -71,9 +71,9 @@ export const FormSetting = () => {
           type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
       } catch (error) {
-        console.error("Algo deu errado:", error);
+        console.error('Algo deu errado:', error);
         showToast({
-          title: "Algo deu errado.",
+          title: 'Algo deu errado.',
           type: ToastType.ERROR,
         });
       }
@@ -87,21 +87,21 @@ export const FormSetting = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col items-center justify-center"
       >
-        <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+        <div className="flex w-full flex-col gap-12 md:max-w-4xl">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <h1 className="text-md font-medium">Detalhes da Conta</h1>
             </div>
 
-            <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+            <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
               <div className="flex flex-row items-center justify-between gap-3 rounded-lg border p-2">
                 <p className="text-sm font-medium">ID</p>
                 <CopyToClipboard
                   textToCopy={userId}
                   tooltipContent="Copiar ID"
-                  className="truncate bg-muted px-3 py-1 rounded-sm text-sm cursor-pointer hover:dark:bg-zinc-500 hover:bg-zinc-300 transition-all duration-400"
+                  className="bg-muted cursor-pointer truncate rounded-sm px-3 py-1 text-sm transition-all duration-400 hover:bg-zinc-300 hover:dark:bg-zinc-500"
                 >
                   {userId}
                 </CopyToClipboard>
@@ -182,12 +182,12 @@ export const FormSetting = () => {
             </div>
           </div>
 
-          <div className="flex gap-3 justify-end">
+          <div className="flex justify-end gap-3">
             <Button
               disabled={isPending}
               size="sm"
               type="reset"
-              variant={"ghost"}
+              variant={'ghost'}
               onClick={() => {
                 form.reset();
               }}
@@ -198,7 +198,7 @@ export const FormSetting = () => {
               {isPending ? (
                 <span className="flex items-center gap-3">
                   <Spinner className="size-4 shrink-0" />
-                  {"Salvando..."}
+                  {'Salvando...'}
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5">

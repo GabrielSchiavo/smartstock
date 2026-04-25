@@ -1,22 +1,22 @@
-"use server";
+'use server';
 
-import { CreateEditMasterProductSchema } from "@/schemas";
-import { z } from "zod";
-import { revalidatePath } from "next/cache";
-import { auditLogRepository, masterProductRepository } from "@/db";
-import type { MasterProduct } from "@prisma/client";
+import { CreateEditMasterProductSchema } from '@/schemas';
+import { z } from 'zod';
+import { revalidatePath } from 'next/cache';
+import { auditLogRepository, masterProductRepository } from '@/db';
+import type { MasterProduct } from '@/.prisma/client';
 import {
   EntityType,
   ActionType,
   MasterProductOperationResponse,
   MasterProductWithCategoryGroupSubgroupResponse,
-} from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export const registerMasterProduct = async (
-  values: z.infer<typeof CreateEditMasterProductSchema>
+  values: z.infer<typeof CreateEditMasterProductSchema>,
 ): Promise<MasterProductOperationResponse> => {
   const validatedFields = CreateEditMasterProductSchema.safeParse(values);
   const user = await currentUser();
@@ -24,8 +24,8 @@ export const registerMasterProduct = async (
   if (validatedFields.success === false) {
     return {
       success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
+      title: 'Erro!',
+      description: 'Campos inválidos.',
     };
   }
 
@@ -37,7 +37,7 @@ export const registerMasterProduct = async (
         {
           ...masterProductData,
         },
-        tx
+        tx,
       );
 
       await auditLogRepository.create(
@@ -51,31 +51,31 @@ export const registerMasterProduct = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${masterProduct.id.toString()}' | Changed Value='${masterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${masterProduct.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return masterProduct;
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Produto Mestre cadastrado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Produto Mestre cadastrado com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao cadastrar produto mestre:", error);
+    console.error('Erro ao cadastrar produto mestre:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível cadastrar o produto mestre.",
+      title: 'Erro!',
+      description: 'Não foi possível cadastrar o produto mestre.',
     };
   }
 };
 
 export const editMasterProduct = async (
   id: number,
-  values: z.infer<typeof CreateEditMasterProductSchema>
+  values: z.infer<typeof CreateEditMasterProductSchema>,
 ): Promise<MasterProductOperationResponse> => {
   const validatedFields = CreateEditMasterProductSchema.safeParse(values);
   const user = await currentUser();
@@ -83,8 +83,8 @@ export const editMasterProduct = async (
   if (validatedFields.success === false) {
     return {
       success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
+      title: 'Erro!',
+      description: 'Campos inválidos.',
     };
   }
 
@@ -95,8 +95,8 @@ export const editMasterProduct = async (
     if (!existingMasterProduct) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Produto Mestre não encontrado.",
+        title: 'Erro!',
+        description: 'Produto Mestre não encontrado.',
       };
     }
 
@@ -107,7 +107,7 @@ export const editMasterProduct = async (
           ...masterProductData,
           updatedAt: new Date(),
         },
-        tx
+        tx,
       );
 
       await auditLogRepository.create(
@@ -121,25 +121,25 @@ export const editMasterProduct = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.UPDATE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${updatedMasterProduct.id.toString()}' | Changed Value='${masterProductData.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${masterProductData.name}' Updated' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return updatedMasterProduct;
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Produto Mestre atualizado com sucesso!",
+      title: 'Sucesso!',
+      description: 'Produto Mestre atualizado com sucesso!',
       masterProduct: updatedMasterProduct,
     };
   } catch (error) {
-    console.error("Erro ao editar o produto mestre:", error);
+    console.error('Erro ao editar o produto mestre:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível atualizar o produto mestre.",
+      title: 'Erro!',
+      description: 'Não foi possível atualizar o produto mestre.',
     };
   }
 };
@@ -149,23 +149,21 @@ export const deleteMasterProduct = async (id: number) => {
 
   try {
     const existingMasterProduct = await masterProductRepository.findById(id);
-    const productWithMasterProduct =
-      await masterProductRepository.checkInProducts(id);
+    const productWithMasterProduct = await masterProductRepository.checkInProducts(id);
 
     if (!existingMasterProduct) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Produto Mestre não encontrado.",
+        title: 'Erro!',
+        description: 'Produto Mestre não encontrado.',
       };
     }
     if (!!productWithMasterProduct) {
       return {
         isUsed: !!productWithMasterProduct,
         success: false,
-        title: "Aviso!",
-        description:
-          "Este produto mestre está associado a um ou mais produtos.",
+        title: 'Aviso!',
+        description: 'Este produto mestre está associado a um ou mais produtos.',
       };
     }
 
@@ -183,47 +181,47 @@ export const deleteMasterProduct = async (id: number) => {
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.MASTER_PRODUCT}' | Record Changed ID='${existingMasterProduct.id.toString()}' | Changed Value='${existingMasterProduct.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Master Product '${existingMasterProduct.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
+      title: 'Sucesso!',
       description: `Produto Mestre com ID ${id} excluído com sucesso.`,
     };
   } catch (error) {
-    console.error("Erro ao excluir produto mestre:", error);
+    console.error('Erro ao excluir produto mestre:', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Não foi possível excluir o produto mestre.",
+      title: 'Erro!',
+      description: 'Não foi possível excluir o produto mestre.',
     };
   }
 };
 
-export const getMasterProductById = async (
-  id: number
-): Promise<MasterProduct> => {
+export const getMasterProductById = async (id: number): Promise<MasterProduct> => {
   try {
     const masterProduct = await masterProductRepository.findById(id);
     if (!masterProduct) {
-      throw new Error("Produto Mestre não encontrado");
+      throw new Error('Produto Mestre não encontrado');
     }
     return masterProduct;
   } catch (error) {
-    console.error("Erro ao buscar produto mestre:", error);
-    throw new Error("Erro ao buscar produto mestre");
+    console.error('Erro ao buscar produto mestre:', error);
+    throw new Error('Erro ao buscar produto mestre');
   }
 };
 
-export const getMasterProducts = async (): Promise<MasterProductWithCategoryGroupSubgroupResponse[]> => {
+export const getMasterProducts = async (): Promise<
+  MasterProductWithCategoryGroupSubgroupResponse[]
+> => {
   try {
     return await masterProductRepository.findAll();
   } catch (error) {
-    console.error("Erro ao buscar item mestres:", error);
+    console.error('Erro ao buscar item mestres:', error);
     throw error;
   }
 };

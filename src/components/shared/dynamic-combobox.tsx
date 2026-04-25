@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   searchSupplier,
@@ -21,18 +21,24 @@ import {
   getAllSubgroup,
   deleteSubgroup,
   checkSubgroupUsage,
-} from "@/actions";
-import { DynamicComboboxProps, ResourceType } from "@/types";
-import { BaseDynamicCombobox } from "@/components/shared/base-dynamic-combobox";
-import { useDynamicCombobox } from "@/hooks/use-dynamic-combobox";
-import { useMemo } from "react";
-import { checkCategoryUsage, createCategory, deleteCategory, getAllCategory, searchCategory } from "@/actions/category.action";
+} from '@/actions';
+import { DynamicComboboxProps, ResourceType } from '@/types';
+import { BaseDynamicCombobox } from '@/components/shared/base-dynamic-combobox';
+import { useDynamicCombobox } from '@/hooks/use-dynamic-combobox';
+import { useMemo } from 'react';
+import {
+  checkCategoryUsage,
+  createCategory,
+  deleteCategory,
+  getAllCategory,
+  searchCategory,
+} from '@/actions/category.action';
 
 export function DynamicCombobox({
   resourceType,
   value,
   onChange,
-  placeholder = "Pesquisar...",
+  placeholder = 'Pesquisar...',
   allowCreate = true,
   allowDelete = true,
   disabled,
@@ -47,7 +53,7 @@ export function DynamicCombobox({
         getAll: getAllSupplier,
         delete: deleteSupplier,
         checkUsage: checkSupplierUsage,
-        resourceName: "Fornecedor",
+        resourceName: 'Fornecedor',
       },
       [ResourceType.CATEGORY]: {
         search: searchCategory,
@@ -55,7 +61,7 @@ export function DynamicCombobox({
         getAll: getAllCategory,
         delete: deleteCategory,
         checkUsage: checkCategoryUsage,
-        resourceName: "Categoria",
+        resourceName: 'Categoria',
       },
       [ResourceType.GROUP]: {
         search: searchGroup,
@@ -63,7 +69,7 @@ export function DynamicCombobox({
         getAll: getAllGroup,
         delete: deleteGroup,
         checkUsage: checkGroupUsage,
-        resourceName: "Grupo",
+        resourceName: 'Grupo',
       },
       [ResourceType.RECEIVER]: {
         search: searchReceiver,
@@ -71,7 +77,7 @@ export function DynamicCombobox({
         getAll: getAllReceiver,
         delete: deleteReceiver,
         checkUsage: checkReceiverUsage,
-        resourceName: "Recebedor",
+        resourceName: 'Recebedor',
       },
       [ResourceType.SUBGROUP]: {
         search: searchSubgroup,
@@ -79,7 +85,7 @@ export function DynamicCombobox({
         getAll: getAllSubgroup,
         delete: deleteSubgroup,
         checkUsage: checkSubgroupUsage,
-        resourceName: "Subgrupo",
+        resourceName: 'Subgrupo',
       },
     };
     return config[resourceType];
@@ -93,7 +99,7 @@ export function DynamicCombobox({
       delete: resourceConfig.delete,
       checkUsage: resourceConfig.checkUsage,
     }),
-    [resourceConfig]
+    [resourceConfig],
   );
 
   const {

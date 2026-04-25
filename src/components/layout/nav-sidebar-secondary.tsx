@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   SidebarGroup,
@@ -7,19 +7,19 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { RoleGate } from "@/components/auth/role-gate";
-import { UserType } from "@/types";
-import { ROUTES } from "@/config/routes";
+} from '@/components/ui/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { RoleGate } from '@/components/auth/role-gate';
+import { UserType } from '@/types';
+import { ROUTES } from '@/config/routes';
 import {
   BoxesIcon,
   PackageIcon,
   PackageMinusIcon,
   PackagePlusIcon,
   WrenchIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 export function NavSidebarSecondary() {
   const pathname = usePathname();
@@ -36,8 +36,8 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Estoque"}
-                className={`${pathname === ROUTES.PAGE_STOCK ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Estoque'}
+                className={`${pathname === ROUTES.PAGE_STOCK ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_STOCK}>
                   <BoxesIcon />
@@ -48,8 +48,8 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Produto Mestre"}
-                className={`${pathname === ROUTES.PAGE_STOCK_MASTER_PRODUCT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Produto Mestre'}
+                className={`${pathname === ROUTES.PAGE_STOCK_MASTER_PRODUCT ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_STOCK_MASTER_PRODUCT}>
                   <PackageIcon />
@@ -60,8 +60,8 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Entradas"}
-                className={`${pathname === ROUTES.PAGE_STOCK_IN ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Entradas'}
+                className={`${pathname === ROUTES.PAGE_STOCK_IN ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_STOCK_IN}>
                   <PackagePlusIcon />
@@ -72,8 +72,8 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Saídas"}
-                className={`${pathname === ROUTES.PAGE_STOCK_OUT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Saídas'}
+                className={`${pathname === ROUTES.PAGE_STOCK_OUT ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_STOCK_OUT}>
                   <PackageMinusIcon />
@@ -84,8 +84,8 @@ export function NavSidebarSecondary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Ajustes"}
-                className={`${pathname === ROUTES.PAGE_STOCK_ADJUSTMENT ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Ajustes'}
+                className={`${pathname === ROUTES.PAGE_STOCK_ADJUSTMENT ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_STOCK_ADJUSTMENT}>
                   <WrenchIcon />

@@ -1,16 +1,16 @@
-import { db } from "@/lib/db";
-import { EntityType } from "@/types";
+import { db } from '@/lib/db';
+import { EntityType } from '@/types';
 import {
   StockMovementResponse,
   StockMovementWithProductResponse,
-} from "@/types/models/stock-movement.model";
-import { Prisma, StockMovement } from "@prisma/client";
-import { endOfDay, startOfDay } from "date-fns";
+} from '@/types/models/stock-movement.model';
+import { Prisma, StockMovement } from '@/.prisma/client';
+import { endOfDay, startOfDay } from 'date-fns';
 
 export const stockMovementRepository = {
   async createInput(
     data: StockMovementResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<StockMovement> {
     const client = tx ?? db;
 
@@ -19,7 +19,7 @@ export const stockMovementRepository = {
 
   async createOutput(
     data: StockMovementResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<StockMovement> {
     const { ...movementOutputData } = data;
     const client = tx ?? db;
@@ -34,7 +34,7 @@ export const stockMovementRepository = {
 
   async createAdjustment(
     data: StockMovementResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<StockMovement> {
     const { ...movementAdjustmentData } = data;
     const client = tx ?? db;
@@ -61,14 +61,14 @@ export const stockMovementRepository = {
         product: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
 
   async findInputsByDate(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<StockMovementWithProductResponse[]> {
     return db.stockMovement.findMany({
       where: {
@@ -78,7 +78,7 @@ export const stockMovementRepository = {
       include: {
         product: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
   },
 
@@ -97,14 +97,14 @@ export const stockMovementRepository = {
         product: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
 
   async findOutputsByDate(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<StockMovementWithProductResponse[]> {
     return db.stockMovement.findMany({
       where: {
@@ -114,7 +114,7 @@ export const stockMovementRepository = {
       include: {
         product: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
   },
 
@@ -134,14 +134,14 @@ export const stockMovementRepository = {
         product: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
 
   async findAdjustmentsByDate(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<StockMovementWithProductResponse[]> {
     return db.stockMovement.findMany({
       where: {
@@ -153,7 +153,7 @@ export const stockMovementRepository = {
       include: {
         product: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
   },
 };

@@ -1,4 +1,4 @@
-import { Marquee } from "@/components/ui/marquee";
+import { Marquee } from '@/components/ui/marquee';
 import {
   ArrowRightLeftIcon,
   BarChart3Icon,
@@ -13,21 +13,21 @@ import {
   SlidersHorizontalIcon,
   SmartphoneIcon,
   UsersIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 const features = [
-  { id: 1, icon: CalendarClockIcon, title: "Controle de Validade" },
-  { id: 2, icon: BarChart3Icon, title: "Relatórios Completos" },
-  { id: 3, icon: SmartphoneIcon, title: "Acesso Onde Estiver" },
-  { id: 4, icon: BellRingIcon, title: "Alertas Inteligentes" },
-  { id: 5, icon: LayoutDashboardIcon, title: "Dashboard Centralizado" },
-  { id: 6, icon: SearchIcon, title: "Busca e Filtros Avançados" },
-  { id: 7, icon: UsersIcon, title: "Controle de Usuários" },
-  { id: 8, icon: HistoryIcon, title: "Logs de Atividades" },
-  { id: 9, icon: PrinterIcon, title: "PDF para Impressão" },
-  { id: 10, icon: KeyRoundIcon, title: "Níveis de Acesso" },
-  { id: 11, icon: ArrowRightLeftIcon, title: "Entradas e Saídas" },
-  { id: 12, icon: SlidersHorizontalIcon, title: "Ajustes de Estoque" },
+  { id: 1, icon: CalendarClockIcon, title: 'Controle de Validade' },
+  { id: 2, icon: BarChart3Icon, title: 'Relatórios Completos' },
+  { id: 3, icon: SmartphoneIcon, title: 'Acesso Onde Estiver' },
+  { id: 4, icon: BellRingIcon, title: 'Alertas Inteligentes' },
+  { id: 5, icon: LayoutDashboardIcon, title: 'Dashboard Centralizado' },
+  { id: 6, icon: SearchIcon, title: 'Busca e Filtros Avançados' },
+  { id: 7, icon: UsersIcon, title: 'Controle de Usuários' },
+  { id: 8, icon: HistoryIcon, title: 'Logs de Atividades' },
+  { id: 9, icon: PrinterIcon, title: 'PDF para Impressão' },
+  { id: 10, icon: KeyRoundIcon, title: 'Níveis de Acesso' },
+  { id: 11, icon: ArrowRightLeftIcon, title: 'Entradas e Saídas' },
+  { id: 12, icon: SlidersHorizontalIcon, title: 'Ajustes de Estoque' },
 ];
 
 const firstRow = features.slice(0, features.length / 2);
@@ -36,7 +36,7 @@ const secondRow = features.slice(features.length / 2);
 const FeatureBadge = ({ icon, title }: { icon: LucideIcon; title: string }) => {
   const IconComponent = icon;
   return (
-    <div className="bg-accent/70 flex items-center gap-3 rounded-md text-sm px-2.5 py-1.5 shadow-2xs">
+    <div className="bg-accent/70 flex items-center gap-3 rounded-md px-2.5 py-1.5 text-sm shadow-2xs">
       <IconComponent className="size-4 shrink-0" />
       {title}
     </div>
@@ -46,21 +46,12 @@ const FeatureBadge = ({ icon, title }: { icon: LucideIcon; title: string }) => {
 export function InfiniteFeaturesScrolling() {
   return (
     <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-      <Marquee
-        repeat={4}
-        pauseOnHover
-        className="[--duration:30s] gap-5 *:gap-5"
-      >
+      <Marquee repeat={4} pauseOnHover className="gap-5 [--duration:30s] *:gap-5">
         {firstRow.map((feature) => (
           <FeatureBadge key={feature.id} {...feature} />
         ))}
       </Marquee>
-      <Marquee
-        repeat={4}
-        reverse
-        pauseOnHover
-        className="[--duration:30s] gap-5 *:gap-5"
-      >
+      <Marquee repeat={4} reverse pauseOnHover className="gap-5 [--duration:30s] *:gap-5">
         {secondRow.map((feature) => (
           <FeatureBadge key={feature.id} {...feature} />
         ))}

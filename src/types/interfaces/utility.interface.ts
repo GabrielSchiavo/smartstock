@@ -1,7 +1,7 @@
-import { PdfUnitType, BaseUnitType, UnitType, ValidityStatusType } from "@/types/enums/enums";
+import { PdfUnitType, BaseUnitType, UnitType, ValidityStatusType } from '@/types/enums/enums';
 
 export interface PdfConfigProps {
-  orientation?: "portrait" | "landscape";
+  orientation?: 'portrait' | 'landscape';
   unit?: PdfUnitType;
   format?: string | number[];
   margins?: {
@@ -28,13 +28,12 @@ export interface CopyToClipboardProps {
   tooltipContent: string;
 }
 
-
 // unit-conversion.ts
 export interface ConvertOptionsProps {
   unitWeight?: number;
   unitWeightUnit?: UnitType;
   decimals?: number;
-};
+}
 // calculate-totals.ts
 export interface CalculableTotalItemProps {
   quantity?: number;

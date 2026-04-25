@@ -1,4 +1,4 @@
-import { ChartPieIcon } from "lucide-react";
+import { ChartPieIcon } from 'lucide-react';
 
 import {
   Empty,
@@ -6,11 +6,11 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
+} from '@/components/ui/empty';
 
 export function ChartEmpty() {
   return (
-    <div className="w-full flex justify-center">
+    <div className="flex w-full justify-center">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">

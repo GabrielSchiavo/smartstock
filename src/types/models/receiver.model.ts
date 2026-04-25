@@ -1,4 +1,4 @@
-import { Receiver } from "@prisma/client";
+import { Receiver } from '@/.prisma/client';
 
 export type ReceiverResponse<T = Receiver[]> = {
   success: boolean;
@@ -9,7 +9,7 @@ export type ReceiverResponse<T = Receiver[]> = {
 
 export type SingleReceiverResponse = ReceiverResponse<Receiver>;
 
-export type ReceiverOperationResponse = Omit<ReceiverResponse, "data">;
+export type ReceiverOperationResponse = Omit<ReceiverResponse, 'data'>;
 
 export type CheckReceiverResponse = {
   isUsed: boolean;

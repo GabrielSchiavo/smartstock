@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Label } from "@/components/ui/label";
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -9,21 +9,21 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import "flag-icons/css/flag-icons.min.css";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+} from '@/components/ui/select';
+import 'flag-icons/css/flag-icons.min.css';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const LANGUAGES = [
   {
-    name: "PT-BR",
-    value: "pt-BR",
-    image: "fib fi-br fis",
+    name: 'PT-BR',
+    value: 'pt-BR',
+    image: 'fib fi-br fis',
   },
   {
-    name: "EN",
-    value: "en",
-    image: "fib fi-gb fis",
+    name: 'EN',
+    value: 'en',
+    image: 'fib fi-gb fis',
   },
 ];
 
@@ -33,9 +33,9 @@ export function SidebarLanguageSelector() {
 
   useEffect(() => {
     const cookieLocale = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("SMARTSTOCK_LOCALE="))
-      ?.split("=")[1];
+      .split('; ')
+      .find((row) => row.startsWith('SMARTSTOCK_LOCALE='))
+      ?.split('=')[1];
 
     if (cookieLocale) {
       const lang = LANGUAGES.find((l) => l.value === cookieLocale)!;
@@ -54,23 +54,18 @@ export function SidebarLanguageSelector() {
   };
 
   return (
-    <div className="flex items-center gap-2 group-data-[collapsible=icon]:opacity-0 p-2">
+    <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:opacity-0">
       <Label htmlFor="lang-selector" className="sr-only">
         Idioma
       </Label>
-      <Select
-        onValueChange={() => changeLocale(locale.value)}
-        defaultValue={locale.value}
-      >
+      <Select onValueChange={() => changeLocale(locale.value)} defaultValue={locale.value}>
         <SelectTrigger
           id="lang-selector"
           size="sm"
-          className="justify-between *:data-[slot=select-value]:w-12 w-full"
+          className="w-full justify-between *:data-[slot=select-value]:w-12"
         >
           <span className="flex items-center gap-3">
-            <span
-              className={`${locale.image} size-4 shrink-0 rounded-sm`}
-            ></span>
+            <span className={`${locale.image} size-4 shrink-0 rounded-sm`}></span>
             <SelectValue placeholder="Selecione um idioma" />
           </span>
         </SelectTrigger>
@@ -78,14 +73,8 @@ export function SidebarLanguageSelector() {
           <SelectGroup>
             <SelectLabel>Idiomas</SelectLabel>
             {LANGUAGES.map((item) => (
-              <SelectItem
-                key={item.name}
-                value={item.value}
-                className="flex items-center gap-3"
-              >
-                <span
-                  className={`${item.image} size-4 shrink-0 rounded-sm`}
-                ></span>
+              <SelectItem key={item.name} value={item.value} className="flex items-center gap-3">
+                <span className={`${item.image} size-4 shrink-0 rounded-sm`}></span>
                 {item.name}
               </SelectItem>
             ))}

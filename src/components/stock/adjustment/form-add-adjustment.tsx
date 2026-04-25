@@ -1,17 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { getProducts, registerAdjustment } from "@/actions";
-import {
-  FormAddEditProps,
-  ProductWithMasterProductResponse,
-  ToastType,
-} from "@/types";
-import { z } from "zod";
-import { CreateAdjustmentSchema } from "@/schemas";
-import { UseFormReturn } from "react-hook-form";
-import { showToast } from "@/components/utils/show-toast";
-import { BaseFormAdjustment } from "@/components/stock/adjustment/base-form-adjustment";
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { getProducts, registerAdjustment } from '@/actions';
+import { FormAddEditProps, ProductWithMasterProductResponse, ToastType } from '@/types';
+import { z } from 'zod';
+import { CreateAdjustmentSchema } from '@/schemas';
+import { UseFormReturn } from 'react-hook-form';
+import { showToast } from '@/components/utils/show-toast';
+import { BaseFormAdjustment } from '@/components/stock/adjustment/base-form-adjustment';
 
 export const FormAddAdjustment = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
@@ -30,7 +26,7 @@ export const FormAddAdjustment = ({ onShouldInvalidate, onCancel }: FormAddEditP
       });
     } catch (error) {
       setIsLoading(false);
-      console.error("Erro ao carregar produtos:", error);
+      console.error('Erro ao carregar produtos:', error);
     }
   };
 
@@ -57,9 +53,9 @@ export const FormAddAdjustment = ({ onShouldInvalidate, onCancel }: FormAddEditP
         type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
       });
     } catch (err) {
-      console.error("Erro ao submeter ajuste:", err);
+      console.error('Erro ao submeter ajuste:', err);
       showToast({
-        title: "Algo deu errado!",
+        title: 'Algo deu errado!',
         type: ToastType.ERROR,
       });
     }

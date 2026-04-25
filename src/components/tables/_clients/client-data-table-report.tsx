@@ -1,4 +1,4 @@
-import { DataTableReport } from "@/components/tables/data-table-reports";
+import { DataTableReport } from '@/components/tables/data-table-reports';
 import {
   columnsTableReportInventory,
   columnsTableReportPurchased,
@@ -6,8 +6,8 @@ import {
   columnsTableReportStockMovements,
   columnsTableReportSuppliers,
   columnsTableReportValidity,
-} from "@/components/tables/_columns/columns-table-reports";
-import { columnsTableReportDonations } from "@/components/tables/_columns/columns-table-reports";
+} from '@/components/tables/_columns/columns-table-reports';
+import { columnsTableReportDonations } from '@/components/tables/_columns/columns-table-reports';
 import {
   DonationsReportResponse,
   InventoryReportResponse,
@@ -18,7 +18,7 @@ import {
   ValidityReportResponse,
   ReceiversReportResponse,
   SuppliersReportResponse,
-} from "@/types";
+} from '@/types';
 
 export const ClientDataTableReport = ({
   reportType,
@@ -28,10 +28,10 @@ export const ClientDataTableReport = ({
   // Se não há dados, exibe mensagem
   if (reportData.length === 0) {
     return (
-      <div className="flex flex-col justify-center items-center">
-        <div className="flex flex-col gap-12 w-full md:max-w-4xl">
-          <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
-            <p className="text-base text-center text-muted-foreground">
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex w-full flex-col gap-12 md:max-w-4xl">
+          <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
+            <p className="text-muted-foreground text-center text-base">
               Nenhum registro encontrado para o período selecionado.
             </p>
           </div>

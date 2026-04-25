@@ -1,6 +1,6 @@
 // date-picker-form.tsx
-import * as React from "react";
-import { Calendar } from "@/components/ui/calendar";
+import * as React from 'react';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Select,
   SelectContent,
@@ -9,26 +9,22 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
-import { ptBR } from "date-fns/locale";
-import type { Locale } from "date-fns";
-import { FieldValues } from "react-hook-form";
-import { cn } from "@/lib/utils";
-import { DatePickerFormProps, LocaleType } from "@/types";
+} from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { CalendarIcon } from 'lucide-react';
+import { ptBR } from 'date-fns/locale';
+import type { Locale } from 'date-fns';
+import { FieldValues } from 'react-hook-form';
+import { cn } from '@/lib/utils';
+import { DatePickerFormProps, LocaleType } from '@/types';
 import {
   convertLocalToUTC,
   convertUTCToDisplay,
   convertUTCToLocalDate,
   formatUTCDate,
   getLocalizedMonthNames,
-} from "@/utils/date-utils";
+} from '@/utils/date-utils';
 
 export function DatePickerMonthYear<T extends FieldValues>({
   field,
@@ -42,27 +38,25 @@ export function DatePickerMonthYear<T extends FieldValues>({
   const [open, setOpen] = React.useState(false);
 
   // Converter valor do campo para exibição (UTC preservado)
-  const displayDate = field.value
-    ? convertUTCToLocalDate(field.value as Date | string)
-    : undefined;
+  const displayDate = field.value ? convertUTCToLocalDate(field.value as Date | string) : undefined;
 
   const [currentMonth, setCurrentMonth] = React.useState<number>(
-    displayDate?.getMonth() ?? new Date().getMonth()
+    displayDate?.getMonth() ?? new Date().getMonth(),
   );
   const [currentYear, setCurrentYear] = React.useState<number>(
-    displayDate?.getFullYear() ?? new Date().getFullYear()
+    displayDate?.getFullYear() ?? new Date().getFullYear(),
   );
 
   // Gerar anos para o seletor
   const years = React.useMemo(
     () => Array.from({ length: 21 }, (_, i) => currentYear - 10 + i),
-    [currentYear]
+    [currentYear],
   );
 
   // Gerar nomes dos meses localizados
   const monthNames = React.useMemo(
     () => getLocalizedMonthNames(currentYear, locale),
-    [currentYear, locale]
+    [currentYear, locale],
   );
 
   // Sincronizar mês/ano quando o valor muda
@@ -99,23 +93,20 @@ export function DatePickerMonthYear<T extends FieldValues>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant={'outline'}
           size="sm"
           disabled={disabled}
-          className={cn(
-            "pl-3 text-left font-normal",
-            !field.value && "text-muted-foreground"
-          )}
+          className={cn('pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
         >
           {field.value ? (
-            formatUTCDate(field.value as Date | string , locale, dateFormat as LocaleType)
+            formatUTCDate(field.value as Date | string, locale, dateFormat as LocaleType)
           ) : (
             <span>Selecione uma data</span>
           )}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-3 flex gap-4 flex-col">
+      <PopoverContent className="flex w-auto flex-col gap-4 p-3">
         <div className="flex justify-between gap-4">
           <Select
             value={currentMonth.toString()}

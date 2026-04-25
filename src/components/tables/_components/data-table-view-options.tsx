@@ -1,42 +1,35 @@
-"use client"
+'use client';
 
-import { DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Settings2Icon } from "lucide-react"
+import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Settings2Icon } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { ColumnMetaProps, DataTableFunctionsProps } from "@/types"
+} from '@/components/ui/dropdown-menu';
+import { ColumnMetaProps, DataTableFunctionsProps } from '@/types';
 
-export function DataTableViewOptions<TData>({
-  table,
-}: DataTableFunctionsProps<TData>) {
+export function DataTableViewOptions<TData>({ table }: DataTableFunctionsProps<TData>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex"
-        >
+        <Button variant="outline" size="sm" className="ml-auto hidden h-8 lg:flex">
           <Settings2Icon />
           Visualizar
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-[180px]">
-        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">Exibir/Ocultar Colunas</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">
+          Exibir/Ocultar Colunas
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
           .getAllColumns()
-          .filter(
-            (column) =>
-              typeof column.accessorFn !== "undefined" && column.getCanHide()
-          )
+          .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
           .map((column) => {
             return (
               <DropdownMenuCheckboxItem
@@ -46,9 +39,9 @@ export function DataTableViewOptions<TData>({
               >
                 {(column.columnDef.meta as ColumnMetaProps)?.title ?? column.id}
               </DropdownMenuCheckboxItem>
-            )
+            );
           })}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { ResetSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { CardWrapper } from '@/components/auth/card-wrapper';
+import { ResetSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -12,32 +12,32 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/utils/message-error";
-import { MessageSuccess } from "@/components/utils/message-success";
-import { resetPassword } from "@/actions";
-import { useState, useTransition } from "react";
-import { ROUTES } from "@/config/routes";
-import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup } from "@/components/ui/field";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { MessageError } from '@/components/utils/message-error';
+import { MessageSuccess } from '@/components/utils/message-success';
+import { resetPassword } from '@/actions';
+import { useState, useTransition } from 'react';
+import { ROUTES } from '@/config/routes';
+import { Spinner } from '@/components/ui/spinner';
+import { FieldGroup } from '@/components/ui/field';
 
 export const ResetForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     startTransition(() => {
       resetPassword(values).then((data) => {
@@ -82,19 +82,14 @@ export const ResetForm = () => {
                 </FormItem>
               )}
             />
-            <Button
-              disabled={isPending}
-              type="submit"
-              size={"sm"}
-              className="w-full"
-            >
+            <Button disabled={isPending} type="submit" size={'sm'} className="w-full">
               {isPending ? (
                 <span className="flex items-center gap-3">
                   <Spinner className="size-4 shrink-0" />
-                  {"Enviando email..."}
+                  {'Enviando email...'}
                 </span>
               ) : (
-                "Continuar"
+                'Continuar'
               )}
             </Button>
           </FieldGroup>

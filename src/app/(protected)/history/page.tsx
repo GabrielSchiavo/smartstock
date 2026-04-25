@@ -1,12 +1,12 @@
-import { Metadata } from "next";
-import { UserType } from "@/types";
-import { RoleGate } from "@/components/auth/role-gate";
-import { ROUTES } from "@/config/routes";
-import { SectionTablesHistory } from "@/components/history/section-tables-history";
+import { Metadata } from 'next';
+import { UserType } from '@/types';
+import { RoleGate } from '@/components/auth/role-gate';
+import { ROUTES } from '@/config/routes';
+import { SectionTablesHistory } from '@/components/history/section-tables-history';
 
 export const metadata: Metadata = {
-  title: "Histórico - SmartStock",
-  description: "Visualize o histórico completo de alterações do sistema.",
+  title: 'Histórico - SmartStock',
+  description: 'Visualize o histórico completo de alterações do sistema.',
   alternates: {
     canonical: `${ROUTES.PAGE_HISTORY}`,
   },
@@ -14,21 +14,16 @@ export const metadata: Metadata = {
 
 export default async function HistoryPage() {
   return (
-    <RoleGate
-      isPage={true}
-      allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE]}
-    >
+    <RoleGate isPage={true} allowedRoles={[UserType.ADMIN, UserType.DEFAULT, UserType.CADASTRE]}>
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-12">
             <div className="flex flex-col gap-2">
               <h1 className="text-lg leading-none font-semibold">
-                <span className="flex gap-3 items-center">
-                  Visualizar Histórico
-                </span>
+                <span className="flex items-center gap-3">Visualizar Histórico</span>
               </h1>
-              <p className="text-muted-foreground text-sm w-full md:max-w-md">
-                {"Visualize o histórico completo das alterações no sistema."}
+              <p className="text-muted-foreground w-full text-sm md:max-w-md">
+                {'Visualize o histórico completo das alterações no sistema.'}
               </p>
             </div>
             <SectionTablesHistory />

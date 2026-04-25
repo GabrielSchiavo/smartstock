@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import * as React from "react";
+import * as React from 'react';
 
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { LogoWithText } from "@/components/shared/logo-with-text";
-import Link from "next/link";
-import { ROUTES } from "@/config/routes";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { LogoWithText } from '@/components/shared/logo-with-text';
+import Link from 'next/link';
+import { ROUTES } from '@/config/routes';
 
 export function SidebarBrand() {
   return (

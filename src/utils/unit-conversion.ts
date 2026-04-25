@@ -1,5 +1,5 @@
-import { showToast } from "@/components/utils/show-toast";
-import { ConvertOptionsProps, ToastType, UnitType } from "@/types";
+import { showToast } from '@/components/utils/show-toast';
+import { ConvertOptionsProps, ToastType, UnitType } from '@/types';
 
 // Base peso = Kg, base volume = L
 const unitConversionFactors: Record<UnitType, number> = {
@@ -16,18 +16,18 @@ export function convertUnit(
   from: UnitType,
   to: UnitType,
   unitWeightOrOptions?: number | ConvertOptionsProps,
-  unitWeightUnitArg?: UnitType
+  unitWeightUnitArg?: UnitType,
 ): number {
   const options: ConvertOptionsProps =
-    typeof unitWeightOrOptions === "number"
+    typeof unitWeightOrOptions === 'number'
       ? { unitWeight: unitWeightOrOptions, unitWeightUnit: unitWeightUnitArg }
       : unitWeightOrOptions || {};
 
   const factor = (u: UnitType): number => {
     if (!(u in unitConversionFactors)) {
-      const allowed = Object.keys(unitConversionFactors).join(", ");
+      const allowed = Object.keys(unitConversionFactors).join(', ');
       throw new Error(
-        `Unidade "${String(u)}" não configurada na unitConversionFactors. Unidades disponíveis: ${allowed}`
+        `Unidade "${String(u)}" não configurada na unitConversionFactors. Unidades disponíveis: ${allowed}`,
       );
     }
     return unitConversionFactors[u];
@@ -38,7 +38,7 @@ export function convertUnit(
   const unitWeightInBase = (): number => {
     if (options.unitWeight == null || options.unitWeightUnit == null) {
       throw new Error(
-        "Para converter a/para 'UN' é necessário informar unitWeight e unitWeightUnit (ex: 250, UnitType.G)."
+        "Para converter a/para 'UN' é necessário informar unitWeight e unitWeightUnit (ex: 250, UnitType.G).",
       );
     }
     return options.unitWeight * factor(options.unitWeightUnit);
@@ -86,7 +86,7 @@ export function normalizeValue(
   unit: UnitType,
   unitWeight?: number,
   unitWeightUnit?: UnitType,
-  decimals?: number
+  decimals?: number,
 ): { weight: number; volume: number; units: number } {
   let weight = 0;
   let volume = 0;
@@ -129,8 +129,8 @@ export function normalizeValue(
         volume = convertUnit(quantity, unit, UnitType.L, { decimals });
       } catch {
         showToast({
-          title: "Erro! Não foi possível converter a quantidade.",
-          description: "Verifique a unidade de medida.",
+          title: 'Erro! Não foi possível converter a quantidade.',
+          description: 'Verifique a unidade de medida.',
           type: ToastType.ERROR,
         });
       }

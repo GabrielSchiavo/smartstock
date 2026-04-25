@@ -1,7 +1,7 @@
-import React from "react";
-import { BellIcon, RefreshCcwIcon } from "lucide-react";
+import React from 'react';
+import { BellIcon, RefreshCcwIcon } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Empty,
   EmptyContent,
@@ -9,9 +9,9 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import { useAlerts } from "@/hooks/use-alerts";
-import { Spinner } from "@/components/ui/spinner";
+} from '@/components/ui/empty';
+import { useAlerts } from '@/hooks/use-alerts';
+import { Spinner } from '@/components/ui/spinner';
 
 export function AlertsEmpty() {
   const { refreshAlerts } = useAlerts();
@@ -34,19 +34,14 @@ export function AlertsEmpty() {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={isPending}
-        >
+        <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isPending}>
           {isPending ? (
             <Spinner className="size-4 shrink-0" />
           ) : (
-            <RefreshCcwIcon className={"size-4 shrink-0"} />
+            <RefreshCcwIcon className={'size-4 shrink-0'} />
           )}
 
-          {isPending ? "Atualizando..." : "Atualizar"}
+          {isPending ? 'Atualizando...' : 'Atualizar'}
         </Button>
       </EmptyContent>
     </Empty>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -9,19 +9,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useTransition } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { PasswordInput } from "@/components/auth/input-password";
-import { FormBaseUserProps, ToastType, UserType } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
-import { useSession } from "next-auth/react";
-import { ToolTipHelp, TooltipItem } from "@/components/shared/tool-tip-help";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
-import { Spinner } from "@/components/ui/spinner";
-import { SaveIcon } from "lucide-react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { useTransition } from 'react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { PasswordInput } from '@/components/auth/input-password';
+import { FormBaseUserProps, ToastType, UserType } from '@/types';
+import { showToast } from '@/components/utils/show-toast';
+import { useSession } from 'next-auth/react';
+import { ToolTipHelp, TooltipItem } from '@/components/shared/tool-tip-help';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
+import { Spinner } from '@/components/ui/spinner';
+import { SaveIcon } from 'lucide-react';
 
 export const BaseFormUser = ({
   schema,
@@ -41,10 +41,10 @@ export const BaseFormUser = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: zodResolver(schema as any), // Cast para resolver incompatibilidades de versão
     defaultValues: {
-      email: "",
-      name: "",
-      userType: "" as UserType,
-      ...(hidePasswordInputs ? {} : { password: "", confirmPassword: "" }),
+      email: '',
+      name: '',
+      userType: '' as UserType,
+      ...(hidePasswordInputs ? {} : { password: '', confirmPassword: '' }),
       ...defaultValues,
     },
   });
@@ -70,10 +70,10 @@ export const BaseFormUser = ({
           type: response.success ? ToastType.SUCCESS : ToastType.ERROR,
         });
       } catch (error) {
-        console.error("Form submission error:", error);
+        console.error('Form submission error:', error);
         showToast({
-          title: "Algo deu errado!",
-          description: "Erro interno do sistema. Tente novamente.",
+          title: 'Algo deu errado!',
+          description: 'Erro interno do sistema. Tente novamente.',
           type: ToastType.ERROR,
         });
       }
@@ -84,14 +84,14 @@ export const BaseFormUser = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col items-center justify-center"
       >
-        <div className="flex flex-col gap-12 w-full md:max-w-4xl">
+        <div className="flex w-full flex-col gap-12 md:max-w-4xl">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <h1 className="text-md font-medium">Detalhes do Usuário</h1>
             </div>
-            <div className="flex flex-col gap-6 border rounded-xl p-10 shadow">
+            <div className="flex flex-col gap-6 rounded-xl border p-10 shadow">
               <FormField
                 control={form.control}
                 name="name"
@@ -183,27 +183,26 @@ export const BaseFormUser = ({
                       <ToolTipHelp>
                         <TooltipItem>
                           <p className="text-sm">
-                            <span className="font-semibold">Admin</span> -
-                            acesso total ao sistema e gerenciamento de usuários.
+                            <span className="font-semibold">Admin</span> - acesso total ao sistema e
+                            gerenciamento de usuários.
                           </p>
                         </TooltipItem>
                         <TooltipItem>
                           <p className="text-sm">
-                            <span className="font-semibold">Padrão</span> -
-                            acesso somente a gerenciamento de produtos e
-                            relatórios.
+                            <span className="font-semibold">Padrão</span> - acesso somente a
+                            gerenciamento de produtos e relatórios.
                           </p>
                         </TooltipItem>
                         <TooltipItem>
                           <p className="text-sm">
-                            <span className="font-semibold">Cadastro</span> -
-                            acesso somente a gerenciamento de produtos.
+                            <span className="font-semibold">Cadastro</span> - acesso somente a
+                            gerenciamento de produtos.
                           </p>
                         </TooltipItem>
                         <TooltipItem>
                           <p className="text-sm">
-                            <span className="font-semibold">Relatório</span> -
-                            acesso somente a gerenciamento de relatórios.
+                            <span className="font-semibold">Relatório</span> - acesso somente a
+                            gerenciamento de relatórios.
                           </p>
                         </TooltipItem>
                       </ToolTipHelp>
@@ -222,10 +221,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(
-                              UserType.ADMIN,
-                              "capitalize"
-                            )}
+                            {formatEnumValueDisplay(UserType.ADMIN, 'capitalize')}
                           </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
@@ -236,10 +232,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(
-                              UserType.DEFAULT,
-                              "capitalize"
-                            )}
+                            {formatEnumValueDisplay(UserType.DEFAULT, 'capitalize')}
                           </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
@@ -250,10 +243,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(
-                              UserType.CADASTRE,
-                              "capitalize"
-                            )}
+                            {formatEnumValueDisplay(UserType.CADASTRE, 'capitalize')}
                           </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center">
@@ -264,10 +254,7 @@ export const BaseFormUser = ({
                             />
                           </FormControl>
                           <FormLabel className="font-normal">
-                            {formatEnumValueDisplay(
-                              UserType.REPORT,
-                              "capitalize"
-                            )}
+                            {formatEnumValueDisplay(UserType.REPORT, 'capitalize')}
                           </FormLabel>
                         </FormItem>
                       </RadioGroup>
@@ -278,7 +265,7 @@ export const BaseFormUser = ({
               />
             </div>
           </div>
-          <div className="flex gap-3 justify-end">
+          <div className="flex justify-end gap-3">
             <Button
               disabled={isPending}
               size="sm"

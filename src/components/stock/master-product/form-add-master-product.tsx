@@ -1,21 +1,17 @@
-"use client";
+'use client';
 
-import { useRef, useTransition } from "react";
-import { BaseFormMasterProduct } from "@/components/stock/master-product/base-form-master-product";
-import { registerMasterProduct } from "@/actions";
-import { FormAddEditProps, ToastType } from "@/types";
-import { z } from "zod";
-import { CreateEditMasterProductSchema } from "@/schemas";
-import { UseFormReturn } from "react-hook-form";
-import { showToast } from "@/components/utils/show-toast";
+import { useRef, useTransition } from 'react';
+import { BaseFormMasterProduct } from '@/components/stock/master-product/base-form-master-product';
+import { registerMasterProduct } from '@/actions';
+import { FormAddEditProps, ToastType } from '@/types';
+import { z } from 'zod';
+import { CreateEditMasterProductSchema } from '@/schemas';
+import { UseFormReturn } from 'react-hook-form';
+import { showToast } from '@/components/utils/show-toast';
 
-export const FormAddMasterProduct = ({
-  onShouldInvalidate,
-  onCancel,
-}: FormAddEditProps) => {
+export const FormAddMasterProduct = ({ onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
-  const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
+  const formRef = useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
 
   const onSubmit = async (values: z.infer<typeof CreateEditMasterProductSchema>) => {
     await startTransition(async () => {
@@ -35,7 +31,7 @@ export const FormAddMasterProduct = ({
         });
       } catch {
         showToast({
-          title: "Algo deu errado!",
+          title: 'Algo deu errado!',
           type: ToastType.ERROR,
         });
       }

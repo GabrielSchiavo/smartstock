@@ -2,15 +2,12 @@ import {
   MasterProductResponse,
   MasterProductUpdateResponse,
   MasterProductWithCategoryGroupSubgroupResponse,
-} from "@/types";
-import { db } from "@/lib/db";
-import { MasterProduct, Prisma, Product } from "@prisma/client";
+} from '@/types';
+import { db } from '@/lib/db';
+import { MasterProduct, Prisma, Product } from '@/.prisma/client';
 
 export const masterProductRepository = {
-  async create(
-    data: MasterProductResponse,
-    tx?: Prisma.TransactionClient
-  ): Promise<MasterProduct> {
+  async create(data: MasterProductResponse, tx?: Prisma.TransactionClient): Promise<MasterProduct> {
     const client = tx ?? db;
 
     return (await client.masterProduct.create({
@@ -25,7 +22,7 @@ export const masterProductRepository = {
 
   async findAll(): Promise<MasterProductWithCategoryGroupSubgroupResponse[]> {
     return await db.masterProduct.findMany({
-      orderBy: { id: "asc" },
+      orderBy: { id: 'asc' },
       include: {
         category: true,
         group: true,
@@ -65,7 +62,7 @@ export const masterProductRepository = {
   async update(
     id: number,
     data: MasterProductUpdateResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<MasterProduct> {
     const client = tx ?? db;
 
@@ -80,9 +77,7 @@ export const masterProductRepository = {
     });
   },
 
-  async checkInProducts(
-    masterProductId: number
-  ): Promise<Pick<Product, "id"> | null> {
+  async checkInProducts(masterProductId: number): Promise<Pick<Product, 'id'> | null> {
     return await db.product.findFirst({
       where: {
         masterProductId: masterProductId,

@@ -1,16 +1,9 @@
-import { db } from "@/lib/db";
-import {
-  EntityType,
-  AuditLogResponse,
-  AuditLogWithUserResponse,
-} from "@/types";
-import { Prisma } from "@prisma/client";
+import { db } from '@/lib/db';
+import { EntityType, AuditLogResponse, AuditLogWithUserResponse } from '@/types';
+import { Prisma } from '@/.prisma/client';
 
 export const auditLogRepository = {
-  async create(
-    data: AuditLogResponse,
-    tx?: Prisma.TransactionClient
-  ): Promise<void> {
+  async create(data: AuditLogResponse, tx?: Prisma.TransactionClient): Promise<void> {
     const client = tx ?? db;
 
     await client.auditLog.create({ data, include: { user: true } });
@@ -19,7 +12,7 @@ export const auditLogRepository = {
   async findAll(): Promise<AuditLogWithUserResponse[]> {
     return await db.auditLog.findMany({
       include: { user: true },
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
   },
 
@@ -32,7 +25,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
@@ -46,7 +39,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
@@ -62,7 +55,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
@@ -78,7 +71,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
@@ -102,7 +95,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },
@@ -116,7 +109,7 @@ export const auditLogRepository = {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
   },

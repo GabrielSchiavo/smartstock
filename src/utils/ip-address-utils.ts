@@ -1,17 +1,17 @@
-import { headers } from "next/headers";
+import { headers } from 'next/headers';
 
 export const getIpAddress = async () => {
   const headersList = await headers();
 
-  const xForwardedFor = headersList.get("x-forwarded-for");
+  const xForwardedFor = headersList.get('x-forwarded-for');
 
   let ip: string | null = null;
 
   if (xForwardedFor) {
-    ip = xForwardedFor.split(",")[0].trim();
+    ip = xForwardedFor.split(',')[0].trim();
   } else {
-    ip = headersList.get("x-real-ip");
+    ip = headersList.get('x-real-ip');
   }
 
-  return ip || "UNKNOWN_IP";
+  return ip || 'UNKNOWN_IP';
 };

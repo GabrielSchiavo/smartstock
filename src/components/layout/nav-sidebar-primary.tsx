@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   SidebarGroup,
@@ -6,11 +6,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { ROUTES } from "@/config/routes";
-import { LayoutDashboardIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+} from '@/components/ui/sidebar';
+import { ROUTES } from '@/config/routes';
+import { LayoutDashboardIcon } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function NavSidebarPrimary() {
   const pathname = usePathname();
@@ -22,8 +22,8 @@ export function NavSidebarPrimary() {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              tooltip={"Dashboard"}
-              className={`${pathname === ROUTES.PAGE_DASHBOARD ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+              tooltip={'Dashboard'}
+              className={`${pathname === ROUTES.PAGE_DASHBOARD ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
             >
               <Link href={ROUTES.PAGE_DASHBOARD}>
                 <LayoutDashboardIcon />

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useTransition, useRef } from "react";
-import { BaseFormInput } from "@/components/stock/input/base-form-input";
-import { editProduct, getMasterProducts, getProductById } from "@/actions";
+import { useState, useEffect, useTransition, useRef } from 'react';
+import { BaseFormInput } from '@/components/stock/input/base-form-input';
+import { editProduct, getMasterProducts, getProductById } from '@/actions';
 import {
   BaseUnitType,
   FormAddEditProps,
@@ -12,26 +12,21 @@ import {
   ProductType,
   ToastType,
   UnitType,
-} from "@/types";
-import { MessageError } from "@/components/utils/message-error";
-import { CreateInputEditProductSchema } from "@/schemas";
-import { z } from "zod";
-import { showToast } from "@/components/utils/show-toast";
-import { UseFormReturn } from "react-hook-form";
-import { Spinner } from "@/components/ui/spinner";
+} from '@/types';
+import { MessageError } from '@/components/utils/message-error';
+import { CreateInputEditProductSchema } from '@/schemas';
+import { z } from 'zod';
+import { showToast } from '@/components/utils/show-toast';
+import { UseFormReturn } from 'react-hook-form';
+import { Spinner } from '@/components/ui/spinner';
 
-export const FormEditProduct = ({
-  rowItemId,
-  onShouldInvalidate,
-  onCancel,
-}: FormAddEditProps) => {
+export const FormEditProduct = ({ rowItemId, onShouldInvalidate, onCancel }: FormAddEditProps) => {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(true);
   const [initialValues, setInitialValues] = useState<z.infer<
     typeof CreateInputEditProductSchema
   > | null>(null);
-  const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>>(null);
+  const formRef = useRef<UseFormReturn<z.infer<typeof CreateInputEditProductSchema>>>(null);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -44,7 +39,7 @@ export const FormEditProduct = ({
               name: productData.name,
               quantity: productData.quantity?.toString(),
               unit: productData.unit as UnitType,
-              unitWeight: productData.unitWeight?.toString() || "",
+              unitWeight: productData.unitWeight?.toString() || '',
               unitOfUnitWeight: productData.unitOfUnitWeight as
                 | UnitType.KG
                 | UnitType.G
@@ -57,20 +52,20 @@ export const FormEditProduct = ({
               receiverId: productData.receiverId,
               category: productData.masterProduct.category.name,
               group: productData.masterProduct.group.name,
-              subgroup: productData.masterProduct.subgroup?.name || "",
+              subgroup: productData.masterProduct.subgroup?.name || '',
               baseUnit: productData.masterProduct.baseUnit as BaseUnitType,
               productType: productData.productType as ProductType,
-              
+
               // Valor default para o campo movementCAtegory pois ele não é usado no formulário de edição
               movementCategory: InputMovementCategoryType.DEFAULT,
             });
           }
         }
       } catch (error) {
-        console.error("Erro ao carregar o produto:", error);
+        console.error('Erro ao carregar o produto:', error);
         showToast({
-          title: "Erro!",
-          description: "Não foi possível carregar os dados do produto.",
+          title: 'Erro!',
+          description: 'Não foi possível carregar os dados do produto.',
           type: ToastType.ERROR,
         });
       } finally {
@@ -92,15 +87,13 @@ export const FormEditProduct = ({
         const items = await getMasterProducts();
         setMasterProducts(items);
       } catch (error) {
-        console.error("Erro ao carregar produtos mestres:", error);
+        console.error('Erro ao carregar produtos mestres:', error);
       }
     }
     loadMasterProducts();
   }, []);
 
-  const onSubmit = async (
-    values: z.infer<typeof CreateInputEditProductSchema>
-  ) => {
+  const onSubmit = async (values: z.infer<typeof CreateInputEditProductSchema>) => {
     await startTransition(async () => {
       try {
         const response = await editProduct(rowItemId as number, values);
@@ -116,7 +109,7 @@ export const FormEditProduct = ({
         });
       } catch {
         showToast({
-          title: "Algo deu errado!",
+          title: 'Algo deu errado!',
           type: ToastType.ERROR,
         });
       }
@@ -125,19 +118,17 @@ export const FormEditProduct = ({
 
   if (isLoading) {
     return (
-      <div className="w-full flex justify-center">
-        <span className="flex items-center text-muted-foreground gap-3">
+      <div className="flex w-full justify-center">
+        <span className="text-muted-foreground flex items-center gap-3">
           <Spinner className="size-5 shrink-0" />
-          {"Carregando dados..."}
+          {'Carregando dados...'}
         </span>
       </div>
     );
   }
 
   if (!initialValues) {
-    return (
-      <MessageError message="Registro não encontrado ou erro ao carregar dados." />
-    );
+    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
   }
 
   return (

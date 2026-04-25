@@ -1,20 +1,20 @@
-import { useState, useEffect, useTransition, useRef, useCallback } from "react";
-import { ComboboxApiParams, OptionProps, ToastType } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
-import { useDebounce } from "@/hooks/use-debounce";
+import { useState, useEffect, useTransition, useRef, useCallback } from 'react';
+import { ComboboxApiParams, OptionProps, ToastType } from '@/types';
+import { showToast } from '@/components/utils/show-toast';
+import { useDebounce } from '@/hooks/use-debounce';
 
 export function useDynamicCombobox(
   api: ComboboxApiParams,
   resourceName: string,
-  value: string = "",
+  value: string = '',
   onChange: (value: string) => void,
-  debounceDelay: number = 300
+  debounceDelay: number = 300,
 ) {
   const apiRef = useRef(api);
   const nameRef = useRef(resourceName);
 
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isUserTyping, setIsUserTyping] = useState(false);
   const debouncedInputValue = useDebounce(inputValue, debounceDelay);
   const [options, setOptions] = useState<OptionProps[]>([]);
@@ -32,7 +32,7 @@ export function useDynamicCombobox(
   // Função para carregar opções iniciais
   const loadInitialOptions = useCallback(async () => {
     if (!value || options.length > 0) return;
-    
+
     setIsLoading(true);
     try {
       const response = await apiRef.current.getAll({});
@@ -40,7 +40,7 @@ export function useDynamicCombobox(
         setOptions(Array.isArray(response.data) ? response.data : []);
       }
     } catch (error) {
-      console.error("Erro ao carregar opções iniciais:", error);
+      console.error('Erro ao carregar opções iniciais:', error);
     } finally {
       setIsLoading(false);
     }
@@ -56,14 +56,14 @@ export function useDynamicCombobox(
   // Sincroniza inputValue com o name da opção selecionada (apenas quando não está digitando)
   useEffect(() => {
     if (isUserTyping || open) return; // Não interfere quando usuário está digitando ou popover está aberto
-    
+
     if (value && options.length > 0) {
-      const selectedOption = options.find(option => option.id === value);
+      const selectedOption = options.find((option) => option.id === value);
       if (selectedOption) {
         setInputValue(selectedOption.name as string);
       }
     } else if (!value) {
-      setInputValue("");
+      setInputValue('');
     }
   }, [value, options, isUserTyping, open]);
 
@@ -96,17 +96,17 @@ export function useDynamicCombobox(
         } else {
           setOptions([]);
           showToast({
-            title: "Erro!",
-            description: response.description || "A operação falhou.",
+            title: 'Erro!',
+            description: response.description || 'A operação falhou.',
             type: ToastType.ERROR,
           });
         }
       } catch (error) {
         if (!isMounted) return;
         setOptions([]);
-        console.error("Erro ao carregar opções:", error);
+        console.error('Erro ao carregar opções:', error);
         showToast({
-          title: "Erro!",
+          title: 'Erro!',
           description: `Erro ao carregar ${nameRef.current}s.`,
           type: ToastType.ERROR,
         });
@@ -136,11 +136,11 @@ export function useDynamicCombobox(
   // Handler para quando o popover abre
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
-    
+
     if (newOpen) {
       // Quando abre, prepara o input com o valor atual se houver seleção
       if (value && options.length > 0) {
-        const selectedOption = options.find(option => option.id === value);
+        const selectedOption = options.find((option) => option.id === value);
         if (selectedOption) {
           setInputValue(selectedOption.name as string);
         }
@@ -151,7 +151,7 @@ export function useDynamicCombobox(
       setIsUserTyping(false);
       // Se não há seleção, limpa o input
       if (!value) {
-        setInputValue("");
+        setInputValue('');
       }
     }
   };
@@ -165,7 +165,7 @@ export function useDynamicCombobox(
 
       if (response.success && response.data) {
         showToast({
-          title: "Sucesso!",
+          title: 'Sucesso!',
           description: `${resourceName} criado com sucesso.`,
           type: ToastType.SUCCESS,
         });
@@ -182,16 +182,16 @@ export function useDynamicCombobox(
         }
       } else {
         showToast({
-          title: "Erro!",
+          title: 'Erro!',
           description: response.description || `Erro ao criar ${resourceName}.`,
           type: ToastType.ERROR,
         });
       }
     } catch (error) {
-      console.error("Algo deu errado:", error);
+      console.error('Algo deu errado:', error);
       showToast({
-        title: "Erro!",
-        description: "Algo deu errado:",
+        title: 'Erro!',
+        description: 'Algo deu errado:',
         type: ToastType.ERROR,
       });
     } finally {
@@ -213,7 +213,7 @@ export function useDynamicCombobox(
 
       if (isUsed) {
         showToast({
-          title: "Aviso!",
+          title: 'Aviso!',
           description: `Este ${resourceName} está em uso e não pode ser excluído.`,
           type: ToastType.WARNING,
         });
@@ -224,15 +224,14 @@ export function useDynamicCombobox(
 
       if (response.success) {
         showToast({
-          title: "Sucesso!",
-          description:
-            response.description || `${resourceName} excluído com sucesso.`,
+          title: 'Sucesso!',
+          description: response.description || `${resourceName} excluído com sucesso.`,
           type: ToastType.SUCCESS,
         });
 
         if (value === optionId) {
-          onChange("");
-          setInputValue("");
+          onChange('');
+          setInputValue('');
           setIsUserTyping(false);
         }
         const updatedResponse = await api.getAll({
@@ -243,16 +242,16 @@ export function useDynamicCombobox(
         }
       } else {
         showToast({
-          title: "Erro!",
-          description: response.description || "Erro ao excluir registro.",
+          title: 'Erro!',
+          description: response.description || 'Erro ao excluir registro.',
           type: ToastType.ERROR,
         });
       }
     } catch (error) {
-      console.error("Algo deu errado:", error);
+      console.error('Algo deu errado:', error);
       showToast({
-        title: "Erro!",
-        description: "Algo deu errado.",
+        title: 'Erro!',
+        description: 'Algo deu errado.',
         type: ToastType.ERROR,
       });
     } finally {

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { LogoWithText } from "@/components/shared/logo-with-text";
-import Image from "next/image";
-import React from "react";
-import BackgroundImage from "@/assets/images/background-image.webp";
+import { LogoWithText } from '@/components/shared/logo-with-text';
+import Image from 'next/image';
+import React from 'react';
+import BackgroundImage from '@/assets/images/background-image.webp';
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -16,16 +16,11 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           aria-hidden="true"
         />
       </div>
-      <div className="flex flex-col gap-4 p-6 md:p-10 bg-background">
+      <div className="bg-background flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
-          <LogoWithText
-            imageSize="size-8 sm:size-10"
-            textSize="text-1xl sm:text-2xl"
-          />
+          <LogoWithText imageSize="size-8 sm:size-10" textSize="text-1xl sm:text-2xl" />
         </div>
-        <div className="flex flex-1 items-center justify-center">
-          {children}
-        </div>
+        <div className="flex flex-1 items-center justify-center">{children}</div>
       </div>
     </main>
   );

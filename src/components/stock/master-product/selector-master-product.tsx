@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -10,12 +10,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { DataTableMasterProducts } from "@/components/tables/data-table-master-products";
-import { columnsTableMasterProducts } from "@/components/tables/_columns/columns-table-master-products";
-import { Input } from "@/components/ui/input";
-import { MasterProductWithCategoryGroupSubgroupResponse, SelectorMasterProductProps } from "@/types";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { DataTableMasterProducts } from '@/components/tables/data-table-master-products';
+import { columnsTableMasterProducts } from '@/components/tables/_columns/columns-table-master-products';
+import { Input } from '@/components/ui/input';
+import {
+  MasterProductWithCategoryGroupSubgroupResponse,
+  SelectorMasterProductProps,
+} from '@/types';
 
 export function SelectorMasterProduct({
   masterProducts,
@@ -26,9 +29,7 @@ export function SelectorMasterProduct({
 }: SelectorMasterProductProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedItem = masterProducts.find(
-    (item) => item.id.toString() === selectedId
-  );
+  const selectedItem = masterProducts.find((item) => item.id.toString() === selectedId);
 
   const handleSelect = (item: MasterProductWithCategoryGroupSubgroupResponse) => {
     onSelect(item);
@@ -45,18 +46,19 @@ export function SelectorMasterProduct({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <div className="flex w-full items-center gap-4">
-          <Input className="default-btn-field-height" defaultValue={undefined} value={!selectedItem ? "" : `${selectedItem.id.toString()} - ${selectedItem.name}`} disabled={true} placeholder="Selecione um produto mestre..." />
-          <Button
-            type="button"
-            disabled={disabled}
-            variant="outline"
-            size={"sm"}
-          >
+          <Input
+            className="default-btn-field-height"
+            defaultValue={undefined}
+            value={!selectedItem ? '' : `${selectedItem.id.toString()} - ${selectedItem.name}`}
+            disabled={true}
+            placeholder="Selecione um produto mestre..."
+          />
+          <Button type="button" disabled={disabled} variant="outline" size={'sm'}>
             Selecionar
           </Button>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[80vw] sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-hidden flex flex-col gap-8">
+      <DialogContent className="flex max-h-[80vh] flex-col gap-8 overflow-hidden rounded-xl sm:max-h-[90vh] sm:max-w-[80vw]">
         <DialogHeader>
           <DialogTitle>Selecionar Produto Mestre</DialogTitle>
           <DialogDescription>

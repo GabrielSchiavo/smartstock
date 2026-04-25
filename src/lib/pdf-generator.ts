@@ -1,4 +1,4 @@
-import { BasePdfGenerator } from "@/lib/base-pdf-generator";
+import { BasePdfGenerator } from '@/lib/base-pdf-generator';
 import {
   DonationsReportResponse,
   InventoryReportResponse,
@@ -8,34 +8,34 @@ import {
   SuppliersReportResponse,
   UnitType,
   ValidityReportResponse,
-} from "@/types";
-import { formatDateTimeToLocale } from "@/utils/date-utils";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@/types';
+import { formatDateTimeToLocale } from '@/utils/date-utils';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 export class ValidityPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: ValidityReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Validades");
+    this.addTitle('Relatório de Validades');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Lote",
-      "Validade",
-      "Dias p/ Vencer",
-      "Status",
+      'ID',
+      'Produto',
+      'Quantidade',
+      'Peso Uni.',
+      'Lote',
+      'Validade',
+      'Dias p/ Vencer',
+      'Status',
     ];
     const columnWidths = [10, 100, 30, 30, 40, 30, 30, 20];
 
@@ -44,17 +44,17 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
       item.id.toString(),
       item.name,
       `${item.quantity} ${item.unit}`,
-      `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+      `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
       item.lot,
       this.formatDate(item.validityDate.toString()),
-      item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
+      item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : 'Vencido',
       this.getStatusText(item.status),
     ]);
 
     this.addTable(headers, columnWidths, rows);
     this.addFooter();
 
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -62,7 +62,7 @@ export class ValidityPdfGenerator extends BasePdfGenerator {
 export const generateValidityPdf = async (
   data: ValidityReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new ValidityPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -73,34 +73,27 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: DonationsReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Doações");
+    this.addTitle('Relatório de Doações');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, DonationsReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const key = formatEnumValueDisplay(item.supplier, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Fornecedor",
-      "Data de Receb.",
-    ];
+    const headers = ['ID', 'Produto', 'Quantidade', 'Peso Uni.', 'Fornecedor', 'Data de Receb.'];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
     for (const [supplier, items] of dataGrouping) {
@@ -108,12 +101,8 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Fornecedor: ${supplier}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
@@ -121,7 +110,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
         item.id.toString(),
         item.name,
         `${item.quantity} ${item.unit}`,
-        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
         item.supplier,
         this.formatDate(item.receiptDate.toString()),
       ]);
@@ -134,7 +123,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -149,13 +138,13 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -163,7 +152,7 @@ export class DonationsPdfGenerator extends BasePdfGenerator {
 export const generateDonationsPdf = async (
   data: DonationsReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new DonationsPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -174,34 +163,27 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: PurchasedReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Compras");
+    this.addTitle('Relatório de Compras');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, PurchasedReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const key = formatEnumValueDisplay(item.supplier, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Fornecedor",
-      "Data de Receb.",
-    ];
+    const headers = ['ID', 'Produto', 'Quantidade', 'Peso Uni.', 'Fornecedor', 'Data de Receb.'];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
     for (const [supplier, items] of dataGrouping) {
@@ -209,12 +191,8 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Fornecedor: ${supplier}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
@@ -222,7 +200,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
         item.id.toString(),
         item.name,
         `${item.quantity} ${item.unit}`,
-        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
         item.supplier,
         this.formatDate(item.receiptDate.toString()),
       ]);
@@ -235,7 +213,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -250,13 +228,13 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -264,7 +242,7 @@ export class PurchasedPdfGenerator extends BasePdfGenerator {
 export const generatePurchasedPdf = async (
   data: PurchasedReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new PurchasedPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -275,34 +253,27 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: ReceiversReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Recebedores");
+    this.addTitle('Relatório de Recebedores');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, ReceiversReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.receiver, "uppercase");
+      const key = formatEnumValueDisplay(item.receiver, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Recebedor",
-      "Data de Receb.",
-    ];
+    const headers = ['ID', 'Produto', 'Quantidade', 'Peso Uni.', 'Recebedor', 'Data de Receb.'];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
     for (const [supplier, items] of dataGrouping) {
@@ -310,12 +281,8 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Fornecedor: ${supplier}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
@@ -323,7 +290,7 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
         item.id.toString(),
         item.name,
         `${item.quantity} ${item.unit}`,
-        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
         item.receiver,
         this.formatDate(item.receiptDate.toString()),
       ]);
@@ -336,7 +303,7 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -351,13 +318,13 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -365,7 +332,7 @@ export class ReceiversPdfGenerator extends BasePdfGenerator {
 export const generateReceiversPdf = async (
   data: ReceiversReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new ReceiversPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -376,34 +343,27 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: SuppliersReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Fornecedores");
+    this.addTitle('Relatório de Fornecedores');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, SuppliersReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.supplier, "uppercase");
+      const key = formatEnumValueDisplay(item.supplier, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Fornecedor",
-      "Data de Receb.",
-    ];
+    const headers = ['ID', 'Produto', 'Quantidade', 'Peso Uni.', 'Fornecedor', 'Data de Receb.'];
     const columnWidths = [10, 120, 30, 30, 50, 40];
 
     for (const [supplier, items] of dataGrouping) {
@@ -411,12 +371,8 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Fornecedor: ${supplier}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Fornecedor: ${supplier}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
@@ -424,7 +380,7 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
         item.id.toString(),
         item.name,
         `${item.quantity} ${item.unit}`,
-        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
         item.supplier,
         this.formatDate(item.receiptDate.toString()),
       ]);
@@ -437,7 +393,7 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -452,13 +408,13 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -466,7 +422,7 @@ export class SuppliersPdfGenerator extends BasePdfGenerator {
 export const generateSuppliersPdf = async (
   data: SuppliersReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new SuppliersPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -479,30 +435,28 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Inventário");
-    this.addSubtitle(
-      `Data de geração: ${this.formatDate(new Date().toISOString())}`
-    );
+    this.addTitle('Relatório de Inventário');
+    this.addSubtitle(`Data de geração: ${this.formatDate(new Date().toISOString())}`);
 
     // Grouping table rows
     const dataGrouping = new Map<string, InventoryReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.group, "uppercase");
+      const key = formatEnumValueDisplay(item.group, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
     const headers = [
-      "ID",
-      "Produto",
-      "Quantidade",
-      "Peso Uni.",
-      "Lote",
-      "Validade",
-      "Tipo",
-      "Dias p/ Vencer",
-      "Status",
+      'ID',
+      'Produto',
+      'Quantidade',
+      'Peso Uni.',
+      'Lote',
+      'Validade',
+      'Tipo',
+      'Dias p/ Vencer',
+      'Status',
     ];
     const columnWidths = [10, 100, 20, 20, 30, 30, 20, 30, 20];
 
@@ -511,7 +465,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
       this.doc.text(`Grupo: ${groupName}`, this.margins.left, this.currentY);
       this.currentY += 8;
 
@@ -520,11 +474,11 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
         item.id.toString(),
         item.name,
         `${item.quantity} ${item.unit}`,
-        `${item.unitWeight ?? "-"} ${item.unitOfUnitWeight ?? "-"}`,
+        `${item.unitWeight ?? '-'} ${item.unitOfUnitWeight ?? '-'}`,
         item.lot,
         this.formatDate(item.validityDate.toString()),
-        formatEnumValueDisplay(item.productType, "capitalize"),
-        item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : "Vencido",
+        formatEnumValueDisplay(item.productType, 'capitalize'),
+        item.daysUntilExpiry > 0 ? item.daysUntilExpiry.toString() : 'Vencido',
         this.getStatusText(item.status),
       ]);
 
@@ -536,7 +490,7 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
       const total = this.calculateTotals(groupItems);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -551,19 +505,19 @@ export class InventoryPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
 
 export const generateInventoryPdf = async (
-  data: InventoryReportResponse[]
+  data: InventoryReportResponse[],
 ): Promise<Uint8Array> => {
   const generator = new InventoryPdfGenerator(data);
   return generator.generate();
@@ -574,33 +528,27 @@ export class InputsPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: StockMovementReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Entradas");
+    this.addTitle('Relatório de Entradas');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.movementCategory, "uppercase");
+      const key = formatEnumValueDisplay(item.movementCategory, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Data/Hora",
-      "Movimentação",
-      "Categoria",
-      "Quantidade",
-    ];
+    const headers = ['ID', 'Data/Hora', 'Movimentação', 'Categoria', 'Quantidade'];
     const columnWidths = [50, 50, 50, 50, 50];
 
     for (const [movementCategory, items] of dataGrouping) {
@@ -608,20 +556,16 @@ export class InputsPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Categoria: ${movementCategory}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Categoria: ${movementCategory}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        formatEnumValueDisplay(item.movementType, "uppercase"),
-        formatEnumValueDisplay(item.movementCategory, "uppercase"),
+        formatEnumValueDisplay(item.movementType, 'uppercase'),
+        formatEnumValueDisplay(item.movementCategory, 'uppercase'),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 
@@ -633,7 +577,7 @@ export class InputsPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -648,13 +592,13 @@ export class InputsPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -662,7 +606,7 @@ export class InputsPdfGenerator extends BasePdfGenerator {
 export const generateInputsPdf = async (
   data: StockMovementReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new InputsPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -673,33 +617,27 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: StockMovementReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Saídas");
+    this.addTitle('Relatório de Saídas');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.movementCategory, "uppercase");
+      const key = formatEnumValueDisplay(item.movementCategory, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Data/Hora",
-      "Movimentação",
-      "Categoria",
-      "Quantidade",
-    ];
+    const headers = ['ID', 'Data/Hora', 'Movimentação', 'Categoria', 'Quantidade'];
     const columnWidths = [50, 50, 50, 50, 50];
 
     for (const [movementCategory, items] of dataGrouping) {
@@ -707,20 +645,16 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Categoria: ${movementCategory}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Categoria: ${movementCategory}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        formatEnumValueDisplay(item.movementType, "uppercase"),
-        formatEnumValueDisplay(item.movementCategory, "uppercase"),
+        formatEnumValueDisplay(item.movementType, 'uppercase'),
+        formatEnumValueDisplay(item.movementCategory, 'uppercase'),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 
@@ -732,7 +666,7 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -747,13 +681,13 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -761,7 +695,7 @@ export class OutputsPdfGenerator extends BasePdfGenerator {
 export const generateOutputsPdf = async (
   data: StockMovementReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new OutputsPdfGenerator(data, initialDate, finalDate);
   return generator.generate();
@@ -772,33 +706,27 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
   constructor(
     private data: StockMovementReportResponse[],
     private initialDate: string,
-    private finalDate: string
+    private finalDate: string,
   ) {
     super(BasePdfGenerator.PDF_CONFIG);
   }
 
   public async generate(): Promise<Uint8Array> {
-    this.addTitle("Relatório de Ajustes");
+    this.addTitle('Relatório de Ajustes');
     this.addSubtitle(
-      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`
+      `Período: ${this.formatDate(this.initialDate)} a ${this.formatDate(this.finalDate)}`,
     );
 
     // Grouping table rows
     const dataGrouping = new Map<string, StockMovementReportResponse[]>();
     this.data.forEach((item) => {
-      const key = formatEnumValueDisplay(item.movementType, "uppercase");
+      const key = formatEnumValueDisplay(item.movementType, 'uppercase');
       const group = dataGrouping.get(key) ?? [];
       group.push(item);
       dataGrouping.set(key, group);
     });
 
-    const headers = [
-      "ID",
-      "Data/Hora",
-      "Movimentação",
-      "Categoria",
-      "Quantidade",
-    ];
+    const headers = ['ID', 'Data/Hora', 'Movimentação', 'Categoria', 'Quantidade'];
     const columnWidths = [50, 50, 50, 50, 50];
 
     for (const [movementType, items] of dataGrouping) {
@@ -806,20 +734,16 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
 
       // Add grouping header
       this.doc.setFontSize(this.COMMON_STYLES.sectionHeaderFont.size);
-      this.doc.setFont("helvetica", this.COMMON_STYLES.sectionHeaderFont.style);
-      this.doc.text(
-        `Movimentação: ${movementType}`,
-        this.margins.left,
-        this.currentY
-      );
+      this.doc.setFont('helvetica', this.COMMON_STYLES.sectionHeaderFont.style);
+      this.doc.text(`Movimentação: ${movementType}`, this.margins.left, this.currentY);
       this.currentY += 10;
 
       // Add items table
       const rows = items.map((item) => [
         item.id,
         formatDateTimeToLocale(item.createdAt),
-        formatEnumValueDisplay(item.movementType, "uppercase"),
-        formatEnumValueDisplay(item.movementCategory, "uppercase"),
+        formatEnumValueDisplay(item.movementType, 'uppercase'),
+        formatEnumValueDisplay(item.movementCategory, 'uppercase'),
         `${item.quantity} ${item.unit as UnitType}`,
       ]);
 
@@ -831,7 +755,7 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
       // Add supplier total
       const total = this.calculateTotals(items);
       const formatted = this.formatTotalValues(total);
-      this.addTotalSection("TOTAL", formatted);
+      this.addTotalSection('TOTAL', formatted);
 
       this.currentY -= 2;
       this.addHorizontalLine(this.currentY);
@@ -846,13 +770,13 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
 
     const mainTotal = this.calculateTotals(this.data);
     const mainTotalFormatted = this.formatTotalValues(mainTotal);
-    this.addTotalSection("TOTAL GERAL", mainTotalFormatted, true);
+    this.addTotalSection('TOTAL GERAL', mainTotalFormatted, true);
 
     this.currentY -= 2;
     this.addHorizontalLine(this.currentY);
 
     this.addFooter();
-    const arrayBuffer = this.doc.output("arraybuffer");
+    const arrayBuffer = this.doc.output('arraybuffer');
     return new Uint8Array(arrayBuffer);
   }
 }
@@ -860,7 +784,7 @@ export class AdjustmentsPdfGenerator extends BasePdfGenerator {
 export const generateAdjustmentsPdf = async (
   data: StockMovementReportResponse[],
   initialDate: string,
-  finalDate: string
+  finalDate: string,
 ): Promise<Uint8Array> => {
   const generator = new AdjustmentsPdfGenerator(data, initialDate, finalDate);
   return generator.generate();

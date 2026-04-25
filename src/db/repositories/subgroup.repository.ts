@@ -1,12 +1,12 @@
-import { db } from "@/lib/db"
-import { MasterProduct, Prisma, Subgroup } from "@prisma/client"
+import { db } from '@/lib/db';
+import { MasterProduct, Prisma, Subgroup } from '@/.prisma/client';
 
 export const subgroupRepository = {
   async findAll(take = 100): Promise<Subgroup[]> {
     return await db.subgroup.findMany({
       orderBy: { name: 'asc' },
       take,
-    })
+    });
   },
 
   async search(query: string, take = 10): Promise<Subgroup[]> {
@@ -18,7 +18,7 @@ export const subgroupRepository = {
         },
       },
       take,
-    })
+    });
   },
 
   async create(name: string, tx?: Prisma.TransactionClient): Promise<Subgroup> {
@@ -26,13 +26,13 @@ export const subgroupRepository = {
 
     return await client.subgroup.create({
       data: { name },
-    })
+    });
   },
 
   async findById(id: string): Promise<Subgroup | null> {
     return await db.subgroup.findUnique({
       where: { id },
-    })
+    });
   },
 
   async delete(id: string, tx?: Prisma.TransactionClient): Promise<void> {
@@ -40,15 +40,15 @@ export const subgroupRepository = {
 
     await client.subgroup.delete({
       where: { id },
-    })
+    });
   },
 
   async checkInMasterProducts(subgroupId: string): Promise<Pick<MasterProduct, 'id'> | null> {
     return await db.masterProduct.findFirst({
       where: {
-          subgroupId: subgroupId,
+        subgroupId: subgroupId,
       },
       select: { id: true },
-    })
+    });
   },
-}
+};

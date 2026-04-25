@@ -1,15 +1,15 @@
-import { currentRole } from "@/utils/current-session-utils";
-import { UserType } from "@/types";
-import { NextResponse } from "next/server";
+import { currentRole } from '@/utils/current-session-utils';
+import { UserType } from '@/types';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
-    const role = await currentRole();
+  const role = await currentRole();
 
-    if (role === UserType.ADMIN) {
-        return new NextResponse(null, {status: 200});
-    }
+  if (role === UserType.ADMIN) {
+    return new NextResponse(null, { status: 200 });
+  }
 
-    return new NextResponse(null, {
-        status: 403
-    });
+  return new NextResponse(null, {
+    status: 403,
+  });
 }

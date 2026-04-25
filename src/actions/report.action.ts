@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { productRepository, stockMovementRepository } from "@/db";
-import { ROUTES } from "@/config/routes";
+import { productRepository, stockMovementRepository } from '@/db';
+import { ROUTES } from '@/config/routes';
 import {
   DonationsReportResponse,
   InventoryReportResponse,
@@ -13,25 +13,20 @@ import {
   SuppliersReportResponse,
   UnitType,
   ValidityReportResponse,
-} from "@/types";
-import { revalidatePath } from "next/cache";
-import { getExpiryInfo } from "@/utils/check-expiry-status";
+} from '@/types';
+import { revalidatePath } from 'next/cache';
+import { getExpiryInfo } from '@/utils/check-expiry-status';
 
 // Geradores de Relatório
 export const generateValidityReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<ValidityReportResponse>> => {
   try {
-    const products = await productRepository.findByValidity(
-      initialDate,
-      finalDate
-    );
+    const products = await productRepository.findByValidity(initialDate, finalDate);
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = getExpiryInfo(
-        new Date(product.validityDate)
-      );
+      const { daysUntilExpiry, status } = getExpiryInfo(new Date(product.validityDate));
       return {
         id: product.id,
         name: product.name,
@@ -49,29 +44,26 @@ export const generateValidityReport = async (
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de validade gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de validade gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de validade:", error);
+    console.error('Erro ao gerar relatório de validade:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de validade.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de validade.',
     };
   }
 };
 
 export const generateDonationsReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<DonationsReportResponse>> => {
   try {
-    const products = await productRepository.findDonated(
-      initialDate,
-      finalDate
-    );
+    const products = await productRepository.findDonated(initialDate, finalDate);
 
     const reportData = products.map((product) => ({
       id: product.id,
@@ -80,36 +72,33 @@ export const generateDonationsReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
-      supplier: product.supplier?.name || "Não informado",
+      supplier: product.supplier?.name || 'Não informado',
       receiptDate: product.receiptDate,
     }));
 
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de doações gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de doações gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de doações:", error);
+    console.error('Erro ao gerar relatório de doações:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de doações.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de doações.',
     };
   }
 };
 
 export const generatePurchasedReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<PurchasedReportResponse>> => {
   try {
-    const products = await productRepository.findPurchased(
-      initialDate,
-      finalDate
-    );
+    const products = await productRepository.findPurchased(initialDate, finalDate);
 
     const reportData = products.map((product) => ({
       id: product.id,
@@ -118,36 +107,33 @@ export const generatePurchasedReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
-      supplier: product.supplier?.name || "Não informado",
+      supplier: product.supplier?.name || 'Não informado',
       receiptDate: product.receiptDate,
     }));
 
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de compras gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de compras gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de compras:", error);
+    console.error('Erro ao gerar relatório de compras:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de compras.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de compras.',
     };
   }
 };
 
 export const generateReceiversReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<ReceiversReportResponse>> => {
   try {
-    const products = await productRepository.findAllByReceiptDate(
-      initialDate,
-      finalDate
-    );
+    const products = await productRepository.findAllByReceiptDate(initialDate, finalDate);
 
     const reportData = products.map((product) => ({
       id: product.id,
@@ -163,29 +149,26 @@ export const generateReceiversReport = async (
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de recebedores gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de recebedores gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de recebedores:", error);
+    console.error('Erro ao gerar relatório de recebedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de recebedores.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de recebedores.',
     };
   }
 };
 
 export const generateSuppliersReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<SuppliersReportResponse>> => {
   try {
-    const products = await productRepository.findBySuppliers(
-      initialDate,
-      finalDate
-    );
+    const products = await productRepository.findBySuppliers(initialDate, finalDate);
 
     const reportData = products.map((product) => ({
       id: product.id,
@@ -194,23 +177,23 @@ export const generateSuppliersReport = async (
       unit: product.unit as UnitType,
       unitWeight: product.unitWeight!,
       unitOfUnitWeight: product.unitOfUnitWeight! as UnitType,
-      supplier: product.supplier?.name || "Não informado",
+      supplier: product.supplier?.name || 'Não informado',
       receiptDate: product.receiptDate,
     }));
 
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de fornecedores gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de fornecedores gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de fornecedores:", error);
+    console.error('Erro ao gerar relatório de fornecedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de fornecedores.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de fornecedores.',
     };
   }
 };
@@ -222,9 +205,7 @@ export const generateInventoryReport = async (): Promise<
     const products = await productRepository.findInventory();
 
     const reportData = products.map((product) => {
-      const { daysUntilExpiry, status } = getExpiryInfo(
-        new Date(product.validityDate)
-      );
+      const { daysUntilExpiry, status } = getExpiryInfo(new Date(product.validityDate));
       return {
         id: product.id,
         name: product.name,
@@ -244,29 +225,26 @@ export const generateInventoryReport = async (): Promise<
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de inventário gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de inventário gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de inventário:", error);
+    console.error('Erro ao gerar relatório de inventário:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de inventário.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de inventário.',
     };
   }
 };
 
 export const generateInputsReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<StockMovementReportResponse>> => {
   try {
-    const inputs = await stockMovementRepository.findInputsByDate(
-      initialDate,
-      finalDate
-    );
+    const inputs = await stockMovementRepository.findInputsByDate(initialDate, finalDate);
 
     const reportData = inputs.map((data) => ({
       id: data.id,
@@ -282,29 +260,26 @@ export const generateInputsReport = async (
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de entradas gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de entradas gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de entradas:", error);
+    console.error('Erro ao gerar relatório de entradas:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de entradas.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de entradas.',
     };
   }
 };
 
 export const generateOutputsReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<StockMovementReportResponse>> => {
   try {
-    const inputs = await stockMovementRepository.findOutputsByDate(
-      initialDate,
-      finalDate
-    );
+    const inputs = await stockMovementRepository.findOutputsByDate(initialDate, finalDate);
 
     const reportData = inputs.map((data) => ({
       id: data.id,
@@ -320,29 +295,26 @@ export const generateOutputsReport = async (
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de saídas gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de saídas gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de saídas:", error);
+    console.error('Erro ao gerar relatório de saídas:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de saídas.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de saídas.',
     };
   }
 };
 
 export const generateAdjustmentsReport = async (
   initialDate: Date,
-  finalDate: Date
+  finalDate: Date,
 ): Promise<ReportResponse<StockMovementReportResponse>> => {
   try {
-    const inputs = await stockMovementRepository.findAdjustmentsByDate(
-      initialDate,
-      finalDate
-    );
+    const inputs = await stockMovementRepository.findAdjustmentsByDate(initialDate, finalDate);
 
     const reportData = inputs.map((data) => ({
       id: data.id,
@@ -358,16 +330,16 @@ export const generateAdjustmentsReport = async (
     revalidatePath(ROUTES.PAGE_REPORTS);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Relatório de ajustes gerado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Relatório de ajustes gerado com sucesso.',
       data: reportData,
     };
   } catch (error) {
-    console.error("Erro ao gerar relatório de ajustes:", error);
+    console.error('Erro ao gerar relatório de ajustes:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível gerar o relatório de ajustes.",
+      title: 'Erro!',
+      description: 'Não foi possível gerar o relatório de ajustes.',
     };
   }
 };

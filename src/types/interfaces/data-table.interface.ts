@@ -1,10 +1,4 @@
-import {
-  Column,
-  ColumnDef,
-  Row,
-  Table,
-  Table as TanstackTable,
-} from "@tanstack/react-table";
+import { Column, ColumnDef, Row, Table, Table as TanstackTable } from '@tanstack/react-table';
 import {
   DataExpandableType,
   DeleteRegisterProps,
@@ -16,8 +10,8 @@ import {
   ReportDataResponse,
   ReportType,
   StockMovementWithProductResponse,
-} from "@/types";
-import { AuditLog, User } from "@prisma/client";
+} from '@/types';
+import { AuditLog, User } from '@/.prisma/client';
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -45,8 +39,10 @@ export interface GroupedTableProps<TData> {
   setCollapsedGroups: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 
-export interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface DataTableColumnHeaderProps<
+  TData,
+  TValue,
+> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
 }
@@ -112,8 +108,7 @@ export interface DataTableFacetedFilterProps<TData, TValue> {
   mode?: FilterModeType;
 }
 
-export interface DataTableDropdownProps<T extends string | number>
-  extends DeleteRegisterProps<T> {
+export interface DataTableDropdownProps<T extends string | number> extends DeleteRegisterProps<T> {
   formComponent: React.ComponentType<FormAddEditProps>;
   entity: string;
 }

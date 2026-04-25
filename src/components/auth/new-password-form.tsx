@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { NewPasswordSchema } from "@/schemas";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { CardWrapper } from '@/components/auth/card-wrapper';
+import { NewPasswordSchema } from '@/schemas';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -12,38 +12,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { MessageError } from "@/components/utils/message-error";
-import { MessageSuccess } from "@/components/utils/message-success";
-import { newPassword } from "@/actions";
-import { useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
-import { PasswordInput } from "@/components/auth/input-password";
-import { ROUTES } from "@/config/routes";
-import { Spinner } from "@/components/ui/spinner";
-import { FieldGroup, FieldSeparator } from "@/components/ui/field";
-import Link from "next/link";
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { MessageError } from '@/components/utils/message-error';
+import { MessageSuccess } from '@/components/utils/message-success';
+import { newPassword } from '@/actions';
+import { useState, useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { PasswordInput } from '@/components/auth/input-password';
+import { ROUTES } from '@/config/routes';
+import { Spinner } from '@/components/ui/spinner';
+import { FieldGroup, FieldSeparator } from '@/components/ui/field';
+import Link from 'next/link';
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const token = searchParams.get('token');
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     },
   });
 
   const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     startTransition(() => {
       newPassword(values, token).then((data) => {
@@ -106,19 +106,14 @@ export const NewPasswordForm = () => {
                 </FormItem>
               )}
             />
-            <Button
-              disabled={isPending || isSuccess}
-              type="submit"
-              size={"sm"}
-              className="w-full"
-            >
+            <Button disabled={isPending || isSuccess} type="submit" size={'sm'} className="w-full">
               {isPending ? (
                 <span className="flex items-center gap-3">
                   <Spinner className="size-4 shrink-0" />
-                  {"Alterando senha..."}
+                  {'Alterando senha...'}
                 </span>
               ) : (
-                "Continuar"
+                'Continuar'
               )}
             </Button>
             {isSuccess && (
@@ -128,8 +123,8 @@ export const NewPasswordForm = () => {
                   <Button
                     disabled={isPending}
                     type="button"
-                    size={"sm"}
-                    variant={"outline"}
+                    size={'sm'}
+                    variant={'outline'}
                     className="w-full"
                   >
                     Acessar Conta

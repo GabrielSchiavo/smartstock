@@ -1,6 +1,6 @@
-import { db } from "@/lib/db";
-import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
-import { AlertType } from "@prisma/client";
+import { db } from '@/lib/db';
+import { daysDefaultUntilExpiry } from '@/utils/check-expiry-status';
+import { AlertType } from '@/.prisma/client';
 
 export const alertRepository = {
   async findExpiringProducts() {
@@ -79,8 +79,8 @@ export const alertRepository = {
     return await db.alertSystem.findMany({
       include: { product: true },
       orderBy: [
-        { createdAt: "desc" }, // Mais recentes primeiro
-        { type: "asc" },
+        { createdAt: 'desc' }, // Mais recentes primeiro
+        { type: 'asc' },
       ],
     });
   },

@@ -1,15 +1,11 @@
-"use server";
+'use server';
 
-import {
-  auditLogRepository,
-  stockMovementRepository,
-  productRepository,
-} from "@/db";
+import { auditLogRepository, stockMovementRepository, productRepository } from '@/db';
 import {
   CreateAdjustmentSchema,
   CreateInputEditProductSchema,
   CreateOutputSchema,
-} from "@/schemas";
+} from '@/schemas';
 import {
   EntityType,
   ActionType,
@@ -18,19 +14,19 @@ import {
   StockMovementOperationResponse,
   AdjustmentType,
   StockMovementWithProductResponse,
-} from "@/types";
-import { revalidatePath } from "next/cache";
-import z from "zod";
-import { getProductById } from "@/actions/product.action";
-import { convertUnit } from "@/utils/unit-conversion";
-import { currentUser } from "@/utils/current-session-utils";
-import { getMasterProductById } from "@/actions/master-product.action";
-import { omit } from "@/lib/omit";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { revalidatePath } from 'next/cache';
+import z from 'zod';
+import { getProductById } from '@/actions/product.action';
+import { convertUnit } from '@/utils/unit-conversion';
+import { currentUser } from '@/utils/current-session-utils';
+import { getMasterProductById } from '@/actions/master-product.action';
+import { omit } from '@/lib/omit';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export const registerInput = async (
-  values: z.infer<typeof CreateInputEditProductSchema>
+  values: z.infer<typeof CreateInputEditProductSchema>,
 ): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateInputEditProductSchema.safeParse(values);
   const user = await currentUser();
@@ -38,8 +34,8 @@ export const registerInput = async (
   if (validatedFields.success === false) {
     return {
       success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
+      title: 'Erro!',
+      description: 'Campos inválidos.',
     };
   }
 
@@ -47,12 +43,11 @@ export const registerInput = async (
 
   try {
     const getMasterProductSelected = await getMasterProductById(
-      Number(productData.masterProductId)
+      Number(productData.masterProductId),
     );
     const getUnitMasterProduct = getMasterProductSelected.baseUnit as UnitType;
 
-    const isSpecialUnit = (unit: UnitType) =>
-      unit === UnitType.UN || unit === UnitType.L;
+    const isSpecialUnit = (unit: UnitType) => unit === UnitType.UN || unit === UnitType.L;
 
     if (
       productData.unit !== getUnitMasterProduct &&
@@ -60,9 +55,8 @@ export const registerInput = async (
     ) {
       return {
         success: false,
-        title: "Erro!",
-        description:
-          "As unidades do produto mestre e de entrada são incompatíveis.",
+        title: 'Erro!',
+        description: 'As unidades do produto mestre e de entrada são incompatíveis.',
       };
     }
 
@@ -75,7 +69,7 @@ export const registerInput = async (
           unitWeight: unitWeight ? Number(unitWeight) : null,
           masterProductId: Number(productData.masterProductId),
         },
-        tx
+        tx,
       );
 
       // Cria o movimento de estoque após criar o produto
@@ -89,7 +83,7 @@ export const registerInput = async (
           details: `[MOVEMENT] Type='${MovementType.INPUT}' | Category='${productData.movementCategory}' | Quantity='${quantity}' | Unit='${productData.unit}' | Product ID='${product.id}' | Date Time='${new Date().toISOString()}'`,
           createdAt: new Date(),
         },
-        tx
+        tx,
       );
 
       // Cria o log de entrada após criar o movimento
@@ -104,30 +98,30 @@ export const registerInput = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.INPUT}' | Record Changed ID='${product.id}' | Changed Value='${product.quantity.toString()} ${product.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Input of '${product.quantity.toString()} ${product.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return product;
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Produto cadastrado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Produto cadastrado com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao cadastrar produto:", error);
+    console.error('Erro ao cadastrar produto:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível cadastrar o produto.",
+      title: 'Erro!',
+      description: 'Não foi possível cadastrar o produto.',
     };
   }
 };
 
 export const registerOutput = async (
-  values: z.infer<typeof CreateOutputSchema>
+  values: z.infer<typeof CreateOutputSchema>,
 ): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateOutputSchema.safeParse(values);
   const user = await currentUser();
@@ -135,27 +129,24 @@ export const registerOutput = async (
   if (validatedFields.success === false) {
     return {
       success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
+      title: 'Erro!',
+      description: 'Campos inválidos.',
     };
   }
 
   const outputData = omit(
     validatedFields.data,
-    "productQuantity",
-    "productUnit",
-    "lot",
-    "validityDate"
+    'productQuantity',
+    'productUnit',
+    'lot',
+    'validityDate',
   );
 
   try {
-    const getProductSelected = await getProductById(
-      Number(outputData.productId)
-    );
+    const getProductSelected = await getProductById(Number(outputData.productId));
     const getUnitProduct = getProductSelected.unit as UnitType;
 
-    const isSpecialUnit = (unit: UnitType) =>
-      unit === UnitType.UN || unit === UnitType.L;
+    const isSpecialUnit = (unit: UnitType) => unit === UnitType.UN || unit === UnitType.L;
 
     if (
       outputData.unit !== getUnitProduct &&
@@ -163,8 +154,8 @@ export const registerOutput = async (
     ) {
       return {
         success: false,
-        title: "Erro!",
-        description: "As unidades do produto e de saída são incompatíveis.",
+        title: 'Erro!',
+        description: 'As unidades do produto e de saída são incompatíveis.',
       };
     }
 
@@ -172,11 +163,7 @@ export const registerOutput = async (
       (outputData.unit === UnitType.UN && getUnitProduct === UnitType.UN) ||
       (outputData.unit === UnitType.L && getUnitProduct === UnitType.L)
         ? Number(outputData.quantity)
-        : convertUnit(
-            Number(outputData.quantity),
-            outputData.unit as UnitType,
-            getUnitProduct
-          );
+        : convertUnit(Number(outputData.quantity), outputData.unit as UnitType, getUnitProduct);
 
     // Calcula o resultado final após a saída
     const quantityResult = getProductSelected.quantity - quantityConverted;
@@ -184,8 +171,8 @@ export const registerOutput = async (
     if (quantityResult < 0) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Não há estoque suficiente para realizar a saída.",
+        title: 'Erro!',
+        description: 'Não há estoque suficiente para realizar a saída.',
       };
     }
 
@@ -199,7 +186,7 @@ export const registerOutput = async (
           details: `[MOVEMENT] Type='${MovementType.OUTPUT}' | Category='${outputData.movementCategory}' | Quantity='${outputData.quantity}' | Unit='${outputData.unit}' | Product ID='${outputData.productId}' | Date Time='${new Date().toISOString()}'`,
           createdAt: new Date(),
         },
-        tx
+        tx,
       );
 
       await productRepository.updateQuantity(
@@ -207,7 +194,7 @@ export const registerOutput = async (
           id: Number(outputData.productId),
           quantity: quantityResult,
         },
-        tx
+        tx,
       );
 
       await auditLogRepository.create(
@@ -221,30 +208,30 @@ export const registerOutput = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.OUTPUT}' | Record Changed ID='${movementOutput?.id.toString()}' | Changed Value='${outputData.quantity} ${outputData.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Output of '${outputData.quantity} ${outputData.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return movementOutput;
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Saída cadastrada com sucesso.",
+      title: 'Sucesso!',
+      description: 'Saída cadastrada com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao cadastrar saída:", error);
+    console.error('Erro ao cadastrar saída:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível cadastrar a saída.",
+      title: 'Erro!',
+      description: 'Não foi possível cadastrar a saída.',
     };
   }
 };
 
 export const registerAdjustment = async (
-  values: z.infer<typeof CreateAdjustmentSchema>
+  values: z.infer<typeof CreateAdjustmentSchema>,
 ): Promise<StockMovementOperationResponse> => {
   const validatedFields = CreateAdjustmentSchema.safeParse(values);
   const user = await currentUser();
@@ -252,8 +239,8 @@ export const registerAdjustment = async (
   if (validatedFields.success === false) {
     return {
       success: false,
-      title: "Erro!",
-      description: "Campos inválidos.",
+      title: 'Erro!',
+      description: 'Campos inválidos.',
     };
   }
 
@@ -261,21 +248,18 @@ export const registerAdjustment = async (
 
   const adjustmentData = omit(
     validatedFields.data,
-    "productQuantity",
-    "productUnit",
-    "lot",
-    "validityDate",
-    "adjustmentType"
+    'productQuantity',
+    'productUnit',
+    'lot',
+    'validityDate',
+    'adjustmentType',
   );
 
   try {
-    const getProductSelected = await getProductById(
-      Number(adjustmentData.productId)
-    );
+    const getProductSelected = await getProductById(Number(adjustmentData.productId));
     const getUnitProduct = getProductSelected.unit as UnitType;
 
-    const isSpecialUnit = (unit: UnitType) =>
-      unit === UnitType.UN || unit === UnitType.L;
+    const isSpecialUnit = (unit: UnitType) => unit === UnitType.UN || unit === UnitType.L;
 
     if (
       adjustmentData.unit !== getUnitProduct &&
@@ -283,8 +267,8 @@ export const registerAdjustment = async (
     ) {
       return {
         success: false,
-        title: "Erro!",
-        description: "As unidades do produto e de ajuste são incompatíveis.",
+        title: 'Erro!',
+        description: 'As unidades do produto e de ajuste são incompatíveis.',
       };
     }
 
@@ -295,7 +279,7 @@ export const registerAdjustment = async (
         : convertUnit(
             Number(adjustmentData.quantity),
             adjustmentData.unit as UnitType,
-            getUnitProduct
+            getUnitProduct,
           );
 
     // Calcula o resultado final após o ajuste
@@ -307,8 +291,8 @@ export const registerAdjustment = async (
     if (quantityResult < 0) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Não há estoque suficiente para realizar o ajuste.",
+        title: 'Erro!',
+        description: 'Não há estoque suficiente para realizar o ajuste.',
       };
     }
 
@@ -332,7 +316,7 @@ export const registerAdjustment = async (
           details: `[MOVEMENT] Type='${adjustmentMovementType}' | Category='${adjustmentData.movementCategory}' | Quantity='${adjustmentData.quantity}' | Unit='${adjustmentData.unit}' | Product ID='${adjustmentData.productId}' | Date Time='${new Date().toISOString()}'`,
           createdAt: new Date(),
         },
-        tx
+        tx,
       );
 
       await productRepository.updateQuantity(
@@ -340,7 +324,7 @@ export const registerAdjustment = async (
           id: Number(adjustmentData.productId),
           quantity: quantityResult,
         },
-        tx
+        tx,
       );
 
       await auditLogRepository.create(
@@ -354,46 +338,42 @@ export const registerAdjustment = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${adjustmentEntityType}' | Record Changed ID='${movementAdjustment?.id.toString()}' | Changed Value='${adjustmentData.quantity} ${adjustmentData.unit}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Adjustment type '${adjustmentEntityType}' of '${adjustmentData.quantity} ${adjustmentData.unit}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return movementAdjustment;
     });
 
-    revalidatePath("/");
+    revalidatePath('/');
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Ajuste cadastrado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Ajuste cadastrado com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao cadastrar ajuste:", error);
+    console.error('Erro ao cadastrar ajuste:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível cadastrar o ajuste.",
+      title: 'Erro!',
+      description: 'Não foi possível cadastrar o ajuste.',
     };
   }
 };
 
-export const getStockMovementInputs = async (): Promise<
-  StockMovementWithProductResponse[]
-> => {
+export const getStockMovementInputs = async (): Promise<StockMovementWithProductResponse[]> => {
   try {
     return await stockMovementRepository.findInputs();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
 
-export const getStockMovementOutputs = async (): Promise<
-  StockMovementWithProductResponse[]
-> => {
+export const getStockMovementOutputs = async (): Promise<StockMovementWithProductResponse[]> => {
   try {
     return await stockMovementRepository.findOutputs();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -404,7 +384,7 @@ export const getStockMovementAdjustments = async (): Promise<
   try {
     return await stockMovementRepository.findAdjustments();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };

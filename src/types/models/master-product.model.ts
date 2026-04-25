@@ -1,5 +1,5 @@
-import { BaseUnitType } from "@/types";
-import { Category, Group, MasterProduct, Subgroup } from "@prisma/client";
+import { BaseUnitType } from '@/types';
+import { Category, Group, MasterProduct, Subgroup } from '@/.prisma/client';
 
 export type MasterProductResponse = {
   name: string;
@@ -7,7 +7,6 @@ export type MasterProductResponse = {
   categoryId: string;
   groupId: string;
   subgroupId?: string | null;
-  
 };
 
 export interface MasterProductUpdateResponse extends MasterProductResponse {
@@ -19,7 +18,7 @@ export type MasterProductOperationResponse = {
   title: string;
   description?: string;
   masterProduct?: MasterProduct;
-  isUsed?: boolean
+  isUsed?: boolean;
 };
 
 export type MasterProductWithCategoryGroupSubgroupResponse = MasterProduct & {

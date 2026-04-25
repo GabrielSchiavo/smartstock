@@ -1,6 +1,6 @@
-import { db } from "@/lib/db";
-import { UserResponse, UserSettingsUpdateResponse } from "@/types";
-import { Prisma, User } from "@prisma/client";
+import { db } from '@/lib/db';
+import { UserResponse, UserSettingsUpdateResponse } from '@/types';
+import { Prisma, User } from '@/.prisma/client';
 
 export const userRepository = {
   async findByEmail(email: string) {
@@ -44,14 +44,11 @@ export const userRepository = {
 
   async findAll(): Promise<User[]> {
     return await db.user.findMany({
-      orderBy: { role: "asc" },
+      orderBy: { role: 'asc' },
     });
   },
 
-  async findByEmailExcludingId(
-    email: string,
-    id: string
-  ): Promise<User | null> {
+  async findByEmailExcludingId(email: string, id: string): Promise<User | null> {
     return await db.user.findFirst({
       where: {
         email,

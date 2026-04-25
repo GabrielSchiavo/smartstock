@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,12 +7,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontalIcon } from "lucide-react";
-import { DataTableDropdownProps, ModeType } from "@/types";
-import { AddEditDialog } from "@/components/shared/add-edit-dialog";
-import DeleteDialog from "@/components/shared/delete-dialog";
-import { useState } from "react";
+} from '@/components/ui/dropdown-menu';
+import { MoreHorizontalIcon } from 'lucide-react';
+import { DataTableDropdownProps, ModeType } from '@/types';
+import { AddEditDialog } from '@/components/shared/add-edit-dialog';
+import DeleteDialog from '@/components/shared/delete-dialog';
+import { useState } from 'react';
 
 export function DataTableDropdown<T extends string | number>({
   rowItemId,
@@ -33,13 +33,15 @@ export function DataTableDropdown<T extends string | number>({
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        <Button size={"sm"} variant="ghost" className="size-8! shrink-0">
+        <Button size={'sm'} variant="ghost" className="size-8! shrink-0">
           <span className="sr-only">Abrir Menu</span>
           <MoreHorizontalIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">Opções</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground px-2! py-1! text-xs">
+          Opções
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

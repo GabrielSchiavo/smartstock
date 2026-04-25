@@ -1,17 +1,13 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState, useRef } from "react";
-import {
-  clientCheckProductAlerts,
-  getAlerts,
-  getUnreadAlertsCount,
-} from "@/actions";
-import { ToastType } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
-import { AlertsStateProps, UseAlertsProps } from "@/types";
+import { useCallback, useEffect, useState, useRef } from 'react';
+import { clientCheckProductAlerts, getAlerts, getUnreadAlertsCount } from '@/actions';
+import { ToastType } from '@/types';
+import { showToast } from '@/components/utils/show-toast';
+import { AlertsStateProps, UseAlertsProps } from '@/types';
 
-const STORAGE_KEY = "alertsLastCount";
-const ERROR_SHOWN_KEY = "alertsErrorShown";
+const STORAGE_KEY = 'alertsLastCount';
+const ERROR_SHOWN_KEY = 'alertsErrorShown';
 
 export function useAlerts(options: UseAlertsProps = {}) {
   const {
@@ -41,7 +37,7 @@ export function useAlerts(options: UseAlertsProps = {}) {
         showToast({ title, description, type });
       }
     },
-    [disableNotifications]
+    [disableNotifications],
   );
 
   // Atualizar alertas com tratamento de erro robusto
@@ -56,10 +52,7 @@ export function useAlerts(options: UseAlertsProps = {}) {
       }
 
       try {
-        const [alertsData, count] = await Promise.all([
-          getAlerts(),
-          getUnreadAlertsCount(),
-        ]);
+        const [alertsData, count] = await Promise.all([getAlerts(), getUnreadAlertsCount()]);
 
         // Verificar se o componente ainda está montado
         if (!mountedRef.current) return;
@@ -79,34 +72,24 @@ export function useAlerts(options: UseAlertsProps = {}) {
         if (!disableNotifications) {
           if (isFirstLoad) {
             // Primeira carga
-            const storedCount =
-              Number(sessionStorage.getItem(STORAGE_KEY)) || 0;
+            const storedCount = Number(sessionStorage.getItem(STORAGE_KEY)) || 0;
 
             if (storedCount === 0 && count > 0) {
               // Primeira visita com alertas
-              notify(
-                "Alertas Pendentes",
-                `Você tem ${count} alerta(s) não lido(s)`
-              );
+              notify('Alertas Pendentes', `Você tem ${count} alerta(s) não lido(s)`);
             } else if (count > storedCount) {
               // Reload com novos alertas
               const diff = count - storedCount;
-              notify(
-                "Novo(s) Alerta(s)!",
-                `Você tem ${diff} novo(s) alerta(s)`
-              );
+              notify('Novo(s) Alerta(s)!', `Você tem ${diff} novo(s) alerta(s)`);
             } else if (count > 0) {
               // Reload com alertas existentes
-              notify(
-                "Alerta(s) Não Lido(s)",
-                `Você tem ${count} alerta(s) não lido(s)`
-              );
+              notify('Alerta(s) Não Lido(s)', `Você tem ${count} alerta(s) não lido(s)`);
             }
             hasInitializedRef.current = true;
           } else if (count > lastCount) {
             // Novos alertas durante a sessão
             const diff = count - lastCount;
-            notify("Novo(s) Alerta(s)!", `Você tem ${diff} novo(s) alerta(s)`);
+            notify('Novo(s) Alerta(s)!', `Você tem ${diff} novo(s) alerta(s)`);
           }
         }
 
@@ -115,7 +98,7 @@ export function useAlerts(options: UseAlertsProps = {}) {
         sessionStorage.setItem(STORAGE_KEY, count.toString());
         sessionStorage.removeItem(ERROR_SHOWN_KEY);
       } catch (error) {
-        console.error("Erro ao carregar alertas:", error);
+        console.error('Erro ao carregar alertas:', error);
 
         if (!mountedRef.current) return;
 
@@ -127,18 +110,18 @@ export function useAlerts(options: UseAlertsProps = {}) {
 
         // Mostrar erro apenas uma vez por sessão
         if (!sessionStorage.getItem(ERROR_SHOWN_KEY)) {
-          sessionStorage.setItem(ERROR_SHOWN_KEY, "true");
+          sessionStorage.setItem(ERROR_SHOWN_KEY, 'true');
           notify(
-            "Erro ao Carregar Alertas",
-            "Não foi possível carregar os alertas. Tentaremos novamente.",
-            ToastType.ERROR
+            'Erro ao Carregar Alertas',
+            'Não foi possível carregar os alertas. Tentaremos novamente.',
+            ToastType.ERROR,
           );
         }
       } finally {
         isCheckingRef.current = false;
       }
     },
-    [disableNotifications, notify]
+    [disableNotifications, notify],
   );
 
   // Verificar alertas de produtos na montagem

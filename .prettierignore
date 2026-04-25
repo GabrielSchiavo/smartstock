@@ -1,0 +1,13 @@
+.husky/
+.next/
+certificates/
+.source/
+.turbo/
+.prisma/
+node_modules/
+dist/
+out/
+public/
+coverage/
+package-lock.json
+package.json

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { BackButton } from "@/components/auth/back-button";
-import { CardWrapperProps } from "@/types";
+import { BackButton } from '@/components/auth/back-button';
+import { CardWrapperProps } from '@/types';
 
 export const CardWrapper = ({
   children,
@@ -15,13 +15,11 @@ export const CardWrapper = ({
       <div className="flex flex-col gap-6">
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">{headerTitle}</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            {headerLabel}
-          </p>
+          <p className="text-muted-foreground text-sm text-balance">{headerLabel}</p>
         </div>
         {children}
         <div>
-          {backButtonLabel === "" ? (
+          {backButtonLabel === '' ? (
             <></>
           ) : (
             <BackButton label={backButtonLabel} href={backButtonHref} />

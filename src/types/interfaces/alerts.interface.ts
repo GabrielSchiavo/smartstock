@@ -1,4 +1,4 @@
-import { AlertType, Product } from "@prisma/client";
+import { AlertType, Product } from '@/.prisma/client';
 
 export interface BasicAlertProps {
   id: string;

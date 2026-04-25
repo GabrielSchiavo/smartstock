@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ReportDataResponse, ReportType } from "@/types";
-import { FormReport } from "@/components/report/form-report";
-import { ClientDataTableReport } from "@/components/tables/_clients/client-data-table-report";
-import { Separator } from "@/components/ui/separator";
+import { useState } from 'react';
+import { ReportDataResponse, ReportType } from '@/types';
+import { FormReport } from '@/components/report/form-report';
+import { ClientDataTableReport } from '@/components/tables/_clients/client-data-table-report';
+import { Separator } from '@/components/ui/separator';
 
 export const SectionFormTableReport = () => {
   const [reportResults, setReportResults] = useState<{

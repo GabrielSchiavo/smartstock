@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useTransition, useRef } from "react";
-import { BaseFormMasterProduct } from "@/components/stock/master-product/base-form-master-product";
-import { editMasterProduct, getMasterProductById } from "@/actions";
-import { FormAddEditProps, ToastType, BaseUnitType } from "@/types";
-import { MessageError } from "@/components/utils/message-error";
-import { CreateEditMasterProductSchema } from "@/schemas";
-import { z } from "zod";
-import { showToast } from "@/components/utils/show-toast";
-import { UseFormReturn } from "react-hook-form";
-import { Spinner } from "@/components/ui/spinner";
+import { useState, useEffect, useTransition, useRef } from 'react';
+import { BaseFormMasterProduct } from '@/components/stock/master-product/base-form-master-product';
+import { editMasterProduct, getMasterProductById } from '@/actions';
+import { FormAddEditProps, ToastType, BaseUnitType } from '@/types';
+import { MessageError } from '@/components/utils/message-error';
+import { CreateEditMasterProductSchema } from '@/schemas';
+import { z } from 'zod';
+import { showToast } from '@/components/utils/show-toast';
+import { UseFormReturn } from 'react-hook-form';
+import { Spinner } from '@/components/ui/spinner';
 
 export const FormEditMasterProduct = ({
   rowItemId,
@@ -21,8 +21,7 @@ export const FormEditMasterProduct = ({
   const [initialValues, setInitialValues] = useState<z.infer<
     typeof CreateEditMasterProductSchema
   > | null>(null);
-  const formRef =
-    useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
+  const formRef = useRef<UseFormReturn<z.infer<typeof CreateEditMasterProductSchema>>>(null);
 
   useEffect(() => {
     const loadMasterProduct = async () => {
@@ -40,10 +39,10 @@ export const FormEditMasterProduct = ({
           }
         }
       } catch (error) {
-        console.error("Erro ao carregar o produto mestre:", error);
+        console.error('Erro ao carregar o produto mestre:', error);
         showToast({
-          title: "Erro!",
-          description: "Não foi possível carregar os dados do produto mestre.",
+          title: 'Erro!',
+          description: 'Não foi possível carregar os dados do produto mestre.',
           type: ToastType.ERROR,
         });
       } finally {
@@ -70,7 +69,7 @@ export const FormEditMasterProduct = ({
         });
       } catch {
         showToast({
-          title: "Algo deu errado!",
+          title: 'Algo deu errado!',
           type: ToastType.ERROR,
         });
       }
@@ -79,19 +78,17 @@ export const FormEditMasterProduct = ({
 
   if (isLoading) {
     return (
-      <div className="w-full flex justify-center">
-        <span className="flex items-center text-muted-foreground gap-3">
+      <div className="flex w-full justify-center">
+        <span className="text-muted-foreground flex items-center gap-3">
           <Spinner className="size-5 shrink-0" />
-          {"Carregando dados..."}
+          {'Carregando dados...'}
         </span>
       </div>
     );
   }
 
   if (!initialValues) {
-    return (
-      <MessageError message="Registro não encontrado ou erro ao carregar dados." />
-    );
+    return <MessageError message="Registro não encontrado ou erro ao carregar dados." />;
   }
 
   return (

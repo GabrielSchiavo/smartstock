@@ -1,4 +1,4 @@
-import { Product, Receiver, Supplier } from "@prisma/client";
+import { Product, Receiver, Supplier } from '@/.prisma/client';
 import {
   AdjustmentMovementCategoryType,
   BaseUnitType,
@@ -7,7 +7,7 @@ import {
   OutputMovementCategoryType,
   ProductType,
   UnitType,
-} from "@/types";
+} from '@/types';
 
 export type ProductResponse = {
   masterProductId: number;
@@ -30,7 +30,7 @@ export type ProductResponse = {
     | InputMovementCategoryType
     | OutputMovementCategoryType
     | AdjustmentMovementCategoryType
-    | "";
+    | '';
 };
 
 // Tipo estendido para produto com informações do produto mestre

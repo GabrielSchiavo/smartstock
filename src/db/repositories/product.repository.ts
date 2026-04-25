@@ -5,16 +5,16 @@ import {
   ProductWithMasterProductResponse,
   UnitType,
   ProductType,
-} from "@/types";
-import { db } from "@/lib/db";
-import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
-import { omit } from "@/lib/omit";
-import { Prisma } from "@prisma/client";
+} from '@/types';
+import { db } from '@/lib/db';
+import { daysDefaultUntilExpiry } from '@/utils/check-expiry-status';
+import { omit } from '@/lib/omit';
+import { Prisma } from '@/.prisma/client';
 
 export const productRepository = {
   async create(
     data: ProductResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<ProductWithMasterProductResponse> {
     const client = tx ?? db;
     // Regra para limpar campos Peso Unitário e Unidade do Peso Unitário se unidade não for UN
@@ -32,14 +32,7 @@ export const productRepository = {
     // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const productData = omit(
-      data,
-      "category",
-      "group",
-      "subgroup",
-      "baseUnit",
-      "movementCategory"
-    );
+    const productData = omit(data, 'category', 'group', 'subgroup', 'baseUnit', 'movementCategory');
 
     return (await client.product.create({
       data: productData,
@@ -70,13 +63,11 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { id: "asc" },
+      orderBy: { id: 'asc' },
     });
   },
 
-  async countProducts(
-    type: ProductCountType = ProductCountType.ALL
-  ): Promise<number> {
+  async countProducts(type: ProductCountType = ProductCountType.ALL): Promise<number> {
     const currentDate = new Date();
 
     if (type === ProductCountType.EXPIRED) {
@@ -121,7 +112,7 @@ export const productRepository = {
         },
       },
       orderBy: {
-        validityDate: "asc",
+        validityDate: 'asc',
       },
     });
   },
@@ -149,7 +140,7 @@ export const productRepository = {
         },
       },
       orderBy: {
-        validityDate: "asc",
+        validityDate: 'asc',
       },
     });
   },
@@ -180,7 +171,7 @@ export const productRepository = {
   async update(
     id: number,
     data: ProductUpdateResponse,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<ProductWithMasterProductResponse> {
     const client = tx ?? db;
 
@@ -199,14 +190,7 @@ export const productRepository = {
     // }
 
     // Remove os campos de categoria, grupo e subgrupo que agora vêm do masterProduct
-    const productData = omit(
-      data,
-      "category",
-      "group",
-      "subgroup",
-      "baseUnit",
-      "movementCategory"
-    );
+    const productData = omit(data, 'category', 'group', 'subgroup', 'baseUnit', 'movementCategory');
 
     return (await client.product.update({
       where: { id },
@@ -233,7 +217,7 @@ export const productRepository = {
       id: number;
       quantity: number;
     },
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
   ): Promise<ProductWithMasterProductResponse> {
     const client = tx ?? db;
 
@@ -256,7 +240,7 @@ export const productRepository = {
 
   async findByValidity(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: { validityDate: { gte: initialDate, lte: finalDate } },
@@ -271,13 +255,13 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { validityDate: "asc" },
+      orderBy: { validityDate: 'asc' },
     });
   },
 
   async findDonated(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
@@ -297,13 +281,13 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { receiptDate: "asc" },
+      orderBy: { receiptDate: 'asc' },
     });
   },
 
   async findPurchased(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
@@ -321,13 +305,13 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { receiptDate: "asc" },
+      orderBy: { receiptDate: 'asc' },
     });
   },
 
   async findAllByReceiptDate(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
@@ -344,18 +328,18 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { receiptDate: "asc" },
+      orderBy: { receiptDate: 'asc' },
     });
   },
 
   async findBySuppliers(
     initialDate: Date,
-    finalDate: Date
+    finalDate: Date,
   ): Promise<ProductWithMasterProductResponse[]> {
     return db.product.findMany({
       where: {
         supplierId: {
-          not: null
+          not: null,
         },
         receiptDate: { gte: initialDate, lte: finalDate },
       },
@@ -370,7 +354,7 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { receiptDate: "asc" },
+      orderBy: { receiptDate: 'asc' },
     });
   },
 
@@ -387,14 +371,14 @@ export const productRepository = {
           },
         },
       },
-      orderBy: { validityDate: "asc" },
+      orderBy: { validityDate: 'asc' },
     });
   },
 
   // Adicione esta função dentro do objeto productRepository
   async countByProductType(): Promise<{ type: string; count: number }[]> {
     const result = await db.product.groupBy({
-      by: ["productType"],
+      by: ['productType'],
       _count: {
         _all: true,
       },
@@ -407,4 +391,3 @@ export const productRepository = {
     }));
   },
 };
-

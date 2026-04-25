@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { auditLogRepository, supplierRepository } from "@/db";
-import { revalidatePath } from "next/cache";
+import { auditLogRepository, supplierRepository } from '@/db';
+import { revalidatePath } from 'next/cache';
 import {
   type SupplierResponse,
   type SingleSupplierResponse,
@@ -9,10 +9,10 @@ import {
   type SupplierCountResponse,
   ActionType,
   EntityType,
-} from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export async function getAllSupplier(): Promise<SupplierResponse> {
   try {
@@ -20,17 +20,17 @@ export async function getAllSupplier(): Promise<SupplierResponse> {
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Fornecedores carregados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Fornecedores carregados com sucesso.',
       data: suppliers,
     };
   } catch (error) {
-    console.error("Erro ao buscar Fornecedores:", error);
+    console.error('Erro ao buscar Fornecedores:', error);
 
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao acessar a lista de fornecedores.",
+      title: 'Erro!',
+      description: 'Erro ao acessar a lista de fornecedores.',
     };
   }
 }
@@ -43,11 +43,11 @@ export async function getSuppliersCount(): Promise<SupplierCountResponse> {
       count,
     };
   } catch (error) {
-    console.error("Erro ao contar Fornecedores:", error);
+    console.error('Erro ao contar Fornecedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível contar os fornecedores.",
+      title: 'Erro!',
+      description: 'Não foi possível contar os fornecedores.',
     };
   }
 }
@@ -56,41 +56,39 @@ export async function searchSupplier(query: string): Promise<SupplierResponse> {
   if (!query) return { success: true, data: [] };
 
   try {
-    const defaultRecord = await supplierRepository.findByName("Anônimo");
+    const defaultRecord = await supplierRepository.findByName('Anônimo');
 
     if (!defaultRecord) {
-      await supplierRepository.create("Anônimo");
-      revalidatePath("/");
+      await supplierRepository.create('Anônimo');
+      revalidatePath('/');
     }
 
     const suppliers = await supplierRepository.search(query);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Fornecedores encontrados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Fornecedores encontrados com sucesso.',
       data: suppliers,
     };
   } catch (error) {
-    console.error("Erro na busca por Fornecedores:", error);
+    console.error('Erro na busca por Fornecedores:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao pesquisar fornecedores.",
+      title: 'Erro!',
+      description: 'Erro ao pesquisar fornecedores.',
     };
   }
 }
 
-export async function createSupplier(
-  name: string
-): Promise<SingleSupplierResponse> {
+export async function createSupplier(name: string): Promise<SingleSupplierResponse> {
   const trimmedName = name.trim();
   const user = await currentUser();
 
   if (!trimmedName) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O campo de não pode estar vazio.",
+      title: 'Erro!',
+      description: 'O campo de não pode estar vazio.',
     };
   }
 
@@ -109,7 +107,7 @@ export async function createSupplier(
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${newSupplier.id}' | Changed Value='${newSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Supplier '${newSupplier.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return newSupplier;
@@ -117,16 +115,16 @@ export async function createSupplier(
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Fornecedor criado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Fornecedor criado com sucesso.',
       data: newSupplier,
     };
   } catch (error) {
-    console.error("Erro ao criar Fornecedor:", error);
+    console.error('Erro ao criar Fornecedor:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao criar fornecedor.",
+      title: 'Erro!',
+      description: 'Erro ao criar fornecedor.',
     };
   }
 }
@@ -140,8 +138,8 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
     if (!existingSupplier) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Fornecedor não encontrado.",
+        title: 'Erro!',
+        description: 'Fornecedor não encontrado.',
       };
     }
 
@@ -159,45 +157,42 @@ export async function deleteSupplier(id: string): Promise<SupplierResponse> {
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUPPLIER}' | Record Changed ID='${existingSupplier.id}' | Changed Value='${existingSupplier.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Supplier '${existingSupplier.name}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Fornecedor excluído com sucesso.",
+      title: 'Sucesso!',
+      description: 'Fornecedor excluído com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao excluir Fornecedor:", error);
+    console.error('Erro ao excluir Fornecedor:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao excluir fornecedor.",
+      title: 'Erro!',
+      description: 'Erro ao excluir fornecedor.',
     };
   }
 }
 
-export async function checkSupplierUsage(
-  supplierId: string
-): Promise<CheckSupplierResponse> {
+export async function checkSupplierUsage(supplierId: string): Promise<CheckSupplierResponse> {
   try {
-    const productWithSupplier =
-      await supplierRepository.checkInProducts(supplierId);
+    const productWithSupplier = await supplierRepository.checkInProducts(supplierId);
 
     return {
       isUsed: !!productWithSupplier,
       success: false,
-      title: "Aviso!",
-      description: "Este fornecedor está associado a um ou mais produtos.",
+      title: 'Aviso!',
+      description: 'Este fornecedor está associado a um ou mais produtos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar produtos associados", error);
+    console.error('Erro ao verificar produtos associados', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Erro ao verificar produtos associados.",
+      title: 'Erro!',
+      description: 'Erro ao verificar produtos associados.',
     };
   }
 }

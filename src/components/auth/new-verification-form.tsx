@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { newVerification } from "@/actions";
-import { MessageSuccess } from "@/components/utils/message-success";
-import { MessageError } from "@/components/utils/message-error";
-import { ROUTES } from "@/config/routes";
-import { Spinner } from "@/components/ui/spinner";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { CardWrapper } from '@/components/auth/card-wrapper';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { newVerification } from '@/actions';
+import { MessageSuccess } from '@/components/utils/message-success';
+import { MessageError } from '@/components/utils/message-error';
+import { ROUTES } from '@/config/routes';
+import { Spinner } from '@/components/ui/spinner';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const NewVerificationForm = () => {
   // * Best example for use error and success message
@@ -18,13 +18,13 @@ export const NewVerificationForm = () => {
 
   const searchParams = useSearchParams();
 
-  const token = searchParams.get("token");
+  const token = searchParams.get('token');
 
   const onSubmit = useCallback(() => {
     if (success || error) return;
 
     if (!token) {
-      setError("Token ausente!");
+      setError('Token ausente!');
       return;
     }
 
@@ -34,7 +34,7 @@ export const NewVerificationForm = () => {
         setError(data.error);
       })
       .catch(() => {
-        setError("Algo deu errado!");
+        setError('Algo deu errado!');
       });
   }, [token, success, error]);
 
@@ -51,7 +51,7 @@ export const NewVerificationForm = () => {
       backButtonLabel="Login"
       backButtonHref={ROUTES.AUTH_LOGIN}
     >
-      <div className="flex flex-col items-center w-full justify-center gap-7">
+      <div className="flex w-full flex-col items-center justify-center gap-7">
         <MessageSuccess message={success} />
         {!success && <MessageError message={error} />}
         {!success && !error && (
@@ -62,12 +62,7 @@ export const NewVerificationForm = () => {
         )}
         {isSuccess && (
           <Link href={ROUTES.AUTH_LOGIN} className="w-full">
-            <Button
-              type="button"
-              size={"sm"}
-              variant={"outline"}
-              className="w-full"
-            >
+            <Button type="button" size={'sm'} variant={'outline'} className="w-full">
               Acessar Conta
             </Button>
           </Link>

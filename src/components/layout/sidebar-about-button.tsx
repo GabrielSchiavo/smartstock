@@ -1,6 +1,6 @@
-import * as React from "react";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
-import { HelpCircleIcon } from "lucide-react";
+import * as React from 'react';
+import { SidebarMenuButton } from '@/components/ui/sidebar';
+import { HelpCircleIcon } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -8,23 +8,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { VersionBadge } from "@/components/utils/version-badge";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { LogoWithText } from "@/components/shared/logo-with-text";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { VersionBadge } from '@/components/utils/version-badge';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { LogoWithText } from '@/components/shared/logo-with-text';
 
 export function SidebarAboutButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <SidebarMenuButton tooltip={"Sobre"}>
+        <SidebarMenuButton tooltip={'Sobre'}>
           <HelpCircleIcon />
           Sobre
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] rounded-xl gap-6">
+      <DialogContent className="gap-6 rounded-xl sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Sobre</DialogTitle>
         </DialogHeader>
@@ -32,13 +32,11 @@ export function SidebarAboutButton() {
           <LogoWithText imageSize="size-10 sm:size-12" textSize="text-3xl sm:text-4xl" />
           <div className="flex w-full flex-col items-center gap-2">
             <Separator />
-            <p className="text-base font-light">
-              O melhor sistema de gestão de estoque
-            </p>
+            <p className="text-base font-light">O melhor sistema de gestão de estoque</p>
             <Separator />
           </div>
 
-          <p className="text-base text-muted-foreground">
+          <p className="text-muted-foreground text-base">
             Copyright &copy; {new Date().getFullYear()} SmartStock
           </p>
           <span className="flex items-center gap-2">

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { FileChartPieIcon, HistoryIcon, UserCogIcon } from "lucide-react";
+import { FileChartPieIcon, HistoryIcon, UserCogIcon } from 'lucide-react';
 
 import {
   SidebarGroup,
@@ -9,12 +9,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { RoleGate } from "@/components/auth/role-gate";
-import { UserType } from "@/types";
-import { ROUTES } from "@/config/routes";
+} from '@/components/ui/sidebar';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { RoleGate } from '@/components/auth/role-gate';
+import { UserType } from '@/types';
+import { ROUTES } from '@/config/routes';
 
 export function NavSidebarTertiary() {
   const pathname = usePathname();
@@ -31,8 +31,8 @@ export function NavSidebarTertiary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Relatórios"}
-                className={`${pathname === ROUTES.PAGE_REPORTS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Relatórios'}
+                className={`${pathname === ROUTES.PAGE_REPORTS ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_REPORTS}>
                   <FileChartPieIcon />
@@ -45,8 +45,8 @@ export function NavSidebarTertiary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Usuários"}
-                className={`${pathname === ROUTES.PAGE_USERS ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Usuários'}
+                className={`${pathname === ROUTES.PAGE_USERS ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_USERS}>
                   <UserCogIcon />
@@ -57,8 +57,8 @@ export function NavSidebarTertiary() {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                tooltip={"Histórico"}
-                className={`${pathname === ROUTES.PAGE_HISTORY ? "min-w-8 bg-primary text-primary-foreground font-medium duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground" : ""}`}
+                tooltip={'Histórico'}
+                className={`${pathname === ROUTES.PAGE_HISTORY ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 font-medium duration-200 ease-linear' : ''}`}
               >
                 <Link href={ROUTES.PAGE_HISTORY}>
                   <HistoryIcon />

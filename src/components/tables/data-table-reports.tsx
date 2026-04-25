@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { FileTextIcon, PrinterIcon } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { FileTextIcon, PrinterIcon } from 'lucide-react';
 import {
   CalculableTotalItemProps,
   DonationsReportResponse,
@@ -12,24 +12,19 @@ import {
   SuppliersReportResponse,
   ToastType,
   ValidityReportResponse,
-} from "@/types";
-import { useReactToPrint } from "react-to-print";
+} from '@/types';
+import { useReactToPrint } from 'react-to-print';
 import {
   getCoreRowModel,
   getSortedRowModel,
   Row,
   SortingState,
   useReactTable,
-} from "@tanstack/react-table";
-import React, { useRef, useState } from "react";
-import { DataTableReportProps, ReportType } from "@/types";
-import { Maximize2Icon, Minimize2Icon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@tanstack/react-table';
+import React, { useRef, useState } from 'react';
+import { DataTableReportProps, ReportType } from '@/types';
+import { Maximize2Icon, Minimize2Icon } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   generateAdjustmentsPdf,
   generateDonationsPdf,
@@ -40,13 +35,13 @@ import {
   generateReceiversPdf,
   generateSuppliersPdf,
   generateValidityPdf,
-} from "@/lib/pdf-generator";
-import { useGroupedTable } from "@/hooks/use-grouped-table";
-import { getTotalValuesDisplayForData } from "@/components/utils/group-table";
-import { showToast } from "@/components/utils/show-toast";
-import { formatDateOnlyToLocale } from "@/utils/date-utils";
-import { BaseDataTable } from "@/components/tables/base-data-table";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+} from '@/lib/pdf-generator';
+import { useGroupedTable } from '@/hooks/use-grouped-table';
+import { getTotalValuesDisplayForData } from '@/components/utils/group-table';
+import { showToast } from '@/components/utils/show-toast';
+import { formatDateOnlyToLocale } from '@/utils/date-utils';
+import { BaseDataTable } from '@/components/tables/base-data-table';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 export function DataTableReport<TData>({
   columns,
@@ -57,9 +52,7 @@ export function DataTableReport<TData>({
   groupBy,
 }: DataTableReportProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
-    new Set()
-  );
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   const table = useReactTable({
     data,
@@ -89,35 +82,35 @@ export function DataTableReport<TData>({
           pdf = await generateValidityPdf(
             data as ValidityReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.DONATIONS:
           pdf = await generateDonationsPdf(
             data as DonationsReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.PURCHASED:
           pdf = await generatePurchasedPdf(
             data as PurchasedReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.RECEIVERS:
           pdf = await generateReceiversPdf(
             data as ReceiversReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.SUPPLIERS:
           pdf = await generateSuppliersPdf(
             data as SuppliersReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.INVENTORY:
@@ -127,53 +120,53 @@ export function DataTableReport<TData>({
           pdf = await generateInputsPdf(
             data as StockMovementReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.OUTPUTS:
           pdf = await generateOutputsPdf(
             data as StockMovementReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         case ReportType.ADJUSTMENTS:
           pdf = await generateAdjustmentsPdf(
             data as StockMovementReportResponse[],
             initialDate!.toISOString(),
-            finalDate!.toISOString()
+            finalDate!.toISOString(),
           );
           break;
         default:
           throw showToast({
-            title: "Erro!",
-            description: "Tipo de relatório inválido.",
+            title: 'Erro!',
+            description: 'Tipo de relatório inválido.',
             type: ToastType.ERROR,
           });
       }
 
       if (!pdf) {
         showToast({
-          title: "Erro!",
-          description: "Erro ao gerar o PDF.",
+          title: 'Erro!',
+          description: 'Erro ao gerar o PDF.',
           type: ToastType.ERROR,
         });
       }
       const pdfData = new Uint8Array(pdf);
-      const blob = new Blob([pdfData], { type: "application/pdf" });
+      const blob = new Blob([pdfData], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = `relatorio-${formatEnumValueDisplay(reportType, "lowercase")}-${new Date().toISOString()}.pdf`;
+      a.download = `relatorio-${formatEnumValueDisplay(reportType, 'lowercase')}-${new Date().toISOString()}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Erro ao gerar PDF:", error);
+      console.error('Erro ao gerar PDF:', error);
       showToast({
-        title: "Erro!",
-        description: "Erro ao gerar o PDF.",
+        title: 'Erro!',
+        description: 'Erro ao gerar o PDF.',
         type: ToastType.ERROR,
       });
     }
@@ -183,8 +176,8 @@ export function DataTableReport<TData>({
   const reactToPrintFn = useReactToPrint({ contentRef });
 
   return (
-    <div className="grid gap-4 w-full">
-      <div className="flex items-center justify-end gap-4 sm:gap-6 w-full">
+    <div className="grid w-full gap-4">
+      <div className="flex w-full items-center justify-end gap-4 sm:gap-6">
         {groupBy && groupedData && (
           <TooltipProvider>
             <Tooltip>
@@ -193,7 +186,7 @@ export function DataTableReport<TData>({
                   variant="ghost"
                   size="icon"
                   onClick={toggleAllGroups}
-                  className="size-8! shrink-0 ml-auto"
+                  className="ml-auto size-8! shrink-0"
                 >
                   {collapsedGroups.size === Object.keys(groupedData).length ? (
                     <Maximize2Icon className="size-4 shrink-0" />
@@ -205,49 +198,36 @@ export function DataTableReport<TData>({
               <TooltipContent>
                 <p>
                   {collapsedGroups.size === Object.keys(groupedData).length
-                    ? "Expandir Grupos"
-                    : "Recolher Grupos"}
+                    ? 'Expandir Grupos'
+                    : 'Recolher Grupos'}
                 </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )}
-        <Button
-          onClick={reactToPrintFn}
-          variant="outline"
-          size="sm"
-          className="cursor-pointer"
-        >
+        <Button onClick={reactToPrintFn} variant="outline" size="sm" className="cursor-pointer">
           <PrinterIcon />
           Imprimir
         </Button>
-        <Button
-          onClick={handleGeneratePdf}
-          variant="outline"
-          size="sm"
-          className="cursor-pointer"
-        >
+        <Button onClick={handleGeneratePdf} variant="outline" size="sm" className="cursor-pointer">
           <FileTextIcon />
           Gerar PDF
         </Button>
       </div>
 
-      <div
-        className="styleForPrint rounded-xl border overflow-auto"
-        ref={contentRef}
-      >
-        <div className="showForPrint space-y-3 mb-6">
+      <div className="styleForPrint overflow-auto rounded-xl border" ref={contentRef}>
+        <div className="showForPrint mb-6 space-y-3">
           <h1 className="text-2xl font-semibold">
-            Relatório de {" "}{formatEnumValueDisplay(reportType, "capitalize")}
+            Relatório de {formatEnumValueDisplay(reportType, 'capitalize')}
           </h1>
           {initialDate && finalDate && (
             <p className="text-md">
-              Período: {formatDateOnlyToLocale(new Date(initialDate))} a{" "}
+              Período: {formatDateOnlyToLocale(new Date(initialDate))} a{' '}
               {formatDateOnlyToLocale(new Date(finalDate))}
             </p>
           )}
         </div>
-        <div className="rounded-xl border overflow-hidden">
+        <div className="overflow-hidden rounded-xl border">
           <BaseDataTable
             table={table}
             columns={columns}
@@ -259,11 +239,7 @@ export function DataTableReport<TData>({
             footerContent={
               <div className="flex items-center justify-start gap-2">
                 TOTAL FINAL:
-                <span>
-                  {getTotalValuesDisplayForData(
-                    data as CalculableTotalItemProps[]
-                  )}
-                </span>
+                <span>{getTotalValuesDisplayForData(data as CalculableTotalItemProps[])}</span>
               </div>
             }
           />

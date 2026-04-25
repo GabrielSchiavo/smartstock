@@ -1,15 +1,11 @@
-import * as React from "react";
-import { CheckIcon, PlusCircleIcon } from "lucide-react";
+import * as React from 'react';
+import { CheckIcon, PlusCircleIcon } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import {
   Command,
   CommandEmpty,
@@ -18,8 +14,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
-import { DataTableFacetedFilterProps, FilterModeType } from "@/types";
+} from '@/components/ui/command';
+import { DataTableFacetedFilterProps, FilterModeType } from '@/types';
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
@@ -39,18 +35,12 @@ export function DataTableFacetedFilter<TData, TValue>({
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
-              <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden min-w-6"
-              >
+              <Badge variant="secondary" className="min-w-6 rounded-sm px-1 font-normal lg:hidden">
                 {selectedValues.size}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
                 {selectedValues.size > 2 ? (
-                  <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
-                  >
+                  <Badge variant="secondary" className="rounded-sm px-1 font-normal">
                     {selectedValues.size} selecionado(s)
                   </Badge>
                 ) : (
@@ -75,9 +65,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty className="text-sm text-center p-3">
-              Nada encontrado
-            </CommandEmpty>
+            <CommandEmpty className="p-3 text-center text-sm">Nada encontrado</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -92,9 +80,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                           selectedValues.add(option.value);
                         }
                         const filterValues = Array.from(selectedValues);
-                        column?.setFilterValue(
-                          filterValues.length ? filterValues : undefined
-                        );
+                        column?.setFilterValue(filterValues.length ? filterValues : undefined);
                       } else {
                         // modo single
                         const currentValue = Array.from(selectedValues)[0];
@@ -108,17 +94,15 @@ export function DataTableFacetedFilter<TData, TValue>({
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-foreground",
+                        'border-foreground mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                         isSelected
-                          ? "bg-primary text-foreground border-primary"
-                          : "opacity-50 [&_svg]:invisible"
+                          ? 'bg-primary text-foreground border-primary'
+                          : 'opacity-50 [&_svg]:invisible',
                       )}
                     >
-                      <CheckIcon className="text-primary-foreground shrink-0 size-3.5" />
+                      <CheckIcon className="text-primary-foreground size-3.5 shrink-0" />
                     </div>
-                    {option.icon && (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
+                    {option.icon && <option.icon className="text-muted-foreground mr-2 h-4 w-4" />}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -10,15 +10,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DataTableProducts } from "@/components/tables/data-table-products";
-import { columnsTableProducts } from "@/components/tables/_columns/columns-table-products";
-import {
-  ProductWithMasterProductResponse,
-  SelectorProductProps,
-} from "@/types";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { DataTableProducts } from '@/components/tables/data-table-products';
+import { columnsTableProducts } from '@/components/tables/_columns/columns-table-products';
+import { ProductWithMasterProductResponse, SelectorProductProps } from '@/types';
 
 export function SelectorProduct({
   products,
@@ -29,9 +26,7 @@ export function SelectorProduct({
 }: SelectorProductProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedItem = products.find(
-    (item) => item.id.toString() === selectedId
-  );
+  const selectedItem = products.find((item) => item.id.toString() === selectedId);
 
   const handleSelect = (item: ProductWithMasterProductResponse) => {
     onSelect(item);
@@ -51,30 +46,19 @@ export function SelectorProduct({
           <Input
             className="default-btn-field-height"
             defaultValue={undefined}
-            value={
-              !selectedItem
-                ? ""
-                : `${selectedItem.id.toString()} - ${selectedItem.name}`
-            }
+            value={!selectedItem ? '' : `${selectedItem.id.toString()} - ${selectedItem.name}`}
             disabled={true}
             placeholder="Selecione um produto..."
           />
-          <Button
-            type="button"
-            disabled={disabled}
-            variant="outline"
-            size={"sm"}
-          >
+          <Button type="button" disabled={disabled} variant="outline" size={'sm'}>
             Selecionar
           </Button>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[80vw] sm:max-h-[90vh] max-h-[80vh] rounded-xl overflow-hidden flex flex-col gap-8">
+      <DialogContent className="flex max-h-[80vh] flex-col gap-8 overflow-hidden rounded-xl sm:max-h-[90vh] sm:max-w-[80vw]">
         <DialogHeader>
           <DialogTitle>Selecionar Produto</DialogTitle>
-          <DialogDescription>
-            Clique em Selecionar para escolher o Produto.
-          </DialogDescription>
+          <DialogDescription>Clique em Selecionar para escolher o Produto.</DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto p-1">

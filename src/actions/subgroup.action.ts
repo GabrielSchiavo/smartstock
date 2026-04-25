@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { auditLogRepository, subgroupRepository } from "@/db";
+import { auditLogRepository, subgroupRepository } from '@/db';
 import {
   EntityType,
   ActionType,
@@ -8,33 +8,31 @@ import {
   SingleSubgroupResponse,
   SubgroupOperationResponse,
   SubgroupResponse,
-} from "@/types";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 export const getAllSubgroup = async (): Promise<SubgroupResponse> => {
   try {
     const subgroups = await subgroupRepository.findAll();
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Subgrupo carregados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Subgrupo carregados com sucesso.',
       data: subgroups,
     };
   } catch (error) {
-    console.error("Erro ao buscar Subgrupos:", error);
+    console.error('Erro ao buscar Subgrupos:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao acessar a lista de subgrupos.",
+      title: 'Erro!',
+      description: 'Erro ao acessar a lista de subgrupos.',
     };
   }
 };
 
-export const searchSubgroup = async (
-  query: string
-): Promise<SubgroupResponse> => {
+export const searchSubgroup = async (query: string): Promise<SubgroupResponse> => {
   if (!query) return { success: true, data: [] };
 
   try {
@@ -42,30 +40,28 @@ export const searchSubgroup = async (
     return {
       success: true,
       data: subgroups,
-      title: "Sucesso!",
-      description: "Subgrupos encontrados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Subgrupos encontrados com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao buscar Subgrupos:", error);
+    console.error('Erro ao buscar Subgrupos:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao pesquisar subgrupos.",
+      title: 'Erro!',
+      description: 'Erro ao pesquisar subgrupos.',
     };
   }
 };
 
-export const createSubgroup = async (
-  name: string
-): Promise<SingleSubgroupResponse> => {
+export const createSubgroup = async (name: string): Promise<SingleSubgroupResponse> => {
   const user = await currentUser();
 
   // Validação de entrada
   if (!name.trim()) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O campo não pode estar vazio.",
+      title: 'Erro!',
+      description: 'O campo não pode estar vazio.',
     };
   }
 
@@ -84,7 +80,7 @@ export const createSubgroup = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${newSubgroup.id}' | Changed Value='${newSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Subgroup '${newSubgroup.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return newSubgroup;
@@ -93,22 +89,20 @@ export const createSubgroup = async (
     return {
       success: true,
       data: newSubgroup,
-      title: "Sucesso!",
-      description: "Subgrupo criado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Subgrupo criado com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao criar Subgrupo:", error);
+    console.error('Erro ao criar Subgrupo:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao criar subgrupo.",
+      title: 'Erro!',
+      description: 'Erro ao criar subgrupo.',
     };
   }
 };
 
-export const deleteSubgroup = async (
-  id: string
-): Promise<SubgroupOperationResponse> => {
+export const deleteSubgroup = async (id: string): Promise<SubgroupOperationResponse> => {
   const user = await currentUser();
 
   try {
@@ -117,8 +111,8 @@ export const deleteSubgroup = async (
     if (!existingSubgroup) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Subgrupo não encontrado.",
+        title: 'Erro!',
+        description: 'Subgrupo não encontrado.',
       };
     }
 
@@ -136,45 +130,42 @@ export const deleteSubgroup = async (
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.SUBGROUP}' | Record Changed ID='${existingSubgroup.id}' | Changed Value='${existingSubgroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Subgroup ${existingSubgroup.name} Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Subgrupo excluído com sucesso.",
+      title: 'Sucesso!',
+      description: 'Subgrupo excluído com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao excluir Subgrupo:", error);
+    console.error('Erro ao excluir Subgrupo:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao excluir subgrupo.",
+      title: 'Erro!',
+      description: 'Erro ao excluir subgrupo.',
     };
   }
 };
 
-export const checkSubgroupUsage = async (
-  subgroupId: string
-): Promise<CheckSubgroupResponse> => {
+export const checkSubgroupUsage = async (subgroupId: string): Promise<CheckSubgroupResponse> => {
   try {
-    const productWithSubgroup =
-      await subgroupRepository.checkInMasterProducts(subgroupId);
+    const productWithSubgroup = await subgroupRepository.checkInMasterProducts(subgroupId);
 
     return {
       isUsed: !!productWithSubgroup,
       success: false,
-      title: "Aviso!",
-      description: "Este subgrupo está associado a um ou mais produtos.",
+      title: 'Aviso!',
+      description: 'Este subgrupo está associado a um ou mais produtos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar produtos associados:", error);
+    console.error('Erro ao verificar produtos associados:', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Erro ao verificar produtos associados.",
+      title: 'Erro!',
+      description: 'Erro ao verificar produtos associados.',
     };
   }
 };

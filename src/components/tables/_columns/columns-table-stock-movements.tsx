@@ -1,22 +1,18 @@
-"use client";
+'use client';
 
-import { ColumnDef, FilterFn } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/tables/_components/data-table-column-header";
-import { StockMovement } from "@prisma/client";
-import { ColumnMetaProps, MovementType } from "@/types";
-import { Button } from "@/components/ui/button";
-import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
-import { formatDateTimeToLocale } from "@/utils/date-utils";
-import { Badge } from "@/components/ui/badge";
-import { formatEnumValueDisplay } from "@/utils/format-enum-value-display";
+import { ColumnDef, FilterFn } from '@tanstack/react-table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from '@/components/tables/_components/data-table-column-header';
+import { StockMovement } from '@/.prisma/client';
+import { ColumnMetaProps, MovementType } from '@/types';
+import { Button } from '@/components/ui/button';
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { formatDateTimeToLocale } from '@/utils/date-utils';
+import { Badge } from '@/components/ui/badge';
+import { formatEnumValueDisplay } from '@/utils/format-enum-value-display';
 
 // Função para escolher as colunas pesquisáveis
-const multiColumnFilterFn: FilterFn<StockMovement> = (
-  row,
-  columnId,
-  filterValue
-) => {
+const multiColumnFilterFn: FilterFn<StockMovement> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string for search columns
   const searchableRowContent = `${row.original.id} ${row.original.createdAt} ${row.original.movementType} ${row.original.movementCategory}`;
 
@@ -27,17 +23,15 @@ const multiColumnFilterFn: FilterFn<StockMovement> = (
 export const columnsTableStockMovements = ({}): ColumnDef<StockMovement>[] => {
   return [
     {
-      id: "select",
+      id: 'select',
       header: ({ table }) => (
         <div className="flex items-center justify-center">
           <Checkbox
             checked={
               table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
             }
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
             aria-label="Select all"
           />
         </div>
@@ -57,7 +51,7 @@ export const columnsTableStockMovements = ({}): ColumnDef<StockMovement>[] => {
       enableHiding: false,
     },
     {
-      id: "expand",
+      id: 'expand',
       header: () => null,
       cell: ({ row }) => {
         return (
@@ -78,58 +72,52 @@ export const columnsTableStockMovements = ({}): ColumnDef<StockMovement>[] => {
       enableHiding: false,
     },
     {
-      accessorKey: "createdAt",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Data/Hora" />
-      ),
+      accessorKey: 'createdAt',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Data/Hora" />,
       cell: ({ row }) => {
-        const validityDate = new Date(row.getValue("createdAt"));
+        const validityDate = new Date(row.getValue('createdAt'));
         const dateString = formatDateTimeToLocale(validityDate);
 
         return dateString;
       },
       meta: {
-        title: "Data/Hora",
+        title: 'Data/Hora',
       } as ColumnMetaProps,
       filterFn: multiColumnFilterFn,
     },
     {
-      accessorKey: "movementType",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Movimentação" />
-      ),
+      accessorKey: 'movementType',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Movimentação" />,
       cell: ({ row }) => {
-        const value = row.getValue("movementType");
+        const value = row.getValue('movementType');
 
         return (
           <Badge
-            variant={"outline"}
-            className={`text-sm ${value === MovementType.ADJUSTMENT_POSITIVE || value === MovementType.INPUT ? "text-emerald-600 dark:text-emerald-500" : value === MovementType.ADJUSTMENT_NEGATIVE || value === MovementType.OUTPUT ? "text-red-600 dark:text-red-500" : ""}`}
+            variant={'outline'}
+            className={`text-sm ${value === MovementType.ADJUSTMENT_POSITIVE || value === MovementType.INPUT ? 'text-emerald-600 dark:text-emerald-500' : value === MovementType.ADJUSTMENT_NEGATIVE || value === MovementType.OUTPUT ? 'text-red-600 dark:text-red-500' : ''}`}
           >
-            {formatEnumValueDisplay(value as string, "uppercase")}
+            {formatEnumValueDisplay(value as string, 'uppercase')}
           </Badge>
         );
       },
       meta: {
-        title: "Movimentação",
+        title: 'Movimentação',
       } as ColumnMetaProps,
     },
     {
-      accessorKey: "movementCategory",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Categoria" />
-      ),
+      accessorKey: 'movementCategory',
+      header: ({ column }) => <DataTableColumnHeader column={column} title="Categoria" />,
       cell: ({ row }) => {
-        const value = row.getValue("movementCategory");
+        const value = row.getValue('movementCategory');
 
         return (
-          <Badge variant={"outline"} className="text-sm">
-            {formatEnumValueDisplay(value as string, "uppercase")}
+          <Badge variant={'outline'} className="text-sm">
+            {formatEnumValueDisplay(value as string, 'uppercase')}
           </Badge>
         );
       },
       meta: {
-        title: "Categoria",
+        title: 'Categoria',
       } as ColumnMetaProps,
     },
   ];

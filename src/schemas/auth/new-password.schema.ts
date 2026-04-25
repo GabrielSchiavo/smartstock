@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { ConfirmPasswordSchema, PasswordSchema } from "@/schemas/shared/base-auth.schema";
+import { z } from 'zod';
+import { ConfirmPasswordSchema, PasswordSchema } from '@/schemas/shared/base-auth.schema';
 
 export const NewPasswordSchema = z
   .object({
@@ -7,6 +7,6 @@ export const NewPasswordSchema = z
     confirmPassword: ConfirmPasswordSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-      error: "As senhas não coincidem"
-});
+    path: ['confirmPassword'],
+    error: 'As senhas não coincidem',
+  });

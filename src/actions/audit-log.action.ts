@@ -1,13 +1,13 @@
-"use server"
+'use server';
 
-import { auditLogRepository } from "@/db";
-import { AuditLogWithUserResponse } from "@/types";
+import { auditLogRepository } from '@/db';
+import { AuditLogWithUserResponse } from '@/types';
 
 export const getAuditLogs = async (): Promise<AuditLogWithUserResponse[]> => {
   try {
     return await auditLogRepository.findAll();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -16,7 +16,7 @@ export const getAuditLogsInputs = async (): Promise<AuditLogWithUserResponse[]> 
   try {
     return await auditLogRepository.findInputs();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -25,7 +25,7 @@ export const getAuditLogsOutputs = async (): Promise<AuditLogWithUserResponse[]>
   try {
     return await auditLogRepository.findOutputs();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -34,7 +34,7 @@ export const getAuditLogsInputOutput = async (): Promise<AuditLogWithUserRespons
   try {
     return await auditLogRepository.findInputOutput();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -43,7 +43,7 @@ export const getAuditLogsAdjustment = async (): Promise<AuditLogWithUserResponse
   try {
     return await auditLogRepository.findAdjustments();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -52,7 +52,7 @@ export const getAuditLogsMiscellaneous = async (): Promise<AuditLogWithUserRespo
   try {
     return await auditLogRepository.findMiscellaneous();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };
@@ -61,7 +61,7 @@ export const getAuditLogsSystem = async (): Promise<AuditLogWithUserResponse[]> 
   try {
     return await auditLogRepository.findSystem();
   } catch (error) {
-    console.error("Erro ao buscar logs:", error);
+    console.error('Erro ao buscar logs:', error);
     throw error;
   }
 };

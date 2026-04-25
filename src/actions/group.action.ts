@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import {
   type GroupResponse,
@@ -6,11 +6,11 @@ import {
   type CheckGroupResponse,
   ActionType,
   EntityType,
-} from "@/types";
-import { auditLogRepository, groupRepository } from "@/db";
-import { currentUser } from "@/utils/current-session-utils";
-import { db } from "@/lib/db";
-import { getIpAddress } from "@/utils/ip-address-utils";
+} from '@/types';
+import { auditLogRepository, groupRepository } from '@/db';
+import { currentUser } from '@/utils/current-session-utils';
+import { db } from '@/lib/db';
+import { getIpAddress } from '@/utils/ip-address-utils';
 
 // Implementações
 export async function getAllGroup(): Promise<GroupResponse> {
@@ -18,16 +18,16 @@ export async function getAllGroup(): Promise<GroupResponse> {
     const groups = await groupRepository.findAll();
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Grupos carregados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Grupos carregados com sucesso.',
       data: groups,
     };
   } catch (error) {
-    console.error("Erro ao buscar Grupos:", error);
+    console.error('Erro ao buscar Grupos:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Não foi possível acessar a lista de grupos.",
+      title: 'Erro!',
+      description: 'Não foi possível acessar a lista de grupos.',
     };
   }
 }
@@ -39,16 +39,16 @@ export async function searchGroup(query: string): Promise<GroupResponse> {
     const groups = await groupRepository.search(query);
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Grupos encontrados com sucesso.",
+      title: 'Sucesso!',
+      description: 'Grupos encontrados com sucesso.',
       data: groups,
     };
   } catch (error) {
-    console.error("Erro ao pesquisar Grupos:", error);
+    console.error('Erro ao pesquisar Grupos:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao pesquisar grupos.",
+      title: 'Erro!',
+      description: 'Erro ao pesquisar grupos.',
     };
   }
 }
@@ -60,8 +60,8 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
   if (!trimmedName) {
     return {
       success: false,
-      title: "Erro!",
-      description: "O campo de não pode estar vazio.",
+      title: 'Erro!',
+      description: 'O campo de não pode estar vazio.',
     };
   }
 
@@ -77,10 +77,10 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
           actionType: ActionType.CREATE,
           entity: EntityType.GROUP,
           changedValue: newGroup.name as string,
-          ipAddress: await getIpAddress(),  
+          ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.CREATE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${newGroup.id}' | Changed Value='${newGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Group '${newGroup.name}' Created' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
 
       return newGroup;
@@ -88,16 +88,16 @@ export async function createGroup(name: string): Promise<SingleGroupResponse> {
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Grupo criado com sucesso.",
+      title: 'Sucesso!',
+      description: 'Grupo criado com sucesso.',
       data: newGroup,
     };
   } catch (error) {
-    console.error("Erro ao criar Grupo:", error);
+    console.error('Erro ao criar Grupo:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao criar grupo.",
+      title: 'Erro!',
+      description: 'Erro ao criar grupo.',
     };
   }
 }
@@ -111,8 +111,8 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
     if (!existingGroup) {
       return {
         success: false,
-        title: "Erro!",
-        description: "Grupo não encontrado.",
+        title: 'Erro!',
+        description: 'Grupo não encontrado.',
       };
     }
 
@@ -130,45 +130,42 @@ export async function deleteGroup(id: string): Promise<GroupResponse> {
           ipAddress: await getIpAddress(),
           details: `[AUDIT] Action='${ActionType.DELETE}' | Entity='${EntityType.GROUP}' | Record Changed ID='${existingGroup.id}' | Changed Value='${existingGroup.name}' | User ID='${user?.id}' | User='${user?.name}' | IP Address='${await getIpAddress()}' | Message='Group '${existingGroup.id}' Excluded' | Date Time='${new Date().toISOString()}'`,
         },
-        tx
+        tx,
       );
     });
 
     return {
       success: true,
-      title: "Sucesso!",
-      description: "Grupo excluído com sucesso.",
+      title: 'Sucesso!',
+      description: 'Grupo excluído com sucesso.',
     };
   } catch (error) {
-    console.error("Erro ao excluir Grupo:", error);
+    console.error('Erro ao excluir Grupo:', error);
     return {
       success: false,
-      title: "Erro!",
-      description: "Erro ao excluir grupo.",
+      title: 'Erro!',
+      description: 'Erro ao excluir grupo.',
     };
   }
 }
 
-export async function checkGroupUsage(
-  groupId: string
-): Promise<CheckGroupResponse> {
+export async function checkGroupUsage(groupId: string): Promise<CheckGroupResponse> {
   try {
-    const productWithGroup =
-      await groupRepository.checkInMasterProducts(groupId);
+    const productWithGroup = await groupRepository.checkInMasterProducts(groupId);
 
     return {
       isUsed: !!productWithGroup,
       success: false,
-      title: "Aviso!",
-      description: "Este grupo está associado a um ou mais produtos.",
+      title: 'Aviso!',
+      description: 'Este grupo está associado a um ou mais produtos.',
     };
   } catch (error) {
-    console.error("Erro ao verificar produtos associados:", error);
+    console.error('Erro ao verificar produtos associados:', error);
     return {
       isUsed: true,
       success: false,
-      title: "Erro!",
-      description: "Erro ao verificar produtos associados.",
+      title: 'Erro!',
+      description: 'Erro ao verificar produtos associados.',
     };
   }
 }

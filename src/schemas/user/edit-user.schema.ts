@@ -1,5 +1,11 @@
-import { z } from "zod";
-import { EmailSchema, NameSchema, UserTypeSchema, OptionalPasswordSchema, OptionalConfirmPasswordSchema } from "@/schemas/shared/base-auth.schema";
+import { z } from 'zod';
+import {
+  EmailSchema,
+  NameSchema,
+  UserTypeSchema,
+  OptionalPasswordSchema,
+  OptionalConfirmPasswordSchema,
+} from '@/schemas/shared/base-auth.schema';
 
 export const EditUserSchema = z
   .object({
@@ -9,10 +15,7 @@ export const EditUserSchema = z
     password: OptionalPasswordSchema,
     confirmPassword: OptionalConfirmPasswordSchema,
   })
-  .refine(
-    (data) => data.password === data.confirmPassword,
-    {
-      path: ["confirmPassword"],
-        error: "As senhas não coincidem"
-    }
-  );
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    error: 'As senhas não coincidem',
+  });

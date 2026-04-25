@@ -1,18 +1,15 @@
-"use client";
+'use client';
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CircleAlertIcon, TriangleAlertIcon } from "lucide-react";
-import { AlertStyleType, AlertType, ToastType } from "@/types";
-import { toggleAlertReadStatus } from "@/actions";
-import { AlertProps } from "@/types";
-import { showToast } from "@/components/utils/show-toast";
-import { formatDateOnlyToLocale } from "@/utils/date-utils";
-import { daysDefaultUntilExpiry } from "@/utils/check-expiry-status";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { CircleAlertIcon, TriangleAlertIcon } from 'lucide-react';
+import { AlertStyleType, AlertType, ToastType } from '@/types';
+import { toggleAlertReadStatus } from '@/actions';
+import { AlertProps } from '@/types';
+import { showToast } from '@/components/utils/show-toast';
+import { formatDateOnlyToLocale } from '@/utils/date-utils';
+import { daysDefaultUntilExpiry } from '@/utils/check-expiry-status';
 
-export function AlertItem({
-  alert,
-  onAlertChange,
-}: AlertProps & { onAlertChange: () => void }) {
+export function AlertItem({ alert, onAlertChange }: AlertProps & { onAlertChange: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const response = await toggleAlertReadStatus(alert.id);
@@ -29,30 +26,28 @@ export function AlertItem({
       case AlertType.EXPIRING:
         return (
           <p>
-            O produto <span className="font-bold">{alert.product.name}</span>{" "}
-            com <span className="font-bold">ID {alert.product.id}</span> está a{" "}
-            <span className="italic underline">
-              {daysDefaultUntilExpiry} dia(s)
-            </span>{" "}
-            do vencimento. Por favor, verifique e tome as medidas necessárias.
+            O produto <span className="font-bold">{alert.product.name}</span> com{' '}
+            <span className="font-bold">ID {alert.product.id}</span> está a{' '}
+            <span className="italic underline">{daysDefaultUntilExpiry} dia(s)</span> do vencimento.
+            Por favor, verifique e tome as medidas necessárias.
           </p>
         );
       case AlertType.EXPIRED:
         return (
           <p>
-            O produto de <span className="font-bold">{alert.product.name}</span>{" "}
-            com <span className="font-bold">ID {alert.product.id}</span>{" "}
-            <span className="italic underline">ultrapassou</span> o prazo de
-            validade. Por favor, verifique e tome as medidas necessárias.
+            O produto de <span className="font-bold">{alert.product.name}</span> com{' '}
+            <span className="font-bold">ID {alert.product.id}</span>{' '}
+            <span className="italic underline">ultrapassou</span> o prazo de validade. Por favor,
+            verifique e tome as medidas necessárias.
           </p>
         );
       case AlertType.OUT_STOCK:
         return (
           <p>
-            O produto de <span className="font-bold">{alert.product.name}</span>{" "}
-            com <span className="font-bold">ID {alert.product.id}</span> está
-            com estoque <span className="italic underline">zerado</span>. Por
-            favor, verifique e tome as medidas necessárias.
+            O produto de <span className="font-bold">{alert.product.name}</span> com{' '}
+            <span className="font-bold">ID {alert.product.id}</span> está com estoque{' '}
+            <span className="italic underline">zerado</span>. Por favor, verifique e tome as medidas
+            necessárias.
           </p>
         );
     }
@@ -85,10 +80,9 @@ export function AlertItem({
       <button type="submit" title="Marcar como Lido/Não lido">
         <Alert
           variant={alertVariant}
-          className={`hover:border-foreground cursor-pointer text-start rounded-xl ${!alert.isRead && `shadow`}`}
+          className={`hover:border-foreground cursor-pointer rounded-xl text-start ${!alert.isRead && `shadow`}`}
         >
-          {alert.type === AlertType.EXPIRED ||
-          alert.type === AlertType.OUT_STOCK ? (
+          {alert.type === AlertType.EXPIRED || alert.type === AlertType.OUT_STOCK ? (
             <TriangleAlertIcon />
           ) : (
             <CircleAlertIcon />
@@ -96,9 +90,7 @@ export function AlertItem({
           <AlertTitle>{getAlertTitle()}</AlertTitle>
           <AlertDescription>
             {getAlertMessage()}
-            <span className="text-xs italic text-end w-full">
-              {getAlertDate()}
-            </span>
+            <span className="w-full text-end text-xs italic">{getAlertDate()}</span>
           </AlertDescription>
         </Alert>
       </button>

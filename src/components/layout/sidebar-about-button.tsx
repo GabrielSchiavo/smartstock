@@ -7,12 +7,12 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { VersionBadge } from '@/components/utils/version-badge';
-import { DialogTitle } from '@radix-ui/react-dialog';
 import { LogoWithText } from '@/components/shared/logo-with-text';
 
 export function SidebarAboutButton() {
@@ -24,7 +24,7 @@ export function SidebarAboutButton() {
           Sobre
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="gap-6 rounded-xl sm:max-w-[500px]">
+      <DialogContent className="gap-6 rounded-xl sm:max-w-125">
         <DialogHeader>
           <DialogTitle>Sobre</DialogTitle>
         </DialogHeader>

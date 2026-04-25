@@ -100,6 +100,7 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 ### ⚠️ Pré-requisitos:
 
 - **Node.js** >= 22
+- **PNPM** >= 10
 - **Docker**
 - **Docker Compose**
 
@@ -109,31 +110,30 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
     - Instalar e atualizar pacotes:
 
       ```bash
-      npm update
+      pnpm update
       ```
 
     - Instalar pacotes respeitando a versão fornecida:
       ```bash
-      npm install
+      pnpm install
       ```
 
 2.  `Configurar as variáveis de ambiente globais:` renomeie o arquivo `.env.example` para `.env`
 
 3.  `Configurar Banco de Dados:`
     - `Criar Banco de Dados:` execute o comando abaixo para iniciar e executar o banco de dados utilizando o Docker:
-        ```bash
-          docker-compose up -d
-        ```
-        
+      ```bash
+        docker-compose up -d
+      ```
     - `Credenciais (Opcional):` caso necessite alterar as credenciais de acesso ao Banco de Dados altere esta variável no arquivo `.env`:
-        ```env
-          DATABASE_URL="postgresql://root:12345@localhost:5432/smartstock?schema=public"
-        ```
+      ```env
+        DATABASE_URL="postgresql://root:12345@localhost:5432/smartstock?schema=public"
+      ```
 
 4.  `Configurar Auth.js:`
 
     ```bash
-      npx auth secret
+      pnpm dlx auth secret
     ```
 
     - Será gerado um arquivo `.env.local` com a variável `AUTH_SECRET`, copie toda a variável e substitua `AUTH_SECRET` no arquivo `.env`, após exclua o arquivo `.env.local`:
@@ -142,12 +142,12 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
     - Gera o Prisma Client:
 
       ```bash
-        npx prisma generate
+        pnpm dlx prisma generate
       ```
 
     - Executa as migrations no Banco de Dados:
       ```bash
-        npx prisma migrate deploy
+        pnpm dlx prisma migrate deploy
       ```
 
 6.  `Configurar geração e envio de email:`
@@ -163,35 +163,39 @@ SmartStock é um sistema web com o principal objetivo de controlar de forma efic
 
 7.  `Executar o projeto:`
     ```bash
-      npm run dev
+      pnpm dev
     ```
 
 ## ⚡ Scripts Disponíveis
 
 - `docker-compose up -d` - Cria e executa o container docker necessário
-- `npm run dev` - Executa o servidor em modo de desenvolvimento com Turbopack
-- `npm run build` - Compila o projeto para produção
-- `npm run start` - Inicia o servidor em modo de produção
-- `npm run lint` - Executa o linter ESLint
-- `npm run type-check` - Executa a verificação de tipos TypeScript em modo watch
-- `npx prisma generate` - Gera o Prisma Client
-- `npx prisma migrate deploy` - Executa as migrations já criadas ou as pendentes
-- `npx prisma migrate dev` - Cria e executa uma nova migration (executar novamente sempre que alterar o schema.prisma)
-- `npx prisma migrate status` - Verifica quais migrations foram aplicadas no banco atual
-- `npx prisma migrate reset` - Reseta o banco e aplica todas as migrations
+- `pnpm dev` - Executa o servidor em modo de desenvolvimento com Turbopack
+- `pnpm build` - Compila o projeto para produção
+- `pnpm start` - Inicia o servidor em modo de produção
+- `pnpm lint` - Executa o linter ESLint
+- `pnpm format:check` - Executa a verificação de formatação dos arquivos utilizando Prettier
+- `pnpm format` - Executa a formatação somente de arquivos .ts e .tsx utilizando Prettier
+- `pnpm format:all` - Executa a formatação de todos os arquivos utilizando Prettier
+- `pnpm type-check` - Executa a verificação de tipos TypeScript em modo watch
+- `pnpm prepare` - Executa manualmente as verificações do Husky
+- `pnpm dlx prisma generate` - Gera o Prisma Client
+- `pnpm dlx prisma migrate deploy` - Executa as migrations já criadas ou as pendentes
+- `pnpm dlx prisma migrate dev` - Cria e executa uma nova migration (executar novamente sempre que alterar o schema.prisma)
+- `pnpm dlx prisma migrate status` - Verifica quais migrations foram aplicadas no banco atual
+- `pnpm dlx prisma migrate reset` - Reseta o banco e aplica todas as migrations
 
 ## ✅ Tecnologias Utilizadas
 
 - `TypeScript`
-- `Node.js - 24.12.0`
-- `React.js - 19.2.3`
-- `Next.js - 16.1.1`
+- `Node.js - 24`
+- `React.js - 19`
+- `Next.js - 16`
 - `Next.js Server Actions`
-- `PostgreSQL - 18.1`
-- `Prisma - 7.2.0`
-- `Auth.js - 5.0.0`
-- `Nodemailer - 7.0.12`
-- `jsPDF - 3.0.4`
-- `Zod - 4.2.1`
-- `Tailwind CSS - 4.1.18`
+- `PostgreSQL - 18`
+- `Prisma - 7`
+- `Auth.js - 5`
+- `Nodemailer - 8`
+- `jsPDF - 3`
+- `Zod - 4`
+- `Tailwind CSS - 4`
 - `shadcn/ui`

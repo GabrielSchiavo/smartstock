@@ -1,5 +1,5 @@
 # Executa o formatador de código Prettier
-npx lint-staged
+pnpm dlx lint-staged
 
 # Executa verificação de vulnerabilidades
-npm audit --audit-level=high
+pnpm audit --audit-level high
